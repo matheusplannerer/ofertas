@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "115359535931",
+    "firebase_url": "https://ofertas-dd295.firebaseio.com",
+    "project_id": "ofertas-dd295",
+    "storage_bucket": "ofertas-dd295.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115359535931:android:374033c17ec3822b2b1d1e",
+        "android_client_info": {
+          "package_name": "com.example.ofertas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115359535931-j37uk1moetqiia6rm4puhbncmumnq0q3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANKFx2A_kS9zc-t4GnE05XbNgU6PMNWcA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115359535931-j37uk1moetqiia6rm4puhbncmumnq0q3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
