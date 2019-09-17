@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'CADASTRO',
       theme: ThemeData( 
-        primarySwatch: Colors.grey[300],
+        // primarySwatch: Colors.grey[300],
       ),
       home: MyHomePage(title: 'CADASTRO'),
     );
