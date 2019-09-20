@@ -23,7 +23,7 @@ class CA002 extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 90),
+            SizedBox(height: 50),
             Image.asset('assets/logo2.jpg', scale: 1.4),
             SizedBox(height: 40),
             Text(
@@ -49,11 +49,11 @@ class CA002 extends StatelessWidget {
                 ),
                 Text(
                   'Learn More',
-                  style: TextStyle(fontSize: 20, color: Colors.grey[600]),
+                  style: TextStyle(fontSize: 17, color: Colors.grey[600]),
                 ),
               ],
             ),
-            SizedBox(height: 110),
+            SizedBox(height: 50),
             ButtonTheme(
               shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(5.0)),
@@ -72,14 +72,14 @@ class CA002 extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.lock, color: Colors.grey[600]),
                 Text(
                   "  This doesn't let the app post to Facebook",
-                  style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                  style: TextStyle(fontSize: 13, color: Colors.grey[700]),
                 ),
               ],
             ),
