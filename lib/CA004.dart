@@ -33,7 +33,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         title: Text(
           'C A D A S T R O',
-          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         centerTitle: true,
