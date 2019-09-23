@@ -36,6 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
+        centerTitle: true,
       ),
       body: ListView(
         children: <Widget>[

@@ -2,8 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ofertas/CA001.dart';
+import 'package:load/load.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(
+      LoadingProvider(
+        child: MyApp(),
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

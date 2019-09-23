@@ -10,8 +10,7 @@ class CA002 extends StatelessWidget {
         backgroundColor: Colors.blueGrey[200],
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MyApp()));
+            Navigator.pop(context);
           },
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
@@ -19,6 +18,7 @@ class CA002 extends StatelessWidget {
           'Cadastro com Facebook',
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
