@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
+import 'package:ofertas/CA002.dart';
 import 'package:ofertas/controller/CA001-controller.dart';
 import 'package:ofertas/main.dart';
-import 'package:ofertas/CA002.dart';
 import 'package:ofertas/CA004.dart';
 import 'package:ofertas/CA003.dart';
 
@@ -13,11 +13,13 @@ class CA001 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
         title: Text(
           'CADASTRO',
+          textAlign: TextAlign.center,
         ),
         centerTitle: true,
       ),

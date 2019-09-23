@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ofertas/CA001.dart';
+import 'package:ofertas/CA002.dart';
 import 'package:ofertas/CA005.dart';
 
 class CA004 extends StatelessWidget {
@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: IconButton(
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CA001()));
+                context, MaterialPageRoute(builder: (context) => CA002()));
           },
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),

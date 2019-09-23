@@ -7,9 +7,9 @@ import 'package:ofertas/controller/CA001-controller.dart';
 
 void main() => runApp(
       LoadingProvider(
-        child: MyApp(),
-      ),
-    );
+              child: MyApp(),
+            ),
+          );
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
