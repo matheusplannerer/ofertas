@@ -13,7 +13,6 @@ class CA001 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
@@ -92,14 +91,15 @@ class CA001 extends StatelessWidget {
                 borderRadius: new BorderRadius.circular(5.0)),
             minWidth: 325.0,
             height: 50.0,
-            child: RaisedButton(
+            child: FlatButton.icon(
+              icon: Icon(Icons.face),
               color: Colors.blueGrey[300],
               textColor: Colors.white,
               onPressed: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => CA002()));
               },
-              child: Text(
+              label: Text(
                 'CADASTRE COM FACEBOOK',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15),
@@ -111,14 +111,15 @@ class CA001 extends StatelessWidget {
                 borderRadius: new BorderRadius.circular(5.0)),
             minWidth: 325.0,
             height: 50.0,
-            child: RaisedButton(
+            child: FlatButton.icon(
+              icon: Icon(Icons.group),
               color: Colors.blueGrey[300],
               textColor: Colors.white,
               onPressed: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => CA003()));
               },
-              child: Text(
+              label: Text(
                 'CADASTRE COM GOOGLE',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15),
