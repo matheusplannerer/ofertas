@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ofertas/CA0011.dart';
+import 'CA006.dart';
 
 class CA0010 extends StatelessWidget {
   @override
