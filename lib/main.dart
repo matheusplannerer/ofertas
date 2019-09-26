@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ofertas/CA001.dart';
+import 'package:ofertas/CA0010.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/controller/CA001-controller.dart';
 
