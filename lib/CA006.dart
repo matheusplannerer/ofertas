@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'CA0010.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:intl/intl.dart';
 
 class CA006 extends StatelessWidget {
   @override
@@ -23,6 +25,9 @@ class _ChecklistPageState extends State<ChecklistPage> {
   bool quiVal = false;
   bool sexVal = false;
   bool sabVal = false;
+
+  TextEditingController horaInicio = TextEditingController();
+  TextEditingController horaTermino = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,19 +63,19 @@ class _ChecklistPageState extends State<ChecklistPage> {
                     style: TextStyle(fontSize: 20, color: Colors.grey)),
                 Container(
                   padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
-                    width: 325,
-                    height: 50,
-                    color: Colors.blueGrey[100],
-                    child: Row(
-                      
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Icon(Icons.person_pin),
-                        Text('Upload do Logo da Empresa'),
-                        Icon(Icons.photo_size_select_large),
-                      ],
-                    )),
+                  margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                  width: 325,
+                  height: 50,
+                  color: Colors.blueGrey[100],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Icon(Icons.person_pin),
+                      Text('Upload do Logo da Empresa'),
+                      Icon(Icons.photo_size_select_large),
+                    ],
+                  ),
+                ),
                 Container(
                   width: MediaQuery.of(context).size.height / 2,
                   child: Form(
@@ -110,11 +115,12 @@ class _ChecklistPageState extends State<ChecklistPage> {
                               width: MediaQuery.of(context).size.width / 2.7,
                               child: TextFormField(
                                 decoration: const InputDecoration(
-                                    hintText: 'XXX',
-                                    labelText: 'Numero / Unidade 1',
-                                    labelStyle: TextStyle(
-                                      fontSize: 10,
-                                    )),
+                                  hintText: 'XXX',
+                                  labelText: 'Numero / Unidade 1',
+                                  labelStyle: TextStyle(
+                                    fontSize: 10,
+                                  ),
+                                ),
                               ),
                             ),
                             Container(
@@ -202,19 +208,6 @@ class _ChecklistPageState extends State<ChecklistPage> {
                     ),
                   ),
                 ),
-                // Container(
-                //   margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
-                //   child: Row(
-                //     children: [
-                //       TextFormField(
-                //         decoration: const InputDecoration(
-                //           labelText: 'Horário de funcionamento / Unidade 1',
-                //         ),
-                //       ),
-
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -361,6 +354,27 @@ class _ChecklistPageState extends State<ChecklistPage> {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                  child: ListTile(
+                    leading: Text("Horário de Atendimento"),
+                    trailing: Icon(Icons.timer),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                  child: BasicTimeField(
+                    text: "Hora Abertura",
+                    controller: horaInicio,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                  child: BasicTimeField(
+                    text: "Hora Término",
+                    controller: horaTermino,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
                   child: TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Site / Unidade 1',
@@ -384,8 +398,8 @@ class _ChecklistPageState extends State<ChecklistPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CA0010()));
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => CA0010()));
                   },
                 )
               ],
@@ -394,5 +408,33 @@ class _ChecklistPageState extends State<ChecklistPage> {
         ],
       ),
     );
+  }
+}
+
+class BasicTimeField extends StatelessWidget {
+  final format = DateFormat("HH:mm");
+
+  final String text;
+  final TextEditingController controller;
+  BasicTimeField({this.text, this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: <Widget>[
+      Text(text),
+      DateTimePickerFormField(
+        textAlign: TextAlign.center,
+        inputType: InputType.time,
+        controller: controller,
+        timePicker: (context) async {
+          var horaInicio = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay(hour: 7, minute: 0),
+          );
+          return horaInicio;
+        },
+        format: format,
+      ),
+    ]);
   }
 }
