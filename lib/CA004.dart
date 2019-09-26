@@ -18,6 +18,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool checkbox = false;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         onSaved: (String value) {},
                       ),
                       Row(
-                        children: <Widget>[
+                        children: [
+                         
                           Checkbox(
                             value: checkbox,
                             onChanged: (bool value) {
@@ -115,9 +117,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               );
                             },
                           ),
-                          Text("Eu li e concordo com os termos de uso"),
-                        ],
+                          Text('Li e concordo com os termos'),
+                         ],
                       ),
+                      
                     ],
                   ),
                 ),

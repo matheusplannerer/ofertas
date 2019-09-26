@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ofertas/CA005.dart';
+import 'CA006.dart';
 
 class CA009 extends StatelessWidget {
   @override
@@ -64,7 +65,7 @@ class CA009 extends StatelessWidget {
                 textColor: Colors.white,
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CA009()));
+                      MaterialPageRoute(builder: (context) => CA006()));
                 },
                 child: Text(
                   'Acessar minha página',
