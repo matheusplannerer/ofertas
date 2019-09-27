@@ -6,7 +6,7 @@ class CA001Controller {
     
     try {
       var data = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: senha);
-      return data.user;
+      return data;
     } catch (e) {
       return null;
     }
