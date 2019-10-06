@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/CA002.dart';
-import 'package:ofertas/controller/CA001-controller.dart';
+import 'package:ofertas/controller/services..dart';
 import 'package:ofertas/main.dart';
 import 'package:ofertas/CA004.dart';
 import 'package:ofertas/CA003.dart';
@@ -9,7 +9,7 @@ import 'package:ofertas/CA003.dart';
 void main() => runApp(MyApp());
 
 class CA001 extends StatelessWidget {
-  final CA001Controller _loginController = CA001Controller();
+  final Services services = Services();
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +45,14 @@ class CA001 extends StatelessWidget {
               textColor: Colors.white,
               onPressed: () async {
                 showLoadingDialog();
-                var fbUser = await _loginController.login('', '');
+                var fbUser = await services.auth.login('', '');
                 hideLoadingDialog();
                 if (fbUser == null) {
                   //não logou
 
                 } else {
                   // logou
-                  
+
                 }
               },
               child: Text(

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:ofertas/CA001.dart';
 import 'package:ofertas/CA0010.dart';
 import 'package:load/load.dart';
-import 'package:ofertas/controller/CA001-controller.dart';
 import 'package:ofertas/teste.dart';
 
 void main() => runApp(
