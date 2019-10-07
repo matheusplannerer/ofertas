@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:ofertas/CA001.dart';
 import 'package:ofertas/CA004.dart';
+import 'package:ofertas/CA006.dart';
+import 'package:ofertas/controller/services.dart';
+import 'package:provider/provider.dart';
+import 'package:ofertas/global/global.dart';
 
-class CA003 extends StatelessWidget {
+class CadastroPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _CadastroPageState();
+  }
+}
+
+class _CadastroPageState extends State<CadastroPage> {
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+
+  Services services = Services();
+
+  bool isUsuario = true;
+
   @override
   Widget build(BuildContext context) {
+    var global = Provider.of<Global>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[100],
@@ -16,7 +37,7 @@ class CA003 extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: Text(
-          'Cadastre com Goolge',
+          'Cadastrar',
           style: TextStyle(fontSize: 19, color: Colors.white),
         ),
       ),
@@ -47,7 +68,8 @@ class CA003 extends StatelessWidget {
                         color: Colors.blueGrey[200], size: 90),
                     Container(
                       margin: EdgeInsets.only(right: 25.0, left: 25.0, top: 20),
-                      child: TextFormField(
+                      child: TextField(
+                        controller: _email,
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -59,7 +81,8 @@ class CA003 extends StatelessWidget {
                     ),
                     Container(
                       margin: EdgeInsets.only(right: 25.0, left: 25.0, top: 5),
-                      child: TextFormField(
+                      child: TextField(
+                        controller: _password,
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -68,6 +91,28 @@ class CA003 extends StatelessWidget {
                           hintText: 'Password',
                         ),
                       ),
+                    ),
+                    Column(
+                      children: [
+                        CheckboxListTile(
+                          title: Text("USUÁRIO"),
+                          value: isUsuario,
+                          onChanged: (value) {
+                            setState(() {
+                              isUsuario = value;
+                            });
+                          },
+                        ),
+                        CheckboxListTile(
+                          title: Text("EMPRESA"),
+                          value: !isUsuario,
+                          onChanged: (value) {
+                            setState(() {
+                              isUsuario = !value;
+                            });
+                          },
+                        )
+                      ],
                     ),
                     Container(
                       margin: EdgeInsets.only(
@@ -81,39 +126,31 @@ class CA003 extends StatelessWidget {
                           child: RaisedButton(
                             color: Colors.blueGrey[300],
                             textColor: Colors.white,
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CA004()));
+                            onPressed: () async {
+                              if (isUsuario) {
+                                //Cadastro de usuario joga no feed
+                                var data = await services.auth
+                                    .signUp(_email.text, _password.text);
+
+                              } else {
+                                //Cadastro de empresa joga no cadastroEmpresa CA006
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => CA006()));
+
+                              }
+
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => CA004()));
                             },
                             child: Text(
-                              'Sing in',
+                              'CADASTRAR',
                               style: TextStyle(fontSize: 18),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 25, bottom: 30),
-                          child: Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Need help?',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),

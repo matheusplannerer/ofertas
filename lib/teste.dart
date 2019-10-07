@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ofertas/controller/services.dart';
 
 class Teste extends StatelessWidget {
-  //PARTE DE AUTENTICAÇÃO
-  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  
+  Services services = Services();
 
-  Future<void> cadastrar() async {}
-
-  //PARTE DE DATABASE
-  Firestore firestore = Firestore.instance;
+  String email;
 
   @override
   Widget build(BuildContext context) {
@@ -21,19 +19,7 @@ class Teste extends StatelessWidget {
         child: RaisedButton(
           child: Text("TESTE"),
           onPressed: () async {
-            await firebaseAuth.signInWithEmailAndPassword(
-                email: "brunoarantes30@gmail.com", password: "Batata123");
-
-            print("LOGADO");
-
-            var informacoes = await firebaseAuth.currentUser();
-
-            var documento = await firestore
-                .collection('usuarios')
-                .document(informacoes.uid)
-                .get();
-
-            print(documento.data['nome']);
+            
           },
         ),
       ),

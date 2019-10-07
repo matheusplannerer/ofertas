@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ofertas/CA005.dart';
+import 'package:ofertas/CA001.dart';
 import 'CA006.dart';
+import 'cadastro.dart';
 
 class CA009 extends StatelessWidget {
+
+  FirebaseUser fbUser;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +70,7 @@ class CA009 extends StatelessWidget {
                 textColor: Colors.white,
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CA006()));
+                      MaterialPageRoute(builder: (context) => CA001()));
                 },
                 child: Text(
                   'Acessar minha página',

@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ofertas/controller/services.dart';
+import 'package:ofertas/global/global.dart';
+import 'package:ofertas/models/perfil_empresa.dart';
 import 'CA0010.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class CA006 extends StatelessWidget {
@@ -14,24 +18,26 @@ class CA006 extends StatelessWidget {
 }
 
 class ChecklistPage extends StatefulWidget {
+  ChecklistPage();
+
   @override
   _ChecklistPageState createState() => _ChecklistPageState();
 }
 
 class _ChecklistPageState extends State<ChecklistPage> {
-  bool domVal = false;
-  bool segVal = false;
-  bool terVal = false;
-  bool quaVal = false;
-  bool quiVal = false;
-  bool sexVal = false;
-  bool sabVal = false;
+  PerfilEmpresa cadastro = PerfilEmpresa();
+
+  var formKey = GlobalKey<FormState>();
+
+  Services services = Services();
 
   TextEditingController horaInicio = TextEditingController();
   TextEditingController horaTermino = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    formKey.currentState.save();
+    var global = Provider.of<Global>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[200],
@@ -80,41 +86,87 @@ class _ChecklistPageState extends State<ChecklistPage> {
                 Container(
                   width: MediaQuery.of(context).size.height / 2,
                   child: Form(
+                    key: formKey,
                     child: Column(
                       children: [
                         TextFormField(
+                          validator: (String value) {
+                            if (value.length >= 3) {
+                              return null;
+                            } else {
+                              return "Campo inválido";
+                            }
+                          },
                           decoration: const InputDecoration(
                             hintText: '',
                             labelText: 'Quantidade de unidades',
                           ),
-                          onSaved: (String value) {},
+                          onSaved: (String value) {
+                            cadastro.quantidadeUnides = int.tryParse(value);
+                          },
                         ),
                         TextFormField(
+                          validator: (String value) {
+                            if (value.length >= 3) {
+                              return null;
+                            } else {
+                              return "Campo inválido";
+                            }
+                          },
                           decoration: const InputDecoration(
                             hintText: 'XXXXXXX-XXX',
                             labelText: 'Nome da Unidade | Unidade 1',
                           ),
-                          onSaved: (String value) {},
+                          onSaved: (String value) {
+                            cadastro.nomeUnidade = value.toUpperCase();
+                          },
                         ),
                         TextFormField(
+                          validator: (String value) {
+                            if (value.length >= 3) {
+                              return null;
+                            } else {
+                              return "Campo inválido";
+                            }
+                          },
                           decoration: const InputDecoration(
                             hintText: 'XXXXX-XXX',
                             labelText: 'CEP / Unidade 1',
                           ),
-                          onSaved: (String value) {},
+                          onSaved: (String value) {
+                            cadastro.cep = int.tryParse(value);
+                          },
                         ),
                         TextFormField(
+                          validator: (String value) {
+                            if (value.length >= 3) {
+                              return null;
+                            } else {
+                              return "Campo inválido";
+                            }
+                          },
+                          onSaved: (String value) {
+                            cadastro.logradouro = value.toUpperCase();
+                          },
                           decoration: const InputDecoration(
                               hintText: 'Insira o Logradouro',
-                              labelText:
-                                  'Logradouro (Rua,avenida,etc) / Unidade 1'),
+                              labelText: 'Logradouro/Unidade 1'),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width / 2.7,
+                            Expanded(
                               child: TextFormField(
+                                validator: (String value) {
+                                  if (value.length >= 3) {
+                                    return null;
+                                  } else {
+                                    return "Campo inválido";
+                                  }
+                                },
+                                onSaved: (String value) {
+                                  cadastro.numero = value.toUpperCase();
+                                },
                                 decoration: const InputDecoration(
                                   hintText: 'XXX',
                                   labelText: 'Numero / Unidade 1',
@@ -124,15 +176,24 @@ class _ChecklistPageState extends State<ChecklistPage> {
                                 ),
                               ),
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width / 2.2,
+                            Expanded(
                               child: TextFormField(
+                                validator: (String value) {
+                                  if (value.length >= 3) {
+                                    return null;
+                                  } else {
+                                    return "Campo inválido";
+                                  }
+                                },
+                                onSaved: (String value) {
+                                  cadastro.complemento = value.toUpperCase();
+                                },
                                 decoration: const InputDecoration(
                                   hintStyle: TextStyle(
                                     fontSize: 13,
                                   ),
                                   hintText: 'Insira o complemento',
-                                  labelText: 'Complemento(ap,etc)/Unidade 1',
+                                  labelText: 'Complemento',
                                   labelStyle: TextStyle(
                                     fontSize: 10,
                                   ),
@@ -142,6 +203,16 @@ class _ChecklistPageState extends State<ChecklistPage> {
                           ],
                         ),
                         TextFormField(
+                          validator: (String value) {
+                            if (value.length >= 3) {
+                              return null;
+                            } else {
+                              return "Campo inválido";
+                            }
+                          },
+                          onSaved: (String value) {
+                            cadastro.bairro = value.toUpperCase();
+                          },
                           decoration: const InputDecoration(
                             hintText: 'insira o nome do bairro',
                             labelText: 'Bairro / Unidade 1',
@@ -153,17 +224,38 @@ class _ChecklistPageState extends State<ChecklistPage> {
                             Container(
                               width: MediaQuery.of(context).size.width / 2.2,
                               child: TextFormField(
+                                validator: (String value) {
+                                  if (value.length >= 3) {
+                                    return null;
+                                  } else {
+                                    return "Campo inválido";
+                                  }
+                                },
+                                onSaved: (String value) {
+                                  cadastro.estado = value.toUpperCase();
+                                },
                                 decoration: const InputDecoration(
-                                    hintText: 'XXX',
-                                    labelText: 'Estado/Unidade 1',
-                                    labelStyle: TextStyle(
-                                      fontSize: 10,
-                                    )),
+                                  hintText: 'XXX',
+                                  labelText: 'Estado/Unidade 1',
+                                  labelStyle: TextStyle(
+                                    fontSize: 10,
+                                  ),
+                                ),
                               ),
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width / 2.77,
                               child: TextFormField(
+                                validator: (String value) {
+                                  if (value.length >= 3) {
+                                    return null;
+                                  } else {
+                                    return "Campo inválido";
+                                  }
+                                },
+                                onSaved: (String value) {
+                                  cadastro.pais = value.toUpperCase();
+                                },
                                 decoration: const InputDecoration(
                                   hintStyle: TextStyle(
                                     fontSize: 13,
@@ -181,6 +273,16 @@ class _ChecklistPageState extends State<ChecklistPage> {
                         Container(
                           margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
                           child: TextFormField(
+                            validator: (String value) {
+                              if (value.length >= 3) {
+                                return null;
+                              } else {
+                                return "Campo inválido";
+                              }
+                            },
+                            onSaved: (String value) {
+                              cadastro.whatsapp = int.tryParse(value);
+                            },
                             decoration: const InputDecoration(
                               labelText:
                                   'WhatsApp (número para atendimento ao cliente / Unidade 1',
@@ -191,6 +293,16 @@ class _ChecklistPageState extends State<ChecklistPage> {
                         Container(
                           margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
                           child: TextFormField(
+                            validator: (String value) {
+                              if (value.length >= 3) {
+                                return null;
+                              } else {
+                                return "Campo inválido";
+                              }
+                            },
+                            onSaved: (String value) {
+                              cadastro.email = value.toLowerCase();
+                            },
                             decoration: const InputDecoration(
                               labelText:
                                   'E-mail (para atendimento ao cliente / Unidade 1',
@@ -226,11 +338,11 @@ class _ChecklistPageState extends State<ChecklistPage> {
                           textAlign: TextAlign.center,
                         ),
                         Checkbox(
-                          value: domVal,
+                          value: cadastro.funcionamento['domVal'],
                           onChanged: (bool value) {
                             setState(
                               () {
-                                domVal = value;
+                                cadastro.funcionamento['domVal'] = value;
                               },
                             );
                           },
@@ -245,11 +357,11 @@ class _ChecklistPageState extends State<ChecklistPage> {
                           textAlign: TextAlign.center,
                         ),
                         Checkbox(
-                          value: segVal,
+                          value: cadastro.funcionamento['segVal'],
                           onChanged: (bool value) {
                             setState(
                               () {
-                                segVal = value;
+                                cadastro.funcionamento['segVal'] = value;
                               },
                             );
                           },
@@ -264,11 +376,11 @@ class _ChecklistPageState extends State<ChecklistPage> {
                           textAlign: TextAlign.center,
                         ),
                         Checkbox(
-                          value: terVal,
+                          value: cadastro.funcionamento['terVal'],
                           onChanged: (bool value) {
                             setState(
                               () {
-                                terVal = value;
+                                cadastro.funcionamento['terVal'] = value;
                               },
                             );
                           },
@@ -283,11 +395,11 @@ class _ChecklistPageState extends State<ChecklistPage> {
                           textAlign: TextAlign.center,
                         ),
                         Checkbox(
-                          value: quaVal,
+                          value: cadastro.funcionamento['quaVal'],
                           onChanged: (bool value) {
                             setState(
                               () {
-                                quaVal = value;
+                                cadastro.funcionamento['quaVal'] = value;
                               },
                             );
                           },
@@ -302,11 +414,11 @@ class _ChecklistPageState extends State<ChecklistPage> {
                           textAlign: TextAlign.center,
                         ),
                         Checkbox(
-                          value: quiVal,
+                          value: cadastro.funcionamento['quiVal'],
                           onChanged: (bool value) {
                             setState(
                               () {
-                                quiVal = value;
+                                cadastro.funcionamento['quiVal'] = value;
                               },
                             );
                           },
@@ -321,11 +433,11 @@ class _ChecklistPageState extends State<ChecklistPage> {
                           textAlign: TextAlign.center,
                         ),
                         Checkbox(
-                          value: sexVal,
+                          value: cadastro.funcionamento['sexVal'],
                           onChanged: (bool value) {
                             setState(
                               () {
-                                sexVal = value;
+                                cadastro.funcionamento['sexVal'] = value;
                               },
                             );
                           },
@@ -340,11 +452,11 @@ class _ChecklistPageState extends State<ChecklistPage> {
                           textAlign: TextAlign.center,
                         ),
                         Checkbox(
-                          value: sabVal,
+                          value: cadastro.funcionamento['sabVal'],
                           onChanged: (bool value) {
                             setState(
                               () {
-                                sabVal = value;
+                                cadastro.funcionamento['sabVal'] = value;
                               },
                             );
                           },
@@ -377,6 +489,16 @@ class _ChecklistPageState extends State<ChecklistPage> {
                 Container(
                   margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
                   child: TextFormField(
+                    validator: (String value) {
+                      if (value.length >= 3) {
+                        return null;
+                      } else {
+                        return "Campo inválido";
+                      }
+                    },
+                    onSaved: (String value) {
+                      cadastro.site = value.toLowerCase();
+                    },
                     decoration: const InputDecoration(
                       labelText: 'Site / Unidade 1',
                       hintText: 'www.exemplo.com.br',
@@ -386,6 +508,16 @@ class _ChecklistPageState extends State<ChecklistPage> {
                 Container(
                   margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
                   child: TextFormField(
+                    validator: (String value) {
+                      if (value.length >= 3) {
+                        return null;
+                      } else {
+                        return "Campo inválido";
+                      }
+                    },
+                    onSaved: (String value) {
+                      cadastro.nomeUnidade = value.toUpperCase();
+                    },
                     decoration: const InputDecoration(
                       labelText: 'Nome da Unidade / Unidade 1',
                       hintText: 'Pro Junior',
@@ -398,7 +530,16 @@ class _ChecklistPageState extends State<ChecklistPage> {
                     'CADASTRAR',
                     style: TextStyle(color: Colors.white),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    cadastro.horaInicio = horaInicio.text;
+                    cadastro.horaTermino = horaTermino.text;
+
+                    if (formKey.currentState.validate()) {
+                      formKey.currentState.save();
+                      services.firestore
+                          .cadastrarEmpresa(cadastro, global.fbUser);
+                    } else {}
+
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => CA0010()));
                   },
