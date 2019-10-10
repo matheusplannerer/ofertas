@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
 import 'package:ofertas/PE004.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
@@ -23,7 +24,6 @@ class _ChecklistPageState extends State<ChecklistPage> {
   PerfilEmpresa cadastro;
 
   var formKey = GlobalKey<FormState>();
-  var formKey2 = GlobalKey<FormState>();
 
   Services services = Services();
 
@@ -547,6 +547,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                 // print(cadastro.telefone);
                 // print(cadastro.email);
 
+                showLoadingDialog();
                 var fbUser =
                     await services.auth.signUp(cadastro.email, cadastro.senha);
                 global.fbUser = fbUser;
@@ -554,7 +555,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                 cadastro.empresaID = fbUser.uid;
                 await services.firestore
                     .cadastrarEmpresa(cadastro, global.fbUser);
-
+                hideLoadingDialog();
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => PE004()));
               } else {}

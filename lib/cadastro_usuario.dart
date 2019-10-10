@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
 import 'package:ofertas/CA001.dart';
 import 'package:ofertas/CA005.dart';
 import 'package:ofertas/controller/services.dart';
@@ -140,14 +141,15 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                     if (checkbox) {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();
-                        
+
                         print(usuario.celular);
                         print(usuario.cpf);
                         print(usuario.email);
                         print(usuario.nome);
                         print(usuario.senha);
                         print(usuario.usuarioID);
-                        
+
+                        showLoadingDialog();
                         var fbUser = await services.auth
                             .signUp(usuario.email, usuario.senha);
                         global.fbUser = fbUser;
@@ -155,8 +157,9 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                         await services.firestore.cadastrarUsuario(usuario);
                         global.usuario = usuario;
                         await fbUser.sendEmailVerification();
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CA005()));
+                        hideLoadingDialog();
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => CA005()));
                       }
                     }
                   },

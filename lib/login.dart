@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
 import 'package:ofertas/PE004.dart';
 import 'package:ofertas/CA001.dart';
 import 'package:ofertas/controller/services.dart';
@@ -105,7 +106,57 @@ class _LoginPageState extends State<LoginPage> {
                 },
               ),
             ),
-            SizedBox(height: 15)
+            SizedBox(height: 15),
+            Container(
+              child: RaisedButton(
+                color: Colors.blueGrey[200],
+                textColor: Colors.white,
+                child: Text("RECUPERAR SENHA"),
+                onPressed: () async {
+                  TextEditingController email = TextEditingController();
+                  var recuperou = await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Insira o e-mail de recuperação"),
+                          content: TextField(
+                            controller: email,
+                            decoration: InputDecoration(labelText: "EMAIL"),
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text("CANCELAR"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            FlatButton(
+                              child: Text("RECUPERAR"),
+                              onPressed: () async {
+                                showLoadingDialog();
+                                await Services()
+                                    .auth
+                                    .recoveryPassword(email.text);
+                                hideLoadingDialog();
+                                Navigator.of(context).pop(true);
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                  // if (recuperou) {
+                  //   Scaffold.of(context).showSnackBar(
+                  //     SnackBar(
+                  //       duration: Duration(seconds: 3),
+                  //       content:
+                  //           Text("E-mail de recuperação enviado com sucesso"),
+                  //     ),
+                  //   );
+                  // }
+                },
+              ),
+            ),
+            SizedBox(height: 15),
           ],
         ),
       ),
