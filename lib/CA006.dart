@@ -36,7 +36,6 @@ class _ChecklistPageState extends State<ChecklistPage> {
 
   @override
   Widget build(BuildContext context) {
-    formKey.currentState.save();
     var global = Provider.of<Global>(context);
     return Scaffold(
       appBar: AppBar(
