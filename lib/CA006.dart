@@ -3,29 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/models/perfil_empresa.dart';
-import 'CA0010.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class CA006 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ChecklistPage(),
-    );
-  }
-}
 
 class ChecklistPage extends StatefulWidget {
-  ChecklistPage();
+ 
+PerfilEmpresa y;
+
+  ChecklistPage(this.y);
 
   @override
-  _ChecklistPageState createState() => _ChecklistPageState();
+  _ChecklistPageState createState() => _ChecklistPageState(y);
 }
 
 class _ChecklistPageState extends State<ChecklistPage> {
-  PerfilEmpresa cadastro = PerfilEmpresa();
+
+  _ChecklistPageState(this.cadastro);
+
+  PerfilEmpresa cadastro;
 
   var formKey = GlobalKey<FormState>();
 
@@ -280,7 +277,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                               }
                             },
                             onSaved: (String value) {
-                              cadastro.whatsapp = int.tryParse(value);
+                              cadastro.telefone = int.tryParse(value);
                             },
                             decoration: const InputDecoration(
                               labelText:
@@ -300,7 +297,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                               }
                             },
                             onSaved: (String value) {
-                              cadastro.email = value.toLowerCase();
+                              cadastro.atendEmail = value.toLowerCase();
                             },
                             decoration: const InputDecoration(
                               labelText:
@@ -535,8 +532,29 @@ class _ChecklistPageState extends State<ChecklistPage> {
 
                     if (formKey.currentState.validate()) {
                       formKey.currentState.save();
-                      services.firestore
-                          .cadastrarEmpresa(cadastro, global.fbUser);
+                      print(cadastro.bairro);
+                      print(cadastro.cep);
+                      print(cadastro.complemento);
+                      print(cadastro.estado);
+                      print(cadastro.funcionamento);
+                      print(cadastro.horaInicio);
+                      print(cadastro.horaTermino);
+                      print(cadastro.logradouro);
+                      print(cadastro.nomeUnidade);
+                      print(cadastro.numero);
+                      print(cadastro.pais);
+                      print(cadastro.quantidadeUnides);
+                      print(cadastro.site);
+                      print(cadastro.atendEmail);
+                      print(cadastro.whatsapp);
+                      print(cadastro.razaoSocial);
+                      print(cadastro.senha);
+                      print(cadastro.telefone);
+                       print(cadastro.email);
+                    
+                    
+                      // services.firestore
+                      //     .cadastrarEmpresa(cadastro, global.fbUser);
                     } else {}
 
                     // Navigator.push(context,

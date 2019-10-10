@@ -10,16 +10,34 @@ class PerfilEmpresa {
       this.horaTermino = '',
       this.logradouro = '',
       this.nomeUnidade = '',
+      this.atendEmail = '',
       this.numero = '',
       this.pais = '',
       this.quantidadeUnides,
+      this.telefone,
       this.site = '',
-      this.whatsapp});
+      this.razaoSocial = '',
+      this.senha = '',
+      this.whatsapp}) {
+    funcionamento = {
+      "domVal": false,
+      "segVal": false,
+      "terVal": false,
+      "quaVal": false,
+      "quiVal": false,
+      "sexVal": false,
+      "sabVal": false,
+    };
+  }
 
   int quantidadeUnides;
+  int telefone;
+  String atendEmail;
   String nomeUnidade;
   int cep;
   String logradouro;
+  String senha;
+  String razaoSocial;
   String numero;
   String complemento;
   String bairro;
@@ -28,20 +46,14 @@ class PerfilEmpresa {
   int whatsapp;
   String site;
   String email;
-  Map<String, dynamic> funcionamento = {
-    "domVal": false,
-    "segVal": false,
-    "terVal": false,
-    "quaVal": false,
-    "quiVal": false,
-    "sexVal": false,
-    "sabVal": false,
-  };
+  Map<String, dynamic> funcionamento;
   String horaInicio;
   String horaTermino;
 
   factory PerfilEmpresa.fromJson(Map<String, dynamic> json) {
     return new PerfilEmpresa(
+      senha: json['senha'],
+      razaoSocial: json['razaoSocial'],
       bairro: json['bairro'],
       cep: json['cep'],
       complemento: json['complemento'],

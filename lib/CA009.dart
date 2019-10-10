@@ -1,11 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ofertas/CA001.dart';
-import 'CA006.dart';
-import 'cadastro.dart';
+import 'package:ofertas/login.dart';
 
 class CA009 extends StatelessWidget {
-
   FirebaseUser fbUser;
 
   @override
@@ -20,7 +17,7 @@ class CA009 extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: Text(
-          'C A D A S T R O',
+          'CADASTRO',
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         centerTitle: true,
@@ -70,7 +67,7 @@ class CA009 extends StatelessWidget {
                 textColor: Colors.white,
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CA001()));
+                      MaterialPageRoute(builder: (context) => LoginPage()));
                 },
                 child: Text(
                   'Acessar minha página',

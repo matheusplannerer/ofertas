@@ -134,8 +134,8 @@ class _CadastroPageState extends State<CadastroPage> {
 
                               } else {
                                 //Cadastro de empresa joga no cadastroEmpresa CA006
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => CA006()));
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (context) => ChecklistPage()));
 
                               }
 

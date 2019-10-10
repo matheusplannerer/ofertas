@@ -15,12 +15,13 @@ class CA005 extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: Text(
-          'C A D A S T R O',
+          'CADASTRO',
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         centerTitle: true,
       ),
-      body: Center(
+      body: Container(
+        margin: EdgeInsets.fromLTRB(30, 100, 30, 250),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ofertas/CA001.dart';
+import 'package:ofertas/login.dart';
 import 'package:ofertas/CA0010.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/CA006.dart';
@@ -17,6 +17,8 @@ void main() => runApp(
         ),
       ),
     );
+
+  
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
           buttonColor: Colors.blueGrey[300]
         ),
       ),
-      home: CA001(),
+      home: LoginPage(),
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ofertas/CA0011.dart';
-import 'CA006.dart';
 
 class CA0010 extends StatelessWidget {
   @override
@@ -31,7 +30,7 @@ class _CaixinhaPage extends State<CaixinhaPage> {
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: Text(
-          'C A D A S T R O',
+          'CADASTRO',
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         centerTitle: true,
@@ -133,25 +132,25 @@ class _CaixinhaPage extends State<CaixinhaPage> {
                 ),
               ),
               SizedBox(height: 10),
-          ButtonTheme(
-            shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(5.0)),
-            minWidth: 325.0,
-            height: 50.0,
-            child: RaisedButton(
-              color: Colors.blueGrey[300],
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => CA0011()));
-              },
-              child: Text(
-                'Enviar',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15),
+              ButtonTheme(
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(5.0)),
+                minWidth: 325.0,
+                height: 50.0,
+                child: RaisedButton(
+                  color: Colors.blueGrey[300],
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CA0011()));
+                  },
+                  child: Text(
+                    'Enviar',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
               ),
-            ),
-          ),
             ],
           ),
         ],
