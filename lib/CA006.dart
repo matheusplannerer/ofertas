@@ -1,30 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ofertas/PE004.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
-import 'package:ofertas/models/perfil_empresa.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-
 class ChecklistPage extends StatefulWidget {
- 
-PerfilEmpresa y;
+  PerfilEmpresa cadastro;
 
-  ChecklistPage(this.y);
+  ChecklistPage(this.cadastro);
 
   @override
-  _ChecklistPageState createState() => _ChecklistPageState(y);
+  _ChecklistPageState createState() => _ChecklistPageState(cadastro);
 }
 
 class _ChecklistPageState extends State<ChecklistPage> {
-
   _ChecklistPageState(this.cadastro);
 
   PerfilEmpresa cadastro;
 
   var formKey = GlobalKey<FormState>();
+  var formKey2 = GlobalKey<FormState>();
 
   Services services = Services();
 
@@ -37,12 +36,6 @@ class _ChecklistPageState extends State<ChecklistPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[200],
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-        ),
         title: Text(
           'C A D A S T R O',
           style: TextStyle(fontSize: 18, color: Colors.white),
@@ -55,11 +48,6 @@ class _ChecklistPageState extends State<ChecklistPage> {
             margin: EdgeInsets.only(left: 25, right: 25),
             child: Column(
               children: [
-                SizedBox(height: 30),
-                Text(
-                  "E-mail verificado com sucesso!",
-                  style: TextStyle(fontSize: 25, color: Colors.black),
-                ),
                 SizedBox(height: 30),
                 Text(
                     "Complete as informações abaixo para finalizar seu cadastro.",
@@ -87,7 +75,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                       children: [
                         TextFormField(
                           validator: (String value) {
-                            if (value.length >= 3) {
+                            if (value.length >= 1) {
                               return null;
                             } else {
                               return "Campo inválido";
@@ -154,7 +142,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                             Expanded(
                               child: TextFormField(
                                 validator: (String value) {
-                                  if (value.length >= 3) {
+                                  if (value.length >= 1) {
                                     return null;
                                   } else {
                                     return "Campo inválido";
@@ -175,7 +163,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                             Expanded(
                               child: TextFormField(
                                 validator: (String value) {
-                                  if (value.length >= 3) {
+                                  if (value.length >= 0) {
                                     return null;
                                   } else {
                                     return "Campo inválido";
@@ -221,7 +209,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                               width: MediaQuery.of(context).size.width / 2.2,
                               child: TextFormField(
                                 validator: (String value) {
-                                  if (value.length >= 3) {
+                                  if (value.length >= 2) {
                                     return null;
                                   } else {
                                     return "Campo inválido";
@@ -243,7 +231,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                               width: MediaQuery.of(context).size.width / 2.77,
                               child: TextFormField(
                                 validator: (String value) {
-                                  if (value.length >= 3) {
+                                  if (value.length >= 2) {
                                     return null;
                                   } else {
                                     return "Campo inválido";
@@ -303,6 +291,44 @@ class _ChecklistPageState extends State<ChecklistPage> {
                               labelText:
                                   'E-mail (para atendimento ao cliente / Unidade 1',
                               hintText: 'silver@projunior.com.br',
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                          child: TextFormField(
+                            validator: (String value) {
+                              if (value.length >= 3) {
+                                return null;
+                              } else {
+                                return "Campo inválido";
+                              }
+                            },
+                            onSaved: (String value) {
+                              cadastro.site = value.toLowerCase();
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Site / Unidade 1',
+                              hintText: 'www.exemplo.com.br',
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                          child: TextFormField(
+                            validator: (String value) {
+                              if (value.length >= 3) {
+                                return null;
+                              } else {
+                                return "Campo inválido";
+                              }
+                            },
+                            onSaved: (String value) {
+                              cadastro.nomeUnidade = value.toUpperCase();
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Nome da Unidade / Unidade 1',
+                              hintText: 'Pro Junior',
                             ),
                           ),
                         ),
@@ -461,109 +487,82 @@ class _ChecklistPageState extends State<ChecklistPage> {
                     ),
                   ],
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
-                  child: ListTile(
-                    leading: Text("Horário de Atendimento"),
-                    trailing: Icon(Icons.timer),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
-                  child: BasicTimeField(
-                    text: "Hora Abertura",
-                    controller: horaInicio,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
-                  child: BasicTimeField(
-                    text: "Hora Término",
-                    controller: horaTermino,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
-                  child: TextFormField(
-                    validator: (String value) {
-                      if (value.length >= 3) {
-                        return null;
-                      } else {
-                        return "Campo inválido";
-                      }
-                    },
-                    onSaved: (String value) {
-                      cadastro.site = value.toLowerCase();
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Site / Unidade 1',
-                      hintText: 'www.exemplo.com.br',
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
-                  child: TextFormField(
-                    validator: (String value) {
-                      if (value.length >= 3) {
-                        return null;
-                      } else {
-                        return "Campo inválido";
-                      }
-                    },
-                    onSaved: (String value) {
-                      cadastro.nomeUnidade = value.toUpperCase();
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Nome da Unidade / Unidade 1',
-                      hintText: 'Pro Junior',
-                    ),
-                  ),
-                ),
-                RaisedButton(
-                  color: Colors.lightBlue,
-                  child: Text(
-                    'CADASTRAR',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () async {
-                    cadastro.horaInicio = horaInicio.text;
-                    cadastro.horaTermino = horaTermino.text;
-
-                    if (formKey.currentState.validate()) {
-                      formKey.currentState.save();
-                      print(cadastro.bairro);
-                      print(cadastro.cep);
-                      print(cadastro.complemento);
-                      print(cadastro.estado);
-                      print(cadastro.funcionamento);
-                      print(cadastro.horaInicio);
-                      print(cadastro.horaTermino);
-                      print(cadastro.logradouro);
-                      print(cadastro.nomeUnidade);
-                      print(cadastro.numero);
-                      print(cadastro.pais);
-                      print(cadastro.quantidadeUnides);
-                      print(cadastro.site);
-                      print(cadastro.atendEmail);
-                      print(cadastro.whatsapp);
-                      print(cadastro.razaoSocial);
-                      print(cadastro.senha);
-                      print(cadastro.telefone);
-                       print(cadastro.email);
-                    
-                    
-                      // services.firestore
-                      //     .cadastrarEmpresa(cadastro, global.fbUser);
-                    } else {}
-
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) => CA0010()));
-                  },
-                )
               ],
             ),
           ),
+          Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                child: ListTile(
+                  leading: Text("Horário de Atendimento"),
+                  trailing: Icon(Icons.timer),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                child: BasicTimeField(
+                  text: "Hora Abertura",
+                  controller: horaInicio,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                child: BasicTimeField(
+                  text: "Hora Término",
+                  controller: horaTermino,
+                ),
+              ),
+            ],
+          ),
+          RaisedButton(
+            color: Colors.lightBlue,
+            child: Text(
+              'CADASTRAR',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () async {
+              cadastro.horaInicio = horaInicio.text;
+              cadastro.horaTermino = horaTermino.text;
+
+              if (formKey.currentState.validate()) {
+                formKey.currentState.save();
+                // print(cadastro.bairro);
+                // print(cadastro.cep);
+                // print(cadastro.complemento);
+                // print(cadastro.estado);
+                // print(cadastro.funcionamento);
+                // print(cadastro.horaInicio);
+                // print(cadastro.horaTermino);
+                // print(cadastro.logradouro);
+                // print(cadastro.nomeUnidade);
+                // print(cadastro.numero);
+                // print(cadastro.pais);
+                // print(cadastro.quantidadeUnides);
+                // print(cadastro.site);
+                // print(cadastro.atendEmail);
+                // print(cadastro.whatsapp);
+                // print(cadastro.razaoSocial);
+                // print(cadastro.senha);
+                // print(cadastro.telefone);
+                // print(cadastro.email);
+
+                var fbUser =
+                    await services.auth.signUp(cadastro.email, cadastro.senha);
+                global.fbUser = fbUser;
+                global.empresa = cadastro;
+                cadastro.empresaID = fbUser.uid;
+                await services.firestore
+                    .cadastrarEmpresa(cadastro, global.fbUser);
+
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => PE004()));
+              } else {}
+
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => CA0010()));
+            },
+          )
         ],
       ),
     );

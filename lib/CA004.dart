@@ -5,26 +5,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
-import 'package:ofertas/models/perfil_empresa.dart';
+import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class CA004 extends StatelessWidget {
+class CA004 extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyHomePage(),
-    );
-  }
+  _CA004State createState() => _CA004State();
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _CA004State extends State<CA004> {
   var formKey = GlobalKey<FormState>();
   Services services = Services();
   bool checkbox = false;
@@ -35,13 +26,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[200],
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CA001()));
-          },
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-        ),
         title: Text(
           'CADASTRO',
           style: TextStyle(fontSize: 18, color: Colors.white),
@@ -144,6 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               return "Campo inválido";
                             }
                           },
+                          obscureText: true,
                           decoration: const InputDecoration(
                             hintText: 'Mínimo de 6 caracteres',
                             labelText: 'Senha',
@@ -153,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         TextFormField(
+                          obscureText: true,
                           validator: (String value) {
                             if (value.length >= 3) {
                               return null;
@@ -192,15 +178,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.blueGrey[200],
                     textColor: Colors.white,
                     onPressed: () {
-                      if (formKey.currentState.validate()) {
+                      if (formKey.currentState.validate() && checkbox) {
                         formKey.currentState.save();
                         print(precadastro.razaoSocial);
                         print(precadastro.whatsapp);
                         print(precadastro.email);
                         print(precadastro.senha);
 
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
                           return ChecklistPage(precadastro);
                         }));
                       } else {}

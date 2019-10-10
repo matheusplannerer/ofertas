@@ -24,13 +24,6 @@ class _CA001 extends State<CA001> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => LoginPage()));
-          },
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-        ),
         backgroundColor: Colors.blueGrey[200],
         title: Text(
           'CADASTRO',
@@ -58,8 +51,8 @@ class _CA001 extends State<CA001> {
                 icon: Icon(Icons.email),
                 color: Colors.blueGrey[200],
                 textColor: Colors.white,
-                onPressed: () {
-                  showDialog(
+                onPressed: () async {
+                  await showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return SimpleDialog(

@@ -29,13 +29,6 @@ class _CadastroPageState extends State<CadastroPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[100],
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CA001()));
-          },
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-        ),
         title: Text(
           'Cadastrar',
           style: TextStyle(fontSize: 19, color: Colors.white),
@@ -131,7 +124,6 @@ class _CadastroPageState extends State<CadastroPage> {
                                 //Cadastro de usuario joga no feed
                                 var data = await services.auth
                                     .signUp(_email.text, _password.text);
-
                               } else {
                                 //Cadastro de empresa joga no cadastroEmpresa CA006
                                 // Navigator.of(context).push(MaterialPageRoute(

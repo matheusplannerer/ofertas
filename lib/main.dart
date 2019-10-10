@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ofertas/CA005.dart';
 import 'package:ofertas/login.dart';
 import 'package:ofertas/CA0010.dart';
 import 'package:load/load.dart';
@@ -18,8 +19,6 @@ void main() => runApp(
       ),
     );
 
-  
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -28,13 +27,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         appBarTheme: AppBarTheme(color: Colors.grey[500]),
         buttonTheme: ButtonThemeData(
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(5.0),
-          ),
-          minWidth: 325.0,
-          height: 50.0,
-          buttonColor: Colors.blueGrey[300]
-        ),
+            shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(5.0),
+            ),
+            minWidth: 325.0,
+            height: 50.0,
+            buttonColor: Colors.blueGrey[300]),
       ),
       home: LoginPage(),
     );

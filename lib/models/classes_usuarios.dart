@@ -18,6 +18,7 @@ class PerfilEmpresa {
       this.site = '',
       this.razaoSocial = '',
       this.senha = '',
+      this.empresaID,
       this.whatsapp}) {
     funcionamento = {
       "domVal": false,
@@ -30,25 +31,26 @@ class PerfilEmpresa {
     };
   }
 
-  int quantidadeUnides;
-  int telefone;
-  String atendEmail;
-  String nomeUnidade;
-  int cep;
-  String logradouro;
-  String senha;
-  String razaoSocial;
-  String numero;
-  String complemento;
-  String bairro;
-  String estado;
-  String pais;
-  int whatsapp;
-  String site;
-  String email;
+  int quantidadeUnides; //
+  int telefone; //
+  String atendEmail;  //
+  String nomeUnidade; //
+  int cep;  //
+  String logradouro;  //
+  String senha; 
+  String razaoSocial; //
+  String numero;  //
+  String complemento; //
+  String bairro;  //
+  String estado;  //
+  String pais;  //
+  int whatsapp; //
+  String site;  //
+  String email; //
   Map<String, dynamic> funcionamento;
-  String horaInicio;
-  String horaTermino;
+  String horaInicio;  //
+  String horaTermino; //
+  String empresaID; //
 
   factory PerfilEmpresa.fromJson(Map<String, dynamic> json) {
     return new PerfilEmpresa(
@@ -79,4 +81,22 @@ class PerfilEmpresa {
       whatsapp: json['whatsapp'],
     );
   }
+}
+
+class User {
+  String nome;
+  String cpf;
+  String celular;
+  String email;
+  String senha;
+  String usuarioID;
+
+  User({
+    this.email = '',
+    this.senha = '',
+    this.celular = '',
+    this.cpf = '',
+    this.nome = '',
+    this.usuarioID = '',
+  });
 }

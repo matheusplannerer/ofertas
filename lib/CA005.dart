@@ -1,58 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:ofertas/CA009.dart';
-
+import 'package:ofertas/models/classes_usuarios.dart';
 
 class CA005 extends StatelessWidget {
+  CA005();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[200],
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-        ),
         title: Text(
           'CADASTRO',
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         centerTitle: true,
       ),
-      body: Container(
-        margin: EdgeInsets.fromLTRB(30, 100, 30, 250),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            GestureDetector(
+      body: ListView(
+        children: <Widget>[
+          Container(
+            height: 200,
+            child: GestureDetector(
               onTap: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => CA009()));
               },
-              child: Image.asset('assets/mogi.jpg', scale: 1.3),
+              child: Image.asset('assets/mogi.jpg', scale: 1),
             ),
-            Text(
-              'Verifique seu e-mail',
-              style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[600]),
+          ),
+          Text(
+            'Verifique seu e-mail',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[600],
             ),
-            Wrap(
-              children: <Widget>[
-                Text(
-                  'Enviamos um link para seu email, é só clicar nele para validar seu cadastro e divulgar suas ofertas  para a cidade inteira!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[400]),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+          Text(
+            'Enviamos um link para seu email, é só clicar nele para validar seu cadastro e divulgar suas ofertas  para a cidade inteira!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[400]),
+          )
+        ],
       ),
     );
   }

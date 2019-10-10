@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ofertas/CA002.dart';
 import 'package:flutter/material.dart';
 import 'package:ofertas/global/global.dart';
-import 'package:ofertas/models/perfil_empresa.dart';
+import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:provider/provider.dart';
 
 class PE004 extends StatefulWidget {
@@ -146,8 +146,7 @@ class _PE004State extends State<PE004> {
                                 builder: (context) {
                                   return AlertDialog(
                                     title: Text("Contato:"),
-                                    content: Text(
-                                        "${perfil.whatsapp}"),
+                                    content: Text("${perfil.whatsapp}"),
                                     actions: <Widget>[
                                       FlatButton(
                                         child: Text("CONFIRMAR"),

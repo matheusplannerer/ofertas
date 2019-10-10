@@ -16,9 +16,10 @@ class AuthServices {
     try {
       var data = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email.toLowerCase(), password: senha);
+      print(data.uid);
       return data;
     } catch (e) {
-      return null;
+      return e;
     }
   }
 

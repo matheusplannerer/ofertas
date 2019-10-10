@@ -54,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               margin: EdgeInsets.fromLTRB(10, 5, 0, 5),
               child: TextField(
+                obscureText: true,
                 controller: _password,
                 decoration: InputDecoration(labelText: "SENHA"),
               ),
@@ -104,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
               ),
             ),
+            SizedBox(height: 15)
           ],
         ),
       ),
