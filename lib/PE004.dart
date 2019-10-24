@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 class PE004 extends StatefulWidget {
   PE004({Key key}) : super(key: key);
@@ -18,6 +20,8 @@ class _PE004State extends State<PE004> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   PerfilEmpresa perfil = PerfilEmpresa();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +56,6 @@ class _PE004State extends State<PE004> {
                     Row(
                       children: [
                         SizedBox(width: 25),
-                        Image.asset('assets/logo.jpg', scale: 0.9),
                         SizedBox(width: 20),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
