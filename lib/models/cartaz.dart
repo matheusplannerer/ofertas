@@ -1,7 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:ofertas/CA001.dart';
 import 'descrição_cartaz.dart';
-class CartazPage extends StatelessWidget {
+
+class CartazPage extends StatefulWidget {
+  String nomeproduto = "";
+  String informacoes = "";
+  String precoantigo = "";
+  String preconovo = "";
+
+  CartazPage(this.nomeproduto, this.informacoes, this.precoantigo, this.preconovo);
+
+  @override
+  _CartazPageState createState() => _CartazPageState(nomeproduto, informacoes, precoantigo, preconovo);
+}
+
+class _CartazPageState extends State<CartazPage> {
+  _CartazPageState(this.nomeproduto, this.informacoes, this.precoantigo, this.preconovo);
+
+  String nomeproduto = "";
+  String informacoes = "";
+  String precoantigo = "";
+  String preconovo = "";
+
+  var formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,11 +53,13 @@ class CartazPage extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 20.0,),
-              Text('Produto',
+              SizedBox(
+                height: 20.0,
+              ),
+              Text(nomeproduto,
                   style: TextStyle(fontSize: 60, color: Colors.blue)),
               Text(
-                'Inforções opcionais',
+                informacoes,
                 style: TextStyle(color: Colors.blue),
               ),
               SizedBox(
@@ -44,12 +68,11 @@ class CartazPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    'De:',
+                  Text("De:",
                     style: TextStyle(color: Colors.blue),
                   ),
                   Text(
-                    '2,99',
+                    precoantigo,
                     style: TextStyle(fontSize: 40, color: Colors.blue),
                   ),
                 ],
@@ -61,14 +84,16 @@ class CartazPage extends StatelessWidget {
                     'Por:',
                     style: TextStyle(color: Colors.red, fontSize: 30),
                   ),
-                  Text('1,99',
+                  Text(preconovo,
                       style: TextStyle(fontSize: 100, color: Colors.red))
                 ],
               ),
-              RaisedButton(child: Text('outra pagina la carai'),
-             onPressed: () {
-               Navigator.push(context, MaterialPageRoute(builder: (context) => DadosCartaz() ));
-             },
+              RaisedButton(
+                child: Text('Gerar cartaz'),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DadosCartaz()));
+                },
               ),
             ],
           ),

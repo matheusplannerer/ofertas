@@ -12,6 +12,8 @@ import 'package:ofertas/teste.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ofertas/models/descrição_cartaz.dart';
+
 
 void main() => runApp(
       ChangeNotifierProvider<Global>(
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
             height: 50.0,
             buttonColor: Colors.blueGrey[300]),
       ),
-      home: CartazPage(),
+      home: DadosCartaz(),
     );
   }
 }
