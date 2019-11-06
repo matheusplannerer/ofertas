@@ -59,6 +59,7 @@ flutter:
     - assets/tres.jpg
     - assets/logo2.jpg
     - assets/mogi.jpg
+    - assets/cartaz.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

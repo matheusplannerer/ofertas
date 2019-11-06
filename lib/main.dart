@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
             height: 50.0,
             buttonColor: Colors.blueGrey[300]),
       ),
-      home: DadosCartaz(),
+      home: Teste(),
       // home: LoginPage(),
     );
   }
