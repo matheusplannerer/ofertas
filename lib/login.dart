@@ -31,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     var global = Provider.of<Global>(context);
 
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[200],
@@ -39,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
         centerTitle: true,
       ),
       body: Container(
-        margin: EdgeInsets.fromLTRB(30, 80, 30, 0),
+        margin: EdgeInsets.fromLTRB(30, 20, 30, 0),
         child: ListView(
           children: <Widget>[
             Center(
