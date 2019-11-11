@@ -14,7 +14,7 @@ packages:
       name: boolean_selector
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.4"
   charcode:
     dependency: transitive
     description:
@@ -70,7 +70,7 @@ packages:
       name: firebase_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.6"
+    version: "3.0.8"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -129,7 +129,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.4"
+    version: "1.6.2"
   pedantic:
     dependency: transitive
     description:
@@ -190,7 +190,7 @@ packages:
       name: string_scanner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.4"
   term_glyph:
     dependency: transitive
     description:
