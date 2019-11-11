@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/CA006.dart';
+import 'package:ofertas/Dashboard.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/CA004.dart';
 import 'package:ofertas/cadastro_usuario.dart';
 import 'package:ofertas/login.dart';
+import 'package:ofertas/Dashboard.dart';
 
 class CA001 extends StatefulWidget {
   @override
@@ -24,7 +26,7 @@ class _CA001 extends State<CA001> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[200],
+        backgroundColor: Colors.orange,
         title: Text(
           'CADASTRO',
         ),
@@ -73,7 +75,7 @@ class _CA001 extends State<CA001> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => CA004()));
+                                      builder: (context) => Dashboard()));
                             },
                             child:
                                 Text('Empresa', style: TextStyle(fontSize: 18)),

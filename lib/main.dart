@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ofertas/CA005.dart';
+import 'package:ofertas/Dashboard.dart';
 import 'package:ofertas/PE004.dart';
+import 'package:ofertas/ProductPage.dart';
 import 'package:ofertas/login.dart';
 import 'package:ofertas/CA0010.dart';
 import 'package:load/load.dart';
@@ -14,6 +16,7 @@ import 'package:provider/provider.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:ofertas/models/descrição_cartaz.dart';
+import 'package:ofertas/ProductPage.dart';
 
 void main() => runApp(
       ChangeNotifierProvider<Global>(
@@ -39,7 +42,7 @@ class MyApp extends StatelessWidget {
             height: 50.0,
             buttonColor: Colors.blueGrey[300]),
       ),
-      home: Teste(),
+      home: Dashboard(),
       // home: LoginPage(),
     );
   }

@@ -188,12 +188,12 @@ class _PE004State extends State<PE004> {
                   onTap: () {
                     print('olá');
                   },
-                  child: Image.asset('assets/um.jpg', scale: 0.9),
+                  // child: Image.asset('assets/um.jpg', scale: 0.9),
                 ),
-                Image.asset('assets/dois.jpg', scale: 0.9),
-                Image.asset('assets/tres.jpg', scale: 0.9),
-                Image.asset('assets/tres.jpg', scale: 0.9),
-                Image.asset('assets/dois.jpg', scale: 0.9),
+                // Image.asset('assets/dois.jpg', scale: 0.9),
+                // Image.asset('assets/tres.jpg', scale: 0.9),
+                // Image.asset('assets/tres.jpg', scale: 0.9),
+                // Image.asset('assets/dois.jpg', scale: 0.9),
               ],
             ),
           ),
