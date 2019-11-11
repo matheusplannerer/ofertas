@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 
 
 class PE004 extends StatefulWidget {

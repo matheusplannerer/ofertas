@@ -11,8 +11,8 @@ import 'package:ofertas/global/global.dart';
 import 'package:ofertas/models/cartaz.dart';
 import 'package:ofertas/teste.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:ofertas/models/descrição_cartaz.dart';
 
 void main() => runApp(

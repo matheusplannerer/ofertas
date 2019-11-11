@@ -19,13 +19,11 @@ environment:
 dependencies:
   firebase_core: 0.4.0
   firebase_auth: 0.11.0
-  firebase_storage: ^3.0.0
   cloud_firestore: 0.11.0
   load: ^0.1.5+1
   datetime_picker_formfield: ^0.2.0
   provider: ^3.1.0
   intl: ^0.15.0
-  image_picker: ^0.6.0
   
   flutter:
     sdk: flutter
@@ -60,6 +58,7 @@ flutter:
     - assets/logo2.jpg
     - assets/mogi.jpg
     - assets/cartaz.jpg
+    - assets/cartaz2.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
