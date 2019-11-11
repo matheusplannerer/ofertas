@@ -11,6 +11,7 @@ import 'package:load/load.dart';
 import 'package:ofertas/CA006.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/models/cartaz.dart';
+import 'package:ofertas/storage-teste.dart';
 import 'package:ofertas/teste.dart';
 import 'package:provider/provider.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
