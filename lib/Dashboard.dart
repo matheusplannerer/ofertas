@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
+import 'package:ofertas/crop.dart';
+import 'package:ofertas/perfil_usuario.dart';
+import 'package:ofertas/global/global.dart';
 import 'package:ofertas/login.dart';
+import 'package:ofertas/teste.dart';
 import './ProductPage.dart';
 import 'package:ofertas/shared/colors.dart';
 import 'package:ofertas/shared/partials.dart';
@@ -8,9 +13,6 @@ import 'package:ofertas/shared/styles.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-
-
-
 
 class Dashboard extends StatefulWidget {
   final String pageTitle;
@@ -23,63 +25,68 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
-    FirebaseUser fbUser;
+  FirebaseUser fbUser;
 
   @override
   Widget build(BuildContext context) {
+    var global = Provider.of<Global>(context);
+
     final _tabs = [
       storeTab(context),
       Text('Tab2'),
-      Text('Tab3'),
+      PerfilUsuario(),
       Text('Tab4'),
       Text('Tab5'),
     ];
 
     return Scaffold(
-        backgroundColor: bgColor,
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: primaryColor,
-          title: Text('OFERTAS',
-              style: logoWhiteStyle, textAlign: TextAlign.center),
-          actions: <Widget>[ 
-              IconButton(
-              padding: EdgeInsets.all(0),
-              onPressed: () {},
-              iconSize: 21,
-              icon: Icon(Icons.search),
-            ),
-            // if(fbUser !== null){
-              
-            // },
-            // else {
-            //         setState(() {
-            //           errorMsg = true;
-            //         });
-            // IconButton(padding: EdgeInsets.all(0),
-            // onPressed: (){},
-            // iconSize: 21,
-            // icon:Icon(Icons.system_update_alt))
-            ],
-        ),
-        drawer: Drawer(
+      backgroundColor: bgColor,
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: primaryColor,
+        title:
+            Text('OFERTAS', style: logoWhiteStyle, textAlign: TextAlign.center),
+        actions: <Widget>[
+          IconButton(
+            padding: EdgeInsets.all(0),
+            onPressed: () {},
+            iconSize: 21,
+            icon: Icon(Icons.search),
+          ),
+          // if(fbUser !== null){
+
+          // },
+          // else {
+          //         setState(() {
+          //           errorMsg = true;
+          //         });
+          // IconButton(padding: EdgeInsets.all(0),
+          // onPressed: (){},
+          // iconSize: 21,
+          // icon:Icon(Icons.system_update_alt))
+        ],
+      ),
+      drawer: Drawer(
+        child: Container(
+          color: Colors.orange[200],
           child: ListView(
             children: <Widget>[
               // ListTile(
               //   title: Text('Configurações'),
               //   trailing: Icon(Icons.arrow_forward),
               // ),
+              if (global.fbUser == null)
+                ListTile(
+                  title: Text('LOGAR'),
+                  trailing: Icon(Icons.person),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
+                ),
               ListTile(
-                title: Text('Acesso a conta'),
-                trailing: Icon(Icons.person),
-                onTap: () {
-                Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-              ),
-              ListTile(
-                title: Text('Avaliar app'),
+                title: Text('AVALIAR APLICATIVO'),
                 trailing: Icon(Icons.star_border),
                 // onTap: () {
                 // Navigator.push(context,
@@ -88,48 +95,75 @@ class _DashboardState extends State<Dashboard> {
               ),
               ListTile(
                 trailing: Icon(Icons.report_problem),
-                title: Text('Problemas ou dificuldades'),
+                title: Text("ENTRE EM CONTATO"),
                 // onTap: () {
                 // Navigator.push(context,
                 // MaterialPageRoute(builder: (context) => CA001()));
                 // },
               ),
+              if (global.fbUser != null)
+                ListTile(
+                  trailing: Icon(Icons.report_problem),
+                  title: Text('SAIR'),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    showLoadingDialog();
+                    await Future.delayed(Duration(milliseconds: 400));
+                    await FirebaseAuth.instance.signOut();
+                    hideLoadingDialog();
+                    global.fbUser = null;
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => Dashboard()));
+                  },
+                ),
             ],
           ),
         ),
-        body: _tabs[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                title: Text(
-                  'Ofertas',
-                  style: tabLinkStyle,
-                )),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                title: Text(
-                  'Favoritos',
-                  style: tabLinkStyle,
-                )),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                title: Text(
-                  'Não sabemos',
-                  style: tabLinkStyle,
-                )),
-          ],
-          currentIndex: _selectedIndex,
-          type: BottomNavigationBarType.fixed,
-          fixedColor: Colors.orange,
-          onTap: _onItemTapped,
-        ));
+      ),
+      body: _tabs[_selectedIndex],
+      bottomNavigationBar: global.fbUser != null
+          ? BottomNavigationBar(
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  title: Text(
+                    'OFERTAS',
+                    style: tabLinkStyle,
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add_a_photo),
+                  title: Text(
+                    '',
+                    style: tabLinkStyle,
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  title: Text(
+                    'PERFIL',
+                    style: tabLinkStyle,
+                  ),
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              type: BottomNavigationBarType.fixed,
+              fixedColor: Colors.orange,
+              onTap: _onItemTapped,
+            )
+          : null,
+    );
   }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 1) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ImageCapture()));
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 }
 
@@ -137,25 +171,25 @@ Widget storeTab(BuildContext context) {
   List<Product> foods = [
     Product(
         name: "Hamburger",
-        image: "images/3.png",
+        image: "assets/tres.jpg",
         price: "\$25.00",
         userLiked: true,
         discount: 10),
     Product(
         name: "Pizza",
-        image: "images/5.png",
+        image: "assets/tres.jpg",
         price: "\$150.00",
         userLiked: false,
         discount: 7.8),
     Product(
       name: "Sei lá",
-      image: 'images/2.png',
+      image: 'assets/tres.jpg',
       price: '\$10.99',
       userLiked: false,
     ),
     Product(
         name: "ihu",
-        image: "images/1.png",
+        image: "assets/tres.jpg",
         price: '\$50.00',
         userLiked: true,
         discount: 14)
@@ -164,140 +198,185 @@ Widget storeTab(BuildContext context) {
   List<Product> drinks = [
     Product(
         name: "Coca-Cola",
-        image: "images/6.png",
+        image: "assets/tres.jpg",
         price: "\$45.12",
         userLiked: true,
         discount: 2),
     Product(
         name: "Limão",
-        image: "images/7.png",
+        image: "assets/tres.jpg",
         price: "\$28.00",
         userLiked: false,
         discount: 5.2),
     Product(
         name: "Vodka",
-        image: "images/8.png",
+        image: "assets/tres.jpg",
         price: "\$78.99",
         userLiked: false),
     Product(
         name: "Tequila",
-        image: "images/9.png",
+        image: "assets/tres.jpg",
         price: "\$168.99",
         userLiked: true,
         discount: 3.4)
   ];
 
-  return ListView(children: <Widget>[
-    deals('Carrefour', onViewMore: () {}, items: <Widget>[
-      foodItem(foods[0], onTapped: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return new ProductPage(
-                productData: foods[0],
+  return ListView(
+    children: <Widget>[
+      deals('Carrefour', onViewMore: () {}, items: <Widget>[
+        foodItem(
+          foods[0],
+          onTapped: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return new ProductPage(
+                    productData: foods[0],
+                  );
+                },
+              ),
+            );
+          },
+          onLike: () {},
+        ),
+        foodItem(
+          foods[1],
+          onTapped: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return new ProductPage(
+                    productData: foods[1],
+                  );
+                },
+              ),
+            );
+          },
+          imgWidth: 250,
+          onLike: () {},
+        ),
+        foodItem(
+          foods[2],
+          onTapped: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return new ProductPage(
+                    productData: foods[2],
+                  );
+                },
+              ),
+            );
+          },
+          imgWidth: 200,
+          onLike: () {},
+        ),
+        foodItem(foods[3], onTapped: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return new ProductPage(
+                  productData: foods[3],
+                );
+              },
+            ),
+          );
+        }, onLike: () {}),
+      ]),
+      deals(
+        'Confiança',
+        onViewMore: () {},
+        items: <Widget>[
+          foodItem(
+            drinks[0],
+            onTapped: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return new ProductPage(
+                      productData: drinks[0],
+                    );
+                  },
+                ),
               );
             },
+            onLike: () {},
+            imgWidth: 60,
           ),
-        );
-      }, onLike: () {}),
-      foodItem(foods[1], onTapped: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return new ProductPage(
-                productData: foods[1],
+          foodItem(
+            drinks[1],
+            onTapped: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return new ProductPage(
+                      productData: drinks[1],
+                    );
+                  },
+                ),
               );
             },
+            onLike: () {},
+            imgWidth: 75,
           ),
-        );
-      }, imgWidth: 250, onLike: () {}),
-      foodItem(foods[2], onTapped: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return new ProductPage(
-                productData: foods[2],
+          foodItem(
+            drinks[2],
+            onTapped: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return new ProductPage(
+                      productData: drinks[2],
+                    );
+                  },
+                ),
               );
             },
+            imgWidth: 110,
+            onLike: () {},
           ),
-        );
-      }, imgWidth: 200, onLike: () {}),
-      foodItem(foods[3], onTapped: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return new ProductPage(
-                productData: foods[3],
+          foodItem(
+            drinks[3],
+            onTapped: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return new ProductPage(
+                      productData: drinks[3],
+                    );
+                  },
+                ),
               );
             },
+            onLike: () {},
           ),
-        );
-      }, onLike: () {}),
-    ]),
-    deals('Confiança', onViewMore: () {}, items: <Widget>[
-      foodItem(drinks[0], onTapped: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return new ProductPage(
-                productData: drinks[0],
-              );
-            },
-          ),
-        );
-      }, onLike: () {}, imgWidth: 60),
-      foodItem(drinks[1], onTapped: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return new ProductPage(
-                productData: drinks[1],
-              );
-            },
-          ),
-        );
-      }, onLike: () {}, imgWidth: 75),
-      foodItem(drinks[2], onTapped: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return new ProductPage(
-                productData: drinks[2],
-              );
-            },
-          ),
-        );
-      }, imgWidth: 110, onLike: () {}),
-      foodItem(drinks[3], onTapped: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return new ProductPage(
-                productData: drinks[3],
-              );
-            },
-          ),
-        );
-      }, onLike: () {}),
-    ])
-  ]);
+        ],
+      )
+    ],
+  );
 }
 
 Widget sectionHeader(String headerTitle, {onViewMore}) {
   return ListTile(
-    leading: Text(headerTitle, style: h4,),
+    leading: Text(
+      headerTitle,
+      style: h4,
+    ),
     trailing: IconButton(
       onPressed: onViewMore,
-      icon: Icon(Icons.arrow_forward_ios, color: contrastText.color,),
-    )
+      icon: Icon(
+        Icons.arrow_forward_ios,
+        color: contrastText.color,
+      ),
+    ),
   );
 }
 

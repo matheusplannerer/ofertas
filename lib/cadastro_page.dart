@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/CA001.dart';
 import 'package:ofertas/CA005.dart';
+import 'package:ofertas/Dashboard.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:provider/provider.dart';
 
-class CadastroUsuario extends StatefulWidget {
+class CadastroPage extends StatefulWidget {
   @override
-  _CadastroUsuarioState createState() => _CadastroUsuarioState();
+  _CadastroPageState createState() => _CadastroPageState();
 }
 
-class _CadastroUsuarioState extends State<CadastroUsuario> {
+class _CadastroPageState extends State<CadastroPage> {
   bool checkbox = false;
   User usuario = User();
+
+  String confirmaSenha = '';
 
   Services services = Services();
 
@@ -25,7 +28,6 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
     var global = Provider.of<Global>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[200],
         title: Text(
           'CADASTRO',
           style: TextStyle(fontSize: 18, color: Colors.white),
@@ -40,14 +42,14 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
               children: [
                 SizedBox(height: 30),
                 Text(
-                  'Cadastro do usuário',
+                  'NOVO PERFIL',
                   style: TextStyle(fontSize: 25, color: Colors.grey[800]),
                 ),
                 Wrap(
                   children: <Widget>[
                     Text(
-                      'Complete as informações abaixo para Realizar seu cadastro',
-                      style: TextStyle(fontSize: 18, color: Colors.grey[400]),
+                      'Complete as informações abaixo para realizar seu cadastro',
+                      style: TextStyle(fontSize: 18, color: Colors.grey[600]),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -60,8 +62,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                       children: [
                         TextFormField(
                           decoration: const InputDecoration(
-                            hintText: 'Como vai aparecer no app',
-                            labelText: 'Nome completo',
+                            labelText: 'NOME COMPLETO',
                           ),
                           onSaved: (String value) {
                             usuario.nome = value.toUpperCase();
@@ -69,26 +70,16 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
-                            hintText: 'XXX.XXX.XXX-XX',
-                            labelText: 'CPF',
+                            hintText: "(DDD) XXXXX-XXXX",
+                            labelText: 'CONTATO',
                           ),
                           onSaved: (String value) {
-                            usuario.cpf = value;
+                            usuario.celular = value.toLowerCase();
                           },
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
-                            hintText: '(XX) X XXXX-XXXX',
-                            labelText: 'Celular',
-                          ),
-                          onSaved: (String value) {
-                            usuario.celular = value;
-                          },
-                        ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            hintText: 'ofertas@ofertas.com',
-                            labelText: 'E-mail (utilizado para acesso ao app) ',
+                            labelText: 'E-MAIL',
                           ),
                           onSaved: (String value) {
                             usuario.email = value.toLowerCase();
@@ -109,12 +100,29 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                           decoration: const InputDecoration(
                             labelText: 'Confirme sua senha',
                           ),
+                          obscureText: true,
                           onSaved: (String value) {
-                            if (value == usuario.senha) {
-                              usuario.senha = value;
-                            }
+                            confirmaSenha = value;
                           },
                         ),
+                        // TextFormField(
+                        //   decoration: const InputDecoration(
+                        //     hintText: 'XXX.XXX.XXX-XX',
+                        //     labelText: 'CPF',
+                        //   ),
+                        //   onSaved: (String value) {
+                        //     usuario.cpf = value;
+                        //   },
+                        // ),
+                        // TextFormField(
+                        //   decoration: const InputDecoration(
+                        //     hintText: '(XX) X XXXX-XXXX',
+                        //     labelText: 'Celular',
+                        //   ),
+                        //   onSaved: (String value) {
+                        //     usuario.celular = value;
+                        //   },
+                        // ),
                         Row(
                           children: [
                             Checkbox(
@@ -142,24 +150,27 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();
 
-                        print(usuario.celular);
-                        print(usuario.cpf);
-                        print(usuario.email);
-                        print(usuario.nome);
-                        print(usuario.senha);
-                        print(usuario.usuarioID);
+                        if (confirmaSenha == usuario.senha) {
+                          print(usuario.email);
+                          print(usuario.nome);
+                          print(usuario.celular);
+                          print(usuario.senha);
 
-                        showLoadingDialog();
-                        var fbUser = await services.auth
-                            .signUp(usuario.email, usuario.senha);
-                        global.fbUser = fbUser;
-                        usuario.usuarioID = global.fbUser.uid;
-                        await services.firestore.cadastrarUsuario(usuario);
-                        global.usuario = usuario;
-                        await fbUser.sendEmailVerification();
-                        hideLoadingDialog();
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => CA005()));
+                          showLoadingDialog();
+                          var fbUser = await services.auth
+                              .signUp(usuario.email, usuario.senha);
+                          global.fbUser = fbUser;
+                          usuario.usuarioID = global.fbUser.uid;
+                          await services.firestore.cadastrarUsuario(usuario);
+                          global.usuario = usuario;
+                          await fbUser.sendEmailVerification();
+                          hideLoadingDialog();
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => Dashboard()));
+
+                        } else{
+
+                        }
                       }
                     }
                   },

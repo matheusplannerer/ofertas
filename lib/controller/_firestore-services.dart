@@ -47,7 +47,6 @@ class FirestoreServices {
           .document(user.usuarioID)
           .setData({
         "celular": user.celular,
-        "cpf": user.cpf,
         "email": user.email,
         "nome": user.nome,
         "id": user.usuarioID,

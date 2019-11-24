@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
-import 'package:ofertas/PE004.dart';
+import 'package:ofertas/perfil_empresa.dart';
+import 'package:ofertas/perfil_usuario.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -9,19 +11,19 @@ import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class ChecklistPage extends StatefulWidget {
-  PerfilEmpresa cadastro;
+class CadastroEmpresa extends StatefulWidget {
+  // PerfilEmpresa cadastro;
 
-  ChecklistPage(this.cadastro);
+  CadastroEmpresa();
 
   @override
-  _ChecklistPageState createState() => _ChecklistPageState(cadastro);
+  _CadastroEmpresaState createState() => _CadastroEmpresaState();
 }
 
-class _ChecklistPageState extends State<ChecklistPage> {
-  _ChecklistPageState(this.cadastro);
+class _CadastroEmpresaState extends State<CadastroEmpresa> {
+  _CadastroEmpresaState();
 
-  PerfilEmpresa cadastro;
+  PerfilEmpresa cadastro = PerfilEmpresa();
 
   var formKey = GlobalKey<FormState>();
 
@@ -75,22 +77,6 @@ class _ChecklistPageState extends State<ChecklistPage> {
                       children: [
                         TextFormField(
                           validator: (String value) {
-                            if (value.length >= 1) {
-                              return null;
-                            } else {
-                              return "Campo inválido";
-                            }
-                          },
-                          decoration: const InputDecoration(
-                            hintText: '',
-                            labelText: 'Quantidade de unidades',
-                          ),
-                          onSaved: (String value) {
-                            cadastro.quantidadeUnides = int.tryParse(value);
-                          },
-                        ),
-                        TextFormField(
-                          validator: (String value) {
                             if (value.length >= 3) {
                               return null;
                             } else {
@@ -98,8 +84,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                             }
                           },
                           decoration: const InputDecoration(
-                            hintText: 'XXXXXXX-XXX',
-                            labelText: 'Nome da Unidade | Unidade 1',
+                            labelText: 'Nome da Unidade',
                           ),
                           onSaved: (String value) {
                             cadastro.nomeUnidade = value.toUpperCase();
@@ -115,27 +100,27 @@ class _ChecklistPageState extends State<ChecklistPage> {
                           },
                           decoration: const InputDecoration(
                             hintText: 'XXXXX-XXX',
-                            labelText: 'CEP / Unidade 1',
+                            labelText: 'CEP',
                           ),
                           onSaved: (String value) {
                             cadastro.cep = int.tryParse(value);
                           },
                         ),
-                        TextFormField(
-                          validator: (String value) {
-                            if (value.length >= 3) {
-                              return null;
-                            } else {
-                              return "Campo inválido";
-                            }
-                          },
-                          onSaved: (String value) {
-                            cadastro.logradouro = value.toUpperCase();
-                          },
-                          decoration: const InputDecoration(
-                              hintText: 'Insira o Logradouro',
-                              labelText: 'Logradouro/Unidade 1'),
-                        ),
+                        // TextFormField(
+                        //   validator: (String value) {
+                        //     if (value.length >= 3) {
+                        //       return null;
+                        //     } else {
+                        //       return "Campo inválido";
+                        //     }
+                        //   },
+                        //   onSaved: (String value) {
+                        //     cadastro.logradouro = value.toUpperCase();
+                        //   },
+                        //   decoration: const InputDecoration(
+                        //       hintText: 'Insira o Logradouro',
+                        //       labelText: 'Logradouro'),
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -153,7 +138,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                                 },
                                 decoration: const InputDecoration(
                                   hintText: 'XXX',
-                                  labelText: 'Numero / Unidade 1',
+                                  labelText: 'Numero',
                                   labelStyle: TextStyle(
                                     fontSize: 10,
                                   ),
@@ -186,74 +171,74 @@ class _ChecklistPageState extends State<ChecklistPage> {
                             ),
                           ],
                         ),
-                        TextFormField(
-                          validator: (String value) {
-                            if (value.length >= 3) {
-                              return null;
-                            } else {
-                              return "Campo inválido";
-                            }
-                          },
-                          onSaved: (String value) {
-                            cadastro.bairro = value.toUpperCase();
-                          },
-                          decoration: const InputDecoration(
-                            hintText: 'insira o nome do bairro',
-                            labelText: 'Bairro / Unidade 1',
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width / 2.2,
-                              child: TextFormField(
-                                validator: (String value) {
-                                  if (value.length >= 2) {
-                                    return null;
-                                  } else {
-                                    return "Campo inválido";
-                                  }
-                                },
-                                onSaved: (String value) {
-                                  cadastro.estado = value.toUpperCase();
-                                },
-                                decoration: const InputDecoration(
-                                  hintText: 'XXX',
-                                  labelText: 'Estado/Unidade 1',
-                                  labelStyle: TextStyle(
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width / 2.77,
-                              child: TextFormField(
-                                validator: (String value) {
-                                  if (value.length >= 2) {
-                                    return null;
-                                  } else {
-                                    return "Campo inválido";
-                                  }
-                                },
-                                onSaved: (String value) {
-                                  cadastro.pais = value.toUpperCase();
-                                },
-                                decoration: const InputDecoration(
-                                  hintStyle: TextStyle(
-                                    fontSize: 13,
-                                  ),
-                                  hintText: 'Insira o país',
-                                  labelText: 'País/Unidade 1',
-                                  labelStyle: TextStyle(
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        // TextFormField(
+                        //   validator: (String value) {
+                        //     if (value.length >= 3) {
+                        //       return null;
+                        //     } else {
+                        //       return "Campo inválido";
+                        //     }
+                        //   },
+                        //   onSaved: (String value) {
+                        //     cadastro.bairro = value.toUpperCase();
+                        //   },
+                        //   decoration: const InputDecoration(
+                        //     hintText: 'insira o nome do bairro',
+                        //     labelText: 'Bairro',
+                        //   ),
+                        // ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: <Widget>[
+                        //     Container(
+                        //       width: MediaQuery.of(context).size.width / 2.2,
+                        //       child: TextFormField(
+                        //         validator: (String value) {
+                        //           if (value.length >= 2) {
+                        //             return null;
+                        //           } else {
+                        //             return "Campo inválido";
+                        //           }
+                        //         },
+                        //         onSaved: (String value) {
+                        //           cadastro.estado = value.toUpperCase();
+                        //         },
+                        //         decoration: const InputDecoration(
+                        //           hintText: 'XXX',
+                        //           labelText: 'Estado',
+                        //           labelStyle: TextStyle(
+                        //             fontSize: 10,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     Container(
+                        //       width: MediaQuery.of(context).size.width / 2.77,
+                        //       child: TextFormField(
+                        //         validator: (String value) {
+                        //           if (value.length >= 2) {
+                        //             return null;
+                        //           } else {
+                        //             return "Campo inválido";
+                        //           }
+                        //         },
+                        //         onSaved: (String value) {
+                        //           cadastro.pais = value.toUpperCase();
+                        //         },
+                        //         decoration: const InputDecoration(
+                        //           hintStyle: TextStyle(
+                        //             fontSize: 13,
+                        //           ),
+                        //           hintText: 'Insira o país',
+                        //           labelText: 'País/Unidade 1',
+                        //           labelStyle: TextStyle(
+                        //             fontSize: 10,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                         Container(
                           margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
                           child: TextFormField(
@@ -269,7 +254,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                             },
                             decoration: const InputDecoration(
                               labelText:
-                                  'WhatsApp (número para atendimento ao cliente / Unidade 1',
+                                  'WhatsApp (número para atendimento ao cliente',
                               hintText: '(xx)xxxxx-xxxx',
                             ),
                           ),
@@ -288,8 +273,7 @@ class _ChecklistPageState extends State<ChecklistPage> {
                               cadastro.atendEmail = value.toLowerCase();
                             },
                             decoration: const InputDecoration(
-                              labelText:
-                                  'E-mail (para atendimento ao cliente / Unidade 1',
+                              labelText: 'E-mail (para atendimento ao cliente',
                               hintText: 'silver@projunior.com.br',
                             ),
                           ),
@@ -308,27 +292,8 @@ class _ChecklistPageState extends State<ChecklistPage> {
                               cadastro.site = value.toLowerCase();
                             },
                             decoration: const InputDecoration(
-                              labelText: 'Site / Unidade 1',
+                              labelText: 'Site',
                               hintText: 'www.exemplo.com.br',
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
-                          child: TextFormField(
-                            validator: (String value) {
-                              if (value.length >= 3) {
-                                return null;
-                              } else {
-                                return "Campo inválido";
-                              }
-                            },
-                            onSaved: (String value) {
-                              cadastro.nomeUnidade = value.toUpperCase();
-                            },
-                            decoration: const InputDecoration(
-                              labelText: 'Nome da Unidade / Unidade 1',
-                              hintText: 'Pro Junior',
                             ),
                           ),
                         ),
@@ -538,26 +503,52 @@ class _ChecklistPageState extends State<ChecklistPage> {
                 // print(cadastro.nomeUnidade);
                 // print(cadastro.numero);
                 // print(cadastro.pais);
-                // print(cadastro.quantidadeUnides);
                 // print(cadastro.site);
-                // print(cadastro.atendEmail);
                 // print(cadastro.whatsapp);
-                // print(cadastro.razaoSocial);
-                // print(cadastro.senha);
                 // print(cadastro.telefone);
-                // print(cadastro.email);
 
                 showLoadingDialog();
-                var fbUser =
-                    await services.auth.signUp(cadastro.email, cadastro.senha);
-                global.fbUser = fbUser;
-                global.empresa = cadastro;
-                cadastro.empresaID = fbUser.uid;
-                await services.firestore
-                    .cadastrarEmpresa(cadastro, global.fbUser);
+                var empresaID = Firestore.instance
+                    .collection("usuarios")
+                    .document(global.fbUser.uid)
+                    .collection('empresas')
+                    .document()
+                    .documentID;
+                cadastro.empresaID = empresaID;
+
+                await Firestore.instance
+                    .collection("empresas")
+                    .document(cadastro.empresaID)
+                    .setData({
+                  "nomeEmpresa": cadastro.nomeUnidade,
+                  "telefone": cadastro.whatsapp,
+                  "email": cadastro.email,
+                  "site": cadastro.site,
+                  "cep": cadastro.cep,
+                  "numero": cadastro.numero,
+                  "horaInicio": cadastro.horaInicio,
+                  "horaTermino": cadastro.horaTermino,
+                });
+
+                await Firestore.instance
+                    .collection("empresas")
+                    .document(cadastro.empresaID)
+                    .updateData(cadastro.funcionamento);
+
+                await Firestore.instance
+                    .collection("usuarios")
+                    .document(global.fbUser.uid)
+                    .collection('empresas')
+                    .document(cadastro.empresaID)
+                    .setData({
+                  "id": cadastro.empresaID,
+                  "nomeEmpresa": cadastro.nomeUnidade
+                });
+
                 hideLoadingDialog();
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => PE004()));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) =>
+                        PerfilEmpresaPage(cadastro.empresaID)));
               } else {}
 
               // Navigator.push(context,

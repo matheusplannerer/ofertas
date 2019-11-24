@@ -22,7 +22,7 @@ class _TesteState extends State<Teste> {
   String email;
   GlobalKey _globalKey = new GlobalKey();
 
-  Future<Uint8List> _capturePng() async {
+  Future<String> _capturePng() async {
     try {
       print('inside');
       RenderRepaintBoundary boundary =
@@ -32,14 +32,15 @@ class _TesteState extends State<Teste> {
           await image.toByteData(format: ui.ImageByteFormat.png);
       var pngBytes = byteData.buffer.asUint8List();
       var bs64 = base64Encode(pngBytes);
+
       print(pngBytes);
       print(bs64);
-       Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) {
-                          return AmostraPage(bs64);
-                        }));
+
+      // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      //   return AmostraPage(bs64);
+      // }));
       setState(() {});
-      return pngBytes;
+      return bs64;
     } catch (e) {
       print(e);
     }
@@ -110,68 +111,76 @@ class _TesteState extends State<Teste> {
               ],
             ),
           ),
-          Padding(padding: EdgeInsets.only(top: 30),),
+          Padding(
+            padding: EdgeInsets.only(top: 30),
+          ),
           TextFormField(
             decoration: InputDecoration(
-                      labelText: "Nome do Produto",
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          borderSide: BorderSide()),
-                    ),
-            onChanged: (nome){
+              labelText: "Nome do Produto",
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide()),
+            ),
+            onChanged: (nome) {
               setState(() {});
               // setState(() {
-              //  field1.text = nome; 
+              //  field1.text = nome;
               // });
             },
             controller: field1,
           ),
-          Padding(padding: EdgeInsets.only(top: 20),),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+          ),
           TextFormField(
             decoration: InputDecoration(
-                      labelText: "Informaçoes extras",
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          borderSide: BorderSide()),
-                    ),
-            onChanged: (nome){
+              labelText: "Informaçoes extras",
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide()),
+            ),
+            onChanged: (nome) {
               setState(() {});
-              
               // setState(() {
-              //  field2.text = nome; 
+              //  field2.text = nome;
               // });
             },
             controller: field2,
           ),
-          Padding(padding: EdgeInsets.only(top: 20),),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+          ),
           TextFormField(
             decoration: InputDecoration(
-                      labelText: "Preço",
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          borderSide: BorderSide()),
-                    ),
-            onChanged: (nome){
+              labelText: "Preço",
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide()),
+            ),
+            onChanged: (nome) {
               setState(() {});
 
               // setState(() {
-              //  field3.text = nome; 
+              //  field3.text = nome;
               // });
             },
             controller: field3,
           ),
-          Padding(padding: EdgeInsets.only(top: 20),),
-          Container(
-          
-            child: RaisedButton(
-            color: Colors.orange,
-            
-            child: Text('Visualizar Cartaz'),
-            onPressed: _capturePng,
+          Padding(
+            padding: EdgeInsets.only(top: 20),
           ),
+          Container(
+            child: RaisedButton(
+              color: Colors.orange,
+              child: Text('Visualizar Cartaz'),
+              onPressed: () async {
+                var base64 = await _capturePng();
+                Navigator.of(context).pop(base64);
+              },
+            ),
           ),
         ],
       ),

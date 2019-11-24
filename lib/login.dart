@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
-import 'package:ofertas/PE004.dart';
+import 'package:ofertas/Dashboard.dart';
+import 'package:ofertas/perfil_usuario.dart';
 import 'package:ofertas/CA001.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
@@ -33,7 +34,6 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[200],
         title: Text('INÍCIO'),
         centerTitle: true,
       ),
@@ -71,12 +71,14 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 30),
             Container(
               child: RaisedButton(
-                color: Colors.blueGrey[200],
                 textColor: Colors.white,
+                color: Colors.orange,
                 child: Text("ENTRAR"),
                 onPressed: () async {
+                  showLoadingDialog();
                   fbUser =
                       await services.auth.login(_login.text, _password.text);
+                  hideLoadingDialog();
 
                   if (fbUser != null) {
                     //Logou com sucesso
@@ -84,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) =>
-                            PE004())); //Ver certinho qual a página inicial
+                            Dashboard())); //Ver certinho qual a página inicial
                   } else {
                     setState(() {
                       errorMsg = true;
@@ -96,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 15),
             Container(
               child: RaisedButton(
-                color: Colors.blueGrey[200],
+                color: Colors.orange,
                 textColor: Colors.white,
                 child: Text("CADASTRAR"),
                 onPressed: () {
@@ -108,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 15),
             Container(
               child: RaisedButton(
-                color: Colors.blueGrey[200],
+                color: Colors.orange,
                 textColor: Colors.white,
                 child: Text("RECUPERAR SENHA"),
                 onPressed: () async {

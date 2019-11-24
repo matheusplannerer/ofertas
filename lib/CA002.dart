@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ofertas/PE004.dart';
+import 'package:ofertas/perfil_usuario.dart';
 import 'package:ofertas/CA001.dart';
 import 'package:ofertas/CA004.dart';
 
@@ -88,6 +88,6 @@ class CA002 extends StatelessWidget {
           ],
         ),
       ),
-      );
+    );
   }
 }

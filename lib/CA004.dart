@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ofertas/CA001.dart';
-import 'package:ofertas/CA006.dart';
+import 'package:ofertas/cadastro_empresa.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ofertas/controller/services.dart';
@@ -187,7 +187,7 @@ class _CA004State extends State<CA004> {
 
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
-                          return ChecklistPage(precadastro);
+                          return CadastroEmpresa();
                         }));
                       } else {}
                     },

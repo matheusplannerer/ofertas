@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
-import 'package:ofertas/CA006.dart';
+import 'package:ofertas/cadastro_empresa.dart';
 import 'package:ofertas/Dashboard.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/CA004.dart';
-import 'package:ofertas/cadastro_usuario.dart';
+import 'package:ofertas/cadastro_page.dart';
 import 'package:ofertas/login.dart';
 import 'package:ofertas/Dashboard.dart';
 
@@ -16,8 +16,6 @@ class CA001 extends StatefulWidget {
 }
 
 class _CA001 extends State<CA001> {
-  bool isUsuario = false;
-  bool isEmpresa = false;
   bool errorMsg = false;
 
   final Services services = Services();
@@ -54,36 +52,38 @@ class _CA001 extends State<CA001> {
                 color: Colors.blueGrey[200],
                 textColor: Colors.white,
                 onPressed: () async {
-                  await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SimpleDialog(
-                        title: Text('Cadastrar como:'),
-                        children: [
-                          SimpleDialogOption(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CadastroUsuario()));
-                            },
-                            child:
-                                Text('Usuário', style: TextStyle(fontSize: 18)),
-                          ),
-                          SimpleDialogOption(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Dashboard()));
-                            },
-                            child:
-                                Text('Empresa', style: TextStyle(fontSize: 18)),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CadastroPage()));
+                  // await showDialog(
+                  //   context: context,
+                  //   builder: (BuildContext context) {
+                  //     return SimpleDialog(
+                  //       title: Text('Cadastrar como:'),
+                  //       children: [
+                  //         SimpleDialogOption(
+                  //           onPressed: () {
+                  //             Navigator.push(
+                  //                 context,
+                  //                 MaterialPageRoute(
+                  //                     builder: (context) => CadastroUsuario()));
+                  //           },
+                  //           child:
+                  //               Text('Usuário', style: TextStyle(fontSize: 18)),
+                  //         ),
+                  //         SimpleDialogOption(
+                  //           onPressed: () {
+                  //             Navigator.push(
+                  //                 context,
+                  //                 MaterialPageRoute(
+                  //                     builder: (context) => Dashboard()));
+                  //           },
+                  //           child:
+                  //               Text('Empresa', style: TextStyle(fontSize: 18)),
+                  //         ),
+                  //       ],
+                  //     );
+                  //   },
+                  // );
                 },
                 label: Text(
                   'CADASTRE COM E-MAIL',
