@@ -153,13 +153,13 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                       Expanded(
                         child: TextFormField(
                           keyboardType: TextInputType.text,
-                          validator: (String value) {
-                            if (value.length >= 1) {
-                              return null;
-                            } else {
-                              return "Campo inválido";
-                            }
-                          },
+                          // validator: (String value) {
+                          //   if (value.length >= 1) {
+                          //     return null;
+                          //   } else {
+                          //     return "Campo inválido";
+                          //   }
+                          // },
                           onSaved: (String value) {
                             cadastro.complemento = value.toUpperCase();
                           },
@@ -266,7 +266,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
                           borderSide: BorderSide()),
-                      labelText: 'WhatsApp',
+                      labelText: 'Telefone',
                     ),
                   ),
                   Padding(
@@ -330,6 +330,9 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                 ],
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(top: 25.0),
+            ),
             Row(
               children: <Widget>[
                 Expanded(
@@ -366,7 +369,6 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
             Padding(
               padding: EdgeInsets.only(top: 15.0),
             ),
-
             Container(
               margin: EdgeInsets.only(top: 20.0),
               child: Column(
@@ -511,64 +513,9 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                 ],
               ),
             ),
-            // Row(
-            //   children: <Widget>[
-            //     Expanded(
-            //       child: TextFormField(
-            //         keyboardType: TextInputType.number,
-            //         validator: (String value) {
-            //           if (value.length >= 1) {
-            //             return null;
-            //           } else {
-            //             return "Campo inválido";
-            //           }
-            //         },
-            //         onSaved: (String value) {
-            //           cadastro.numero = value.toUpperCase();
-            //         },
-            //         decoration: InputDecoration(
-            //           labelStyle:
-            //               TextStyle(color: Colors.grey[700], fontSize: 15),
-            //           fillColor: Colors.white,
-            //           border: OutlineInputBorder(
-            //               borderRadius: BorderRadius.circular(25.0),
-            //               borderSide: BorderSide()),
-            //           labelText: 'Hora Abertura',
-            //         ),
-            //       ),
-            //     ),
-            //     SizedBox(width: 10),
-            //     Expanded(
-            //       child: TextFormField(
-            //         keyboardType: TextInputType.text,
-            //         validator: (String value) {
-            //           if (value.length >= 0) {
-            //             return null;
-            //           } else {
-            //             return "Campo inválido";
-            //           }
-            //         },
-            //         onSaved: (String value) {
-            //           cadastro.complemento = value.toUpperCase();
-            //         },
-            //         decoration: InputDecoration(
-
-            //           labelStyle:
-            //               TextStyle(color: Colors.grey[700], fontSize: 15),
-            //           fillColor: Colors.white,
-            //           border: OutlineInputBorder(
-            //               borderRadius: BorderRadius.circular(25.0),
-            //               borderSide: BorderSide()),
-            //           labelText: 'Hora Término',
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             Padding(
               padding: EdgeInsets.only(top: 25.0),
             ),
-
             FlatButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),

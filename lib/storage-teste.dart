@@ -12,7 +12,7 @@ class StorageTeste extends StatefulWidget {
 
 class _StorageTeste extends State<StorageTeste> {
   StorageReference ref =
-      FirebaseStorage.instance.ref().child("scaled_IMG-20191023-WA0062.jpg");
+      FirebaseStorage.instance.ref().child("cartaz2.jpg");
 
   bool chegou = false;
   String url = '';
