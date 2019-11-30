@@ -372,6 +372,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
               child: Column(
                 children: [
                   Wrap(
+                    spacing: -1,
                     children: [
                       Column(
                         children: <Widget>[
@@ -671,6 +672,7 @@ class BasicTimeField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
       DateTimePickerFormField(
+        
         textAlign: TextAlign.center,
         inputType: InputType.time,
         controller: controller,

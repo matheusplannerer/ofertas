@@ -3,6 +3,7 @@ import 'package:ofertas/CA002.dart';
 import 'package:flutter/material.dart';
 import 'package:ofertas/cadastro_empresa.dart';
 import 'package:ofertas/global/global.dart';
+import 'package:ofertas/perfil_empresa_teste.dart';
 import 'package:provider/provider.dart';
 import 'perfil_empresa.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
@@ -49,12 +50,16 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                         title: Text(snapshot
                             .data.documentChanges[i].document['nomeEmpresa']),
                         onTap: () {
+                          print(snapshot.data.documentChanges);
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PerfilEmpresaPage(snapshot
-                                  .data
-                                  .documentChanges[i]
-                                  .document
-                                  .documentID)));
+                              builder: (context) => PerfilEmpresaTestePage(
+                                  snapshot.data.documentChanges[i].document
+                                      .documentID)));
+                          // PerfilEmpresaPage(snapshot
+                          //     .data
+                          //     .documentChanges[i]
+                          //     .document
+                          //     .documentID)));
                         },
                       ),
                     );

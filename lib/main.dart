@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         appBarTheme: AppBarTheme(color: Colors.orange),
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.orange,
         buttonColor: Colors.orange,
         buttonTheme: ButtonThemeData(
             shape: RoundedRectangleBorder(
