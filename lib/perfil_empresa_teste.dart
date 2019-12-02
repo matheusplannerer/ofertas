@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ofertas/crop.dart';
 import 'package:ofertas/teste.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class PerfilEmpresaTestePage extends StatefulWidget {
   PerfilEmpresaTestePage(this.empresaID);
@@ -26,7 +27,9 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
 
   bool puxouFotos = false;
 
-  _PerfilEmpresaTestePageState(this.empresaID);
+  _PerfilEmpresaTestePageState(this.empresaID){
+    getFoto();
+  }
 
   Future<String> getFoto() async {
     foto = await ref.getDownloadURL();
@@ -41,9 +44,18 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
     print(empresaID);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        actions: <Widget>[],
+      appBar: GradientAppBar(
+        gradient: LinearGradient(
+          colors: [
+            Colors.orange[900],
+            Colors.orange[300]
+          ]
+        ),
+
       ),
+      // appBar: AppBar(
+      //   actions: <Widget>[],
+      // ),
       body: FutureBuilder<DocumentSnapshot>(
           future: Firestore.instance
               .collection('empresas')
@@ -111,6 +123,9 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                           ],
                         ),
                       ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -136,7 +151,7 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                                   },
                                   context: context);
                             },
-                            icon: Icon(Icons.pin_drop, size: 40),
+                            icon: Icon(Icons.pin_drop, size: 30),
                           ),
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 8,
@@ -160,7 +175,7 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                                   },
                                   context: context);
                             },
-                            icon: Icon(Icons.phone, size: 40),
+                            icon: Icon(Icons.phone, size: 30),
                           ),
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 8,
@@ -184,7 +199,7 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                                   },
                                   context: context);
                             },
-                            icon: Icon(Icons.timer, size: 40),
+                            icon: Icon(Icons.timer, size: 30),
                           ),
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 8,
@@ -192,7 +207,7 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 0,
                       ),
                       Divider(),
                       SizedBox(

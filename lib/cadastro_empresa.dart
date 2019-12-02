@@ -10,6 +10,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class CadastroEmpresa extends StatefulWidget {
   // PerfilEmpresa cadastro;
@@ -21,6 +22,7 @@ class CadastroEmpresa extends StatefulWidget {
 }
 
 class _CadastroEmpresaState extends State<CadastroEmpresa> {
+  
   _CadastroEmpresaState();
 
   PerfilEmpresa cadastro = PerfilEmpresa();
@@ -36,17 +38,26 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
   Widget build(BuildContext context) {
     var global = Provider.of<Global>(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange[400],
-        title: Text(
-          'C A D A S T R O',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
+      appBar: GradientAppBar(
+        title: Text("C A D A S T R O", style: TextStyle(fontSize: 18, color: Colors.white),),
         centerTitle: true,
+        gradient: LinearGradient(
+          colors: [
+            Colors.orange[900],
+            Colors.orange[300]
+          ]
+        ),
+
       ),
-      body: Container(
-        color: Colors.orange[200],
-        child: ListView(
+      // appBar: AppBar(
+      //   backgroundColor: Colors.orange[900],
+      //   title: Text(
+      //     'C A D A S T R O',
+      //     style: TextStyle(fontSize: 18, color: Colors.white),
+      //   ),
+      //   centerTitle: true,
+      // ),
+      body: ListView(
           padding: EdgeInsets.symmetric(horizontal: 15),
           children: <Widget>[
             SizedBox(height: 30),
@@ -605,7 +616,6 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
             ),
           ],
         ),
-      ),
     );
   }
 }
