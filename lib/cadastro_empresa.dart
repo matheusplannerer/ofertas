@@ -76,7 +76,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                           borderSide: BorderSide()),
                     ),
                     onSaved: (String value) {
-                      cadastro.nomeUnidade = value.toUpperCase();
+                      cadastro.nomeEmpresa = value.toUpperCase();
                     },
                     keyboardType: TextInputType.text,
                   ),
@@ -282,7 +282,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                       }
                     },
                     onSaved: (String value) {
-                      cadastro.atendEmail = value.toLowerCase();
+                      cadastro.email = value.toLowerCase();
                     },
                     decoration: InputDecoration(
                       labelStyle:
@@ -557,14 +557,16 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                       .collection("empresas")
                       .document(cadastro.empresaID)
                       .setData({
-                    "nomeEmpresa": cadastro.nomeUnidade,
-                    "telefone": cadastro.whatsapp,
+                    "nomeEmpresa": cadastro.nomeEmpresa,
+                    "telefone": cadastro.telefone,
                     "email": cadastro.email,
                     "site": cadastro.site,
                     "cep": cadastro.cep,
+                    "complemento": cadastro.complemento,
                     "numero": cadastro.numero,
                     "horaInicio": cadastro.horaInicio,
                     "horaTermino": cadastro.horaTermino,
+                    "ofertas": 0
                   });
 
                   await Firestore.instance
@@ -579,7 +581,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                       .document(cadastro.empresaID)
                       .setData({
                     "id": cadastro.empresaID,
-                    "nomeEmpresa": cadastro.nomeUnidade
+                    "nomeEmpresa": cadastro.nomeEmpresa
                   });
 
                   hideLoadingDialog();
@@ -617,22 +619,23 @@ class BasicTimeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      DateTimePickerFormField(
-        
-        textAlign: TextAlign.center,
-        inputType: InputType.time,
-        controller: controller,
-        timePicker: (context) async {
-          var horaInicio = await showTimePicker(
-            context: context,
-            initialTime: TimeOfDay(hour: 7, minute: 0),
-          );
-          return horaInicio;
-        },
-        format: format,
-      ),
-      Text(text),
-    ]);
+    return Column(
+      children: <Widget>[
+        DateTimePickerFormField(
+          textAlign: TextAlign.center,
+          inputType: InputType.time,
+          controller: controller,
+          timePicker: (context) async {
+            var horaInicio = await showTimePicker(
+              context: context,
+              initialTime: TimeOfDay(hour: 7, minute: 0),
+            );
+            return horaInicio;
+          },
+          format: format,
+        ),
+        Text(text),
+      ],
+    );
   }
 }

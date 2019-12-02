@@ -47,7 +47,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
             icon: Icon(Icons.add_a_photo),
             onPressed: () {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => Teste()));
+                  .push(MaterialPageRoute(builder: (context) => Cartaz()));
             },
           )
         ],

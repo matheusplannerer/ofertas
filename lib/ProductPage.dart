@@ -23,26 +23,26 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgColor,
+      appBar: AppBar(
+        elevation: 0,
         backgroundColor: bgColor,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: bgColor,
-          centerTitle: true,
-          leading: BackButton(
-            color: darkText,
-          ),
-          // title: Text(widget.productData.name, style: h4),
+        centerTitle: true,
+        leading: BackButton(
+          color: darkText,
         ),
-        body: ListView(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Center(
-                child: Stack(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
+        // title: Text(widget.productData.name, style: h4),
+      ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            child: Center(
+              child: Stack(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
                       margin: EdgeInsets.only(top: 100, bottom: 100),
                       padding: EdgeInsets.only(top: 100, bottom: 50),
                       width: MediaQuery.of(context).size.width * 0.85,
@@ -95,7 +95,8 @@ class _ProductPageState extends State<ProductPage> {
                                     Container(
                                       margin:
                                           EdgeInsets.only(left: 20, right: 20),
-                                      child: Text(_quantity.toString(), style: h3),
+                                      child:
+                                          Text(_quantity.toString(), style: h3),
                                     ),
                                     Container(
                                       width: 55,
@@ -103,8 +104,8 @@ class _ProductPageState extends State<ProductPage> {
                                       child: OutlineButton(
                                         onPressed: () {
                                           setState(() {
-                                           if(_quantity == 1) return;
-                                             _quantity -= 1; 
+                                            if (_quantity == 1) return;
+                                            _quantity -= 1;
                                           });
                                         },
                                         child: Icon(Icons.remove),
@@ -135,24 +136,25 @@ class _ProductPageState extends State<ProductPage> {
                                 color: Color.fromRGBO(0, 0, 0, .05))
                           ]),
                     ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: 200,
+                      height: 160,
+                      child: foodItem(widget.productData,
+                          isProductPage: true,
+                          onTapped: () {},
+                          imgWidth: 250,
+                          onLike: () {}),
                     ),
-                    Align(
-                        alignment: Alignment.center,
-                      child: SizedBox(
-                        width: 200,
-                        height: 160,
-                        child: foodItem(widget.productData,
-                            isProductPage: true,
-                            onTapped: () {},
-                            imgWidth: 250,
-                            onLike: () {}),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
-            )
-          ],
-        ));
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

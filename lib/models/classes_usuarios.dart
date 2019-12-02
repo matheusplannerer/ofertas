@@ -9,11 +9,9 @@ class PerfilEmpresa {
       this.horaInicio = '',
       this.horaTermino = '',
       this.logradouro = '',
-      this.nomeUnidade = '',
-      this.atendEmail = '',
+      this.nomeEmpresa = '',
       this.numero = '',
       this.pais = '',
-      this.quantidadeUnides,
       this.telefone,
       this.site = '',
       this.razaoSocial = '',
@@ -31,36 +29,29 @@ class PerfilEmpresa {
     };
   }
 
-  int quantidadeUnides; //
   int telefone; //
-  String atendEmail;  //
-  String nomeUnidade; //
-  int cep;  //
-  String logradouro;  //
-  String senha; 
-  String razaoSocial; //
-  String numero;  //
+  String nomeEmpresa; //
+  int cep; //
+  String logradouro; //
+  String numero; //
   String complemento; //
-  String bairro;  //
-  String estado;  //
-  String pais;  //
-  int whatsapp; //
-  String site;  //
+  String bairro; //
+  String senha; //
+  String estado; //
+  String pais; //
+  String site; //
   String email; //
   Map<String, dynamic> funcionamento;
-  String horaInicio;  //
+  String horaInicio; //
   String horaTermino; //
   String empresaID; //
+  String razaoSocial; //
+  String whatsapp;
 
   factory PerfilEmpresa.fromJson(Map<String, dynamic> json) {
     return new PerfilEmpresa(
-      senha: json['senha'],
-      razaoSocial: json['razaoSocial'],
-      bairro: json['bairro'],
       cep: json['cep'],
-      complemento: json['complemento'],
       email: json['email'],
-      estado: json['estado'],
       funcionamento: {
         'domVal': json['domVal'],
         'segVal': json['segVal'],
@@ -72,11 +63,9 @@ class PerfilEmpresa {
       },
       horaInicio: json['horaInicio'],
       horaTermino: json['horaTermino'],
-      logradouro: json['logradouro'],
-      nomeUnidade: json['nomeUnidade'],
+      nomeEmpresa: json['nomeEmpresa'],
       numero: json['numero'],
       pais: json['pais'],
-      quantidadeUnides: json['quantidadeUnidades'],
       site: json['site'],
       whatsapp: json['whatsapp'],
     );

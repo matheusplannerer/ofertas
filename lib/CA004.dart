@@ -100,9 +100,7 @@ class _CA004State extends State<CA004> {
                             hintText: 'XXXXXXX-XXXX',
                             labelText: 'Celular para contato',
                           ),
-                          onSaved: (String value) {
-                            precadastro.whatsapp = int.tryParse(value);
-                          },
+                          onSaved: (String value) {},
                         ),
                         TextFormField(
                           validator: (String value) {
@@ -133,9 +131,7 @@ class _CA004State extends State<CA004> {
                             hintText: 'Mínimo de 6 caracteres',
                             labelText: 'Senha',
                           ),
-                          onSaved: (String value) {
-                            precadastro.senha = value;
-                          },
+                          onSaved: (String value) {},
                         ),
                         TextFormField(
                           obscureText: true,
@@ -181,9 +177,7 @@ class _CA004State extends State<CA004> {
                       if (formKey.currentState.validate() && checkbox) {
                         formKey.currentState.save();
                         print(precadastro.razaoSocial);
-                        print(precadastro.whatsapp);
                         print(precadastro.email);
-                        print(precadastro.senha);
 
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {

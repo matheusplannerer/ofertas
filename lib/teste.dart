@@ -9,15 +9,15 @@ import 'dart:async';
 import 'package:flutter/rendering.dart';
 import 'package:ofertas/amostra.dart';
 
-class Teste extends StatefulWidget {
+class Cartaz extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _TesteState();
+    return _CartazState();
   }
 }
 
-class _TesteState extends State<Teste> {
+class _CartazState extends State<Cartaz> {
   Services services = Services();
   String email;
   GlobalKey _globalKey = new GlobalKey();

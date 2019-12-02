@@ -67,7 +67,7 @@ class _DadosCartazState extends State<DadosCartaz> {
                           borderSide: BorderSide()),
                     ),
                     onSaved: (String value) {
-                      cartaz.preco1 = value;
+                      cartaz.preco = value;
                     },
                   ),
                   Padding(
@@ -82,7 +82,7 @@ class _DadosCartazState extends State<DadosCartaz> {
                           borderSide: BorderSide()),
                     ),
                     onSaved: (String value) {
-                      cartaz.preco2 = value;
+                      cartaz.desconto = value;
                     },
                   ),
                   RaisedButton(
@@ -90,8 +90,8 @@ class _DadosCartazState extends State<DadosCartaz> {
                      
                       print(cartaz.produto);
                       print(cartaz.infos);
-                      print(cartaz.preco1);
-                      print(cartaz.preco2);
+                      print(cartaz.preco);
+                      print(cartaz.desconto);
                     },
                   )
                 ],

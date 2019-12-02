@@ -11,23 +11,19 @@ class FirestoreServices {
           .document(fbUser.uid)
           .setData({
         "empresaID": cadastro.empresaID,
-        "nomeUnidade": cadastro.nomeUnidade,
+        "nomeEmpresa": cadastro.nomeEmpresa,
         "horaInicio": cadastro.horaInicio,
         "horaTermino": cadastro.horaTermino,
         "logradouro": cadastro.logradouro,
         "numero": cadastro.numero,
         "pais": cadastro.pais,
-        "quantidadeUnidades": cadastro.quantidadeUnides,
         "site": cadastro.site,
-        "whatsapp": cadastro.whatsapp,
         "bairro": cadastro.bairro,
         "cep": cadastro.cep,
         "complemento": cadastro.complemento,
         "email": cadastro.email,
         "estado": cadastro.estado,
-        "atendEmail": cadastro.atendEmail,
         "telefone": cadastro.telefone,
-        "razaoSocial": cadastro.razaoSocial,
       });
       await Firestore.instance
           .collection('empresas')
