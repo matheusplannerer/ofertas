@@ -25,8 +25,9 @@ class _FeedItemState extends State<FeedItem> {
   Dados produto;
 
   @override
-  void initState() {
-    // TODO: implement initState
+  void initState() {   
+
+    // TODO: implement initSt
     super.initState();
     produto = widget.produto;
   }

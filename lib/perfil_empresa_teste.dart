@@ -5,6 +5,7 @@ import 'package:ofertas/crop.dart';
 import 'package:ofertas/teste.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PerfilEmpresaTestePage extends StatefulWidget {
   PerfilEmpresaTestePage(this.empresaID);
@@ -21,21 +22,27 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
   double _rating = 4;
   String empresaID;
 
-  StorageReference ref = FirebaseStorage.instance.ref().child("cartaz2.jpg");
+  // StorageReference ref = FirebaseStorage.instance.ref().child("cartaz2.jpg");
 
   String foto = '';
 
   bool puxouFotos = false;
 
-  _PerfilEmpresaTestePageState(this.empresaID){
-    getFoto();
+  _PerfilEmpresaTestePageState(this.empresaID) {
+    // getFoto();
   }
 
-  Future<String> getFoto() async {
-    foto = await ref.getDownloadURL();
-    setState(() {
-      puxouFotos = true;
-    });
+  // Future<String> getFoto() async {
+  //   foto = await ref.getDownloadURL();
+  //   setState(() {
+  //     puxouFotos = true;
+  //   });
+  // }
+
+  ligarEmpresa(String numero) async {
+    if (await canLaunch('tel:+55${numero}')) {
+      launch('tel:+55${numero}');
+    }
   }
 
   @override
@@ -45,13 +52,8 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: GradientAppBar(
-        gradient: LinearGradient(
-          colors: [
-            Colors.orange[900],
-            Colors.orange[300]
-          ]
-        ),
-
+        gradient:
+            LinearGradient(colors: [Colors.orange[900], Colors.orange[300]]),
       ),
       // appBar: AppBar(
       //   actions: <Widget>[],
@@ -61,9 +63,8 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
               .collection('empresas')
               .document(empresaID)
               .get(),
-          builder: (context, snapshot) {
-
-            if (snapshot.hasData) {
+          builder: (context, empresa) {
+            if (empresa.hasData) {
               return ListView(
                 children: <Widget>[
                   Column(
@@ -86,7 +87,7 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                                   ),
                                   // Text("Clebinho", textScaleFactor: 1.25,)
                                   Text(
-                                    snapshot.data.data['nomeEmpresa'],
+                                    empresa.data.data['nomeEmpresa'],
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -137,8 +138,8 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                               await showDialog(
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: Text("Endereço:"),
-                                      content: Text(""),
+                                      title: Text(
+                                          "ENDEREÇO: ${empresa.data.data['complemento']}"),
                                       actions: <Widget>[
                                         FlatButton(
                                           child: Text("CONFIRMAR"),
@@ -161,15 +162,24 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                               await showDialog(
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: Text("Contato:"),
-                                      content: Text(""),
+                                      title: Text(
+                                          "CONTATO: ${empresa.data.data['telefone'].toString()}"),
                                       actions: <Widget>[
                                         FlatButton(
-                                          child: Text("CONFIRMAR"),
+                                          child: Text("LIGAR"),
+                                          onPressed: () async {
+                                            await ligarEmpresa(empresa
+                                                .data.data['telefone']
+                                                .toString());
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text("OK"),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
-                                        )
+                                        ),
                                       ],
                                     );
                                   },
@@ -185,8 +195,76 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                               await showDialog(
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: Text("Horário de Funcionamento:"),
-                                      content: Text(""),
+                                      title: Text("HORÁRIO DE FUNCIONAMENTO"),
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(empresa.data.data['segVal'] ==
+                                                    true
+                                                ? "Seg " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['terVal'] ==
+                                                    true
+                                                ? "Ter " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['quaVal'] ==
+                                                    true
+                                                ? "Qua " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['quiVal'] ==
+                                                    true
+                                                ? "Qui " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['sexVal'] ==
+                                                    true
+                                                ? "Sex " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['sabVal'] ==
+                                                    true
+                                                ? "Sáb " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['domVal'] ==
+                                                    true
+                                                ? "Dom " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                          ],
+                                        ),
+                                      ),
                                       actions: <Widget>[
                                         FlatButton(
                                           child: Text("CONFIRMAR"),
@@ -213,28 +291,46 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                       SizedBox(
                         height: 10,
                       ),
-                      if (puxouFotos)
-                        Container(
-                          width: MediaQuery.of(context).size.width - 300,
-                          height: MediaQuery.of(context).size.height - 150,
-                          child: GridView(
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 5,
-                                    mainAxisSpacing: 5),
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  print('olá');
+                      StreamBuilder<QuerySnapshot>(
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height / 2,
+                              child: GridView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: snapshot.data.documents.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 5,
+                                        mainAxisSpacing: 5),
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      print('olá');
+                                    },
+                                    child: Image.network(
+                                        snapshot.data.documents[index]
+                                            .data['imagem'],
+                                        scale: 0.9),
+                                  );
                                 },
-                                child: Image.asset('logo.jpg', scale: 0.9),
                               ),
-                              Image.network(foto, scale: 0.9)
-                            ],
-                          ),
-                        ),
+                            );
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                        stream: Firestore.instance
+                            .collection('empresas')
+                            .document(empresaID)
+                            .collection('ofertas')
+                            .getDocuments()
+                            .asStream(),
+                      ),
                     ],
                   ),
                 ],
@@ -251,8 +347,8 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add_a_photo),
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ImageCapture(empresaID)));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => ImageCapture(empresaID)));
         },
       ),
     );

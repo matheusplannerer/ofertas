@@ -37,7 +37,6 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
 
   @override
   Widget build(BuildContext context) {
-    Image.network("");
     // TODO: implement build
     print(empresaID);
     return Scaffold(
