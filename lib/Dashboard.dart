@@ -476,7 +476,12 @@ Widget deals(PerfilEmpresa empresa, {onViewMore, List<FeedItem> items}) {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         ListTile(
-          leading: Text(
+          leading: empresa.foto != null
+              ? CircleAvatar(
+                  backgroundImage: NetworkImage(empresa.foto),
+                )
+              : null,
+          title: Text(
             empresa.nomeEmpresa,
             style: h4,
           ),

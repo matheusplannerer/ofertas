@@ -234,6 +234,15 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                                           "CONTATO: ${empresa.data.data['telefone'].toString()}"),
                                       actions: <Widget>[
                                         FlatButton(
+                                          child: Text("MENSAGEM"),
+                                          onPressed: () async {
+                                            await ligarEmpresa(empresa
+                                                .data.data['telefone']
+                                                .toString());
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        FlatButton(
                                           child: Text("LIGAR"),
                                           onPressed: () async {
                                             await ligarEmpresa(empresa
