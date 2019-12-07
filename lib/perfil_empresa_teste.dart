@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:load/load.dart';
 import 'package:ofertas/crop.dart';
 import 'package:ofertas/teste.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -28,6 +32,13 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
 
   bool puxouFotos = false;
 
+  final FirebaseStorage _storage =
+      FirebaseStorage(storageBucket: 'gs://ofertas-dd295.appspot.com');
+  StorageUploadTask _uploadTask;
+
+  File _imageFile;
+  String base64;
+
   _PerfilEmpresaTestePageState(this.empresaID) {
     // getFoto();
   }
@@ -47,6 +58,28 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _pickImage(ImageSource source) async {
+      File selected = await ImagePicker.pickImage(source: source);
+
+      setState(() {
+        _imageFile = selected;
+      });
+
+      _uploadTask =
+          _storage.ref().child("${empresaID}/logo.jpg").putFile(_imageFile);
+
+      showLoadingDialog();
+
+      var data = await _uploadTask.onComplete;
+      var url = await data.ref.getDownloadURL();
+      Firestore.instance
+          .collection('empresas')
+          .document(empresaID)
+          .updateData({'foto': url});
+
+      hideLoadingDialog();
+    }
+
     // TODO: implement build
     print(empresaID);
     return Scaffold(
@@ -78,9 +111,44 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                               width: 125,
                               child: Column(
                                 children: <Widget>[
-                                  CircleAvatar(
-                                    radius: 50.0,
-                                    backgroundImage: AssetImage("logo.jpg"),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content: SingleChildScrollView(
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    ListTile(
+                                                      title:
+                                                          Text("ESCOLHER FOTO"),
+                                                      onTap: () {
+                                                        _pickImage(ImageSource
+                                                            .gallery);
+                                                      },
+                                                    ),
+                                                    ListTile(
+                                                      title: Text("TIRAR FOTO"),
+                                                      onTap: () {
+                                                        _pickImage(
+                                                            ImageSource.camera);
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          });
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 50.0,
+                                      backgroundImage:
+                                          empresa.data.data['foto'] != null
+                                              ? NetworkImage(
+                                                  empresa.data.data['foto'])
+                                              : AssetImage('assets/logo2.jpg'),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 5,

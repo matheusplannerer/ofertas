@@ -44,7 +44,7 @@ class _DashboardState extends State<Dashboard> {
 
     final _tabs = [
       storeTab(context),
-      Text('Tab2'),
+      // Text('Tab2'),
       PerfilUsuario(),
       Text('Tab4'),
       Text('Tab5'),
@@ -142,13 +142,13 @@ class _DashboardState extends State<Dashboard> {
                     style: tabLinkStyle,
                   ),
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.add_a_photo),
-                  title: Text(
-                    '',
-                    style: tabLinkStyle,
-                  ),
-                ),
+                // BottomNavigationBarItem(
+                //   icon: Icon(Icons.add_a_photo),
+                //   title: Text(
+                //     '',
+                //     style: tabLinkStyle,
+                //   ),
+                // ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
                   title: Text(
@@ -167,7 +167,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void _onItemTapped(int index) {
-    if (index == 1) {
+    if (index == 2) {
       // Navigator.of(context)
       //     .push(MaterialPageRoute(builder: (context) => ImageCapture()));
     } else {
