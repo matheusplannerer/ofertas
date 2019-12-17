@@ -5,6 +5,7 @@ import 'package:ofertas/crop.dart';
 import 'package:ofertas/feed_item.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
+import 'package:ofertas/perfil_empresa_teste.dart';
 import 'package:ofertas/perfil_usuario.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/login.dart';
@@ -262,7 +263,12 @@ Widget storeTab(BuildContext context) {
                   // );
                   PerfilEmpresa empresa = PerfilEmpresa.fromJson(
                       snapshot.data.documents[index].data);
-                  return deals(empresa, items: items);
+                  empresa.empresaID = snapshot.data.documents[index].documentID;
+                  return deals(empresa, items: items, onViewMore: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            PerfilEmpresaTestePage(empresa.empresaID)));
+                  });
                 } else
                   return Text("");
               },

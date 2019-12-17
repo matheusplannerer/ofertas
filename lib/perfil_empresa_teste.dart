@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class PerfilEmpresaTestePage extends StatefulWidget {
   PerfilEmpresaTestePage(this.empresaID);
-  String empresaID;
+  final String empresaID;
 
   @override
   State<StatefulWidget> createState() {
