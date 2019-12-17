@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
+import 'package:ofertas/carteira_usuario.dart';
 import 'package:ofertas/crop.dart';
 import 'package:ofertas/feed_item.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
@@ -59,14 +60,6 @@ class _DashboardState extends State<Dashboard> {
         backgroundColor: primaryColor,
         title:
             Text('OFERTAS', style: logoWhiteStyle, textAlign: TextAlign.center),
-        actions: <Widget>[
-          IconButton(
-            padding: EdgeInsets.all(0),
-            onPressed: () {},
-            iconSize: 21,
-            icon: Icon(Icons.settings),
-          ),
-        ],
       ),
       drawer: Drawer(
         child: Container(
@@ -97,6 +90,14 @@ class _DashboardState extends State<Dashboard> {
                 // Navigator.push(context,
                 // MaterialPageRoute(builder: (context) => CA001()));
                 // },
+              ),
+              ListTile(
+                trailing: Icon(Icons.report_problem),
+                title: Text("CARTEIRA"),
+                onTap: () {
+                Navigator.push(context,
+                MaterialPageRoute(builder: (context) => Carteira()));
+                },
               ),
               if (global.fbUser != null)
                 ListTile(
@@ -136,9 +137,9 @@ class _DashboardState extends State<Dashboard> {
                 //   ),
                 // ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
+                  icon: Icon(Icons.location_city),
                   title: Text(
-                    'PERFIL',
+                    'EMPRESAS',
                     style: tabLinkStyle,
                   ),
                 ),
