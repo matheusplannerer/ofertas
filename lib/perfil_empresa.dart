@@ -1,12 +1,21 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:load/load.dart';
+import 'package:ofertas/crop.dart';
+import 'package:ofertas/models/produtos.dart';
+import 'package:ofertas/oferta_detalhes.dart';
 import 'package:ofertas/teste.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PerfilEmpresaPage extends StatefulWidget {
-  String empresaID;
-
   PerfilEmpresaPage(this.empresaID);
+  final String empresaID;
 
   @override
   State<StatefulWidget> createState() {
@@ -16,193 +25,417 @@ class PerfilEmpresaPage extends StatefulWidget {
 }
 
 class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
+  double _rating = 4;
   String empresaID;
 
-  StorageReference ref = FirebaseStorage.instance.ref().child("cartaz2.jpg");
+  // StorageReference ref = FirebaseStorage.instance.ref().child("cartaz2.jpg");
 
   String foto = '';
 
   bool puxouFotos = false;
 
-  Future<String> getFoto() async {
-    foto = await ref.getDownloadURL();
-    setState(() {
-      puxouFotos = true;
-    });
-  }
+  final FirebaseStorage _storage =
+      FirebaseStorage(storageBucket: 'gs://ofertas-dd295.appspot.com');
+  StorageUploadTask _uploadTask;
+
+  File _imageFile;
+  String base64;
 
   _PerfilEmpresaPageState(this.empresaID) {
-    getFoto();
+    // getFoto();
+  }
+
+  // Future<String> getFoto() async {
+  //   foto = await ref.getDownloadURL();
+  //   setState(() {
+  //     puxouFotos = true;
+  //   });
+  // }
+
+  ligarEmpresa(String numero) async {
+    if (await canLaunch('tel:+55${numero}')) {
+      launch('tel:+55${numero}');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _pickImage(ImageSource source) async {
+      File selected = await ImagePicker.pickImage(source: source);
+
+      setState(() {
+        _imageFile = selected;
+      });
+
+      _uploadTask =
+          _storage.ref().child("${empresaID}/logo.jpg").putFile(_imageFile);
+
+      showLoadingDialog();
+
+      var data = await _uploadTask.onComplete;
+      var url = await data.ref.getDownloadURL();
+      Firestore.instance
+          .collection('empresas')
+          .document(empresaID)
+          .updateData({'foto': url});
+
+      hideLoadingDialog();
+    }
+
     // TODO: implement build
     print(empresaID);
     return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add_a_photo),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => Cartaz()));
-            },
-          )
-        ],
+      backgroundColor: Colors.white,
+      appBar: GradientAppBar(
+        gradient:
+            LinearGradient(colors: [Colors.orange[900], Colors.orange[300]]),
       ),
-      body: ListView(
-        children: <Widget>[
-          FutureBuilder<DocumentSnapshot>(
-            future: Firestore.instance
-                .collection('empresas')
-                .document(empresaID)
-                .get(),
-            builder: (context, snapshot) {
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(width: 25),
-                      SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            snapshot.data.data['nomeEmpresa'],
-                            style: TextStyle(fontSize: 20),
+      // appBar: AppBar(
+      //   actions: <Widget>[],
+      // ),
+      body: FutureBuilder<DocumentSnapshot>(
+          future: Firestore.instance
+              .collection('empresas')
+              .document(empresaID)
+              .get(),
+          builder: (context, empresa) {
+            if (empresa.hasData) {
+              return ListView(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              width: 125,
+                              child: Column(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content: SingleChildScrollView(
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    ListTile(
+                                                      title:
+                                                          Text("ESCOLHER FOTO"),
+                                                      onTap: () {
+                                                        _pickImage(ImageSource
+                                                            .gallery);
+                                                      },
+                                                    ),
+                                                    ListTile(
+                                                      title: Text("TIRAR FOTO"),
+                                                      onTap: () {
+                                                        _pickImage(
+                                                            ImageSource.camera);
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          });
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 50.0,
+                                      backgroundImage:
+                                          empresa.data.data['foto'] != null
+                                              ? NetworkImage(
+                                                  empresa.data.data['foto'])
+                                              : AssetImage('assets/logo2.jpg'),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  // Text("Clebinho", textScaleFactor: 1.25,)
+                                  Text(
+                                    empresa.data.data['nomeEmpresa'],
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  SmoothStarRating(
+                                    allowHalfRating: false,
+                                    onRatingChanged: (v) {
+                                      setState(() {
+                                        _rating = v;
+                                      });
+                                    },
+                                    starCount: 5,
+                                    rating: _rating,
+                                    size: 27.0,
+                                    color: Colors.orange,
+                                    borderColor: Colors.orange,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "$_rating",
+                                    textScaleFactor: 2,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 8,
                           ),
-                          SizedBox(height: 15),
-                          Text(
-                            '300 Seguidores',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.left,
+                          IconButton(
+                            onPressed: () async {
+                              await showDialog(
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                          "ENDEREÇO: ${empresa.data.data['complemento']}"),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text("CONFIRMAR"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  },
+                                  context: context);
+                            },
+                            icon: Icon(Icons.pin_drop, size: 30),
                           ),
-                          Row(
-                            children: [
-                              Icon(Icons.star),
-                              Icon(Icons.star),
-                              Icon(Icons.star),
-                              Icon(Icons.star),
-                              Icon(Icons.star),
-                            ],
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 8,
+                          ),
+                          IconButton(
+                            onPressed: () async {
+                              await showDialog(
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                          "CONTATO: ${empresa.data.data['telefone'].toString()}"),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text("MENSAGEM"),
+                                          onPressed: () async {
+                                            await ligarEmpresa(empresa
+                                                .data.data['telefone']
+                                                .toString());
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text("LIGAR"),
+                                          onPressed: () async {
+                                            await ligarEmpresa(empresa
+                                                .data.data['telefone']
+                                                .toString());
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text("OK"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  context: context);
+                            },
+                            icon: Icon(Icons.phone, size: 30),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 8,
+                          ),
+                          IconButton(
+                            onPressed: () async {
+                              await showDialog(
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("HORÁRIO DE FUNCIONAMENTO"),
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(empresa.data.data['segVal'] ==
+                                                    true
+                                                ? "Seg " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['terVal'] ==
+                                                    true
+                                                ? "Ter " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['quaVal'] ==
+                                                    true
+                                                ? "Qua " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['quiVal'] ==
+                                                    true
+                                                ? "Qui " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['sexVal'] ==
+                                                    true
+                                                ? "Sex " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['sabVal'] ==
+                                                    true
+                                                ? "Sáb " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                            Text(empresa.data.data['domVal'] ==
+                                                    true
+                                                ? "Dom " +
+                                                    empresa.data
+                                                        .data['horaInicio'] +
+                                                    " às " +
+                                                    empresa.data
+                                                        .data['horaTermino']
+                                                : ''),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text("CONFIRMAR"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  },
+                                  context: context);
+                            },
+                            icon: Icon(Icons.timer, size: 30),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 8,
                           ),
                         ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        'Unidade: 1',
-                        style: TextStyle(fontSize: 18),
                       ),
-                      // SizedBox(width: 80),
-                      Image.asset('assets/wpp.jpg', scale: 0.9),
-                      // SizedBox(width: 10),
-                      Text(
-                        'Contato',
-                        style: TextStyle(fontSize: 18),
+                      SizedBox(
+                        height: 0,
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(width: 20),
-                      Text(
-                        'Descrição curta',
-                        style: TextStyle(fontSize: 18),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 18),
-                  Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(width: 40),
-                      IconButton(
-                        onPressed: () async {
-                          await showDialog(
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text("Endereço:"),
-                                  content: Text(""),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text("CONFIRMAR"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    )
-                                  ],
-                                );
-                              },
-                              context: context);
-
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => CA002()));
+                      StreamBuilder<QuerySnapshot>(
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height / 2,
+                              child: GridView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: snapshot.data.documents.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 5,
+                                        mainAxisSpacing: 5),
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Dados produto = Dados.fromJson(
+                                          snapshot.data.documents[index].data);
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  OfertaDetalhe(
+                                                    produto: produto,
+                                                  )));
+                                    },
+                                    child: Image.network(
+                                        snapshot.data.documents[index]
+                                            .data['imagem'],
+                                        scale: 0.9),
+                                  );
+                                },
+                              ),
+                            );
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
                         },
-                        icon: Icon(Icons.pin_drop, size: 40),
-                      ),
-                      SizedBox(width: 70),
-                      IconButton(
-                        onPressed: () async {
-                          await showDialog(
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text("Contato:"),
-                                  content: Text(""),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text("CONFIRMAR"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    )
-                                  ],
-                                );
-                              },
-                              context: context);
-                        },
-                        icon: Icon(Icons.phone, size: 40),
-                      ),
-                      SizedBox(width: 70),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.info_outline, size: 40),
+                        stream: Firestore.instance
+                            .collection('empresas')
+                            .document(empresaID)
+                            .collection('ofertas')
+                            .getDocuments()
+                            .asStream(),
                       ),
                     ],
-                  )
+                  ),
                 ],
               );
-            },
+            } else
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+          }
+
+          // children: <Widget>[
+          // ],
           ),
-          SizedBox(height: 20),
-          if (puxouFotos)
-            Container(
-              width: MediaQuery.of(context).size.width - 300,
-              height: MediaQuery.of(context).size.height - 150,
-              child: GridView(
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3, crossAxisSpacing: 5, mainAxisSpacing: 5),
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      print('olá');
-                    },
-                    child: Image.asset('assets/um.jpg', scale: 0.9),
-                  ),
-                  Image.network(foto, scale: 0.9)
-                ],
-              ),
-            ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add_a_photo),
+        onPressed: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => ImageCapture(empresaID)));
+        },
       ),
     );
   }

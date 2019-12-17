@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ofertas/models/produtos.dart';
+import 'package:ofertas/oferta_detalhes.dart';
 import './shared/colors.dart';
 import './shared/styles.dart';
 
@@ -25,8 +26,7 @@ class _FeedItemState extends State<FeedItem> {
   Dados produto;
 
   @override
-  void initState() {   
-
+  void initState() {
     // TODO: implement initSt
     super.initState();
     produto = widget.produto;
@@ -51,7 +51,12 @@ class _FeedItemState extends State<FeedItem> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => OfertaDetalhe(
+                          produto: produto,
+                        )));
+              },
               child: Image.network(produto.imagem),
               // child: Hero(
               //   transitionOnUserGestures: true,

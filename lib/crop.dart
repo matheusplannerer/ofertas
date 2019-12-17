@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ofertas/informacoes_oferta.dart';
+import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/teste.dart';
 import 'dart:convert';
@@ -64,107 +66,80 @@ class _ImageCaptureState extends State<ImageCapture> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.photo_camera),
-              onPressed: () => _pickImage(ImageSource.camera),
+      appBar: AppBar(),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedIconTheme: IconThemeData(color: Colors.grey),
+        currentIndex: 1,
+        onTap: (index) async {
+          if (index == 0) {
+            _pickImage(ImageSource.gallery);
+          } else if (index == 1) {
+            _pickImage(ImageSource.camera);
+          } else if (index == 2) {
+            base64 = await Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => Cartaz()));
+          }
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.photo_album),
+            title: Text(
+              "GALERIA",
+              style: TextStyle(color: Colors.grey),
             ),
-            IconButton(
-              icon: Icon(Icons.photo_library),
-              onPressed: () => _pickImage(ImageSource.gallery),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.photo_camera),
+            title: Text(
+              "CÂMERA",
+              style: TextStyle(color: Colors.grey),
             ),
-            IconButton(
-              icon: Icon(Icons.photo_album),
-              onPressed: () async {
-                base64 = await Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Cartaz()));
-              },
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.photo_filter),
+            title: Text(
+              "CARTAZ",
+              style: TextStyle(color: Colors.grey),
             ),
-          ],
-        ),
+          ),
+        ],
+        // child: Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: <Widget>[
+        //     Text("GALERIA"),
+        //     IconButton(
+        //       icon: Icon(Icons.photo_library),
+        //       onPressed: () => _pickImage(ImageSource.gallery),
+        //     ),
+        //     IconButton(
+        //       icon: Icon(Icons.photo_album),
+        //       onPressed: () async {
+        // base64 = await Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => Cartaz()));
+        //       },
+        //     ),
+        //   ],
+        // ),
       ),
       body: ListView(
         children: <Widget>[
           if (_imageFile != null || base64 != null) ...[
             if (_imageFile != null) Image.file(_imageFile),
             if (base64 != null) Image.memory(base64Decode(base64)),
-            Row(
-              children: <Widget>[
-                FlatButton(
-                  child: Icon(Icons.refresh),
-                  onPressed: _clear,
-                )
-              ],
-            ),
             if (_imageFile != null)
               Uploader(
                 file: _imageFile,
                 empresaID: widget.empresaID,
                 produto: produto,
+                clear: _clear,
               ),
             if (base64 != null)
               Uploader(
                 base64: base64,
                 empresaID: widget.empresaID,
                 produto: produto,
+                clear: _clear,
               ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: "Nome do Produto",
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                    borderSide: BorderSide()),
-              ),
-              onChanged: (nome) {
-                _updateDados();
-                // setState(() {
-                //  field1.text = nome;
-                // });
-              },
-              controller: nome,
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: "Preço",
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                    borderSide: BorderSide()),
-              ),
-              onChanged: (nome) {
-                _updateDados();
-
-                // setState(() {
-                //  field2.text = nome;
-                // });
-              },
-              controller: preco,
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: "Desconto",
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                    borderSide: BorderSide()),
-              ),
-              onChanged: (nome) {
-                _updateDados();
-                // setState(() {
-                //  field3.text = nome;
-                // });
-              },
-              controller: desconto,
-            ),
           ],
         ],
       ),
@@ -177,8 +152,9 @@ class Uploader extends StatefulWidget {
   final String base64;
   final String empresaID;
   final Dados produto;
+  final Function clear;
 
-  Uploader({this.file, this.base64, this.empresaID, this.produto});
+  Uploader({this.file, this.base64, this.empresaID, this.produto, this.clear});
 
   createState() => _UploaderState();
 }
@@ -211,35 +187,6 @@ class _UploaderState extends State<Uploader> {
     }
   }
 
-  void updateFirestore() async {
-    var url = await _storage
-        .ref()
-        .child("${widget.empresaID}/oferta_${ofertas + 1}.jpg")
-        .getDownloadURL();
-    var id = Firestore.instance
-        .collection('empresas')
-        .document(widget.empresaID)
-        .collection('ofertas')
-        .document()
-        .documentID;
-    await Firestore.instance
-        .collection('empresas')
-        .document(widget.empresaID)
-        .updateData({'ofertas': ofertas + 1});
-    await Firestore.instance
-        .collection('empresas')
-        .document(widget.empresaID)
-        .collection('ofertas')
-        .document(id)
-        .setData({
-      "data": Timestamp.now(),
-      "imagem": url,
-      "nomeProduto": widget.produto.produto,
-      "preco": widget.produto.preco,
-      "desconto": widget.produto.desconto
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_uploadTask != null) {
@@ -250,7 +197,9 @@ class _UploaderState extends State<Uploader> {
 
           if (_uploadTask.isComplete) {
             Future.delayed(Duration(milliseconds: 150)).then((data) {
-              updateFirestore();
+              Services()
+                  .firestore
+                  .updateFirestore(widget.produto, widget.empresaID);
             });
             // Navigator.of(context)
             //     .popUntil((Route<dynamic> route) => route.isFirst);
@@ -278,10 +227,25 @@ class _UploaderState extends State<Uploader> {
         },
       );
     } else {
-      return FlatButton.icon(
-        label: Text('Upload to Firebase'),
-        icon: Icon(Icons.cloud_upload),
-        onPressed: _startUpload,
+      return Column(
+        children: [
+          FlatButton.icon(
+              label: Text('LIMPAR'),
+              icon: Icon(Icons.refresh),
+              onPressed: widget.clear),
+          FlatButton.icon(
+            label: Text('AVANÇAR'),
+            icon: Icon(Icons.arrow_forward),
+            onPressed: () async {
+              await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => InformacoesOferta(
+                        base64: widget.base64 != null ? widget.base64 : null,
+                        imageFile: widget.file != null ? widget.file : null,
+                        empresaID: widget.empresaID
+                      )));
+            },
+          ),
+        ],
       );
     }
   }
