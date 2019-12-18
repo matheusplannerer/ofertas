@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/carteira_usuario.dart';
@@ -78,10 +79,28 @@ class _DashboardState extends State<Dashboard> {
               ListTile(
                 title: Text('AVALIAR APLICATIVO'),
                 trailing: Icon(Icons.star_border),
-                // onTap: () {
-                // Navigator.push(context,
-                // MaterialPageRoute(builder: (context) => CA001()));
-                // },
+                onTap: () async {
+                  //87e913731652b3a AT
+                  dynamic data = {
+                    "access_token": "87e913731652b3a",
+                    "email_customer": "brunoarantes30@gmail.com",
+                    "transaction_product": [
+                      {
+                        "description": "Infinity Stone",
+                        "quantity": "1",
+                        "price_unit": "1500.00",
+                        "code": "1",
+                        "shipping": "0",
+                        "edit": "true"
+                      }
+                    ]
+                  };
+                  Response response = await Dio().post("https://api.intermediador.sandbox.yapay.com.br/api/transaction_charges/create", data: data);
+                  print(response.statusCode);
+                  // print(response.statusCode);
+                  // Navigator.push(context,
+                  // MaterialPageRoute(builder: (context) => CA001()));
+                },
               ),
               ListTile(
                 trailing: Icon(Icons.report_problem),
@@ -95,8 +114,8 @@ class _DashboardState extends State<Dashboard> {
                 trailing: Icon(Icons.report_problem),
                 title: Text("CARTEIRA"),
                 onTap: () {
-                Navigator.push(context,
-                MaterialPageRoute(builder: (context) => Carteira()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Carteira()));
                 },
               ),
               if (global.fbUser != null)
