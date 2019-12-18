@@ -49,8 +49,8 @@ class _DashboardState extends State<Dashboard> {
       storeTab(context),
       // Text('Tab2'),
       PerfilUsuario(),
-      Text('Tab4'),
-      Text('Tab5'),
+      // Text('Tab4'),
+      // Text('Tab5'),
     ];
 
     return Scaffold(
@@ -137,9 +137,7 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
       ),
-      body: ListView(
-        children: <Widget>[_tabs[_selectedIndex]],
-      ),
+      body: _tabs[_selectedIndex],
       bottomNavigationBar: global.fbUser != null
           ? BottomNavigationBar(
               items: <BottomNavigationBarItem>[
