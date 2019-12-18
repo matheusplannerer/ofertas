@@ -81,23 +81,23 @@ class _DashboardState extends State<Dashboard> {
                 trailing: Icon(Icons.star_border),
                 onTap: () async {
                   //87e913731652b3a AT
-                  dynamic data = {
-                    "access_token": "87e913731652b3a",
-                    "email_customer": "brunoarantes30@gmail.com",
-                    "transaction_product": [
-                      {
-                        "description": "Infinity Stone",
-                        "quantity": "1",
-                        "price_unit": "1500.00",
-                        "code": "1",
-                        "shipping": "0",
-                        "edit": "true"
-                      }
-                    ]
-                  };
-                  Response response = await Dio().post("https://api.intermediador.sandbox.yapay.com.br/api/transaction_charges/create", data: data);
-                  print(response.statusCode);
-                  // print(response.statusCode);
+                  // dynamic data = {
+                  //   "access_token": "87e913731652b3a",
+                  //   "email_customer": "brunoarantes30@gmail.com",
+                  //   "transaction_product": [
+                  //     {
+                  //       "description": "Infinity Stone",
+                  //       "quantity": "1",
+                  //       "price_unit": "1500.00",
+                  //       "code": "1",
+                  //       "shipping": "0",
+                  //       "edit": "true"
+                  //     }
+                  //   ]
+                  // };
+                  // Response response = await Dio().post("https://api.intermediador.sandbox.yapay.com.br/api/transaction_charges/create", data: data);
+                  // /\ não mexer \\
+
                   // Navigator.push(context,
                   // MaterialPageRoute(builder: (context) => CA001()));
                 },
@@ -137,7 +137,9 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
       ),
-      body: _tabs[_selectedIndex],
+      body: ListView(
+        children: <Widget>[_tabs[_selectedIndex]],
+      ),
       bottomNavigationBar: global.fbUser != null
           ? BottomNavigationBar(
               items: <BottomNavigationBarItem>[
@@ -188,11 +190,11 @@ Widget storeTab(BuildContext context) {
   return StreamBuilder<QuerySnapshot>(
     builder: (context, snapshot) {
       if (snapshot.hasData) {
-        return GridView.builder(
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
-          itemBuilder: (context, index) {
-            return FutureBuilder<QuerySnapshot>(
+        List<Widget> empresas = [];
+        for (var index = 0; index < snapshot.data.documents.length; index++) {
+          //Monto o future de cada uma das empresas
+          empresas.add(
+            FutureBuilder<QuerySnapshot>(
               builder: (context, snapshotdois) {
                 if (snapshotdois.hasData) {
                   List<FeedItem> items = [];
@@ -200,16 +202,20 @@ Widget storeTab(BuildContext context) {
                     Dados aux =
                         Dados.fromJson(snapshotdois.data.documents[i].data);
 
-                    items.add(FeedItem(aux));
+                    items.add(FeedItem(
+                        aux, snapshot.data.documents[index].documentID));
                   }
                   PerfilEmpresa empresa = PerfilEmpresa.fromJson(
                       snapshot.data.documents[index].data);
                   empresa.empresaID = snapshot.data.documents[index].documentID;
-                  return deals(empresa, items: items, onViewMore: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            PerfilEmpresaPage(empresa.empresaID)));
-                  });
+                  if (items.length > 0)
+                    return deals(empresa, items: items, onViewMore: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              PerfilEmpresaPage(empresa.empresaID)));
+                    });
+                  else
+                    return Center();
                 } else
                   return Text("");
               },
@@ -218,9 +224,18 @@ Widget storeTab(BuildContext context) {
                   .document(snapshot.data.documents[index].documentID)
                   .collection('ofertas')
                   .getDocuments(),
-            );
-          },
-          itemCount: snapshot.data.documents.length,
+            ),
+          );
+        }
+        return Container(
+          height: MediaQuery.of(context).size.height - 150,
+          child: GridView(
+            children: <Widget>[...empresas],
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+          ),
         );
       } else
         return Text("");

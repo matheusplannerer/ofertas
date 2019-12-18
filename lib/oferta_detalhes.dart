@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ofertas/models/produtos.dart';
+import 'package:ofertas/perfil_empresa.dart';
 
 class OfertaDetalhe extends StatefulWidget {
-  OfertaDetalhe({this.produto});
+  OfertaDetalhe({this.produto, this.empresaID});
   final Dados produto;
+  final String empresaID;
 
   @override
   State<StatefulWidget> createState() {
@@ -21,7 +23,25 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
       appBar: AppBar(),
       body: ListView(
         children: <Widget>[
-          Image.network(widget.produto.imagem),
+          Stack(
+            children: <Widget>[
+              Image.network(widget.produto.imagem),
+              Positioned(
+                child: IconButton(
+                  icon: Icon(Icons.local_mall),
+                  iconSize: 40,
+                  color: Colors.orange,
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            PerfilEmpresaPage(widget.empresaID)));
+                  },
+                ),
+                bottom: 0,
+                right: 0,
+              )
+            ],
+          ),
           ListTile(
             title: Text("PRODUTO: " + widget.produto.produto),
           ),

@@ -33,34 +33,33 @@ const h4 = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w700,
     fontFamily: 'Poppins');
-    
+
 const h5 = TextStyle(
     color: Colors.black,
     fontSize: 18,
     fontWeight: FontWeight.w500,
     fontFamily: 'Poppins');
 
-    const h6 = TextStyle(
+const h6 = TextStyle(
     color: Colors.black,
     fontSize: 16,
     fontWeight: FontWeight.w500,
     fontFamily: 'Poppins');
 
-
 const priceText = TextStyle(
-    color: Colors.black,
-    fontSize: 19,
+    color: Colors.orange,
+    fontSize: 17,
     fontWeight: FontWeight.w800,
     fontFamily: 'Poppins');
 
 const foodNameText = TextStyle(
-    color: Colors.black,
-    fontSize: 17,
-    fontWeight: FontWeight.w600,
-    fontFamily: 'Poppins');
+  color: Colors.orange,
+  fontSize: 17,
+  fontWeight: FontWeight.w600,
+  fontFamily: 'Poppins',
+);
 
-const tabLinkStyle =
-    TextStyle(fontWeight: FontWeight.w500);
+const tabLinkStyle = TextStyle(fontWeight: FontWeight.w500);
 
 const taglineText = TextStyle(color: Colors.grey, fontFamily: 'Poppins');
 const categoryText = TextStyle(
