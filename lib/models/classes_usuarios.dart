@@ -33,14 +33,14 @@ class PerfilEmpresa {
   String foto;
   int telefone; //
   String nomeEmpresa; //
-  int cep; //
-  String logradouro; //
-  String numero; //
-  String complemento; //
-  String bairro; //
+  int cep; 
+  String logradouro; 
+  String numero; 
+  String complemento; 
+  String bairro; 
   String senha; //
-  String estado; //
-  String pais; //
+  String estado; 
+  String pais; 
   String site; //
   String email; //
   Map<String, dynamic> funcionamento;
