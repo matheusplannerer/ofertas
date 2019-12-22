@@ -31,7 +31,7 @@ class _CarteiraState extends State<Carteira> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // _buildSearchCepTextField(),
+            _buildSearchCepTextField(),
             _buildSearchCepButton(),
             _buildResultForm()
           ],
@@ -39,6 +39,18 @@ class _CarteiraState extends State<Carteira> {
       ),
     );
   }
+ 
+   Widget _buildSearchCepTextField() {
+    return TextField(
+      autofocus: true,
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.done,
+      decoration: InputDecoration(labelText: 'Cep'),
+      controller: _searchCepController,
+      enabled: _enableField,
+    );
+  }
+ 
  Widget _buildSearchCepButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
