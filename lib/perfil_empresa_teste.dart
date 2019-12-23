@@ -98,12 +98,13 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                               child: Column(
                                 children: <Widget>[
                                   SmoothStarRating(
-                                    allowHalfRating: false,
-                                    onRatingChanged: (v) {
-                                      setState(() {
-                                        _rating = v;
-                                      });
-                                    },
+
+                                    allowHalfRating: true,
+                                    // onRatingChanged: (v) {
+                                    //   setState(() {
+                                    //     _rating = v;
+                                    //   });
+                                    // },
                                     starCount: 5,
                                     rating: _rating,
                                     size: 27.0,
@@ -124,14 +125,15 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                         ),
                       ),
                       SizedBox(
-                        height: 5,
+                        height: 10,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 8,
-                          ),
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width / 8,
+                          // ),
                           IconButton(
                             onPressed: () async {
                               await showDialog(
@@ -153,9 +155,9 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                             },
                             icon: Icon(Icons.pin_drop, size: 30),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 8,
-                          ),
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width / 8,
+                          // ),
                           IconButton(
                             onPressed: () async {
                               await showDialog(
@@ -177,9 +179,9 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                             },
                             icon: Icon(Icons.phone, size: 30),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 8,
-                          ),
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width / 8,
+                          // ),
                           IconButton(
                             onPressed: () async {
                               await showDialog(
@@ -201,9 +203,9 @@ class _PerfilEmpresaTestePageState extends State<PerfilEmpresaTestePage> {
                             },
                             icon: Icon(Icons.timer, size: 30),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 8,
-                          ),
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width / 8,
+                          // ),
                         ],
                       ),
                       SizedBox(

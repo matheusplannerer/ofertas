@@ -11,6 +11,7 @@ import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:ofertas/perfil_empresa_teste.dart';
 
 class CadastroEmpresa extends StatefulWidget {
   // PerfilEmpresa cadastro;
@@ -598,7 +599,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                   hideLoadingDialog();
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) =>
-                          PerfilEmpresaPage(cadastro.empresaID)));
+                          PerfilEmpresaTestePage(cadastro.empresaID)));
                 } else {}
 
                 // Navigator.push(context,
