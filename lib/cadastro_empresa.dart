@@ -14,8 +14,6 @@ import 'package:intl/intl.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class CadastroEmpresa extends StatefulWidget {
-  // PerfilEmpresa cadastro;
-
   CadastroEmpresa();
 
   @override
@@ -380,14 +378,6 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                     cadastro.site = value.toLowerCase();
                   },
                 ),
-
-                // Container(
-                //   margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
-                //   child: Text(
-                //     'Dias de funcionamento',
-                //     style: TextStyle(color: Colors.grey[700], fontSize: 20),
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -623,6 +613,9 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                   "email": cadastro.email,
                   "site": cadastro.site,
                   "cep": cadastro.cep,
+                  "bairro": cadastro.bairro,
+                  "estado": cadastro.estado,
+                  "logradouro": cadastro.logradouro,
                   "complemento": cadastro.complemento,
                   "numero": cadastro.numero,
                   "horaInicio": cadastro.horaInicio,
