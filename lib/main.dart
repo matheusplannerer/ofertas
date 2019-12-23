@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ofertas/carteira_usuario.dart';
 import 'package:ofertas/dashboard.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
@@ -48,8 +49,8 @@ class MyApp extends StatelessWidget {
             height: 50.0,
             buttonColor: Colors.blueGrey[300]),
       ),
-      home: Dashboard(),
-      // home: LoginPage(),
+      // home: Dashboard(),
+      home: Carteira(),
     );
   }
 }

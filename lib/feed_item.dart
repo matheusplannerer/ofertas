@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ofertas/models/produtos.dart';
+import 'package:ofertas/oferta_detalhes.dart';
 import './shared/colors.dart';
 import './shared/styles.dart';
 
@@ -12,7 +13,8 @@ const Color highlightColor = Colors.orange;
 
 class FeedItem extends StatefulWidget {
   final Dados produto;
-  FeedItem(this.produto);
+  final String empresaID;
+  FeedItem(this.produto, this.empresaID);
 
   @override
   State<StatefulWidget> createState() {
@@ -26,7 +28,7 @@ class _FeedItemState extends State<FeedItem> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    // TODO: implement initSt
     super.initState();
     produto = widget.produto;
   }
@@ -45,12 +47,18 @@ class _FeedItemState extends State<FeedItem> {
             width: 180,
             height: 180,
             child: RaisedButton(
-              color: white,
-              elevation: 12,
+              color: Colors.transparent,
+              elevation: 5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => OfertaDetalhe(
+                          produto: produto,
+                          empresaID: widget.empresaID,
+                        )));
+              },
               child: Image.network(produto.imagem),
               // child: Hero(
               //   transitionOnUserGestures: true,
@@ -74,16 +82,39 @@ class _FeedItemState extends State<FeedItem> {
           //   ),
           // ),
           Positioned(
-            bottom: 0,
+            bottom: 10,
             left: 0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(produto.produto != null ? produto.produto : "Testando",
-                    style: foodNameText),
-                Text(produto.preco != null ? produto.preco : "R\$50,00",
-                    style: priceText),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.shop_two,
+                      color: Colors.orange,
+                      size: 20,
+                    ),
+                    SizedBox(width: 5),
+                    Text(produto.produto != null ? produto.produto : "Testando",
+                        style: foodNameText),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.attach_money,
+                      color: Colors.orange,
+                      size: 25,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                        produto.desconto != null
+                            ? produto.desconto
+                            : produto.preco,
+                        style: priceText),
+                  ],
+                ),
               ],
             ),
           ),
@@ -99,7 +130,13 @@ class _FeedItemState extends State<FeedItem> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Text(
-                      '-' + produto.desconto.toString() + '%',
+                      '-' +
+                          (100 -
+                                  (double.tryParse(produto.desconto) *
+                                      100 /
+                                      double.tryParse(produto.preco)))
+                              .toStringAsPrecision(2) +
+                          '%',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w700),
                     ),

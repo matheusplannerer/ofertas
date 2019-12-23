@@ -9,6 +9,7 @@ class PerfilEmpresa {
       this.horaInicio = '',
       this.horaTermino = '',
       this.logradouro = '',
+      this.foto,
       this.nomeEmpresa = '',
       this.numero = '',
       this.pais = '',
@@ -29,16 +30,17 @@ class PerfilEmpresa {
     };
   }
 
+  String foto;
   int telefone; //
   String nomeEmpresa; //
-  int cep; //
-  String logradouro; //
-  String numero; //
-  String complemento; //
-  String bairro; //
+  int cep; 
+  String logradouro; 
+  String numero; 
+  String complemento; 
+  String bairro; 
   String senha; //
-  String estado; //
-  String pais; //
+  String estado; 
+  String pais; 
   String site; //
   String email; //
   Map<String, dynamic> funcionamento;
@@ -61,6 +63,7 @@ class PerfilEmpresa {
         'sexVal': json['sexVal'],
         'sabVal': json['sabVal']
       },
+      foto: json['foto'],
       horaInicio: json['horaInicio'],
       horaTermino: json['horaTermino'],
       nomeEmpresa: json['nomeEmpresa'],
