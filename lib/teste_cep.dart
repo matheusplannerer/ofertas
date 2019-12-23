@@ -83,7 +83,7 @@ class _TesteCepState extends State<TesteCep> {
 
     final cep = _searchCepController.text;
 
-    final carteira = await ViaCepService.fetchCep(cep: cep);
+    final carteira = await ViaCepService().fetchCep(cep: cep);
     // print(Carteira.localidade);
 
     setState(() {

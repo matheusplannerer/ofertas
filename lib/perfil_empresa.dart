@@ -67,7 +67,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
       });
 
       _uploadTask =
-          _storage.ref().child("${empresaID}/logo.jpg").putFile(_imageFile);
+          _storage.ref().child("$empresaID/logo.jpg").putFile(_imageFile);
 
       showLoadingDialog();
 

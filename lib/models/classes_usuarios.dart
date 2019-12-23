@@ -1,24 +1,26 @@
 class PerfilEmpresa {
-  PerfilEmpresa(
-      {this.bairro = '',
-      this.cep,
-      this.complemento = '',
-      this.email = '',
-      this.estado = '',
-      this.funcionamento,
-      this.horaInicio = '',
-      this.horaTermino = '',
-      this.logradouro = '',
-      this.foto,
-      this.nomeEmpresa = '',
-      this.numero = '',
-      this.pais = '',
-      this.telefone,
-      this.site = '',
-      this.razaoSocial = '',
-      this.senha = '',
-      this.empresaID,
-      this.whatsapp}) {
+  PerfilEmpresa({
+    this.bairro = '',
+    this.cep,
+    this.complemento = '',
+    this.email = '',
+    this.estado = '',
+    this.funcionamento,
+    this.horaInicio = '',
+    this.horaTermino = '',
+    this.logradouro = '',
+    this.foto,
+    this.nomeEmpresa = '',
+    this.numero = '',
+    this.pais = '',
+    this.telefone,
+    this.site = '',
+    this.razaoSocial = '',
+    this.senha = '',
+    this.empresaID,
+    this.whatsapp,
+    this.categoria,
+  }) {
     funcionamento = {
       "domVal": false,
       "segVal": false,
@@ -33,14 +35,15 @@ class PerfilEmpresa {
   String foto;
   int telefone; //
   String nomeEmpresa; //
-  int cep; 
-  String logradouro; 
-  String numero; 
-  String complemento; 
-  String bairro; 
+  int cep;
+  String logradouro;
+  String numero;
+  String complemento;
+  String bairro;
   String senha; //
-  String estado; 
-  String pais; 
+  String estado; //
+  String categoria; //
+  String pais;
   String site; //
   String email; //
   Map<String, dynamic> funcionamento;
