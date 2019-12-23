@@ -11,7 +11,7 @@ import 'package:ofertas/perfil_empresa.dart';
 import 'package:ofertas/perfil_usuario.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/login.dart';
-import 'package:ofertas/teste.dart';
+import 'package:ofertas/cartaz.dart';
 import './ProductPage.dart';
 import 'package:ofertas/shared/colors.dart';
 import 'package:ofertas/shared/partials.dart';

@@ -7,7 +7,7 @@ import 'package:load/load.dart';
 import 'package:ofertas/crop.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/oferta_detalhes.dart';
-import 'package:ofertas/teste.dart';
+import 'package:ofertas/cartaz.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';

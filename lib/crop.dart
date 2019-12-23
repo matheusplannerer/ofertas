@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ofertas/informacoes_oferta.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/models/produtos.dart';
-import 'package:ofertas/teste.dart';
+import 'package:ofertas/cartaz.dart';
 import 'dart:convert';
 
 class ImageCapture extends StatefulWidget {
