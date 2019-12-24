@@ -5,7 +5,7 @@ import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/teste_page.dart';
 import 'package:provider/provider.dart';
-import 'package:ofertas/perfil_empresa.dart';
+import 'teste.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:image_picker/image_picker.dart';
 

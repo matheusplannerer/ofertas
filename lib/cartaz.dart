@@ -8,6 +8,7 @@ import 'dart:typed_data';
 import 'dart:async';
 import 'package:flutter/rendering.dart';
 import 'package:ofertas/amostra.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class Cartaz extends StatefulWidget {
   @override
@@ -54,8 +55,9 @@ class _CartazState extends State<Cartaz> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange,
+      appBar: GradientAppBar(
+        gradient:
+            LinearGradient(colors: [Colors.orange[900], Colors.orange[300]]),
       ),
       body: ListView(
         children: [
@@ -76,22 +78,23 @@ class _CartazState extends State<Cartaz> {
                   top: 110,
                   child: Text(
                     field1.text,
+                    maxLines: 3,
                     style: TextStyle(
+                      fontFamily: 'Xampolo',
                       color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 70,
+                      fontSize: 60,
                     ),
                   ),
                 ),
                 Positioned(
-                  bottom: 140,
-                  right: 160,
+                  bottom: 200,
+                  right: 100,
                   child: Text(
                     field2.text,
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 25,
+                      fontSize: 20,
                     ),
                   ),
                 ),
@@ -103,8 +106,8 @@ class _CartazState extends State<Cartaz> {
                     field3.text,
                     style: TextStyle(
                       color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 50,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 90,
                     ),
                   ),
                 ),

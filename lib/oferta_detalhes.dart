@@ -43,21 +43,29 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
             ],
           ),
           ListTile(
-            title: Text("PRODUTO: " + widget.produto.produto),
+            title: Text("PRODUTO: "),
+            subtitle: Text(widget.produto.produto),
           ),
+          Divider(color: Colors.orange),
           ListTile(
-            title: Text("PREÇO: " + widget.produto.preco),
+            title: Text("PREÇO: "),
+            subtitle: Text(widget.produto.preco),
           ),
+          Divider(color: Colors.orange,),
           ListTile(
-            title: Text("C/ DESCONTO: " + widget.produto.desconto),
+            title: Text("C/ DESCONTO: "),
+            subtitle: Text(widget.produto.desconto),
           ),
+          Divider(),
           ListTile(
-            title: Text("VALIDADE: " +
-                DateFormat("dd/MM/yy")
+            title: Text("VALIDADE: "),
+            subtitle: Text( DateFormat("dd/MM/yy")
                     .format(widget.produto.validade.toDate())),
           ),
+          Divider(color: Colors.orange),
           ListTile(
-            title: Text("INFORMAÇÕES: " + widget.produto.infos),
+            title: Text("INFORMAÇÕES: "),
+            subtitle: Text(widget.produto.infos),
           )
         ],
       ),
