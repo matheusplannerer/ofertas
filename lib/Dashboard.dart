@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/carteira_usuario.dart';
 import 'package:ofertas/crop.dart';
+import 'package:ofertas/entreemcontato.dart';
 import 'package:ofertas/feed_item.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
@@ -22,6 +23,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import './shared/colors.dart';
 import './shared/styles.dart';
+import 'package:ofertas/CA001.dart';
+import 'entreemcontato.dart';
 
 const Color bgColor = Color(0xffF4F7FA);
 //  const Color primaryColor = Colors.green;
@@ -69,7 +72,7 @@ class _DashboardState extends State<Dashboard> {
             children: <Widget>[
               if (global.fbUser == null)
                 ListTile(
-                  title: Text('LOGAR'),
+                  title: Text('ENTRAR COMO EMPRESA'),
                   trailing: Icon(Icons.person),
                   onTap: () {
                     Navigator.push(context,
@@ -77,9 +80,12 @@ class _DashboardState extends State<Dashboard> {
                   },
                 ),
               ListTile(
-                title: Text('AVALIAR APLICATIVO'),
-                trailing: Icon(Icons.star_border),
-                onTap: () async {
+                title: Text('DIVULGUE SUAS OFERTAS'),
+                trailing: Icon(Icons.new_releases),
+                onTap: ()  {
+                   Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CA001()));
+
                   //87e913731652b3a AT
                   // dynamic data = {
                   //   "access_token": "87e913731652b3a",
@@ -103,20 +109,24 @@ class _DashboardState extends State<Dashboard> {
                 },
               ),
               ListTile(
-                trailing: Icon(Icons.report_problem),
+                trailing: Icon(Icons.email),
                 title: Text("ENTRE EM CONTATO"),
+                 onTap: () {
+                    Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EntreEmContato()));
+                },
+              ),
+              ListTile(
+                trailing: Icon(Icons.group_add),
+                title: Text("INDIQUE O APP"),
                 // onTap: () {
-                // Navigator.push(context,
-                // MaterialPageRoute(builder: (context) => CA001()));
+                //   Navigator.push(context,
+                //       MaterialPageRoute(builder: (context) => Carteira()));
                 // },
               ),
               ListTile(
-                trailing: Icon(Icons.report_problem),
-                title: Text("CARTEIRA"),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Carteira()));
-                },
+                trailing: Icon(Icons.star_border),
+                title: Text('AVALIE O APP'),
               ),
               if (global.fbUser != null)
                 ListTile(
