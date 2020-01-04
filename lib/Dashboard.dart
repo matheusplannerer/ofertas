@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ofertas/entrar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
@@ -63,11 +64,18 @@ class _DashboardState extends State<Dashboard> {
         elevation: 0,
         backgroundColor: primaryColor,
         title:
-            Text('OFERTAS', style: logoWhiteStyle, textAlign: TextAlign.center),
+          Text('OFERTAS', style: logoWhiteStyle, textAlign: TextAlign.center),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.filter_vintage),
+                  onPressed: () {
+                    print('4');
+                  },
+                ),
+                ],
       ),
       drawer: Drawer(
         child: Container(
-          color: Colors.orange[200],
+          color: Colors.white,
           child: ListView(
             children: <Widget>[
               if (global.fbUser == null)
@@ -76,7 +84,7 @@ class _DashboardState extends State<Dashboard> {
                   trailing: Icon(Icons.person),
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                        MaterialPageRoute(builder: (context) => Entrar()));
                   },
                 ),
               ListTile(
