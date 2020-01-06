@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ofertas/informacoes_oferta.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/models/produtos.dart';
-import 'package:ofertas/cartaz.dart';
+import 'package:ofertas/paginas/postagem/cartaz.dart';
 import 'dart:convert';
+
+import 'package:ofertas/paginas/postagem/informacoes_oferta.dart';
 
 class ImageCapture extends StatefulWidget {
   final String empresaID;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ofertas/CA001.dart';
 import 'descrição_cartaz.dart';
 
 class CartazPage extends StatefulWidget {
@@ -8,14 +7,17 @@ class CartazPage extends StatefulWidget {
   String precoantigo = "";
   String preconovo = "";
 
-  CartazPage(this.nomeproduto, this.informacoes, this.precoantigo, this.preconovo);
+  CartazPage(
+      this.nomeproduto, this.informacoes, this.precoantigo, this.preconovo);
 
   @override
-  _CartazPageState createState() => _CartazPageState(nomeproduto, informacoes, precoantigo, preconovo);
+  _CartazPageState createState() =>
+      _CartazPageState(nomeproduto, informacoes, precoantigo, preconovo);
 }
 
 class _CartazPageState extends State<CartazPage> {
-  _CartazPageState(this.nomeproduto, this.informacoes, this.precoantigo, this.preconovo);
+  _CartazPageState(
+      this.nomeproduto, this.informacoes, this.precoantigo, this.preconovo);
 
   String nomeproduto = "";
   String informacoes = "";
@@ -30,10 +32,7 @@ class _CartazPageState extends State<CartazPage> {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[200],
         leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CA001()));
-          },
+          onPressed: () {},
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
       ),
@@ -68,7 +67,8 @@ class _CartazPageState extends State<CartazPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("De:",
+                  Text(
+                    "De:",
                     style: TextStyle(color: Colors.blue),
                   ),
                   Text(

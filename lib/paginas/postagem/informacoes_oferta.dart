@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ofertas/concluir_oferta.dart';
 import 'package:ofertas/models/produtos.dart';
+import 'package:ofertas/paginas/postagem/concluir_oferta.dart';
 
 class InformacoesOferta extends StatefulWidget {
   InformacoesOferta({this.base64, this.imageFile, this.empresaID});

@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ofertas/CA002.dart';
 import 'package:flutter/material.dart';
-import 'package:ofertas/cadastro_empresa.dart';
 import 'package:ofertas/global/global.dart';
-import 'package:ofertas/perfil_empresa.dart';
+import 'package:ofertas/paginas/cadastros/cadastro_empresa.dart';
+import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 import 'package:provider/provider.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 

@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:async';
 import 'package:flutter/rendering.dart';
-import 'package:ofertas/amostra.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class Cartaz extends StatefulWidget {
@@ -37,9 +36,7 @@ class _CartazState extends State<Cartaz> {
       print(pngBytes);
       print(bs64);
 
-      // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      //   return AmostraPage(bs64);
-      // }));
+
       setState(() {});
       return bs64;
     } catch (e) {

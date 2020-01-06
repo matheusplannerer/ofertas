@@ -1,14 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
 class AuthServices {
-
-  Future<FirebaseUser> login(String email, String senha) async {
+  Future<dynamic> login(String email, String senha) async {
     try {
       var data = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email.toLowerCase(), password: senha);
       return data;
     } catch (e) {
-      return null;
+      PlatformException erro = e;
+      if (erro.code == "ERROR_WRONG_PASSWORD" ||
+          erro.code == "ERROR_INVALID_EMAIL" ||
+          erro.code == "ERROR_USER_NOT_FOUND") {
+        return "E-mail ou senha inválidos";
+      } else {
+        return "Entre em contato com o suporte";
+      }
     }
   }
 
@@ -24,14 +31,12 @@ class AuthServices {
   }
 
   Future<bool> recoveryPassword(String email) async {
-
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email.toLowerCase());
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: email.toLowerCase());
       return true;
     } catch (e) {
       return false;
     }
-
   }
-
 }

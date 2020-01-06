@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
-import 'package:ofertas/CA001.dart';
-import 'package:ofertas/CA005.dart';
-import 'package:ofertas/Dashboard.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
+import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:provider/provider.dart';
 
 class CadastroPage extends StatefulWidget {

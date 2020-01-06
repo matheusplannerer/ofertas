@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ofertas/models/produtos.dart';
-import 'package:ofertas/perfil_empresa.dart';
+import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 
 class OfertaDetalhe extends StatefulWidget {
   OfertaDetalhe({this.produto, this.empresaID});

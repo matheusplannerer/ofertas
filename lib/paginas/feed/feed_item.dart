@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ofertas/models/produtos.dart';
-import 'package:ofertas/oferta_detalhes.dart';
-import './shared/colors.dart';
-import './shared/styles.dart';
+import 'package:ofertas/paginas/feed/oferta_detalhes.dart';
+import '../../shared/styles.dart';
 
 const Color bgColor = Color(0xffF4F7FA);
 //  const Color primaryColor = Colors.green;

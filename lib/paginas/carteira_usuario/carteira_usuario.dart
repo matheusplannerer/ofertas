@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ofertas/controller/_yapay-services.dart';
 import 'package:ofertas/global/global.dart';
-import 'package:ofertas/pagamento_boleto.dart';
-import 'package:ofertas/pagamento_credito.dart';
+import 'package:ofertas/paginas/carteira_usuario/pagamento_boleto.dart';
+import 'package:ofertas/paginas/carteira_usuario/pagamento_credito.dart';
+
 import 'package:provider/provider.dart';
 
 class Carteira extends StatefulWidget {
