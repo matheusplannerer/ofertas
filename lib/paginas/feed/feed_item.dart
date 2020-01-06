@@ -45,9 +45,10 @@ class _FeedItemState extends State<FeedItem> {
           Container(
             width: 180,
             height: 180,
+            decoration: BoxDecoration(border: Border.all(width: 0.75, color: Colors.grey), color: Colors.white),
             child: RaisedButton(
-              color: Colors.transparent,
-              elevation: 5,
+              color: Colors.white,
+              // elevation: 1,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
@@ -120,7 +121,10 @@ class _FeedItemState extends State<FeedItem> {
           Positioned(
             top: 10,
             left: 10,
-            child: (produto.desconto != null)
+            child: (produto.desconto != null &&
+                    produto.desconto != '' &&
+                    produto.preco != '' &&
+                    produto.preco != null)
                 ? Container(
                     padding:
                         EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 5),

@@ -387,7 +387,9 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                   return GestureDetector(
                                     onTap: () {
                                       Dados produto = Dados.fromJson(
-                                          snapshot.data.documents[index].data);
+                                          snapshot.data.documents[index].data,
+                                          snapshot.data.documents[index]
+                                              .documentID);
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -413,6 +415,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                             .collection('empresas')
                             .document(empresaID)
                             .collection('ofertas')
+                            // .where("mostrar", isEqualTo: true)
                             .getDocuments()
                             .asStream(),
                       ),

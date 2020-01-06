@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
+import 'package:ofertas/models/empresa.dart';
 import 'package:ofertas/models/produtos.dart';
 
 class FirestoreServices {
@@ -62,6 +63,41 @@ class FirestoreServices {
     }
   }
 
+  Future<Empresa> getFirstEmpresa(FirebaseUser fbUser) async {
+    try {
+      var doc = await Firestore.instance
+          .collection('usuarios')
+          .document(fbUser.uid)
+          .collection('empresas')
+          .getDocuments();
+      if (doc != null) {
+        if (doc.documents.length > 0) {
+          Empresa empresa = Empresa.fromJSON(doc.documents[0].data);
+          return empresa;
+        }
+        return null;
+      } else
+        return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool> deleteImage(
+      FirebaseUser fbUser, Empresa empresaLogada, String idOferta) async {
+    try {
+      await Firestore.instance
+          .collection('empresas')
+          .document(empresaLogada.idEmpresa)
+          .collection('ofertas')
+          .document(idOferta)
+          .updateData({'mostrar': false});
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> updateFirestore(
     Dados produto,
     String empresaID,
@@ -99,6 +135,7 @@ class FirestoreServices {
       "preco": produto.preco,
       "desconto": produto.desconto,
       "validade": produto.validade,
+      "mostrar": true,
       "infos": produto.infos
     });
   }

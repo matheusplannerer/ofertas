@@ -38,20 +38,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         // appBarTheme: AppBarTheme(
-          // color: Colors.orange
-          // ),
+        // color: Colors.orange
+        // ),
         primarySwatch: Colors.orange,
         buttonColor: Colors.orange,
         buttonTheme: ButtonThemeData(
-            shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(5.0),
-            ),
-            minWidth: 325.0,
-            height: 50.0,
-            buttonColor: Colors.blueGrey[300]),
-            
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(5.0),
+          ),
+          minWidth: 325.0,
+          height: 50.0,
+          buttonColor: Colors.blueGrey[300],
+        ),
       ),
-      home: Cartaz(),
+      home: Dashboard(),
       // home: Teste(),
     );
   }

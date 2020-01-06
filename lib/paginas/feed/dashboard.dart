@@ -50,14 +50,15 @@ class _DashboardState extends State<Dashboard> {
         elevation: 0,
         backgroundColor: primaryColor,
         title:
-          Text('OFERTAS', style: logoWhiteStyle, textAlign: TextAlign.center),
+            Text('OFERTAS', style: logoWhiteStyle, textAlign: TextAlign.center),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.filter_vintage),
-                  onPressed: () {
-                    print('4');
-                  },
-                ),
-                ],
+          IconButton(
+            icon: Icon(Icons.filter_vintage),
+            onPressed: () {
+              print('4');
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
         child: Container(
@@ -76,7 +77,7 @@ class _DashboardState extends State<Dashboard> {
               ListTile(
                 title: Text('DIVULGUE SUAS OFERTAS'),
                 trailing: Icon(Icons.new_releases),
-                onTap: ()  {
+                onTap: () {
                   //  Navigator.push(context,
                   //       MaterialPageRoute(builder: (context) => CA001()));
 
@@ -105,9 +106,11 @@ class _DashboardState extends State<Dashboard> {
               ListTile(
                 trailing: Icon(Icons.email),
                 title: Text("ENTRE EM CONTATO"),
-                 onTap: () {
-                    Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EntreEmContato()));
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EntreEmContato()));
                 },
               ),
               ListTile(
@@ -202,11 +205,13 @@ Widget storeTab(BuildContext context) {
                 if (snapshotdois.hasData) {
                   List<FeedItem> items = [];
                   for (var i = 0; i < snapshotdois.data.documents.length; i++) {
-                    Dados aux =
-                        Dados.fromJson(snapshotdois.data.documents[i].data);
+                    Dados aux = Dados.fromJson(
+                        snapshotdois.data.documents[i].data,
+                        snapshotdois.data.documents[i].documentID);
 
-                    items.add(FeedItem(
-                        aux, snapshot.data.documents[index].documentID));
+                    items.add(
+                      FeedItem(aux, snapshot.data.documents[index].documentID),
+                    );
                   }
                   PerfilEmpresa empresa = PerfilEmpresa.fromJson(
                       snapshot.data.documents[index].data);
@@ -226,6 +231,7 @@ Widget storeTab(BuildContext context) {
                   .collection('empresas')
                   .document(snapshot.data.documents[index].documentID)
                   .collection('ofertas')
+                  // .where("mostrar", isEqualTo: true)
                   .getDocuments(),
             ),
           );
@@ -235,7 +241,7 @@ Widget storeTab(BuildContext context) {
           child: GridView(
             children: <Widget>[...empresas],
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            // physics: NeverScrollableScrollPhysics(),
             gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
           ),

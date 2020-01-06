@@ -306,18 +306,23 @@ class _Entrar extends State<Entrar> {
                                   showLoadingDialog();
                                   fbUser = await services.auth
                                       .login(email.text, senha.text);
-                                  hideLoadingDialog();
 
                                   if (fbUser.runtimeType == FirebaseUser) {
                                     //Logou com sucesso
                                     global.fbUser = fbUser;
                                     global.isEmpresa = true;
+                                    global.empresaLogada = await services
+                                        .firestore
+                                        .getFirstEmpresa(fbUser);
+                                    hideLoadingDialog();
                                     print("LOGADO");
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 Dashboard())); //Ver certinho qual a página inicial
                                   } else {
+                                    hideLoadingDialog();
+
                                     _errorMsgText = fbUser;
                                     setState(() {
                                       _errorMsg = true;
