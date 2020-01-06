@@ -130,6 +130,7 @@ class _DashboardState extends State<Dashboard> {
                     Navigator.of(context).pop();
                     showLoadingDialog();
                     await Future.delayed(Duration(milliseconds: 400));
+                    global.isEmpresa = false;
                     await FirebaseAuth.instance.signOut();
                     hideLoadingDialog();
                     global.fbUser = null;

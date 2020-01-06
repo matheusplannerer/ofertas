@@ -311,6 +311,7 @@ class _Entrar extends State<Entrar> {
                                   if (fbUser.runtimeType == FirebaseUser) {
                                     //Logou com sucesso
                                     global.fbUser = fbUser;
+                                    global.isEmpresa = true;
                                     print("LOGADO");
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
