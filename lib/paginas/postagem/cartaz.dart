@@ -8,6 +8,8 @@ import 'dart:typed_data';
 import 'dart:async';
 import 'package:flutter/rendering.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Cartaz extends StatefulWidget {
   @override
@@ -48,9 +50,17 @@ class _CartazState extends State<Cartaz> {
   TextEditingController field2 = TextEditingController();
   TextEditingController field3 = TextEditingController();
 
+  // Widget horizontalLine() => Padding(
+  //       padding: EdgeInsets.symmetric(horizontal: 16.0),
+  //       child: Container(
+  //         width: ScreenUtil.getInstance().setWidth(120),
+  //         height: 1.0,
+  //         color: Colors.black,
+  //       ),
+  //     );
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: GradientAppBar(
         gradient:
@@ -71,41 +81,65 @@ class _CartazState extends State<Cartaz> {
                     fit: BoxFit.fill,
                   ),
                 ),
-                Positioned(
-                  top: 110,
-                  child: Text(
-                    field1.text,
-                    maxLines: 3,
-                    style: TextStyle(
-                      fontFamily: 'Xampolo',
-                      color: Colors.red,
-                      fontSize: 60,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 200,
-                  right: 100,
-                  child: Text(
-                    field2.text,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  // top: 150,
-                  // right: 50,
-                  bottom: 80,
-                  child: Text(
-                    field3.text,
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 90,
-                    ),
+                Container(
+                  height: 400,
+                  width: 285,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 90),
+                      ),
+                      AutoSizeText(
+                        field1.text,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontFamily: 'Xampolo',
+                          color: Colors.red,
+                          fontSize: 80,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10),
+                      ),
+                      AutoSizeText(
+                        field2.text,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontFamily: 'Xampolo',
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 40,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 30),
+                      ),
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: <Widget>[
+                          AutoSizeText(
+                            'R\$ ',
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontFamily: 'Xampolo',
+                              color: Colors.red,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 40,
+                            ),
+                          ),
+                          AutoSizeText(
+                            field3.text,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontFamily: 'Xampolo',
+                              color: Colors.red,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 90,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -153,8 +187,9 @@ class _CartazState extends State<Cartaz> {
             padding: EdgeInsets.only(top: 20),
           ),
           TextFormField(
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: "Preço",
+              labelText: "Valor com desconto",
               fillColor: Colors.white,
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.0),
