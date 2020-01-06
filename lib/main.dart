@@ -5,7 +5,7 @@ import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/teste_page.dart';
 import 'package:provider/provider.dart';
-import 'teste.dart';
+import 'package:ofertas/cartaz.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:image_picker/image_picker.dart';
 
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             height: 50.0,
             buttonColor: Colors.blueGrey[300]),
       ),
-      home: Dashboard(),
+      home: Cartaz(),
       // home: Teste(),
     );
   }
