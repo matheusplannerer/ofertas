@@ -9,6 +9,7 @@ import 'package:ofertas/paginas/feed/feed_item.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
 import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 import 'package:ofertas/paginas/perfil/perfil_usuario.dart';
+import 'package:ofertas/paginas/drawer/divulgue_ofertas.dart';
 import 'package:ofertas/shared/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -77,9 +78,9 @@ class _DashboardState extends State<Dashboard> {
               ListTile(
                 title: Text('DIVULGUE SUAS OFERTAS'),
                 trailing: Icon(Icons.new_releases),
-                onTap: () {
-                  //  Navigator.push(context,
-                  //       MaterialPageRoute(builder: (context) => CA001()));
+                onTap: ()  {
+                   Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Divulgar()));
 
                   //87e913731652b3a AT
                   // dynamic data = {

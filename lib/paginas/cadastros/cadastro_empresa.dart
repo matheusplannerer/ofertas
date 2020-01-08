@@ -11,6 +11,8 @@ import 'package:ofertas/services/via_cep_services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class CadastroEmpresa extends StatefulWidget {
   CadastroEmpresa();
@@ -43,8 +45,12 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
     return Scaffold(
       appBar: GradientAppBar(
         title: Text(
-          "C A D A S T R O",
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          "CADASTRO",
+          style: TextStyle(
+              fontSize: ScreenUtil.getInstance().setSp(45),
+              fontFamily: "Poppins-Bold",
+              color: Colors.white,
+              letterSpacing: .6),
         ),
         centerTitle: true,
         gradient:
@@ -67,7 +73,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                     if (value.length >= 3) {
                       return null;
                     } else {
-                      return "Campo inválido";
+                      return "Campo inconsistente";
                     }
                   },
                   decoration: InputDecoration(
@@ -126,7 +132,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                           if (value.length >= 3) {
                             return null;
                           } else {
-                            return "Campo inválido";
+                            return "Campo inconsistente";
                           }
                         },
                         decoration: InputDecoration(
@@ -172,7 +178,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                     if (value.length >= 3) {
                       return null;
                     } else {
-                      return "Campo inválido";
+                      return "Campo inconsistente";
                     }
                   },
                   decoration: InputDecoration(
@@ -203,7 +209,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                           if (value.length >= 3) {
                             return null;
                           } else {
-                            return "Campo inválido";
+                            return "Campo inconsistente";
                           }
                         },
                         decoration: InputDecoration(
@@ -230,7 +236,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                           if (value.length >= 3) {
                             return null;
                           } else {
-                            return "Campo inválido";
+                            return "Campo inconsistente";
                           }
                         },
                         decoration: InputDecoration(
@@ -263,7 +269,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                           if (value.length >= 1) {
                             return null;
                           } else {
-                            return "Campo inválido";
+                            return "Campo inconsistente";
                           }
                         },
                         onSaved: (String value) {
@@ -311,7 +317,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                     if (value.length >= 3) {
                       return null;
                     } else {
-                      return "Campo inválido";
+                      return "Campo inconsistente";
                     }
                   },
                   onSaved: (String value) {
@@ -336,7 +342,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                     if (value.length >= 3) {
                       return null;
                     } else {
-                      return "Campo inválido";
+                      return "Campo inconsistente";
                     }
                   },
                   onSaved: (String value) {
@@ -370,7 +376,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                     if (value.length >= 3) {
                       return null;
                     } else {
-                      return "Campo inválido";
+                      return "Campo inconsistente";
                     }
                   },
                   onSaved: (String value) {
