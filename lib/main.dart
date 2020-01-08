@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/paginas/feed/dashboard.dart';
+import 'package:ofertas/paginas/postagem/cartaz.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
 import 'package:provider/provider.dart';
 

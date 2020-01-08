@@ -94,6 +94,28 @@ flutter:
     - family: Xampolo
       fonts:
        - asset: fonts/Cartaz.ttf
+    - family: Title
+      fonts:
+       - asset: fonts/Bitter-Bold.ttf
+       - asset: fonts/Bitter-BoldItalic.ttf
+       - asset: fonts/Bitter-Italic.ttf
+       - asset: fonts/Bitter-Regular.ttf
+    - family: SubTitle
+      fonts:
+       - asset: fonts/Domine-Bold.ttf
+       - asset: fonts/Domine-Regular.ttf
+    - family: Body
+      fonts:
+       - asset: fonts/OpenSans-Bold.ttf
+       - asset: fonts/OpenSans-BoldItalic.ttf
+       - asset: fonts/OpenSans-ExtraBold.ttf
+       - asset: fonts/OpenSans-ExtraBoldItalic.ttf
+       - asset: fonts/OpenSans-Italic.ttf
+       - asset: fonts/OpenSans-Light.ttf
+       - asset: fonts/OpenSans-LightItalic.ttf
+       - asset: fonts/OpenSans-Regular.ttf
+       - asset: fonts/OpenSans-Semibold.ttf
+       - asset: fonts/OpenSans-SemiboldItalic.ttf
     - family: Gelasio
       fonts:
         # - asset: fonts/Gelasio-Bold.ttf

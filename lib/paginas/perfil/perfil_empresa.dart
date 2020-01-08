@@ -11,6 +11,7 @@ import 'package:ofertas/paginas/postagem/crop.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class PerfilEmpresaPage extends StatefulWidget {
   PerfilEmpresaPage(this.empresaID);
@@ -155,38 +156,54 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     height: 5,
                                   ),
                                   // Text("Clebinho", textScaleFactor: 1.25,)
-                                  Text(
-                                    empresa.data.data['nomeEmpresa'],
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
                                 ],
                               ),
                             ),
                             Expanded(
                               child: Column(
                                 children: <Widget>[
-                                  SmoothStarRating(
-                                    allowHalfRating: false,
-                                    onRatingChanged: (v) {
-                                      setState(() {
-                                        _rating = v;
-                                      });
-                                    },
-                                    starCount: 5,
-                                    rating: _rating,
-                                    size: 27.0,
-                                    color: Colors.orange,
-                                    borderColor: Colors.orange,
+                                  AutoSizeText(
+                                    empresa.data.data['nomeEmpresa'],
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: 'Title',
+                                      fontSize: 30,
+                                    ),
                                   ),
+                                  AutoSizeText(
+                                    'Supermercado',
+                                    //add categoria para poder puxar do database
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: 'SubTitle',
+                                      fontSize: 20,
+                                      color:Colors.grey[700],
+                                    ),
+                                  ),
+                                  // SmoothStarRating(
+                                  //   allowHalfRating: false,
+                                  //   onRatingChanged: (v) {
+                                  //     setState(() {
+                                  //       _rating = v;
+                                  //     });
+                                  //   },
+                                  //   starCount: 5,
+                                  //   rating: _rating,
+                                  //   size: 27.0,
+                                  //   color: Colors.orange,
+                                  //   borderColor: Colors.orange,
+                                  // ),
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  Text(
-                                    "$_rating",
-                                    textScaleFactor: 2,
-                                  )
+                                  // Text(
+                                  //   "$_rating",
+                                  //   textScaleFactor: 2,
+                                  // )
                                 ],
                               ),
                             )
