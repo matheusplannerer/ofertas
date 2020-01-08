@@ -122,7 +122,7 @@ class _Entrar extends State<Entrar> {
                   ),
                   Container(
                     width: double.infinity,
-                    height: ScreenUtil.getInstance().setHeight(580),
+                    height: ScreenUtil.getInstance().setHeight(420),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0),

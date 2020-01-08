@@ -31,7 +31,7 @@ class _TesteCepState extends State<TesteCep> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            _buildSearchCepTextField(),
+            // _buildSearchCepTextField(),
             _buildSearchCepButton(),
             _buildResultForm()
           ],

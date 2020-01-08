@@ -6,6 +6,12 @@ import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:provider/provider.dart';
 
+import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+
+import '../../global/global.dart';
+
 class CadastroPage extends StatefulWidget {
   @override
   _CadastroPageState createState() => _CadastroPageState();
@@ -25,33 +31,31 @@ class _CadastroPageState extends State<CadastroPage> {
   Widget build(BuildContext context) {
     var global = Provider.of<Global>(context);
     return Scaffold(
-      appBar: AppBar(
+      backgroundColor: Colors.white,
+      appBar: GradientAppBar(
         title: Text(
-          'CADASTRO',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          "CADASTRO",
+          style: TextStyle(
+              fontSize: ScreenUtil.getInstance().setSp(45),
+              fontFamily: "Poppins-Bold",
+              color: Colors.white,
+              letterSpacing: .6),
         ),
         centerTitle: true,
+        gradient: LinearGradient(
+          colors: [
+            Colors.orange[900],
+            Colors.orange[300],
+          ],
+        ),
       ),
       body: Container(
-        margin: EdgeInsets.all(30),
+        margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
         child: ListView(
           children: <Widget>[
             Column(
               children: [
                 SizedBox(height: 30),
-                Text(
-                  'NOVO PERFIL',
-                  style: TextStyle(fontSize: 25, color: Colors.grey[800]),
-                ),
-                Wrap(
-                  children: <Widget>[
-                    Text(
-                      'Complete as informações abaixo para realizar seu cadastro',
-                      style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
                 Container(
                   width: MediaQuery.of(context).size.height / 2,
                   child: Form(
@@ -59,44 +63,82 @@ class _CadastroPageState extends State<CadastroPage> {
                     child: Column(
                       children: [
                         TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'NOME COMPLETO',
+                          decoration: InputDecoration(
+                          labelStyle:
+                              TextStyle(color: Colors.black38, fontSize: 15),
+                          labelText: 'Nome completo',
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(),
+                          ),
                           ),
                           onSaved: (String value) {
                             usuario.nome = value.toUpperCase();
                           },
                         ),
+                        SizedBox(height: 15),
                         TextFormField(
-                          decoration: const InputDecoration(
-                            hintText: "(DDD) XXXXX-XXXX",
-                            labelText: 'CONTATO',
+                          decoration: InputDecoration(                          
+                            labelStyle:
+                              TextStyle(color: Colors.black38, fontSize: 15),
+                          labelText: 'Contato',
+                          hintText: '(DDD) XXXXX-XXXX',
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(),
+                          ),
                           ),
                           onSaved: (String value) {
                             usuario.celular = value.toLowerCase();
                           },
                         ),
+                        SizedBox(height: 15),
                         TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'E-MAIL',
+                          decoration: InputDecoration(                          
+                            labelStyle:
+                              TextStyle(color: Colors.black38, fontSize: 15),
+                          labelText: 'E-mail',
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(),
+                          ),
                           ),
                           onSaved: (String value) {
                             usuario.email = value.toLowerCase();
                           },
                         ),
+                        SizedBox(height: 15),
                         TextFormField(
                           obscureText: true,
-                          decoration: const InputDecoration(
-                            hintText:
+                          decoration: InputDecoration(                          
+                            labelStyle:
+                              TextStyle(color: Colors.black38, fontSize: 15),
+                          labelText: 'Senha (utilizado para acesso ao app)',
+                          hintText:
                                 'Mínimo de 6 caracteres e ao menos 1 número',
-                            labelText: 'Senha (utilizado para acesso ao app)',
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(),
+                          ),
                           ),
                           onSaved: (String value) {
                             usuario.senha = value;
                           },
                         ),
+                        SizedBox(height: 15),
                         TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'Confirme sua senha',
+                          decoration: InputDecoration(
+                          labelStyle: TextStyle(color: Colors.black38, fontSize: 15),
+                          labelText: 'Confirme sua senha',
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(),
+                          ),
                           ),
                           obscureText: true,
                           onSaved: (String value) {
@@ -140,10 +182,39 @@ class _CadastroPageState extends State<CadastroPage> {
                     ),
                   ),
                 ),
-                RaisedButton(
-                  color: Colors.blueGrey[200],
-                  textColor: Colors.white,
-                  onPressed: () async {
+                 
+             Padding(
+              padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 15.0),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: ScreenUtil.getInstance().setHeight(15),
+                  ),
+                  
+               Row(
+                    children: <Widget>[
+                      InkWell(
+                        child: Container(
+                            decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFFFF8A65),
+                                Color(0xFFFF5722),
+                                Color(0xFFD84315)
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(15.0),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Color(0xFF6078ea).withOpacity(.3),
+                                  offset: Offset(0.0, 8.0),
+                                  blurRadius: 8.0)
+                            ],
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                  onTap: () async { // antes era onPressed, não sei se muda algo
                     if (checkbox) {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();
@@ -172,15 +243,29 @@ class _CadastroPageState extends State<CadastroPage> {
                       }
                     }
                   },
-                  child: Text(
-                    'CADASTRAR',
-                    style: TextStyle(fontSize: 20),
-                  ),
+                 child: Center(
+                                child: Text(
+                                  "AVANÇAR",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Poppins-Bold",
+                                      fontSize: 18,
+                                      letterSpacing: 1.0),
+                                ),
                 ),
+                ),
+                          ),
+                        ),
+                        ),
               ],
             ),
           ],
         ),
+        ),
+          ],
+      ),
+          ],
+      ),
       ),
     );
   }
