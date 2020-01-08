@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
+import 'package:ofertas/paginas/cadastros/cadastro_empresa.dart';
 import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
 import 'package:provider/provider.dart';

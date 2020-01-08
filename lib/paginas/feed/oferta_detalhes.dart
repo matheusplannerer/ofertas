@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class OfertaDetalhe extends StatefulWidget {
   OfertaDetalhe({this.produto, this.empresaID});
-  final Dados produto;
+  final OfertaModel produto;
   final String empresaID;
 
   @override

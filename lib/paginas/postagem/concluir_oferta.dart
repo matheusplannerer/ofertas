@@ -9,7 +9,7 @@ import 'package:ofertas/models/produtos.dart';
 
 class ConcluirOferta extends StatefulWidget {
   ConcluirOferta({this.produto, this.base64, this.imageFile, this.empresaID});
-  final Dados produto;
+  final OfertaModel produto;
   final File imageFile;
   final String base64;
   final String empresaID;
@@ -45,7 +45,7 @@ class _ConcluirOfertaState extends State<ConcluirOferta> {
                       .then((data) async {
                     await Services()
                         .firestore
-                        .updateFirestore(widget.produto, widget.empresaID);
+                        .cadastrarOferta(widget.produto, widget.empresaID);
                     Navigator.of(context)
                         .popUntil((Route<dynamic> route) => route.isFirst);
                   });

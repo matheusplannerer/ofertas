@@ -19,6 +19,7 @@ class PerfilEmpresa {
     this.senha = '',
     this.empresaID,
     this.whatsapp,
+    this.donoEmpresa,
     this.categoria,
   }) {
     funcionamento = {
@@ -52,11 +53,13 @@ class PerfilEmpresa {
   String empresaID; //
   String razaoSocial; //
   String whatsapp;
+  String donoEmpresa;
 
   factory PerfilEmpresa.fromJson(Map<String, dynamic> json) {
     return new PerfilEmpresa(
       cep: json['cep'],
       email: json['email'],
+      donoEmpresa: json['donoEmpresa'],
       funcionamento: {
         'domVal': json['domVal'],
         'segVal': json['segVal'],

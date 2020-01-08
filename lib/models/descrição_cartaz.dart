@@ -8,7 +8,7 @@ class DadosCartaz extends StatefulWidget {
 class _DadosCartazState extends State<DadosCartaz> {
   @override
   Widget build(BuildContext context) {
-    Dados cartaz = Dados();
+    OfertaModel cartaz = OfertaModel();
     // TODO: implement build
     return Scaffold(
       body: Container(

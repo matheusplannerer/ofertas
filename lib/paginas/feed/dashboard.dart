@@ -4,6 +4,7 @@ import 'package:load/load.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/global/global.dart';
+import 'package:ofertas/paginas/cadastros/cadastro_page.dart';
 import 'package:ofertas/paginas/drawer/entreemcontato.dart';
 import 'package:ofertas/paginas/feed/feed_item.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
@@ -78,8 +79,8 @@ class _DashboardState extends State<Dashboard> {
                 title: Text('DIVULGUE SUAS OFERTAS'),
                 trailing: Icon(Icons.new_releases),
                 onTap: () {
-                  //  Navigator.push(context,
-                  //       MaterialPageRoute(builder: (context) => CA001()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CadastroPage()));
 
                   //87e913731652b3a AT
                   // dynamic data = {
@@ -205,7 +206,7 @@ Widget storeTab(BuildContext context) {
                 if (snapshotdois.hasData) {
                   List<FeedItem> items = [];
                   for (var i = 0; i < snapshotdois.data.documents.length; i++) {
-                    Dados aux = Dados.fromJson(
+                    OfertaModel aux = OfertaModel.fromJson(
                         snapshotdois.data.documents[i].data,
                         snapshotdois.data.documents[i].documentID);
 

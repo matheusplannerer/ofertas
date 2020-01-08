@@ -3,6 +3,7 @@ import 'package:load/load.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
+import 'package:ofertas/paginas/cadastros/cadastro_empresa.dart';
 import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:provider/provider.dart';
 
@@ -163,12 +164,9 @@ class _CadastroPageState extends State<CadastroPage> {
                           global.usuario = usuario;
                           await fbUser.sendEmailVerification();
                           hideLoadingDialog();
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => Dashboard()));
-
-                        } else{
-
-                        }
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CadastroEmpresa()));
+                        } else {}
                       }
                     }
                   },

@@ -98,10 +98,7 @@ class FirestoreServices {
     }
   }
 
-  Future<void> updateFirestore(
-    Dados produto,
-    String empresaID,
-  ) async {
+  Future<void> cadastrarOferta(OfertaModel produto, String empresaID) async {
     int ofertas = 0;
     var data = await Firestore.instance
         .collection('empresas')
@@ -113,26 +110,23 @@ class FirestoreServices {
         .ref()
         .child("$empresaID/oferta_${ofertas + 1}.jpg")
         .getDownloadURL();
-    var id = Firestore.instance
-        .collection('empresas')
-        .document(empresaID)
-        .collection('ofertas')
-        .document()
-        .documentID;
+    var id = Firestore.instance.collection('ofertas').document().documentID;
     await Firestore.instance
         .collection('empresas')
         .document(empresaID)
         .updateData({'ofertas': ofertas + 1});
-    await Firestore.instance
+    var doc = await Firestore.instance
         .collection('empresas')
         .document(empresaID)
-        .collection('ofertas')
-        .document(id)
-        .setData({
+        .get();
+    var empresaLogo = doc.data['foto'];
+    await Firestore.instance.collection('ofertas').document(id).setData({
       "data": Timestamp.now(),
       "imagem": url,
       "nomeProduto": produto.produto,
       "preco": produto.preco,
+      "empresaDona": empresaID,
+      "empresaLogo": empresaLogo,
       "desconto": produto.desconto,
       "validade": produto.validade,
       "mostrar": true,

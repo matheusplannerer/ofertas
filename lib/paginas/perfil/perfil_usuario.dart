@@ -28,9 +28,8 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
         children: [
           FutureBuilder<QuerySnapshot>(
             future: Firestore.instance
-                .collection('usuarios')
-                .document(global.fbUser.uid)
                 .collection("empresas")
+                .where("donoEmpresa", isEqualTo: global.fbUser.uid)
                 .getDocuments(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -50,9 +49,11 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                         onTap: () {
                           print(snapshot.data.documentChanges);
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PerfilEmpresaPage(
-                                  snapshot.data.documentChanges[i].document
-                                      .documentID)));
+                              builder: (context) => PerfilEmpresaPage(snapshot
+                                  .data
+                                  .documentChanges[i]
+                                  .document
+                                  .documentID)));
                           // PerfilEmpresaPage(snapshot
                           //     .data
                           //     .documentChanges[i]
