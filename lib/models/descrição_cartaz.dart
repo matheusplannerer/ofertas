@@ -8,7 +8,7 @@ class DadosCartaz extends StatefulWidget {
 class _DadosCartazState extends State<DadosCartaz> {
   @override
   Widget build(BuildContext context) {
-    Dados cartaz = Dados();
+    OfertaModel cartaz = OfertaModel();
     // TODO: implement build
     return Scaffold(
       body: Container(
@@ -36,7 +36,7 @@ class _DadosCartazState extends State<DadosCartaz> {
                           borderSide: BorderSide()),
                     ),
                     onSaved: (String value) {
-                      cartaz.produto = value;
+                      cartaz.nomeProduto = value;
                     },
                   ),
                   Padding(
@@ -87,7 +87,7 @@ class _DadosCartazState extends State<DadosCartaz> {
                   RaisedButton(
                     onPressed: () {
                      
-                      print(cartaz.produto);
+                      print(cartaz.nomeProduto);
                       print(cartaz.infos);
                       print(cartaz.preco);
                       print(cartaz.desconto);

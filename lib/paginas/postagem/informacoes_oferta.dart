@@ -19,7 +19,7 @@ class InformacoesOferta extends StatefulWidget {
 }
 
 class _InformacoesOfertaState extends State<InformacoesOferta> {
-  Dados produto;
+  OfertaModel produto;
 
   final formKey = GlobalKey<FormState>();
 
@@ -27,7 +27,7 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    produto = Dados();
+    produto = OfertaModel();
   }
 
   @override
@@ -45,7 +45,7 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
                 children: <Widget>[
                   TextFormField(
                     onSaved: (String value) {
-                      produto.produto = value.toUpperCase();
+                      produto.nomeProduto = value.toUpperCase();
                     },
                     decoration: InputDecoration(
                       labelStyle:

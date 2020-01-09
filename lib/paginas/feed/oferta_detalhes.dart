@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class OfertaDetalhe extends StatefulWidget {
   OfertaDetalhe({this.produto, this.empresaID});
-  final Dados produto;
+  final OfertaModel produto;
   final String empresaID;
 
   @override
@@ -107,7 +107,7 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
           ),
           ListTile(
             title: Text("PRODUTO: "),
-            subtitle: Text(widget.produto.produto),
+            subtitle: Text(widget.produto.nomeProduto),
           ),
           Divider(color: Colors.orange),
           ListTile(

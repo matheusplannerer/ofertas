@@ -11,7 +11,7 @@ const Color darkText = Colors.black54;
 const Color highlightColor = Colors.orange;
 
 class FeedItem extends StatefulWidget {
-  final Dados produto;
+  final OfertaModel produto;
   final String empresaID;
   FeedItem(this.produto, this.empresaID);
 
@@ -23,7 +23,7 @@ class FeedItem extends StatefulWidget {
 }
 
 class _FeedItemState extends State<FeedItem> {
-  Dados produto;
+  OfertaModel produto;
 
   @override
   void initState() {
@@ -96,7 +96,7 @@ class _FeedItemState extends State<FeedItem> {
                       size: 20,
                     ),
                     SizedBox(width: 5),
-                    Text(produto.produto != null ? produto.produto : "Testando",
+                    Text(produto.nomeProduto != null ? produto.nomeProduto : "Testando",
                         style: foodNameText),
                   ],
                 ),

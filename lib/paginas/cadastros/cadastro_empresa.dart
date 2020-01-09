@@ -618,6 +618,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                   "email": cadastro.email,
                   "site": cadastro.site,
                   "cep": cadastro.cep,
+                  "donoEmpresa": global.fbUser.uid,
                   "bairro": cadastro.bairro,
                   "estado": cadastro.estado,
                   "logradouro": cadastro.logradouro,
@@ -632,16 +633,6 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                     .collection("empresas")
                     .document(cadastro.empresaID)
                     .updateData(cadastro.funcionamento);
-
-                await Firestore.instance
-                    .collection("usuarios")
-                    .document(global.fbUser.uid)
-                    .collection('empresas')
-                    .document(cadastro.empresaID)
-                    .setData({
-                  "id": cadastro.empresaID,
-                  "nomeEmpresa": cadastro.nomeEmpresa
-                });
 
                 hideLoadingDialog();
                 Navigator.of(context).pushReplacement(MaterialPageRoute(

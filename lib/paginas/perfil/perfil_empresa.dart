@@ -87,8 +87,12 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: GradientAppBar(
-        gradient:
-            LinearGradient(colors: [Colors.orange[900], Colors.orange[300]]),
+        gradient: LinearGradient(
+          colors: [
+            Colors.orange[900],
+            Colors.orange[300],
+          ],
+        ),
       ),
       // appBar: AppBar(
       //   actions: <Widget>[],
@@ -403,7 +407,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      Dados produto = Dados.fromJson(
+                                      OfertaModel produto = OfertaModel.fromJson(
                                           snapshot.data.documents[index].data,
                                           snapshot.data.documents[index]
                                               .documentID);

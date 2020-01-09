@@ -25,7 +25,7 @@ class ImageCapture extends StatefulWidget {
 class _ImageCaptureState extends State<ImageCapture> {
   File _imageFile;
   String base64;
-  Dados produto = Dados();
+  OfertaModel produto = OfertaModel();
 
   Future<void> _pickImage(ImageSource source) async {
     File selected = await ImagePicker.pickImage(source: source);
@@ -47,7 +47,7 @@ class _ImageCaptureState extends State<ImageCapture> {
   TextEditingController desconto = TextEditingController();
 
   void _updateDados() {
-    produto.produto = nome.text.toUpperCase();
+    produto.nomeProduto = nome.text.toUpperCase();
     produto.preco = preco.text;
     produto.desconto = desconto.text;
   }
@@ -152,7 +152,7 @@ class Uploader extends StatefulWidget {
   final File file;
   final String base64;
   final String empresaID;
-  final Dados produto;
+  final OfertaModel produto;
   final Function clear;
 
   Uploader({this.file, this.base64, this.empresaID, this.produto, this.clear});
@@ -200,7 +200,7 @@ class _UploaderState extends State<Uploader> {
             Future.delayed(Duration(milliseconds: 150)).then((data) {
               Services()
                   .firestore
-                  .updateFirestore(widget.produto, widget.empresaID);
+                  .cadastrarOferta(widget.produto, widget.empresaID);
             });
             // Navigator.of(context)
             //     .popUntil((Route<dynamic> route) => route.isFirst);
