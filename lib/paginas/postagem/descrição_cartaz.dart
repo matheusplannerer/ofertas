@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'produtos.dart';
+import 'package:ofertas/models/produtos.dart';
 
 class DadosCartaz extends StatefulWidget {
   _DadosCartazState createState() => _DadosCartazState();
