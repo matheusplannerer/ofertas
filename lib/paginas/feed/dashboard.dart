@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
+import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/cadastros/cadastro_page.dart';
 import 'package:ofertas/paginas/drawer/entreemcontato.dart';
@@ -557,113 +558,149 @@ class _DashboardState extends State<Dashboard> {
                     ],
                   ),
                   SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () {
-                      print("Entrou no estabelecimento");
-                    },
-                    child: Container(
-                      height: 80,
-                      width: MediaQuery.of(context).size.width,
-                      // color: Colors.green,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: Center(
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     print("Entrou no estabelecimento");
+                  //   },
+                  //   child: Container(
+                  //     height: 80,
+                  //     width: MediaQuery.of(context).size.width,
+                  //     // color: Colors.green,
+                  //     child: Row(
+                  //       children: <Widget>[
+                  //         Expanded(
+                  //           flex: 2,
+                  //           child: Center(
+                  //             child: Container(
+                  //               decoration: BoxDecoration(
+                  //                 border: Border.all(),
+                  //                 color: Colors.green,
+                  //                 image: DecorationImage(
+                  //                     image: AssetImage("assets/logo.jpg"),
+                  //                     fit: BoxFit.fill),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         Expanded(
+                  //           flex: 3,
+                  //           child: Container(
+                  //             decoration: BoxDecoration(
+                  //               border: Border.all(),
+                  //             ),
+                  //             child: Column(
+                  //               children: <Widget>[
+                  //                 Text(
+                  //                   "WALMART",
+                  //                   style: TextStyle(
+                  //                       color: Colors.black,
+                  //                       fontSize: 18,
+                  //                       fontWeight: FontWeight.bold),
+                  //                   textAlign: TextAlign.center,
+                  //                 ),
+                  //                 SizedBox(height: 10),
+                  //                 SmoothStarRating(
+                  //                   rating: 4,
+                  //                 ),
+                  //                 Text("4.0 (300+)")
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 10),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: Firestore.instance
+                        .collection('empresas')
+                        .getDocuments()
+                        .asStream(),
+                    builder: (context, empresas) {
+                      if (empresas.hasData) {
+                        List<Widget> lista = [];
+                        for (var i = 0;
+                            i < empresas.data.documents.length;
+                            i++) {
+                          PerfilEmpresa empresa = PerfilEmpresa.fromJson(
+                            empresas.data.documents[i].data,
+                            empresas.data.documents[i].documentID,
+                          );
+
+                          lista.add(
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        PerfilEmpresaPage(empresa.idEmpresa)));
+                              },
                               child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(),
-                                  color: Colors.green,
-                                  image: DecorationImage(
-                                      image: AssetImage("assets/logo.jpg"),
-                                      fit: BoxFit.fill),
+                                height: 80,
+                                width: MediaQuery.of(context).size.width,
+                                // color: Colors.green,
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 2,
+                                      child: Center(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(),
+                                            color: Colors.green,
+                                            image: DecorationImage(
+                                                image: empresa.foto != null
+                                                    ? NetworkImage(empresa.foto)
+                                                    : AssetImage(
+                                                        "assets/mogi.jpg"),
+                                                fit: BoxFit.fill),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(),
+                                        ),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(
+                                              empresa.nomeEmpresa,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            SizedBox(height: 10),
+                                            SmoothStarRating(
+                                              rating: 4,
+                                            ),
+                                            Text("4.0 (300+)")
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(),
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    "WALMART",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(height: 10),
-                                  SmoothStarRating(
-                                    rating: 4,
-                                  ),
-                                  Text("4.0 (300+)")
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                          );
+                          lista.add(SizedBox(height: 10));
+                        } //Fim do FOR
+
+                        return Column(
+                          children: <Widget>[...lista],
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
                   ),
-                  SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () {
-                      print("Entrou no estabelecimento");
-                    },
-                    child: Container(
-                      height: 80,
-                      width: MediaQuery.of(context).size.width,
-                      // color: Colors.green,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: Center(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(),
-                                  color: Colors.green,
-                                  image: DecorationImage(
-                                      image: AssetImage("assets/logo.jpg"),
-                                      fit: BoxFit.fill),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(),
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    "WALMART",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(height: 10),
-                                  SmoothStarRating(
-                                    rating: 4,
-                                  ),
-                                  Text("4.0 (300+)")
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),

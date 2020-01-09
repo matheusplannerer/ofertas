@@ -21,6 +21,7 @@ class PerfilEmpresa {
     this.whatsapp,
     this.donoEmpresa,
     this.categoria,
+    this.idEmpresa = '',
   }) {
     funcionamento = {
       "domVal": false,
@@ -54,30 +55,31 @@ class PerfilEmpresa {
   String razaoSocial; //
   String whatsapp;
   String donoEmpresa;
+  String idEmpresa;
 
-  factory PerfilEmpresa.fromJson(Map<String, dynamic> json) {
+  factory PerfilEmpresa.fromJson(Map<String, dynamic> json, String idEmpresa) {
     return new PerfilEmpresa(
-      cep: json['cep'],
-      email: json['email'],
-      donoEmpresa: json['donoEmpresa'],
-      funcionamento: {
-        'domVal': json['domVal'],
-        'segVal': json['segVal'],
-        'terVal': json['terVal'],
-        'quaVal': json['quaVal'],
-        'quiVal': json['quiVal'],
-        'sexVal': json['sexVal'],
-        'sabVal': json['sabVal']
-      },
-      foto: json['foto'],
-      horaInicio: json['horaInicio'],
-      horaTermino: json['horaTermino'],
-      nomeEmpresa: json['nomeEmpresa'],
-      numero: json['numero'],
-      pais: json['pais'],
-      site: json['site'],
-      whatsapp: json['whatsapp'],
-    );
+        cep: json['cep'],
+        email: json['email'],
+        donoEmpresa: json['donoEmpresa'],
+        funcionamento: {
+          'domVal': json['domVal'],
+          'segVal': json['segVal'],
+          'terVal': json['terVal'],
+          'quaVal': json['quaVal'],
+          'quiVal': json['quiVal'],
+          'sexVal': json['sexVal'],
+          'sabVal': json['sabVal']
+        },
+        foto: json['foto'],
+        horaInicio: json['horaInicio'],
+        horaTermino: json['horaTermino'],
+        nomeEmpresa: json['nomeEmpresa'],
+        numero: json['numero'],
+        pais: json['pais'],
+        site: json['site'],
+        whatsapp: json['whatsapp'],
+        idEmpresa: idEmpresa);
   }
 }
 
