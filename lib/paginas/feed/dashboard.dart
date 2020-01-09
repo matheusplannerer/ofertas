@@ -4,11 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
+import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/cadastros/cadastro_page.dart';
 import 'package:ofertas/paginas/drawer/entreemcontato.dart';
+import 'package:ofertas/paginas/feed/oferta_detalhes.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
+import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 import 'package:ofertas/shared/styles.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -303,12 +307,18 @@ class _DashboardState extends State<Dashboard> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Text(
-                        "Ofertas da Semana",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: ListTile(
+                          onTap: () {},
+                          trailing: Icon(Icons.arrow_forward),
+                          title: Text(
+                            "Ofertas da Semana",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       )
                     ],
                   ),
@@ -316,134 +326,342 @@ class _DashboardState extends State<Dashboard> {
                   Container(
                     height: 150,
                     width: MediaQuery.of(context).size.width,
-                    child: ListView(
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            print("Oferta");
-                          },
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                color: Colors.green,
-                                width: 150,
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.red,
-                                    maxRadius: 20,
-                                  ),
-                                  SizedBox(width: 10),
-                                  Text("EMPRESA X")
-                                ],
-                              ),
-                            ],
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: Firestore.instance
+                          .collection('ofertas')
+                          .getDocuments()
+                          .asStream(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<Widget> pages = [];
+
+                          print((snapshot.data.documents.length == 1
+                              ? 1
+                              : snapshot.data.documents.length ~/ 2 +
+                                  snapshot.data.documents.length % 2));
+
+                          for (var i = 0;
+                              i <
+                                  (snapshot.data.documents.length == 1
+                                      ? 1
+                                      : snapshot.data.documents.length ~/ 2 +
+                                          snapshot.data.documents.length % 2);
+                              i = i + 2) {
+                            Widget item1 = FutureBuilder<DocumentSnapshot>(
+                              future: Firestore.instance
+                                  .collection('empresas')
+                                  .document(
+                                    snapshot
+                                        .data.documents[i].data['empresaDona'],
+                                  )
+                                  .get(),
+                              builder: (context, snapshotEmpresaUm) {
+                                if (snapshot.hasData &&
+                                    snapshotEmpresaUm.hasData) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      OfertaModel produto =
+                                          OfertaModel.fromJson(
+                                              snapshot.data.documents[i].data,
+                                              snapshot.data.documents[i]
+                                                  .documentID);
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => OfertaDetalhe(
+                                            empresaID: snapshotEmpresaUm
+                                                .data.documentID,
+                                            produto: produto,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                snapshot.data.documents[i]
+                                                    .data['imagem'],
+                                              ),
+                                            ),
+                                          ),
+                                          width: 150,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PerfilEmpresaPage(
+                                                            snapshotEmpresaUm
+                                                                .data
+                                                                .documentID)));
+                                          },
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage:
+                                                    snapshotEmpresaUm.data
+                                                                .data['foto'] !=
+                                                            null
+                                                        ? NetworkImage(
+                                                            snapshotEmpresaUm
+                                                                .data
+                                                                .data['foto'],
+                                                          )
+                                                        : AssetImage(
+                                                            "assets/mogi.jpg"),
+                                                maxRadius: 20,
+                                              ),
+                                              SizedBox(width: 10),
+                                              Text(
+                                                snapshotEmpresaUm
+                                                    .data.data['nomeEmpresa'],
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                  decorationStyle:
+                                                      TextDecorationStyle.solid,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  return CircularProgressIndicator();
+                                }
+                              },
+                            );
+                            Widget espaco = SizedBox(width: 15);
+                            Widget item2 = Container();
+                            if (snapshot.data.documents.length > i + 1)
+                              item2 = FutureBuilder<DocumentSnapshot>(
+                                future: Firestore.instance
+                                    .collection('empresas')
+                                    .document(
+                                      snapshot.data.documents[i + 1]
+                                          .data['empresaDona'],
+                                    )
+                                    .get(),
+                                builder: (context, snapshotEmpresaDois) {
+                                  if (snapshot.hasData &&
+                                      snapshotEmpresaDois.hasData) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        print("Oferta");
+                                      },
+                                      child: Stack(
+                                        children: <Widget>[
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                  snapshot.data.documents[i]
+                                                      .data['imagem'],
+                                                ),
+                                              ),
+                                            ),
+                                            width: 150,
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage:
+                                                    snapshotEmpresaDois.data
+                                                                .data['foto'] !=
+                                                            null
+                                                        ? NetworkImage(
+                                                            snapshotEmpresaDois
+                                                                .data
+                                                                .data['foto'],
+                                                          )
+                                                        : AssetImage(
+                                                            "assets/mogi.jpg"),
+                                                maxRadius: 20,
+                                              ),
+                                              SizedBox(width: 10),
+                                              Text(
+                                                snapshotEmpresaDois
+                                                    .data.data['nomeEmpresa'],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    return CircularProgressIndicator();
+                                  }
+                                },
+                              );
+
+                            Widget page = Row(
+                              children: <Widget>[
+                                item1,
+                                espaco,
+                                item2,
+                              ],
+                            );
+                            pages.add(page);
+                          }
+
+                          return PageView.builder(
+                            itemCount: pages.length,
+                            itemBuilder: (context, index) {
+                              return pages[index];
+                            },
+                          );
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: ListTile(
+                          onTap: () {},
+                          trailing: Icon(Icons.arrow_forward),
+                          title: Text(
+                            "Conheça os Estabelecimentos",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
-                        SizedBox(width: 15),
-                        GestureDetector(
-                          onTap: () {
-                            print("Oferta");
-                          },
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                color: Colors.green,
-                                width: 150,
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      print("Entrou no estabelecimento");
+                    },
+                    child: Container(
+                      height: 80,
+                      width: MediaQuery.of(context).size.width,
+                      // color: Colors.green,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 2,
+                            child: Center(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(),
+                                  color: Colors.green,
+                                  image: DecorationImage(
+                                      image: AssetImage("assets/logo.jpg"),
+                                      fit: BoxFit.fill),
+                                ),
                               ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.red,
-                                    maxRadius: 20,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(),
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    "WALMART",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(width: 10),
-                                  Text("EMPRESA X")
+                                  SizedBox(height: 10),
+                                  SmoothStarRating(
+                                    rating: 4,
+                                  ),
+                                  Text("4.0 (300+)")
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 15),
-                        GestureDetector(
-                          onTap: () {
-                            print("Oferta");
-                          },
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                color: Colors.green,
-                                width: 150,
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      print("Entrou no estabelecimento");
+                    },
+                    child: Container(
+                      height: 80,
+                      width: MediaQuery.of(context).size.width,
+                      // color: Colors.green,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 2,
+                            child: Center(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(),
+                                  color: Colors.green,
+                                  image: DecorationImage(
+                                      image: AssetImage("assets/logo.jpg"),
+                                      fit: BoxFit.fill),
+                                ),
                               ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.red,
-                                    maxRadius: 20,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(),
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    "WALMART",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(width: 10),
-                                  Text("EMPRESA X")
+                                  SizedBox(height: 10),
+                                  SmoothStarRating(
+                                    rating: 4,
+                                  ),
+                                  Text("4.0 (300+)")
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 15),
-                        GestureDetector(
-                          onTap: () {
-                            print("Oferta");
-                          },
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                color: Colors.green,
-                                width: 150,
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.red,
-                                    maxRadius: 20,
-                                  ),
-                                  SizedBox(width: 10),
-                                  Text("EMPRESA X")
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        GestureDetector(
-                          onTap: () {
-                            print("Oferta");
-                          },
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                color: Colors.green,
-                                width: 150,
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.red,
-                                    maxRadius: 20,
-                                  ),
-                                  SizedBox(width: 10),
-                                  Text("EMPRESA X")
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                      scrollDirection: Axis.horizontal,
+                        ],
+                      ),
                     ),
                   )
                 ],

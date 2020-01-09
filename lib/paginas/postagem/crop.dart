@@ -47,7 +47,7 @@ class _ImageCaptureState extends State<ImageCapture> {
   TextEditingController desconto = TextEditingController();
 
   void _updateDados() {
-    produto.produto = nome.text.toUpperCase();
+    produto.nomeProduto = nome.text.toUpperCase();
     produto.preco = preco.text;
     produto.desconto = desconto.text;
   }

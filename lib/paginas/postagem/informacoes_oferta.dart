@@ -45,7 +45,7 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
                 children: <Widget>[
                   TextFormField(
                     onSaved: (String value) {
-                      produto.produto = value.toUpperCase();
+                      produto.nomeProduto = value.toUpperCase();
                     },
                     decoration: InputDecoration(
                       labelStyle:

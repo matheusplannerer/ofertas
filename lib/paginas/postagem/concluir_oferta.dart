@@ -80,7 +80,7 @@ class _ConcluirOfertaState extends State<ConcluirOferta> {
             margin: EdgeInsets.all(10),
             child: ListBody(
               children: <Widget>[
-                Text("Produto: ${widget.produto.produto}"),
+                Text("Produto: ${widget.produto.nomeProduto}"),
                 Text("Valor: R\$${widget.produto.preco}"),
                 Text("Valor com desconto: ${widget.produto.desconto}"),
                 Text(

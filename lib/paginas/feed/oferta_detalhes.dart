@@ -107,7 +107,7 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
           ),
           ListTile(
             title: Text("PRODUTO: "),
-            subtitle: Text(widget.produto.produto),
+            subtitle: Text(widget.produto.nomeProduto),
           ),
           Divider(color: Colors.orange),
           ListTile(

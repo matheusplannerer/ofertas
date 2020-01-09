@@ -96,7 +96,7 @@ class _FeedItemState extends State<FeedItem> {
                       size: 20,
                     ),
                     SizedBox(width: 5),
-                    Text(produto.produto != null ? produto.produto : "Testando",
+                    Text(produto.nomeProduto != null ? produto.nomeProduto : "Testando",
                         style: foodNameText),
                   ],
                 ),

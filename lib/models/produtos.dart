@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OfertaModel {
-  String produto;
+  String nomeProduto;
   String infos;
   // bool isFavorite;
   String idOferta;
@@ -14,7 +14,7 @@ class OfertaModel {
   OfertaModel(
       {
       // this.isFavorite = false,
-      this.produto = '',
+      this.nomeProduto = '',
       this.infos = '',
       this.preco,
       this.desconto,
@@ -29,7 +29,7 @@ class OfertaModel {
       desconto: json['desconto'],
       infos: json['infos'],
       preco: json['preco'],
-      produto: json['nomeProduto'],
+      nomeProduto: json['nomeProduto'],
       imagem: json['imagem'],
       validade: json['validade'],
       mostrar: json['mostrar'],

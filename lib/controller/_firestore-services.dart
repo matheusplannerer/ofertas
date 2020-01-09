@@ -123,7 +123,7 @@ class FirestoreServices {
     await Firestore.instance.collection('ofertas').document(id).setData({
       "data": Timestamp.now(),
       "imagem": url,
-      "nomeProduto": produto.produto,
+      "nomeProduto": produto.nomeProduto,
       "preco": produto.preco,
       "empresaDona": empresaID,
       "empresaLogo": empresaLogo,
