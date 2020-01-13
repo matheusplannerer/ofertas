@@ -85,30 +85,60 @@ class _DashboardState extends State<Dashboard> {
         ],
       ),
       drawer: Drawer(
-        child: Container(
-          color: Colors.white,
-          child: ListView(
-            children: <Widget>[
+        child: ListView(
+          children: <Widget> [
               if (global.fbUser == null)
                 ListTile(
-                  title: Text('ENTRAR COMO EMPRESA'),
-                  trailing: Icon(Icons.person),
+                  title:Row( children:<Widget>[ 
+                  Icon(Icons.store, color: Colors.orange.shade600,size: 30),
+                  Padding(
+          padding: EdgeInsets.only(left: 20.0),
+          child: Text('Entrar como empresa', 
+          style: TextStyle(
+              fontFamily: "Domine-Bold",
+              fontSize: 16,
+              color: Colors.black87,
+              letterSpacing: .3),),
+        ),
+                  ],),
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Entrar()));
                   },
                 ),
+                Divider(),
               ListTile(
-                title: Text('DIVULGUE SUAS OFERTAS'),
-                trailing: Icon(Icons.new_releases),
+                   title:Row( children:<Widget>[ 
+                  Icon(Icons.local_offer,color: Colors.orange.shade500,size: 30),
+                  Padding(
+          padding: EdgeInsets.only(left: 20.0),
+          child: Text('Divulgue suas Ofertas', 
+          style: TextStyle(
+              fontFamily: "Domine-Bold",
+              fontSize: 16,
+              color: Colors.black87,
+              letterSpacing: .3),),
+        ),
+                  ],),
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => CadastroPage()));
                 },
               ),
+              Divider(),
               ListTile(
-                trailing: Icon(Icons.email),
-                title: Text("ENTRE EM CONTATO"),
+                 title:Row( children:<Widget>[ 
+                  Icon(Icons.chat_bubble_outline, color: Colors.orange.shade500,size: 30),
+                  Padding(
+          padding: EdgeInsets.only(left: 20.0),
+          child: Text('Entre em contato', 
+          style: TextStyle(
+              fontFamily: "Domine-Bold",
+              fontSize: 16,
+              color: Colors.black87,
+              letterSpacing: .3),),
+        ),
+                  ],),
                 onTap: () {
                   Navigator.push(
                       context,
@@ -116,22 +146,50 @@ class _DashboardState extends State<Dashboard> {
                           builder: (context) => EntreEmContato()));
                 },
               ),
+              Divider(),
               ListTile(
-                trailing: Icon(Icons.group_add),
-                title: Text("INDIQUE O APP"),
+                 title:Row( children:<Widget>[ 
+                  Icon(Icons.group_add, color: Colors.orange.shade600,size: 30,),
+                  Padding(
+          padding: EdgeInsets.only(left: 20.0),
+          child: Text('Indique o App', 
+          style: TextStyle(
+              fontFamily: "Domine-Bold",
+              fontSize: 16,
+              color: Colors.black87,
+              letterSpacing: .3),),
+        ),
+                  ],),
                 // onTap: () {
                 //   Navigator.push(context,
                 //       MaterialPageRoute(builder: (context) => Carteira()));
                 // },
               ),
+              Divider(),
               ListTile(
-                trailing: Icon(Icons.star_border),
-                title: Text('AVALIE O APP'),
+                                 title:Row( children:<Widget>[ 
+                  Icon(Icons.star_border, color: Colors.orange.shade400,size: 30),
+                  Padding(
+          padding: EdgeInsets.only(left: 20.0),
+          child: Text('Avalie o app', 
+          style: TextStyle(
+              fontFamily: "Domine-Bold",
+              fontSize: 16,
+              color: Colors.black87,
+              letterSpacing: .3),),
+        ),
+                  ],),
               ),
+              Divider(),
               if (global.fbUser != null)
                 ListTile(
-                  trailing: Icon(Icons.report_problem),
-                  title: Text('SAIR'),
+                  trailing: Icon(Icons.arrow_back, color: Colors.orange.shade400),
+                  title: Text('SAIR', 
+                  style: TextStyle(
+              fontFamily: "Domine-Bold",
+              fontSize: 16,
+              color: Colors.black87,
+              letterSpacing: .3),),
                   onTap: () async {
                     Navigator.of(context).pop();
                     showLoadingDialog();
@@ -145,7 +203,6 @@ class _DashboardState extends State<Dashboard> {
                   },
                 ),
             ],
-          ),
         ),
       ),
       body: global.fbUser != null
