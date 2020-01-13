@@ -437,9 +437,20 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                                   )));
                                     },
                                     child: Image.network(
-                                        snapshot.data.documents[index]
-                                            .data['imagem'],
-                                        scale: 0.9),
+                                      snapshot
+                                          .data.documents[index].data['imagem'],
+                                      scale: 0.9,
+                                      loadingBuilder:
+                                          (context, child, imgChunck) {
+                                        if (imgChunck == null) {
+                                          return child;
+                                        } else {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        }
+                                      },
+                                    ),
                                   );
                                 },
                               ),
@@ -451,10 +462,10 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                           }
                         },
                         stream: Firestore.instance
-                            .collection('empresas')
-                            .document(empresa.empresaID)
                             .collection('ofertas')
-                            // .where("mostrar", isEqualTo: true)
+                            .where("empresaDona",
+                                isEqualTo: widget.empresa.empresaID)
+                            .where("mostrar", isEqualTo: true)
                             .getDocuments()
                             .asStream(),
                       ),
