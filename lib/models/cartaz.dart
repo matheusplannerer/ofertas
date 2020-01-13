@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'descrição_cartaz.dart';
+import 'package:ofertas/paginas/postagem/descri%C3%A7%C3%A3o_cartaz.dart';
 
 class CartazPage extends StatefulWidget {
   String nomeproduto = "";

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -11,8 +12,6 @@ import 'package:ofertas/services/via_cep_services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class CadastroEmpresa extends StatefulWidget {
   CadastroEmpresa();
@@ -30,14 +29,176 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
 
   Services services = Services();
 
-  TextEditingController cep = TextEditingController();
+//Controladores de erros
+  bool _erroNomeUnidade = false;
+  bool _erroCategoria = false;
+  bool _erroCep = false;
+  bool _erroLogradouro = false;
+  bool _erroBairro = false;
+  bool _erroEstado = false;
+  bool _erroNumero = false;
+  bool _erroComplemennto = false;
+  bool _erroTelefone = false;
+  bool _erroEmail = false;
+  bool _erroSite = false;
 
-  TextEditingController rua = TextEditingController();
-  TextEditingController bairro = TextEditingController();
-  TextEditingController estado = TextEditingController();
+//Controladores
+  TextEditingController _nomeUnidade = TextEditingController();
+  TextEditingController _tipo = TextEditingController();
+  TextEditingController _cep = TextEditingController();
+  TextEditingController _logradouro = TextEditingController();
+  TextEditingController _bairro = TextEditingController();
+  TextEditingController _estado = TextEditingController();
+  TextEditingController _numero = TextEditingController();
+  TextEditingController _complemento = TextEditingController();
+  TextEditingController _telefone = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _site = TextEditingController();
+  TextEditingController _horaAbertura = TextEditingController();
+  TextEditingController _horaFechamento = TextEditingController();
 
-  TextEditingController horaInicio = TextEditingController();
-  TextEditingController horaTermino = TextEditingController();
+//Mascaras
+  var maskCep = MaskTextInputFormatter(
+      filter: {"#": RegExp(r'[0-9]')}, mask: "#####-###");
+
+  var maskTelefone = MaskTextInputFormatter(
+      filter: {"#": RegExp(r'[0-9]')}, mask: "###########");
+
+//Funções de validação
+  void _validateNomeUnidade(String text) {
+    if (text.length >= 24) {
+      setState(() {
+        _erroNomeUnidade = true;
+      });
+    } else {
+      setState(() {
+        _erroNomeUnidade = false;
+      });
+    }
+  }
+
+  void _validateCategoria() {
+    if (cadastro.categoria == '') {
+      setState(() {
+        _erroCategoria = true;
+      });
+    } else {
+      setState(() {
+        _erroCategoria = false;
+      });
+    }
+  }
+
+  void _validateCep(String text) {
+    if (text.length != 9) {
+      setState(() {
+        _erroCep = true;
+      });
+    } else {
+      setState(() {
+        _erroCep = false;
+      });
+    }
+  }
+
+  void _validateLogradouro(String text) {
+    if (text.length < 5) {
+      setState(() {
+        _erroLogradouro = true;
+      });
+    } else {
+      _erroLogradouro = false;
+    }
+  }
+
+  void _validateBairro(String text) {
+    if (text.length < 5) {
+      setState(() {
+        _erroBairro = true;
+      });
+    } else {
+      _erroBairro = false;
+    }
+  }
+
+  void _validateUF(String text) {
+    if (text.length != 2) {
+      setState(() {
+        _erroEstado = true;
+      });
+    } else {
+      _erroEstado = false;
+    }
+  }
+
+  void _validateNumero(String text) {
+    if (text.replaceAll(" ", "").length == 0) {
+      setState(() {
+        _erroNumero = true;
+      });
+    } else {
+      setState(() {
+        _erroNumero = false;
+      });
+    }
+  }
+
+  void _validateComplemento(String text) {}
+
+  void _validateTelefone(String text) {
+    if (text.length <= 5) {
+      setState(() {
+        _erroTelefone = true;
+      });
+    } else {
+      setState(() {
+        _erroTelefone = false;
+      });
+    }
+  }
+
+  void _validateEmail(String text) {
+    if (!text.contains("@") || text.length < 5) {
+      setState(() {
+        _erroEmail = true;
+      });
+    } else {
+      setState(() {
+        _erroEmail = false;
+      });
+    }
+  }
+
+  void _validateSite(String text) {}
+
+  bool _allValid() {
+    _validateBairro(_bairro.text.trim());
+    _validateCategoria();
+    _validateCep(_cep.text.trim());
+    _validateComplemento(_complemento.text.trim());
+    _validateEmail(_email.text.trim());
+    _validateLogradouro(_logradouro.text.trim());
+    _validateNomeUnidade(_nomeUnidade.text.trim());
+    _validateNumero(_numero.text.trim());
+    _validateSite(_site.text.trim());
+    _validateTelefone(_telefone.text.trim());
+    _validateUF(_estado.text.trim());
+
+    if (!_erroBairro &&
+        !_erroCategoria &&
+        !_erroCep &&
+        !_erroComplemennto &&
+        !_erroEmail &&
+        !_erroEstado &&
+        !_erroLogradouro &&
+        !_erroNomeUnidade &&
+        !_erroNumero &&
+        !_erroSite &&
+        !_erroTelefone) {
+      return true;
+    } else
+      return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +208,6 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
         title: Text(
           "CADASTRO",
           style: TextStyle(
-              fontSize: ScreenUtil.getInstance().setSp(45),
               fontFamily: "Poppins-Bold",
               color: Colors.white,
               letterSpacing: .6),
@@ -63,125 +223,123 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
           Text("Complete as informações abaixo para finalizar seu cadastro.",
               style: TextStyle(color: Colors.grey[700], fontSize: 20)),
           SizedBox(height: 20),
-          Form(
-            key: formKey,
-            // autovalidate: true,
-            child: Column(
-              children: [
-                TextFormField(
-                  validator: (String value) {
-                    if (value.length >= 3) {
-                      return null;
-                    } else {
-                      return "Campo inconsistente";
-                    }
-                  },
+          TextField(
+            controller: _nomeUnidade,
+            decoration: InputDecoration(
+              errorText: _erroNomeUnidade ? "Máximo 26 caracteres" : null,
+              labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
+              labelText: 'Nome da Unidade',
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                borderSide: BorderSide(),
+              ),
+            ),
+            keyboardType: TextInputType.text,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 25.0),
+          ),
+          DropdownButton(
+            onChanged: (data) {
+              setState(() {
+                cadastro.categoria = data;
+              });
+            },
+            value: cadastro.categoria,
+            icon: Icon(Icons.list),
+            items: [
+              DropdownMenuItem(child: Text("ACADEMIAS"), value: "ACADEMIAS"),
+              DropdownMenuItem(
+                  child: Text("ACESSORIOS PARA LOJAS"),
+                  value: "ACESSORIOS PARA LOJAS"),
+              DropdownMenuItem(
+                  child: Text("ACESSORIOS PET"), value: "ACESSORIOS PET"),
+              DropdownMenuItem(
+                  child: Text("AÇOUGUES E PEIXARIAS"),
+                  value: "AÇOUGUES E PEIXARIAS"),
+              DropdownMenuItem(child: Text("ACUPUNTURA"), value: "ACUPUNTURA"),
+              DropdownMenuItem(child: Text("ADEGAS"), value: "ADEGAS"),
+            ],
+          ),
+          if (_erroCategoria)
+            Text(
+              "Escolha uma categoria",
+              style: TextStyle(color: Colors.red),
+              textAlign: TextAlign.left,
+            ),
+          Padding(
+            padding: EdgeInsets.only(top: 25.0),
+          ),
+          Row(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.centerLeft,
+                width: MediaQuery.of(context).size.width - 100,
+                child: TextField(
+                  controller: _cep,
+                  inputFormatters: [maskCep],
                   decoration: InputDecoration(
+                    errorText: _erroCep ? "Insira um CEP Válido" : null,
                     labelStyle:
                         TextStyle(color: Colors.grey[700], fontSize: 15),
-                    labelText: 'Nome da Unidade',
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25.0),
                       borderSide: BorderSide(),
                     ),
+                    labelText: 'CEP',
                   ),
-                  onSaved: (String value) {
-                    cadastro.nomeEmpresa = value.toUpperCase();
-                  },
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.number,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 25.0),
-                ),
-                DropdownButton(
-                  onChanged: (data) {
+              ),
+              Container(
+                child: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () async {
+                    final aux = _cep.text;
+                    showLoadingDialog();
+                    var data = await ViaCepService().fetchCep(cep: aux);
+                    hideLoadingDialog();
                     setState(() {
-                      cadastro.categoria = data;
+                      _logradouro =
+                          TextEditingController(text: data.logradouro);
+                      _bairro = TextEditingController(text: data.bairro);
+                      _estado = TextEditingController(text: data.uf);
                     });
                   },
-                  value: cadastro.categoria,
-                  icon: Icon(Icons.list),
-                  items: [
-                    DropdownMenuItem(
-                        child: Text("ACADEMIAS"), value: "ACADEMIAS"),
-                    DropdownMenuItem(
-                        child: Text("ACESSORIOS PARA LOJAS"),
-                        value: "ACESSORIOS PARA LOJAS"),
-                    DropdownMenuItem(
-                        child: Text("ACESSORIOS PET"), value: "ACESSORIOS PET"),
-                    DropdownMenuItem(
-                        child: Text("AÇOUGUES E PEIXARIAS"),
-                        value: "AÇOUGUES E PEIXARIAS"),
-                    DropdownMenuItem(
-                        child: Text("ACUPUNTURA"), value: "ACUPUNTURA"),
-                    DropdownMenuItem(child: Text("ADEGAS"), value: "ADEGAS"),
-                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 25.0),
-                ),
-                Row(
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width - 100,
-                      child: TextFormField(
-                        controller: cep,
-                        validator: (String value) {
-                          if (value.length >= 3) {
-                            return null;
-                          } else {
-                            return "Campo inconsistente";
-                          }
-                        },
-                        decoration: InputDecoration(
-                          labelStyle:
-                              TextStyle(color: Colors.grey[700], fontSize: 15),
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(),
-                          ),
-                          labelText: 'CEP',
-                        ),
-                        onSaved: (String value) {
-                          cadastro.cep = int.tryParse(value);
-                        },
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                    Container(
-                      child: IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () async {
-                          final _cep = cep.text;
-                          showLoadingDialog();
-                          var data = await ViaCepService().fetchCep(cep: _cep);
-                          hideLoadingDialog();
-                          setState(() {
-                            rua = TextEditingController(text: data.logradouro);
-                            bairro = TextEditingController(text: data.bairro);
-                            estado = TextEditingController(text: data.uf);
-                          });
-                        },
-                      ),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 25.0),
-                ),
-                TextFormField(
-                  controller: rua,
-                  validator: (String value) {
-                    if (value.length >= 3) {
-                      return null;
-                    } else {
-                      return "Campo inconsistente";
-                    }
-                  },
+              )
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 25.0),
+          ),
+          TextField(
+            controller: _logradouro,
+            decoration: InputDecoration(
+              errorText: _erroLogradouro ? "Mínimo 5 caracteres" : null,
+              labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                borderSide: BorderSide(),
+              ),
+              labelText: 'Logradouro',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 25.0),
+          ),
+          Row(
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width - 150,
+                child: TextField(
+                  controller: _bairro,
                   decoration: InputDecoration(
+                    errorText: _erroBairro ? "Mínimo 5 caracteres" : null,
                     labelStyle:
                         TextStyle(color: Colors.grey[700], fontSize: 15),
                     fillColor: Colors.white,
@@ -189,202 +347,30 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                       borderRadius: BorderRadius.circular(25.0),
                       borderSide: BorderSide(),
                     ),
-                    labelText: 'Logradouro',
+                    labelText: 'Bairro',
                   ),
-                  onSaved: (String value) {
-                    cadastro.logradouro = value;
-                  },
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.text,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 25.0),
-                ),
-                Row(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width - 150,
-                      child: TextFormField(
-                        controller: bairro,
-                        validator: (String value) {
-                          if (value.length >= 3) {
-                            return null;
-                          } else {
-                            return "Campo inconsistente";
-                          }
-                        },
-                        decoration: InputDecoration(
-                          labelStyle:
-                              TextStyle(color: Colors.grey[700], fontSize: 15),
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(),
-                          ),
-                          labelText: 'Bairro',
-                        ),
-                        onSaved: (String value) {
-                          cadastro.bairro = value;
-                        },
-                        keyboardType: TextInputType.text,
-                      ),
-                    ),
-                    SizedBox(width: 15),
-                    Expanded(
-                      child: TextFormField(
-                        controller: estado,
-                        validator: (String value) {
-                          if (value.length >= 3) {
-                            return null;
-                          } else {
-                            return "Campo inconsistente";
-                          }
-                        },
-                        decoration: InputDecoration(
-                          labelStyle:
-                              TextStyle(color: Colors.grey[700], fontSize: 15),
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(),
-                          ),
-                          labelText: 'Estado',
-                        ),
-                        onSaved: (String value) {
-                          cadastro.estado = value;
-                        },
-                        keyboardType: TextInputType.text,
-                      ),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 25.0),
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        validator: (String value) {
-                          if (value.length >= 1) {
-                            return null;
-                          } else {
-                            return "Campo inconsistente";
-                          }
-                        },
-                        onSaved: (String value) {
-                          cadastro.numero = value.toUpperCase();
-                        },
-                        decoration: InputDecoration(
-                          labelStyle:
-                              TextStyle(color: Colors.grey[700], fontSize: 15),
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(),
-                          ),
-                          labelText: 'Numero',
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: TextFormField(
-                        keyboardType: TextInputType.text,
-                        onSaved: (String value) {
-                          cadastro.complemento = value.toUpperCase();
-                        },
-                        decoration: InputDecoration(
-                          labelStyle:
-                              TextStyle(color: Colors.grey[700], fontSize: 15),
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(),
-                          ),
-                          labelText: 'Complemento',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 25.0),
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  validator: (String value) {
-                    if (value.length >= 3) {
-                      return null;
-                    } else {
-                      return "Campo inconsistente";
-                    }
-                  },
-                  onSaved: (String value) {
-                    cadastro.telefone = int.tryParse(value);
-                  },
+              ),
+              SizedBox(width: 15),
+              Expanded(
+                child: TextField(
+                  controller: _estado,
                   decoration: InputDecoration(
+                    errorText: _erroEstado ? "Ex: 'SP'" : null,
                     labelStyle:
                         TextStyle(color: Colors.grey[700], fontSize: 15),
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide()),
-                    labelText: 'Telefone',
+                      borderRadius: BorderRadius.circular(25.0),
+                      borderSide: BorderSide(),
+                    ),
+                    labelText: 'Estado',
                   ),
+                  keyboardType: TextInputType.text,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 25.0),
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (String value) {
-                    if (value.length >= 3) {
-                      return null;
-                    } else {
-                      return "Campo inconsistente";
-                    }
-                  },
-                  onSaved: (String value) {
-                    cadastro.email = value.toLowerCase();
-                  },
-                  decoration: InputDecoration(
-                    labelStyle:
-                        TextStyle(color: Colors.grey[700], fontSize: 15),
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide()),
-                    labelText: 'E-mail',
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 25.0),
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.url,
-                  decoration: InputDecoration(
-                    labelStyle:
-                        TextStyle(color: Colors.grey[700], fontSize: 15),
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide()),
-                    labelText: 'Site',
-                  ),
-                  validator: (String value) {
-                    if (value.length >= 3) {
-                      return null;
-                    } else {
-                      return "Campo inconsistente";
-                    }
-                  },
-                  onSaved: (String value) {
-                    cadastro.site = value.toLowerCase();
-                  },
-                ),
-              ],
-            ),
+              )
+            ],
           ),
           Padding(
             padding: EdgeInsets.only(top: 25.0),
@@ -392,256 +378,338 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
           Row(
             children: <Widget>[
               Expanded(
-                child: Container(
-                  decoration: new BoxDecoration(
-                    border: Border.all(color: Colors.grey[700]),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(24.0),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  controller: _numero,
+                  decoration: InputDecoration(
+                    errorText: _erroNumero ? "Campo inválido" : null,
+                    labelStyle:
+                        TextStyle(color: Colors.grey[700], fontSize: 15),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                      borderSide: BorderSide(),
                     ),
-                  ),
-                  child: BasicTimeField(
-                    text: "Hora Abertura",
-                    controller: horaInicio,
+                    labelText: 'Numero',
                   ),
                 ),
               ),
-              SizedBox(width: 15),
+              SizedBox(width: 10),
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey[700]),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(24.0),
+                child: TextField(
+                  controller: _complemento,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    errorText: _erroComplemennto ? "Campo inválido" : null,
+                    labelStyle:
+                        TextStyle(color: Colors.grey[700], fontSize: 15),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                      borderSide: BorderSide(),
                     ),
-                  ),
-                  child: BasicTimeField(
-                    text: "Hora Término",
-                    controller: horaTermino,
+                    labelText: 'Complemento',
                   ),
                 ),
               ),
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(top: 15.0),
+            padding: EdgeInsets.only(top: 25.0),
           ),
-          Container(
-            margin: EdgeInsets.only(top: 20.0),
-            child: Column(
-              children: [
-                Wrap(
-                  spacing: -1,
-                  children: [
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          'DOM',
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                        ),
-                        Checkbox(
-                          value: cadastro.funcionamento['domVal'],
-                          onChanged: (bool value) {
-                            setState(
-                              () {
-                                cadastro.funcionamento['domVal'] = value;
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          'SEG',
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                        ),
-                        Checkbox(
-                          value: cadastro.funcionamento['segVal'],
-                          onChanged: (bool value) {
-                            setState(
-                              () {
-                                cadastro.funcionamento['segVal'] = value;
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          'TER',
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                        ),
-                        Checkbox(
-                          value: cadastro.funcionamento['terVal'],
-                          onChanged: (bool value) {
-                            setState(
-                              () {
-                                cadastro.funcionamento['terVal'] = value;
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          'QUA',
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                        ),
-                        Checkbox(
-                          value: cadastro.funcionamento['quaVal'],
-                          onChanged: (bool value) {
-                            setState(
-                              () {
-                                cadastro.funcionamento['quaVal'] = value;
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          'QUI',
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                        ),
-                        Checkbox(
-                          value: cadastro.funcionamento['quiVal'],
-                          onChanged: (bool value) {
-                            setState(
-                              () {
-                                cadastro.funcionamento['quiVal'] = value;
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          'SEX',
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                        ),
-                        Checkbox(
-                          value: cadastro.funcionamento['sexVal'],
-                          onChanged: (bool value) {
-                            setState(
-                              () {
-                                cadastro.funcionamento['sexVal'] = value;
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          'SAB',
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                        ),
-                        Checkbox(
-                          value: cadastro.funcionamento['sabVal'],
-                          onChanged: (bool value) {
-                            setState(
-                              () {
-                                cadastro.funcionamento['sabVal'] = value;
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+          TextField(
+            keyboardType: TextInputType.number,
+            controller: _telefone,
+            decoration: InputDecoration(
+              errorText: _erroTelefone ? "Insira um contato válido" : null,
+              labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide()),
+              labelText: 'Telefone',
             ),
           ),
           Padding(
             padding: EdgeInsets.only(top: 25.0),
           ),
+          TextField(
+            controller: _email,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              errorText: _erroEmail ? "E-mail inválido" : null,
+              labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide()),
+              labelText: 'E-mail',
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 25.0),
+          ),
+          TextField(
+            controller: _site,
+            keyboardType: TextInputType.url,
+            decoration: InputDecoration(
+              errorText: _erroSite ? "Site inválido" : null,
+              labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide()),
+              labelText: 'Site',
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 25.0),
+          ),
+          // Row(
+          //   children: <Widget>[
+          //     Expanded(
+          //       child: Container(
+          //         decoration: new BoxDecoration(
+          //           border: Border.all(color: Colors.grey[700]),
+          //           borderRadius: BorderRadius.all(
+          //             Radius.circular(24.0),
+          //           ),
+          //         ),
+          //         child: BasicTimeField(
+          //           text: "Hora Abertura",
+          //           controller: _horaAbertura,
+          //         ),
+          //       ),
+          //     ),
+          //     SizedBox(width: 15),
+          //     Expanded(
+          //       child: Container(
+          //         decoration: BoxDecoration(
+          //           border: Border.all(color: Colors.grey[700]),
+          //           borderRadius: BorderRadius.all(
+          //             Radius.circular(24.0),
+          //           ),
+          //         ),
+          //         child: BasicTimeField(
+          //           text: "Hora Término",
+          //           controller: _horaFechamento,
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // Padding(
+          //   padding: EdgeInsets.only(top: 15.0),
+          // ),
+          // Container(
+          //   margin: EdgeInsets.only(top: 20.0),
+          //   child: Column(
+          //     children: [
+          //       Wrap(
+          //         spacing: -1,
+          //         children: [
+          //           Column(
+          //             children: <Widget>[
+          //               Text(
+          //                 'DOM',
+          //                 maxLines: 1,
+          //                 textAlign: TextAlign.center,
+          //               ),
+          //               Checkbox(
+          //                 value: cadastro.funcionamento['domVal'],
+          //                 onChanged: (bool value) {
+          //                   setState(
+          //                     () {
+          //                       cadastro.funcionamento['domVal'] = value;
+          //                     },
+          //                   );
+          //                 },
+          //               ),
+          //             ],
+          //           ),
+          //           Column(
+          //             children: <Widget>[
+          //               Text(
+          //                 'SEG',
+          //                 maxLines: 1,
+          //                 textAlign: TextAlign.center,
+          //               ),
+          //               Checkbox(
+          //                 value: cadastro.funcionamento['segVal'],
+          //                 onChanged: (bool value) {
+          //                   setState(
+          //                     () {
+          //                       cadastro.funcionamento['segVal'] = value;
+          //                     },
+          //                   );
+          //                 },
+          //               ),
+          //             ],
+          //           ),
+          //           Column(
+          //             children: <Widget>[
+          //               Text(
+          //                 'TER',
+          //                 maxLines: 1,
+          //                 textAlign: TextAlign.center,
+          //               ),
+          //               Checkbox(
+          //                 value: cadastro.funcionamento['terVal'],
+          //                 onChanged: (bool value) {
+          //                   setState(
+          //                     () {
+          //                       cadastro.funcionamento['terVal'] = value;
+          //                     },
+          //                   );
+          //                 },
+          //               ),
+          //             ],
+          //           ),
+          //           Column(
+          //             children: <Widget>[
+          //               Text(
+          //                 'QUA',
+          //                 maxLines: 1,
+          //                 textAlign: TextAlign.center,
+          //               ),
+          //               Checkbox(
+          //                 value: cadastro.funcionamento['quaVal'],
+          //                 onChanged: (bool value) {
+          //                   setState(
+          //                     () {
+          //                       cadastro.funcionamento['quaVal'] = value;
+          //                     },
+          //                   );
+          //                 },
+          //               ),
+          //             ],
+          //           ),
+          //           Column(
+          //             children: <Widget>[
+          //               Text(
+          //                 'QUI',
+          //                 maxLines: 1,
+          //                 textAlign: TextAlign.center,
+          //               ),
+          //               Checkbox(
+          //                 value: cadastro.funcionamento['quiVal'],
+          //                 onChanged: (bool value) {
+          //                   setState(
+          //                     () {
+          //                       cadastro.funcionamento['quiVal'] = value;
+          //                     },
+          //                   );
+          //                 },
+          //               ),
+          //             ],
+          //           ),
+          //           Column(
+          //             children: <Widget>[
+          //               Text(
+          //                 'SEX',
+          //                 maxLines: 1,
+          //                 textAlign: TextAlign.center,
+          //               ),
+          //               Checkbox(
+          //                 value: cadastro.funcionamento['sexVal'],
+          //                 onChanged: (bool value) {
+          //                   setState(
+          //                     () {
+          //                       cadastro.funcionamento['sexVal'] = value;
+          //                     },
+          //                   );
+          //                 },
+          //               ),
+          //             ],
+          //           ),
+          //           Column(
+          //             children: <Widget>[
+          //               Text(
+          //                 'SAB',
+          //                 maxLines: 1,
+          //                 textAlign: TextAlign.center,
+          //               ),
+          //               Checkbox(
+          //                 value: cadastro.funcionamento['sabVal'],
+          //                 onChanged: (bool value) {
+          //                   setState(
+          //                     () {
+          //                       cadastro.funcionamento['sabVal'] = value;
+          //                     },
+          //                   );
+          //                 },
+          //               ),
+          //             ],
+          //           ),
+          //         ],
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          Padding(
+            padding: EdgeInsets.only(top: 25.0),
+          ),
           FlatButton(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Colors.grey[700])),
+              borderRadius: BorderRadius.circular(18.0),
+              side: BorderSide(color: Colors.grey[700]),
+            ),
             textColor: Colors.grey[700],
             padding: EdgeInsets.all(20.0),
             onPressed: () async {
-              cadastro.horaInicio = horaInicio.text;
-              cadastro.horaTermino = horaTermino.text;
+              cadastro.horaInicio = _horaAbertura.text;
+              cadastro.horaTermino = _horaFechamento.text;
+              cadastro.bairro = _bairro.text.toUpperCase().trim();
+              cadastro.cep = _cep.text.trim();
+              cadastro.complemento = _complemento.text.toUpperCase();
+              cadastro.donoEmpresa = global.fbUser.uid;
+              cadastro.email = _email.text.toLowerCase().trim();
+              cadastro.empresaID = Firestore.instance
+                  .collection('empresas')
+                  .document()
+                  .documentID;
+              cadastro.estado = _estado.text.toUpperCase().trim();
+              cadastro.funcionamento = {};
+              cadastro.horaInicio = '';
+              cadastro.horaTermino = '';
+              cadastro.logradouro = _logradouro.text.toUpperCase().trim();
+              cadastro.nomeEmpresa = _nomeUnidade.text.toUpperCase().trim();
+              cadastro.numero = _numero.text.trim();
+              cadastro.site = _site.text.toLowerCase().trim();
+              cadastro.telefone = _telefone.text.trim();
 
-              if (formKey.currentState.validate()) {
-                formKey.currentState.save();
-                // print(cadastro.bairro);
-                // print(cadastro.cep);
-                // print(cadastro.complemento);
-                // print(cadastro.estado);
-                // print(cadastro.funcionamento);
-                // print(cadastro.horaInicio);
-                // print(cadastro.horaTermino);
-                // print(cadastro.logradouro);
-                // print(cadastro.nomeUnidade);
-                // print(cadastro.numero);
-                // print(cadastro.pais);
-                // print(cadastro.site);
-                // print(cadastro.whatsapp);
-                // print(cadastro.telefone);
-
-                showLoadingDialog();
-                var empresaID = Firestore.instance
-                    .collection("usuarios")
-                    .document(global.fbUser.uid)
-                    .collection('empresas')
-                    .document()
-                    .documentID;
-                cadastro.empresaID = empresaID;
-
-                await Firestore.instance
-                    .collection("empresas")
-                    .document(cadastro.empresaID)
-                    .setData({
-                  "nomeEmpresa": cadastro.nomeEmpresa,
-                  "telefone": cadastro.telefone,
-                  "email": cadastro.email,
-                  "site": cadastro.site,
-                  "cep": cadastro.cep,
-                  "donoEmpresa": global.fbUser.uid,
-                  "bairro": cadastro.bairro,
-                  "estado": cadastro.estado,
-                  "logradouro": cadastro.logradouro,
-                  "complemento": cadastro.complemento,
-                  "numero": cadastro.numero,
-                  "horaInicio": cadastro.horaInicio,
-                  "horaTermino": cadastro.horaTermino,
-                  "ofertas": 0
-                });
-
-                await Firestore.instance
-                    .collection("empresas")
-                    .document(cadastro.empresaID)
-                    .updateData(cadastro.funcionamento);
-
+              if (!_allValid()) return;
+              showLoadingDialog(tapDismiss: false);
+              var cadastrou = await services.firestore
+                  .cadastrarEmpresa(cadastro, global.fbUser);
+              if (!cadastrou) {
                 hideLoadingDialog();
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) =>
-                        PerfilEmpresaPage(cadastro.empresaID)));
-              } else {}
-
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => CA0010()));
+                await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text("OK"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                        title: Text("Algo deu errado!"),
+                        content: SingleChildScrollView(
+                          child: Text(
+                              "Se o problema persistir, entre em contato com o suporte"),
+                        ),
+                      );
+                    });
+                Navigator.of(context)
+                    .popUntil((Route<dynamic> route) => route.isFirst);
+                return;
+              }
+              hideLoadingDialog();
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => PerfilEmpresaPage(cadastro.empresaID)));
             },
             child: Text(
               "CADASTRAR",

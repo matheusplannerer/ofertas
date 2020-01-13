@@ -17,27 +17,39 @@ class FirestoreServices {
     try {
       await Firestore.instance
           .collection('empresas')
-          .document(fbUser.uid)
+          .document(cadastro.empresaID)
           .setData({
-        "empresaID": cadastro.empresaID,
-        "nomeEmpresa": cadastro.nomeEmpresa,
-        "horaInicio": cadastro.horaInicio,
-        "horaTermino": cadastro.horaTermino,
-        "logradouro": cadastro.logradouro,
-        "numero": cadastro.numero,
-        "pais": cadastro.pais,
-        "site": cadastro.site,
-        "bairro": cadastro.bairro,
-        "cep": cadastro.cep,
-        "complemento": cadastro.complemento,
-        "email": cadastro.email,
-        "estado": cadastro.estado,
-        "telefone": cadastro.telefone,
-      });
+        "donoEmpresa": cadastro.donoEmpresa, //
+        "categoria": cadastro.categoria, //
+        "empresaID": cadastro.empresaID, //
+        "nomeEmpresa": cadastro.nomeEmpresa, //
+        "horaInicio": cadastro.horaInicio, //
+        "horaTermino": cadastro.horaTermino, //
+        "logradouro": cadastro.logradouro, //
+        "numero": cadastro.numero, //
+        "site": cadastro.site, //
+        "bairro": cadastro.bairro, //
+        "cep": cadastro.cep, //
+        "complemento": cadastro.complemento, //
+        "email": cadastro.email, //
+        "estado": cadastro.estado, //
+        "telefone": cadastro.telefone, //
+      }).timeout(Duration(seconds: 15));
       await Firestore.instance
           .collection('empresas')
+          .document(cadastro.empresaID)
+          .updateData(cadastro.funcionamento)
+          .timeout(Duration(seconds: 15)); //
+
+      await Firestore.instance
+          .collection('usuarios')
           .document(fbUser.uid)
-          .updateData(cadastro.funcionamento);
+          .collection('empresas')
+          .document(cadastro.empresaID)
+          .setData({
+        "nomeEmpresa": cadastro.nomeEmpresa,
+        "empresaID": cadastro.empresaID,
+      }).timeout(Duration(seconds: 15));
 
       return true;
     } catch (e) {

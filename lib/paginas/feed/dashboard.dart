@@ -98,14 +98,17 @@ class _DashboardState extends State<Dashboard> {
                         MaterialPageRoute(builder: (context) => Entrar()));
                   },
                 ),
-              ListTile(
-                title: Text('DIVULGUE SUAS OFERTAS'),
-                trailing: Icon(Icons.new_releases),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CadastroPage()));
-                },
-              ),
+              if (global.fbUser == null)
+                ListTile(
+                  title: Text('DIVULGUE SUAS OFERTAS'),
+                  trailing: Icon(Icons.new_releases),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CadastroPage()));
+                  },
+                ),
               ListTile(
                 trailing: Icon(Icons.email),
                 title: Text("ENTRE EM CONTATO"),

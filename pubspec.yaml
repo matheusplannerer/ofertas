@@ -36,6 +36,7 @@ dependencies:
   auto_size_text: ^0.0.2
   flutter_screenutil: ^0.4.2
   carousel_pro: ^1.0.0
+  mask_text_input_formatter: ^1.0.5
 
 
 

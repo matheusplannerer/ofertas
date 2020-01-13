@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:ofertas/models/classes_usuarios.dart';
 
 class AuthServices {
   Future<dynamic> login(String email, String senha) async {
@@ -19,13 +21,25 @@ class AuthServices {
     }
   }
 
-  Future<FirebaseUser> signUp(String email, String senha) async {
+  Future<FirebaseUser> signUp(String email, String senha, User user) async {
     try {
       var data = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email.toLowerCase(), password: senha);
+
+      await Firestore.instance
+          .collection('usuarios')
+          .document(data.uid)
+          .setData({
+        "celular": user.celular,
+        "email": user.email,
+        "nome": user.nome,
+        "id": data.uid,
+      });
       return data;
     } catch (e) {
       print(e.toString());
+      var data = await FirebaseAuth.instance.currentUser();
+      data.delete();
       return null;
     }
   }

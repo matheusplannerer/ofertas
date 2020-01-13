@@ -5,6 +5,7 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/models/icones_customizados.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ofertas/paginas/cadastros/cadastro_page.dart';
 import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:ofertas/paginas/login/SocialIcons.dart';
 
@@ -37,12 +38,6 @@ class _Entrar extends State<Entrar> {
     email = TextEditingController();
     senha = TextEditingController();
     super.initState();
-  }
-
-  void _radio() {
-    setState(() {
-      _isSelected = !_isSelected;
-    });
   }
 
   final Services services = Services();
@@ -122,7 +117,7 @@ class _Entrar extends State<Entrar> {
                   ),
                   Container(
                     width: double.infinity,
-                    height: ScreenUtil.getInstance().setHeight(420),
+                    height: ScreenUtil.getInstance().setHeight(500),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0),
@@ -395,7 +390,9 @@ class _Entrar extends State<Entrar> {
                         style: TextStyle(fontFamily: "Poppins-Medium"),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CadastroPage()));
+                        },
                         child: Text(
                           "Cadastre-se",
                           style: TextStyle(
