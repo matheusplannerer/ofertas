@@ -127,18 +127,13 @@ class FirestoreServices {
         .collection('empresas')
         .document(empresaID)
         .updateData({'ofertas': ofertas + 1});
-    var doc = await Firestore.instance
-        .collection('empresas')
-        .document(empresaID)
-        .get();
-    var empresaLogo = doc.data['foto'];
     await Firestore.instance.collection('ofertas').document(id).setData({
       "data": Timestamp.now(),
       "imagem": url,
       "nomeProduto": produto.nomeProduto,
       "preco": produto.preco,
       "empresaDona": empresaID,
-      "empresaLogo": empresaLogo,
+      "idOferta": id,
       "desconto": produto.desconto,
       "validade": produto.validade,
       "mostrar": true,

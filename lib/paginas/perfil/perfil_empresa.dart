@@ -5,28 +5,33 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:load/load.dart';
+import 'package:ofertas/global/global.dart';
+import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/feed/oferta_detalhes.dart';
 import 'package:ofertas/paginas/postagem/crop.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class PerfilEmpresaPage extends StatefulWidget {
-  PerfilEmpresaPage(this.empresaID);
-  final String empresaID;
+  PerfilEmpresaPage(this.empresa);
+  final PerfilEmpresa empresa;
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _PerfilEmpresaPageState(empresaID);
+    return _PerfilEmpresaPageState(empresa);
   }
 }
 
 class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
   double _rating = 4;
-  String empresaID;
+
+  _PerfilEmpresaPageState(this.empresa);
+  PerfilEmpresa empresa;
 
   // StorageReference ref = FirebaseStorage.instance.ref().child("cartaz2.jpg");
 
@@ -41,9 +46,9 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
   File _imageFile;
   String base64;
 
-  _PerfilEmpresaPageState(this.empresaID) {
-    // getFoto();
-  }
+  // _PerfilEmpresaPageState(this.empresaID) {
+  //   // getFoto();
+  // }
 
   // Future<String> getFoto() async {
   //   foto = await ref.getDownloadURL();
@@ -67,8 +72,10 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
         _imageFile = selected;
       });
 
-      _uploadTask =
-          _storage.ref().child("$empresaID/logo.jpg").putFile(_imageFile);
+      _uploadTask = _storage
+          .ref()
+          .child("${empresa.empresaID}/logo.jpg")
+          .putFile(_imageFile);
 
       showLoadingDialog();
 
@@ -76,14 +83,16 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
       var url = await data.ref.getDownloadURL();
       Firestore.instance
           .collection('empresas')
-          .document(empresaID)
+          .document(empresa.empresaID)
           .updateData({'foto': url});
 
       hideLoadingDialog();
     }
 
+    var global = Provider.of<Global>(context);
+
     // TODO: implement build
-    print(empresaID);
+    // print(empresaID);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: GradientAppBar(
@@ -100,10 +109,10 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
       body: FutureBuilder<DocumentSnapshot>(
           future: Firestore.instance
               .collection('empresas')
-              .document(empresaID)
+              .document(empresa.empresaID)
               .get(),
-          builder: (context, empresa) {
-            if (empresa.hasData) {
+          builder: (context, empresaSnap) {
+            if (empresaSnap.hasData) {
               return ListView(
                 children: <Widget>[
                   Column(
@@ -150,9 +159,9 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     child: CircleAvatar(
                                       radius: 50.0,
                                       backgroundImage:
-                                          empresa.data.data['foto'] != null
+                                          empresaSnap.data.data['foto'] != null
                                               ? NetworkImage(
-                                                  empresa.data.data['foto'])
+                                                  empresaSnap.data.data['foto'])
                                               : AssetImage('assets/logo2.jpg'),
                                     ),
                                   ),
@@ -167,7 +176,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                               child: Column(
                                 children: <Widget>[
                                   AutoSizeText(
-                                    empresa.data.data['nomeEmpresa'],
+                                    empresaSnap.data.data['nomeEmpresa'],
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -185,7 +194,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     style: TextStyle(
                                       fontFamily: 'SubTitle',
                                       fontSize: 20,
-                                      color:Colors.grey[700],
+                                      color: Colors.grey[700],
                                     ),
                                   ),
                                   // SmoothStarRating(
@@ -229,7 +238,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                   builder: (context) {
                                     return AlertDialog(
                                       title: Text(
-                                          "ENDEREÇO: ${empresa.data.data['complemento']}"),
+                                          "ENDEREÇO: ${empresaSnap.data.data['complemento']}"),
                                       actions: <Widget>[
                                         FlatButton(
                                           child: Text("CONFIRMAR"),
@@ -253,12 +262,12 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                   builder: (context) {
                                     return AlertDialog(
                                       title: Text(
-                                          "CONTATO: ${empresa.data.data['telefone'].toString()}"),
+                                          "CONTATO: ${empresaSnap.data.data['telefone'].toString()}"),
                                       actions: <Widget>[
                                         FlatButton(
                                           child: Text("MENSAGEM"),
                                           onPressed: () async {
-                                            await ligarEmpresa(empresa
+                                            await ligarEmpresa(empresaSnap
                                                 .data.data['telefone']
                                                 .toString());
                                             Navigator.of(context).pop();
@@ -267,7 +276,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                         FlatButton(
                                           child: Text("LIGAR"),
                                           onPressed: () async {
-                                            await ligarEmpresa(empresa
+                                            await ligarEmpresa(empresaSnap
                                                 .data.data['telefone']
                                                 .toString());
                                             Navigator.of(context).pop();
@@ -298,67 +307,74 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                       content: SingleChildScrollView(
                                         child: Column(
                                           children: <Widget>[
-                                            Text(empresa.data.data['segVal'] ==
+                                            Text(empresaSnap
+                                                        .data.data['segVal'] ==
                                                     true
                                                 ? "Seg " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaInicio'] +
                                                     " às " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaTermino']
                                                 : ''),
-                                            Text(empresa.data.data['terVal'] ==
+                                            Text(empresaSnap
+                                                        .data.data['terVal'] ==
                                                     true
                                                 ? "Ter " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaInicio'] +
                                                     " às " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaTermino']
                                                 : ''),
-                                            Text(empresa.data.data['quaVal'] ==
+                                            Text(empresaSnap
+                                                        .data.data['quaVal'] ==
                                                     true
                                                 ? "Qua " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaInicio'] +
                                                     " às " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaTermino']
                                                 : ''),
-                                            Text(empresa.data.data['quiVal'] ==
+                                            Text(empresaSnap
+                                                        .data.data['quiVal'] ==
                                                     true
                                                 ? "Qui " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaInicio'] +
                                                     " às " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaTermino']
                                                 : ''),
-                                            Text(empresa.data.data['sexVal'] ==
+                                            Text(empresaSnap
+                                                        .data.data['sexVal'] ==
                                                     true
                                                 ? "Sex " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaInicio'] +
                                                     " às " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaTermino']
                                                 : ''),
-                                            Text(empresa.data.data['sabVal'] ==
+                                            Text(empresaSnap
+                                                        .data.data['sabVal'] ==
                                                     true
                                                 ? "Sáb " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaInicio'] +
                                                     " às " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaTermino']
                                                 : ''),
-                                            Text(empresa.data.data['domVal'] ==
+                                            Text(empresaSnap
+                                                        .data.data['domVal'] ==
                                                     true
                                                 ? "Dom " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaInicio'] +
                                                     " às " +
-                                                    empresa.data
+                                                    empresaSnap.data
                                                         .data['horaTermino']
                                                 : ''),
                                           ],
@@ -407,10 +423,12 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      OfertaModel produto = OfertaModel.fromJson(
-                                          snapshot.data.documents[index].data,
-                                          snapshot.data.documents[index]
-                                              .documentID);
+                                      OfertaModel produto =
+                                          OfertaModel.fromJson(
+                                              snapshot
+                                                  .data.documents[index].data,
+                                              snapshot.data.documents[index]
+                                                  .documentID);
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -434,7 +452,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                         },
                         stream: Firestore.instance
                             .collection('empresas')
-                            .document(empresaID)
+                            .document(empresa.empresaID)
                             .collection('ofertas')
                             // .where("mostrar", isEqualTo: true)
                             .getDocuments()
@@ -453,13 +471,15 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
           // children: <Widget>[
           // ],
           ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add_a_photo),
-        onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ImageCapture(empresaID)));
-        },
-      ),
+      floatingActionButton: empresa.donoEmpresa == global.fbUser.uid
+          ? FloatingActionButton(
+              child: Icon(Icons.add_a_photo),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ImageCapture(empresa.empresaID)));
+              },
+            )
+          : null,
     );
   }
 }

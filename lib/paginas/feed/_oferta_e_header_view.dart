@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/feed/_empresa_header_view.dart';
@@ -103,10 +104,21 @@ class _ViewFeedState extends State<ViewFeed> {
           margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
           height: 80,
           child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      PerfilEmpresaPage(widget.empresa.empresaID)));
+            onTap: () async {
+              showLoadingDialog(tapDismiss: false);
+              var doc = await Firestore.instance
+                  .collection('empresas')
+                  .document(widget.empresa.empresaID)
+                  .get()
+                  .timeout(Duration(seconds: 15));
+              hideLoadingDialog();
+              if (doc != null) {
+                PerfilEmpresa aux =
+                    PerfilEmpresa.fromJson(doc.data, doc.documentID);
+
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => PerfilEmpresaPage(aux)));
+              }
             },
             child: HeaderEmpresaView(empresa: widget.empresa),
           ),

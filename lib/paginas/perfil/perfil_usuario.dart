@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
+import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/paginas/cadastros/cadastro_empresa.dart';
 import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 import 'package:provider/provider.dart';
@@ -46,19 +48,22 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                       ListTile(
                         title: Text(snapshot
                             .data.documentChanges[i].document['nomeEmpresa']),
-                        onTap: () {
-                          print(snapshot.data.documentChanges);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PerfilEmpresaPage(snapshot
-                                  .data
-                                  .documentChanges[i]
-                                  .document
-                                  .documentID)));
-                          // PerfilEmpresaPage(snapshot
-                          //     .data
-                          //     .documentChanges[i]
-                          //     .document
-                          //     .documentID)));
+                        onTap: () async {
+                          showLoadingDialog(tapDismiss: false);
+                          var doc = await Firestore.instance
+                              .collection('empresas')
+                              .document(snapshot
+                                  .data.documentChanges[i].document.documentID)
+                              .get()
+                              .timeout(Duration(seconds: 15));
+                          hideLoadingDialog();
+                          if (doc != null) {
+                            PerfilEmpresa aux = PerfilEmpresa.fromJson(
+                                doc.data, doc.documentID);
+
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => PerfilEmpresaPage(aux)));
+                          }
                         },
                       ),
                     );

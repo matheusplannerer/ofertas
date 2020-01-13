@@ -709,7 +709,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
               }
               hideLoadingDialog();
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => PerfilEmpresaPage(cadastro.empresaID)));
+                  builder: (context) => PerfilEmpresaPage(cadastro)));
             },
             child: Text(
               "CADASTRAR",

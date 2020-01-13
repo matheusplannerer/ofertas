@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/postagem/cartaz.dart';
+import 'package:ofertas/paginas/postagem/concluir_oferta.dart';
 import 'dart:convert';
 
 import 'package:ofertas/paginas/postagem/informacoes_oferta.dart';
@@ -52,18 +53,6 @@ class _ImageCaptureState extends State<ImageCapture> {
     produto.desconto = desconto.text;
   }
 
-  // Future<void> _cropImage() async {
-  //   File cropped = await ImageCropper.cropImage(
-  //     sourcePath: _imageFile.path,
-  //     toolbarColor: Colors.purple,
-  //     toolbarWidgetColor: Colors.white,
-  //     toolbarTitle: 'Crop It',
-  //   );
-  //   setState(() {
-  //     _imageFile = cropped ?? _imageFile;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,8 +66,10 @@ class _ImageCaptureState extends State<ImageCapture> {
           } else if (index == 1) {
             _pickImage(ImageSource.camera);
           } else if (index == 2) {
-            base64 = await Navigator.of(context)
+            var result = await Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => Cartaz()));
+            base64 = result[0];
+            produto = result[1];
           }
         },
         items: [
@@ -104,23 +95,6 @@ class _ImageCaptureState extends State<ImageCapture> {
             ),
           ),
         ],
-        // child: Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: <Widget>[
-        //     Text("GALERIA"),
-        //     IconButton(
-        //       icon: Icon(Icons.photo_library),
-        //       onPressed: () => _pickImage(ImageSource.gallery),
-        //     ),
-        //     IconButton(
-        //       icon: Icon(Icons.photo_album),
-        //       onPressed: () async {
-        // base64 = await Navigator.of(context)
-        //     .push(MaterialPageRoute(builder: (context) => Cartaz()));
-        //       },
-        //     ),
-        //   ],
-        // ),
       ),
       body: ListView(
         children: <Widget>[
@@ -238,12 +212,20 @@ class _UploaderState extends State<Uploader> {
             label: Text('AVANÇAR'),
             icon: Icon(Icons.arrow_forward),
             onPressed: () async {
-              await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => InformacoesOferta(
-                        base64: widget.base64 != null ? widget.base64 : null,
-                        imageFile: widget.file != null ? widget.file : null,
-                        empresaID: widget.empresaID
-                      )));
+              if (base64 == null)
+                await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => InformacoesOferta(
+                        imageFile: widget.file, empresaID: widget.empresaID)));
+              else
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ConcluirOferta(
+                      produto: widget.produto,
+                      base64: widget.base64 != null ? widget.base64 : null,
+                      empresaID: widget.empresaID,
+                    ),
+                  ),
+                );
             },
           ),
         ],

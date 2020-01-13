@@ -81,10 +81,15 @@ class _ConcluirOfertaState extends State<ConcluirOferta> {
             child: ListBody(
               children: <Widget>[
                 Text("Produto: ${widget.produto.nomeProduto}"),
-                Text("Valor: R\$${widget.produto.preco}"),
-                Text("Valor com desconto: ${widget.produto.desconto}"),
-                Text(
-                    "Validade: ${DateFormat("dd/MM/yy").format(widget.produto.validade.toDate())}"),
+                Text(widget.produto.preco != null
+                    ? "Valor: R\$${widget.produto.preco}"
+                    : "Valor sem desconto: R\$-"),
+                Text(widget.produto.desconto != null
+                    ? "Valor com desconto: R\$${widget.produto.desconto}"
+                    : 'Valor com desconto: R\$-'),
+                Text(widget.produto.validade != null
+                    ? "Validade: ${DateFormat("dd/MM/yy").format(widget.produto.validade.toDate())}"
+                    : "Validade: Indeterminada"),
                 Text("Informações adicionais: ${widget.produto.infos}"),
               ],
             ),

@@ -14,17 +14,27 @@ class ModeloOfertaView extends StatefulWidget {
 }
 
 class _ModeloOfertaViewState extends State<ModeloOfertaView> {
-  double desconto;
+  double desconto = 0.0;
 
   var fCurrency = NumberFormat.currency(locale: "pt", symbol: "R\$");
 
   @override
   void initState() {
     // TODO: implement initState
-    double preco = double.tryParse(widget.produto.preco);
-    double descontoAux = double.tryParse(widget.produto.desconto);
+    if (widget.produto.preco != null)
+      widget.produto.preco = widget.produto.preco.replaceFirst(",", ".");
+    if (widget.produto.desconto != null)
+      widget.produto.desconto = widget.produto.desconto.replaceFirst(",", ".");
 
-    desconto = (descontoAux - preco) / preco * 100;
+    if (widget.produto.preco != null && widget.produto.desconto != null) {
+      desconto = (double.tryParse(widget.produto.desconto) -
+              double.tryParse(widget.produto.preco)) /
+          double.tryParse(widget.produto.preco) *
+          100;
+
+      // print(preco);
+      print(desconto);
+    }
 
     super.initState();
   }
@@ -43,7 +53,7 @@ class _ModeloOfertaViewState extends State<ModeloOfertaView> {
             children: <Widget>[
               Image.network(
                 widget.produto.imagem,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 loadingBuilder: (context, child, imgChunck) {
                   if (imgChunck == null) {
                     return child;
@@ -52,16 +62,17 @@ class _ModeloOfertaViewState extends State<ModeloOfertaView> {
                   }
                 },
               ),
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: CircleAvatar(
-                  maxRadius: 25,
-                  child: Text(
-                    "-%" + (desconto * -1).toStringAsFixed(0),
+              if (desconto != null)
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: CircleAvatar(
+                    maxRadius: 25,
+                    child: Text(
+                      "-%" + (desconto * -1).toStringAsFixed(0),
+                    ),
                   ),
-                ),
-              )
+                )
             ],
           ),
         ),
@@ -80,14 +91,16 @@ class _ModeloOfertaViewState extends State<ModeloOfertaView> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                " " +
-                    fCurrency.format(double.tryParse(widget.produto.desconto)),
-                style: TextStyle(
-                    fontFamily: "Body",
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              ),
+              if (desconto != null)
+                Text(
+                  " " +
+                      fCurrency
+                          .format(double.tryParse(widget.produto.desconto)),
+                  style: TextStyle(
+                      fontFamily: "Body",
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                ),
               Text(
                 " " + widget.produto.nomeProduto.toUpperCase(),
                 maxLines: 1,

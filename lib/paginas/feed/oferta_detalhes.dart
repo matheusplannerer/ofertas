@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
+import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 import 'package:provider/provider.dart';
@@ -94,10 +96,21 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
                   icon: Icon(Icons.local_mall),
                   iconSize: 40,
                   color: Colors.orange,
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            PerfilEmpresaPage(widget.empresaID)));
+                  onPressed: () async {
+                    showLoadingDialog(tapDismiss: false);
+                    var doc = await Firestore.instance
+                        .collection('empresas')
+                        .document(widget.empresaID)
+                        .get()
+                        .timeout(Duration(seconds: 15));
+                    hideLoadingDialog();
+                    if (doc != null) {
+                      PerfilEmpresa aux =
+                          PerfilEmpresa.fromJson(doc.data, doc.documentID);
+
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => PerfilEmpresaPage(aux)));
+                    }
                   },
                 ),
                 bottom: 0,
