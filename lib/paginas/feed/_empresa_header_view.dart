@@ -24,9 +24,16 @@ class _HeaderEmpresaViewState extends State<HeaderEmpresaView> {
               ? Image.network(
                   widget.empresa.foto,
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, child, imgChunck) {
+                    if (imgChunck == null) {
+                      return child;
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
                 )
               : Image.asset(
-                  'assets/mogi.jpg',
+                  "assets/mogi.jpg",
                   fit: BoxFit.cover,
                 ),
         ),
@@ -35,8 +42,7 @@ class _HeaderEmpresaViewState extends State<HeaderEmpresaView> {
           child: Container(
             decoration: BoxDecoration(
               border: Border(
-                top: BorderSide(width: 1),
-                right: BorderSide(width: 1),
+                left: BorderSide(width: 1),
               ),
             ),
             child: Center(

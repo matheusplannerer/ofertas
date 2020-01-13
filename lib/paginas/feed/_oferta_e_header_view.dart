@@ -4,6 +4,8 @@ import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/feed/_empresa_header_view.dart';
 import 'package:ofertas/paginas/feed/_oferta_view.dart';
+import 'package:ofertas/paginas/feed/oferta_detalhes.dart';
+import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 
 class ViewFeed extends StatefulWidget {
   ViewFeed({this.empresa});
@@ -89,10 +91,25 @@ class _ViewFeedState extends State<ViewFeed> {
     return Column(
       children: <Widget>[
         Container(
-          color: Colors.white,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              left: BorderSide(width: 1),
+              top: BorderSide(width: 1),
+              bottom: BorderSide(width: 1),
+              right: BorderSide(width: 1),
+            ),
+          ),
           margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
           height: 80,
-          child: HeaderEmpresaView(empresa: widget.empresa),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      PerfilEmpresaPage(widget.empresa.empresaID)));
+            },
+            child: HeaderEmpresaView(empresa: widget.empresa),
+          ),
         ),
         Container(
           height: 5,
@@ -133,9 +150,13 @@ class _ViewFeedState extends State<ViewFeed> {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        print("ENTROU");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => OfertaDetalhe(
+                                  empresaID: widget.empresa.empresaID,
+                                  produto: ofertas[i],
+                                )));
                       },
-                      child: ModeloOfertaView(),
+                      child: ModeloOfertaView(produto: ofertas[i]),
                     ),
                   ],
                 ),
