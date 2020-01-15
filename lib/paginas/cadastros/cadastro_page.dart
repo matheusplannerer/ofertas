@@ -7,6 +7,8 @@ import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/paginas/cadastros/cadastro_empresa.dart';
 import 'package:provider/provider.dart';
 import 'package:ofertas/global/global.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CadastroPage extends StatefulWidget {
   @override
@@ -215,14 +217,17 @@ class _CadastroPageState extends State<CadastroPage> {
                   obscureText: true,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 15.0),
+                  padding: EdgeInsets.only(top: 15.0),
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 15),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           InkWell(
                             child: Container(
+                              width: ScreenUtil.getInstance().setWidth(630),
+                              height: ScreenUtil.getInstance().setHeight(100),
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
@@ -306,18 +311,14 @@ class _CadastroPageState extends State<CadastroPage> {
                                             builder: (context) =>
                                                 CadastroEmpresa()));
                                   },
-                                  child: Container(
-                                    width: 120,
-                                    height: 40,
-                                    child: Center(
-                                      child: Text(
-                                        "AVANÇAR",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: "Poppins-Bold",
-                                            fontSize: 18,
-                                            letterSpacing: 1.0),
-                                      ),
+                                  child: Center(
+                                    child: Text(
+                                      "AVANÇAR",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Poppins-Bold",
+                                          fontSize: 18,
+                                          letterSpacing: 1.0),
                                     ),
                                   ),
                                 ),

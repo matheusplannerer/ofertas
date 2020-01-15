@@ -8,11 +8,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ofertas/paginas/cadastros/cadastro_page.dart';
 import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:ofertas/paginas/login/SocialIcons.dart';
-
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import '../../global/global.dart';
-
 import 'package:load/load.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Entrar extends StatefulWidget {
   @override
@@ -102,14 +102,14 @@ class _Entrar extends State<Entrar> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 20.0),
-                child: Image.asset("assets/mogi.jpg"),
+                padding: EdgeInsets.only(top: 10.0),
+                child: Image.asset("assets/mogi.png", height: 170),
               ),
             ],
           ),
           SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
+              padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 40.0),
               child: Column(
                 children: <Widget>[
                   SizedBox(
@@ -117,7 +117,7 @@ class _Entrar extends State<Entrar> {
                   ),
                   Container(
                     width: double.infinity,
-                    height: ScreenUtil.getInstance().setHeight(500),
+                    height: ScreenUtil.getInstance().setHeight(450),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0),
@@ -254,20 +254,20 @@ class _Entrar extends State<Entrar> {
                   ),
                   SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          SizedBox(
-                            width: 12.0,
-                          ),
+                          // SizedBox(
+                          //   width: 12.0,
+                          // ),
                           // GestureDetector(
                           //   onTap: _radio,
                           //   child: radioButton(_isSelected),
                           // ),
-                          SizedBox(
-                            width: 8.0,
-                          ),
+                          // SizedBox(
+                          //   width: 8.0,
+                          // ),
                           // Text("Lembre de mim",
                           //     style: TextStyle(
                           //         fontSize: 12, fontFamily: "Poppins-Medium"))
@@ -275,7 +275,7 @@ class _Entrar extends State<Entrar> {
                       ),
                       InkWell(
                         child: Container(
-                          width: ScreenUtil.getInstance().setWidth(330),
+                          width: ScreenUtil.getInstance().setWidth(600),
                           height: ScreenUtil.getInstance().setHeight(100),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -341,13 +341,13 @@ class _Entrar extends State<Entrar> {
                       )
                     ],
                   ),
-                  SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(25)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       horizontalLine(),
                       Text(
-                        "Ou entre por:",
+                        "Ou",
                         style: TextStyle(
                             fontSize: 16.0, fontFamily: "Poppins-Medium"),
                       ),
@@ -355,27 +355,27 @@ class _Entrar extends State<Entrar> {
                     ],
                   ),
                   SizedBox(
-                    height: ScreenUtil.getInstance().setHeight(40),
+                    height: ScreenUtil.getInstance().setHeight(15),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SocialIcon(
-                        colors: [
-                          Color(0xFF102397),
-                          Color(0xFF187adf),
-                          Color(0xFF00eaf8),
-                        ],
-                        iconData: CustomIcons.facebook,
+                      SignInButtonBuilder(
+                        text: 'Cadastre com Google',
+                        icon: FontAwesomeIcons.google,
+                        mini: true,
                         onPressed: () {},
+                        backgroundColor: Colors.blueGrey[700],
                       ),
-                      SocialIcon(
-                        colors: [
-                          Color(0xFFff4f38),
-                          Color(0xFFff355d),
-                        ],
-                        iconData: CustomIcons.googlePlus,
+                      SizedBox(
+                        height: ScreenUtil.getInstance().setHeight(15),
+                      ),
+                      SignInButtonBuilder(
+                        text: 'Cadastre com Facebook',
+                        icon: FontAwesomeIcons.facebookF,
+                        mini: true,
                         onPressed: () {},
+                        backgroundColor: Colors.blue[800],
                       ),
                     ],
                   ),
@@ -391,7 +391,8 @@ class _Entrar extends State<Entrar> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CadastroPage()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CadastroPage()));
                         },
                         child: Text(
                           "Cadastre-se",
@@ -401,7 +402,7 @@ class _Entrar extends State<Entrar> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

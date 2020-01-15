@@ -37,12 +37,15 @@ dependencies:
   flutter_screenutil: ^0.4.2
   carousel_pro: ^1.0.0
   mask_text_input_formatter: ^1.0.5
+  flutter_signin_button: ^1.0.0
+  font_awesome_flutter: 8.5.0
 
 
 
   
   flutter:
     sdk: flutter
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -73,6 +76,7 @@ flutter:
     - assets/tres.jpg
     - assets/logo2.jpg
     - assets/mogi.jpg
+    - assets/mogi.png
     - assets/cartaz.jpg
     - assets/cartaz2.jpg
     - assets/walmart.jpg
