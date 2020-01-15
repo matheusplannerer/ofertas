@@ -68,7 +68,7 @@ class _DashboardState extends State<Dashboard> {
               ],
             )
           : null,
-      backgroundColor: Colors.grey[200],
+      // backgroundColor: Colors.grey[200],
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
@@ -86,123 +86,126 @@ class _DashboardState extends State<Dashboard> {
       ),
       drawer: Drawer(
         child: ListView(
-          children: <Widget> [
-              if (global.fbUser == null)
-                ListTile(
-                  title:Row( children:<Widget>[ 
-                  Icon(Icons.store, color: Colors.orange.shade600,size: 30),
-                  Padding(
-          padding: EdgeInsets.only(left: 20.0),
-          child: Text('Entrar como empresa', 
-          style: TextStyle(
-              fontFamily: "Domine-Bold",
-              fontSize: 16,
-              color: Colors.black87,
-              letterSpacing: .3),),
-        ),
-                  ],),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Entrar()));
-                  },
-                ),
-                Divider(),
+          children: <Widget>[
+            if (global.fbUser == null)
               ListTile(
-                   title:Row( children:<Widget>[ 
-                  Icon(Icons.local_offer,color: Colors.orange.shade500,size: 30),
-                  Padding(
-          padding: EdgeInsets.only(left: 20.0),
-          child: Text('Divulgue suas Ofertas', 
-          style: TextStyle(
-              fontFamily: "Domine-Bold",
-              fontSize: 16,
-              color: Colors.black87,
-              letterSpacing: .3),),
-        ),
-                  ],),
+                title: Row(
+                  children: <Widget>[
+                    Icon(Icons.store, color: Colors.orange.shade600, size: 30),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        'Entrar como empresa',
+                        style: TextStyle(
+                            fontFamily: "Domine-Bold",
+                            fontSize: 16,
+                            color: Colors.black87,
+                            letterSpacing: .3),
+                      ),
+                    ),
+                  ],
+                ),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CadastroPage()));
+                      MaterialPageRoute(builder: (context) => Entrar()));
                 },
               ),
-              Divider(),
-              ListTile(
-                 title:Row( children:<Widget>[ 
-                  Icon(Icons.chat_bubble_outline, color: Colors.orange.shade500,size: 30),
+            Divider(),
+            ListTile(
+              title: Row(
+                children: <Widget>[
+                  Icon(Icons.chat_bubble_outline,
+                      color: Colors.orange.shade500, size: 30),
                   Padding(
-          padding: EdgeInsets.only(left: 20.0),
-          child: Text('Entre em contato', 
-          style: TextStyle(
-              fontFamily: "Domine-Bold",
-              fontSize: 16,
-              color: Colors.black87,
-              letterSpacing: .3),),
-        ),
-                  ],),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EntreEmContato()));
-                },
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'Entre em contato',
+                      style: TextStyle(
+                          fontFamily: "Domine-Bold",
+                          fontSize: 16,
+                          color: Colors.black87,
+                          letterSpacing: .3),
+                    ),
+                  ),
+                ],
               ),
-              Divider(),
-              ListTile(
-                 title:Row( children:<Widget>[ 
-                  Icon(Icons.group_add, color: Colors.orange.shade600,size: 30,),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EntreEmContato()));
+              },
+            ),
+            Divider(),
+            ListTile(
+              title: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.group_add,
+                    color: Colors.orange.shade600,
+                    size: 30,
+                  ),
                   Padding(
-          padding: EdgeInsets.only(left: 20.0),
-          child: Text('Indique o App', 
-          style: TextStyle(
-              fontFamily: "Domine-Bold",
-              fontSize: 16,
-              color: Colors.black87,
-              letterSpacing: .3),),
-        ),
-                  ],),
-                // onTap: () {
-                //   Navigator.push(context,
-                //       MaterialPageRoute(builder: (context) => Carteira()));
-                // },
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'Indique o App',
+                      style: TextStyle(
+                          fontFamily: "Domine-Bold",
+                          fontSize: 16,
+                          color: Colors.black87,
+                          letterSpacing: .3),
+                    ),
+                  ),
+                ],
               ),
-              Divider(),
-              ListTile(
-                                 title:Row( children:<Widget>[ 
-                  Icon(Icons.star_border, color: Colors.orange.shade400,size: 30),
+              // onTap: () {
+              //   Navigator.push(context,
+              //       MaterialPageRoute(builder: (context) => Carteira()));
+              // },
+            ),
+            Divider(),
+            ListTile(
+              title: Row(
+                children: <Widget>[
+                  Icon(Icons.star_border,
+                      color: Colors.orange.shade400, size: 30),
                   Padding(
-          padding: EdgeInsets.only(left: 20.0),
-          child: Text('Avalie o app', 
-          style: TextStyle(
-              fontFamily: "Domine-Bold",
-              fontSize: 16,
-              color: Colors.black87,
-              letterSpacing: .3),),
-        ),
-                  ],),
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'Avalie o app',
+                      style: TextStyle(
+                          fontFamily: "Domine-Bold",
+                          fontSize: 16,
+                          color: Colors.black87,
+                          letterSpacing: .3),
+                    ),
+                  ),
+                ],
               ),
-              Divider(),
-              if (global.fbUser != null)
-                ListTile(
-                  trailing: Icon(Icons.arrow_back, color: Colors.orange.shade400),
-                  title: Text('SAIR', 
+            ),
+            Divider(),
+            if (global.fbUser != null)
+              ListTile(
+                trailing: Icon(Icons.arrow_back, color: Colors.orange.shade400),
+                title: Text(
+                  'SAIR',
                   style: TextStyle(
-              fontFamily: "Domine-Bold",
-              fontSize: 16,
-              color: Colors.black87,
-              letterSpacing: .3),),
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    showLoadingDialog();
-                    await Future.delayed(Duration(milliseconds: 400));
-                    global.isEmpresa = false;
-                    await FirebaseAuth.instance.signOut();
-                    hideLoadingDialog();
-                    global.fbUser = null;
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => Dashboard()));
-                  },
+                      fontFamily: "Domine-Bold",
+                      fontSize: 16,
+                      color: Colors.black87,
+                      letterSpacing: .3),
                 ),
-            ],
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  showLoadingDialog();
+                  await Future.delayed(Duration(milliseconds: 400));
+                  global.isEmpresa = false;
+                  await FirebaseAuth.instance.signOut();
+                  hideLoadingDialog();
+                  global.fbUser = null;
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => Dashboard()));
+                },
+              ),
+          ],
         ),
       ),
       body: global.fbUser != null

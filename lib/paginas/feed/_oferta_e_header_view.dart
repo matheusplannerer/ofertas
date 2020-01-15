@@ -56,9 +56,10 @@ class _ViewFeedState extends State<ViewFeed> {
             OfertaModel aux = OfertaModel.fromJson(
                 doc.documents[i].data, doc.documents[i].documentID);
 
-            setState(() {
-              ofertas.add(aux);
-            });
+            if (mounted)
+              setState(() {
+                ofertas.add(aux);
+              });
           }
           lastDocument = doc.documents[doc.documents.length - 1];
         } else {
@@ -75,10 +76,10 @@ class _ViewFeedState extends State<ViewFeed> {
           for (var i = 0; i < doc.documents.length; i++) {
             OfertaModel aux = OfertaModel.fromJson(
                 doc.documents[i].data, doc.documents[i].documentID);
-
-            setState(() {
-              ofertas.add(aux);
-            });
+            if (mounted)
+              setState(() {
+                ofertas.add(aux);
+              });
           }
           lastDocument = doc.documents[doc.documents.length - 1];
         }
@@ -91,19 +92,21 @@ class _ViewFeedState extends State<ViewFeed> {
     // TODO: implement build
     return Column(
       children: <Widget>[
+        SizedBox(height: 5),
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            // color: Colors.orange[300],
             border: Border(
-              left: BorderSide(width: 1),
-              top: BorderSide(width: 1),
-              bottom: BorderSide(width: 1),
-              right: BorderSide(width: 1),
+              bottom: BorderSide(color: Colors.orange),
+              top: BorderSide(color: Colors.orange),
             ),
           ),
-          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-          height: 80,
-          child: GestureDetector(
+          child: ListTile(
+            title: Text(widget.empresa.nomeEmpresa),
+            trailing: Icon(
+              Icons.arrow_forward,
+              color: Colors.orange,
+            ),
             onTap: () async {
               showLoadingDialog(tapDismiss: false);
               var doc = await Firestore.instance
@@ -120,18 +123,32 @@ class _ViewFeedState extends State<ViewFeed> {
                     builder: (context) => PerfilEmpresaPage(aux)));
               }
             },
-            child: HeaderEmpresaView(empresa: widget.empresa),
+            leading: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: widget.empresa.foto != null
+                  ? CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        widget.empresa.foto,
+                      ),
+                    )
+                  : CircleAvatar(
+                      backgroundImage: AssetImage('assets/mogi.jpg'),
+                    ),
+            ),
           ),
         ),
         Container(
-          height: 5,
+          height: 10,
           color: Colors.white,
         ),
         Container(
           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
           height: 140,
+          // color: Colors.green,
           width: MediaQuery.of(context).size.width,
-          color: Colors.white,
+          // color: Colors.red,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: (ofertas.length == null || ofertas.length == 0)
@@ -155,28 +172,21 @@ class _ViewFeedState extends State<ViewFeed> {
                   ),
                 );
               }
-              return Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                width: MediaQuery.of(context).size.width * 0.6 - 15,
-                child: Column(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => OfertaDetalhe(
-                                  empresaID: widget.empresa.empresaID,
-                                  produto: ofertas[i],
-                                )));
-                      },
-                      child: ModeloOfertaView(produto: ofertas[i]),
-                    ),
-                  ],
+
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          OfertaDetalhe(produto: ofertas[i])));
+                },
+                child: ModeloOfertaView(
+                  produto: ofertas[i],
                 ),
               );
             },
           ),
         ),
-        SizedBox(height: 15),
+        SizedBox(height: 25),
       ],
     );
   }

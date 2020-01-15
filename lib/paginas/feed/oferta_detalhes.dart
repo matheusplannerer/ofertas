@@ -10,9 +10,8 @@ import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 import 'package:provider/provider.dart';
 
 class OfertaDetalhe extends StatefulWidget {
-  OfertaDetalhe({this.produto, this.empresaID});
+  OfertaDetalhe({this.produto});
   final OfertaModel produto;
-  final String empresaID;
 
   @override
   State<StatefulWidget> createState() {
@@ -33,7 +32,7 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<Global>(context);
-    if (widget.empresaID == global.empresaLogada.idEmpresa) {
+    if (widget.produto.empresaDona == global.empresaLogada.idEmpresa) {
       isOwner = true;
     }
     // TODO: implement build
@@ -100,7 +99,7 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
                     showLoadingDialog(tapDismiss: false);
                     var doc = await Firestore.instance
                         .collection('empresas')
-                        .document(widget.empresaID)
+                        .document(widget.produto.empresaDona)
                         .get()
                         .timeout(Duration(seconds: 15));
                     hideLoadingDialog();

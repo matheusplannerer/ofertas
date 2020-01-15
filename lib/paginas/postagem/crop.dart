@@ -61,6 +61,10 @@ class _ImageCaptureState extends State<ImageCapture> {
         selectedIconTheme: IconThemeData(color: Colors.grey),
         currentIndex: 1,
         onTap: (index) async {
+          setState(() {
+            _imageFile = null;
+            base64 = null;
+          });
           if (index == 0) {
             _pickImage(ImageSource.gallery);
           } else if (index == 1) {
@@ -68,8 +72,10 @@ class _ImageCaptureState extends State<ImageCapture> {
           } else if (index == 2) {
             var result = await Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => Cartaz()));
-            base64 = result[0];
-            produto = result[1];
+            if (result != null) {
+              base64 = result[0];
+              produto = result[1];
+            }
           }
         },
         items: [
@@ -212,11 +218,11 @@ class _UploaderState extends State<Uploader> {
             label: Text('AVANÇAR'),
             icon: Icon(Icons.arrow_forward),
             onPressed: () async {
-              if (base64 == null)
+              if (widget.base64 == null) {
                 await Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => InformacoesOferta(
                         imageFile: widget.file, empresaID: widget.empresaID)));
-              else
+              } else {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ConcluirOferta(
@@ -226,6 +232,7 @@ class _UploaderState extends State<Uploader> {
                     ),
                   ),
                 );
+              }
             },
           ),
         ],

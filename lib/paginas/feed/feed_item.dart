@@ -45,7 +45,9 @@ class _FeedItemState extends State<FeedItem> {
           Container(
             width: 180,
             height: 180,
-            decoration: BoxDecoration(border: Border.all(width: 0.75, color: Colors.grey), color: Colors.white),
+            decoration: BoxDecoration(
+                border: Border.all(width: 0.75, color: Colors.grey),
+                color: Colors.white),
             child: RaisedButton(
               color: Colors.white,
               // elevation: 1,
@@ -56,7 +58,6 @@ class _FeedItemState extends State<FeedItem> {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => OfertaDetalhe(
                           produto: produto,
-                          empresaID: widget.empresaID,
                         )));
               },
               child: Image.network(produto.imagem),
@@ -96,7 +97,10 @@ class _FeedItemState extends State<FeedItem> {
                       size: 20,
                     ),
                     SizedBox(width: 5),
-                    Text(produto.nomeProduto != null ? produto.nomeProduto : "Testando",
+                    Text(
+                        produto.nomeProduto != null
+                            ? produto.nomeProduto
+                            : "Testando",
                         style: foodNameText),
                   ],
                 ),

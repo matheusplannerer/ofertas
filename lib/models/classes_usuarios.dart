@@ -1,23 +1,23 @@
 class PerfilEmpresa {
   PerfilEmpresa({
     this.bairro = '', //
-    this.cep = '',  //
-    this.complemento = '',  //
-    this.email = '',  //
+    this.cep = '', //
+    this.complemento = '', //
+    this.email = '', //
     this.estado = '', //
     this.funcionamento, //
     this.horaInicio = '', //
-    this.horaTermino = '',  //
+    this.horaTermino = '', //
     this.logradouro = '', //
-    this.foto,  //
-    this.nomeEmpresa = '',  //
+    this.foto, //
+    this.nomeEmpresa = '', //
     this.numero = '', //
     this.telefone = '', //
     this.site = '', //
-    this.senha = '',  //
-    this.empresaID = '',  //
+    this.senha = '', //
+    this.empresaID = '', //
     this.donoEmpresa, //
-    this.categoria, //
+    this.categoria = '', //
   }) {
     funcionamento = {
       "domVal": false,

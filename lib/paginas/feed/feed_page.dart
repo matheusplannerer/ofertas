@@ -75,7 +75,7 @@ class _FeedPageState extends State<FeedPage> {
 
   @override
   void initState() {
-    queryLimit = 2;
+    queryLimit = 8;
     empresas = [];
     ofertas = [];
 

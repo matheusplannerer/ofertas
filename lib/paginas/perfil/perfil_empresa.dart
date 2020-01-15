@@ -186,7 +186,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     ),
                                   ),
                                   AutoSizeText(
-                                    'Supermercado',
+                                    empresaSnap.data.data['categoria'],
                                     //add categoria para poder puxar do database
                                     textAlign: TextAlign.center,
                                     maxLines: 1,
@@ -482,15 +482,16 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
           // children: <Widget>[
           // ],
           ),
-      floatingActionButton: empresa.donoEmpresa == global.fbUser.uid
-          ? FloatingActionButton(
-              child: Icon(Icons.add_a_photo),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ImageCapture(empresa.empresaID)));
-              },
-            )
-          : null,
+      floatingActionButton:
+          (global.fbUser != null && empresa.donoEmpresa == global.fbUser.uid)
+              ? FloatingActionButton(
+                  child: Icon(Icons.add_a_photo),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ImageCapture(empresa.empresaID)));
+                  },
+                )
+              : null,
     );
   }
 }

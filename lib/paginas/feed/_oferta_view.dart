@@ -33,7 +33,6 @@ class _ModeloOfertaViewState extends State<ModeloOfertaView> {
           100;
 
       // print(preco);
-      print(desconto);
     }
 
     super.initState();
@@ -43,74 +42,88 @@ class _ModeloOfertaViewState extends State<ModeloOfertaView> {
   Widget build(BuildContext context) {
     // TODO: implement build
 
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 90,
-          width: MediaQuery.of(context).size.width * 0.7 - 15,
-          child: Stack(
-            fit: StackFit.passthrough,
-            children: <Widget>[
-              Image.network(
-                widget.produto.imagem,
-                fit: BoxFit.fill,
-                loadingBuilder: (context, child, imgChunck) {
-                  if (imgChunck == null) {
-                    return child;
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
-              ),
-              if (desconto != null)
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: CircleAvatar(
-                    maxRadius: 25,
-                    child: Text(
-                      "-%" + (desconto * -1).toStringAsFixed(0),
-                    ),
+    return Card(
+      elevation: 10,
+      child: (widget.produto.preco != null && widget.produto.nomeProduto != "")
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: 80,
+                  width: 120,
+                  child: Stack(
+                    overflow: Overflow.visible,
+                    fit: StackFit.expand,
+                    children: [
+                      Image.network(
+                        widget.produto.imagem,
+                        fit: BoxFit.fill,
+                        loadingBuilder: (context, child, imgChunck) {
+                          if (imgChunck == null) {
+                            return child;
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        },
+                      ),
+                      Positioned(
+                        top: -12,
+                        left: -5,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.yellow,
+                          ),
+                          child: Text(
+                            "${desconto.toStringAsPrecision(2)}%",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 17),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                )
-            ],
-          ),
-        ),
-        Container(
-          height: 50,
-          width: MediaQuery.of(context).size.width * 0.7 - 15,
-          // color: Colors.green,
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(width: 1),
-              left: BorderSide(width: 1),
-              right: BorderSide(width: 1),
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              if (desconto != null)
-                Text(
-                  " " +
-                      fCurrency
-                          .format(double.tryParse(widget.produto.desconto)),
-                  style: TextStyle(
-                      fontFamily: "Body",
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
                 ),
-              Text(
-                " " + widget.produto.nomeProduto.toUpperCase(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontFamily: "Body", fontSize: 12),
+                Container(
+                  width: 120,
+                  height: 1,
+                  color: Colors.orange,
+                ),
+                Text(
+                  widget.produto.nomeProduto,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (widget.produto.desconto != null)
+                  Text("R\$${widget.produto.desconto}")
+              ],
+            )
+          : Container(
+              height: 80,
+              width: 120,
+              child: Stack(
+                overflow: Overflow.visible,
+                fit: StackFit.expand,
+                children: [
+                  Image.network(
+                    widget.produto.imagem,
+                    fit: BoxFit.fill,
+                    loadingBuilder: (context, child, imgChunck) {
+                      if (imgChunck == null) {
+                        return child;
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ],
+            ),
     );
   }
 }
