@@ -119,7 +119,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                     children: <Widget>[
                       Padding(
                         padding:
-                            const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+                            const EdgeInsets.fromLTRB(10.0, 20.0, 20.0, 0.0),
                         child: Row(
                           children: <Widget>[
                             Container(
@@ -156,14 +156,31 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                             );
                                           });
                                     },
-                                    child: CircleAvatar(
-                                      radius: 50.0,
-                                      backgroundImage:
+                                    child: Container(
+                                      height: 90,
+                                      width: 90,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.orange, width: 2.0
+                                      ),
+                                      borderRadius: BorderRadius.circular(45),
+                                      image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image:
                                           empresaSnap.data.data['foto'] != null
                                               ? NetworkImage(
                                                   empresaSnap.data.data['foto'])
                                               : AssetImage('assets/logo2.jpg'),
+                                    ))
                                     ),
+                                    // child: CircleAvatar(
+
+                                    //   radius: 50.0,
+                                    //   backgroundImage:
+                                    //       empresaSnap.data.data['foto'] != null
+                                    //           ? NetworkImage(
+                                    //               empresaSnap.data.data['foto'])
+                                    //           : AssetImage('assets/logo2.jpg'),
+                                    // ),
                                   ),
                                   SizedBox(
                                     height: 5,
@@ -180,9 +197,11 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontFamily: 'Title',
-                                      fontSize: 30,
+                                    style: TextStyle(              
+              fontFamily: "Bitter-Bold",
+              color: Colors.black,
+              letterSpacing: .6,
+                                      fontSize: 27,
                                     ),
                                   ),
                                   AutoSizeText(
@@ -192,8 +211,9 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontFamily: 'SubTitle',
-                                      fontSize: 20,
+                                                    fontSize: 18,
+              fontFamily: "Bitter-Bold",
+              letterSpacing: .6,
                                       color: Colors.grey[700],
                                     ),
                                   ),
@@ -226,178 +246,204 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                       SizedBox(
                         height: 5,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 8,
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              await showDialog(
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text(
-                                          "ENDEREÇO: ${empresaSnap.data.data['complemento']}"),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text("CONFIRMAR"),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  },
-                                  context: context);
-                            },
-                            icon: Icon(Icons.pin_drop, size: 30),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 8,
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              await showDialog(
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text(
-                                          "CONTATO: ${empresaSnap.data.data['telefone'].toString()}"),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text("MENSAGEM"),
-                                          onPressed: () async {
-                                            await ligarEmpresa(empresaSnap
-                                                .data.data['telefone']
-                                                .toString());
-                                            Navigator.of(context).pop();
-                                          },
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(35, 0, 35, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            IconButton(
+                              onPressed: () async {
+                                await showDialog(
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(20.0)),
+                                        title: Text(
+                                            "ENDEREÇO:",
+                                            style: TextStyle(
+              fontSize: 22,
+              fontFamily: "Bitter-Bold",
+              color: Colors.black,
+              letterSpacing: .6),),
+                                             content:Text("${empresaSnap.data.data['complemento']}",
+                                             style: TextStyle(
+              fontSize: 18,
+              fontFamily: "Domine-Regular",
+              color: Colors.black,
+              letterSpacing: .6),),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text("OK"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    },
+                                    context: context);
+                              },
+                              icon: Icon(Icons.pin_drop, size: 30),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await showDialog(
+                                    builder: (context) {
+                                      return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(20.0)),
+                                        title: Text(
+                                            "CONTATO:",
+                                            style: TextStyle(
+              fontSize: 22,
+              fontFamily: "Bitter-Bold",
+              color: Colors.black,
+              letterSpacing: .6),),
+              content:Text( "${empresaSnap.data.data['telefone'].toString()}",
+              style: TextStyle(
+              fontSize: 18,
+              fontFamily: "Domine-Regular",
+              color: Colors.black,
+              letterSpacing: .6),),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text("MENSAGEM"),
+                                            onPressed: () async {
+                                              await ligarEmpresa(empresaSnap
+                                                  .data.data['telefone']
+                                                  .toString());
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: Text("LIGAR"),
+                                            onPressed: () async {
+                                              await ligarEmpresa(empresaSnap
+                                                  .data.data['telefone']
+                                                  .toString());
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: Text("OK"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    context: context);
+                              },
+                              icon: Icon(Icons.phone, size: 30),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await showDialog(
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(20.0)),
+                                        title: Text("HORÁRIO DE FUNCIONAMENTO:",
+                                        style: TextStyle(
+                                        fontSize: 22,
+              fontFamily: "Bitter-Bold",
+              color: Colors.black,),),
+                                        content: SingleChildScrollView(
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(empresaSnap
+                                                          .data.data['segVal'] ==
+                                                      true
+                                                  ? "Seg " +
+                                                      empresaSnap.data
+                                                          .data['horaInicio'] +
+                                                      " às " +
+                                                      empresaSnap.data
+                                                          .data['horaTermino']
+                                                  : ''),
+                                              Text(empresaSnap
+                                                          .data.data['terVal'] ==
+                                                      true
+                                                  ? "Ter " +
+                                                      empresaSnap.data
+                                                          .data['horaInicio'] +
+                                                      " às " +
+                                                      empresaSnap.data
+                                                          .data['horaTermino']
+                                                  : ''),
+                                              Text(empresaSnap
+                                                          .data.data['quaVal'] ==
+                                                      true
+                                                  ? "Qua " +
+                                                      empresaSnap.data
+                                                          .data['horaInicio'] +
+                                                      " às " +
+                                                      empresaSnap.data
+                                                          .data['horaTermino']
+                                                  : ''),
+                                              Text(empresaSnap
+                                                          .data.data['quiVal'] ==
+                                                      true
+                                                  ? "Qui " +
+                                                      empresaSnap.data
+                                                          .data['horaInicio'] +
+                                                      " às " +
+                                                      empresaSnap.data
+                                                          .data['horaTermino']
+                                                  : ''),
+                                              Text(empresaSnap
+                                                          .data.data['sexVal'] ==
+                                                      true
+                                                  ? "Sex " +
+                                                      empresaSnap.data
+                                                          .data['horaInicio'] +
+                                                      " às " +
+                                                      empresaSnap.data
+                                                          .data['horaTermino']
+                                                  : ''),
+                                              Text(empresaSnap
+                                                          .data.data['sabVal'] ==
+                                                      true
+                                                  ? "Sáb " +
+                                                      empresaSnap.data
+                                                          .data['horaInicio'] +
+                                                      " às " +
+                                                      empresaSnap.data
+                                                          .data['horaTermino']
+                                                  : ''),
+                                              Text(empresaSnap
+                                                          .data.data['domVal'] ==
+                                                      true
+                                                  ? "Dom " +
+                                                      empresaSnap.data
+                                                          .data['horaInicio'] +
+                                                      " às " +
+                                                      empresaSnap.data
+                                                          .data['horaTermino']
+                                                  : ''),
+                                            ],
+                                          ),
                                         ),
-                                        FlatButton(
-                                          child: Text("LIGAR"),
-                                          onPressed: () async {
-                                            await ligarEmpresa(empresaSnap
-                                                .data.data['telefone']
-                                                .toString());
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                        FlatButton(
-                                          child: Text("OK"),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                  context: context);
-                            },
-                            icon: Icon(Icons.phone, size: 30),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 8,
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              await showDialog(
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text("HORÁRIO DE FUNCIONAMENTO"),
-                                      content: SingleChildScrollView(
-                                        child: Column(
-                                          children: <Widget>[
-                                            Text(empresaSnap
-                                                        .data.data['segVal'] ==
-                                                    true
-                                                ? "Seg " +
-                                                    empresaSnap.data
-                                                        .data['horaInicio'] +
-                                                    " às " +
-                                                    empresaSnap.data
-                                                        .data['horaTermino']
-                                                : ''),
-                                            Text(empresaSnap
-                                                        .data.data['terVal'] ==
-                                                    true
-                                                ? "Ter " +
-                                                    empresaSnap.data
-                                                        .data['horaInicio'] +
-                                                    " às " +
-                                                    empresaSnap.data
-                                                        .data['horaTermino']
-                                                : ''),
-                                            Text(empresaSnap
-                                                        .data.data['quaVal'] ==
-                                                    true
-                                                ? "Qua " +
-                                                    empresaSnap.data
-                                                        .data['horaInicio'] +
-                                                    " às " +
-                                                    empresaSnap.data
-                                                        .data['horaTermino']
-                                                : ''),
-                                            Text(empresaSnap
-                                                        .data.data['quiVal'] ==
-                                                    true
-                                                ? "Qui " +
-                                                    empresaSnap.data
-                                                        .data['horaInicio'] +
-                                                    " às " +
-                                                    empresaSnap.data
-                                                        .data['horaTermino']
-                                                : ''),
-                                            Text(empresaSnap
-                                                        .data.data['sexVal'] ==
-                                                    true
-                                                ? "Sex " +
-                                                    empresaSnap.data
-                                                        .data['horaInicio'] +
-                                                    " às " +
-                                                    empresaSnap.data
-                                                        .data['horaTermino']
-                                                : ''),
-                                            Text(empresaSnap
-                                                        .data.data['sabVal'] ==
-                                                    true
-                                                ? "Sáb " +
-                                                    empresaSnap.data
-                                                        .data['horaInicio'] +
-                                                    " às " +
-                                                    empresaSnap.data
-                                                        .data['horaTermino']
-                                                : ''),
-                                            Text(empresaSnap
-                                                        .data.data['domVal'] ==
-                                                    true
-                                                ? "Dom " +
-                                                    empresaSnap.data
-                                                        .data['horaInicio'] +
-                                                    " às " +
-                                                    empresaSnap.data
-                                                        .data['horaTermino']
-                                                : ''),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text("CONFIRMAR"),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  },
-                                  context: context);
-                            },
-                            icon: Icon(Icons.timer, size: 30),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 8,
-                          ),
-                        ],
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text("OK"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    },
+                                    context: context);
+                              },
+                              icon: Icon(Icons.timer, size: 30),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 0,
