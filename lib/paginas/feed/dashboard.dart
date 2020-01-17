@@ -4,10 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/cadastros/cadastro_page.dart';
 import 'package:ofertas/paginas/drawer/entreemcontato.dart';
+import 'package:ofertas/paginas/drawer/pagamento.dart';
 import 'package:ofertas/paginas/feed/feed_page.dart';
 import 'package:ofertas/paginas/feed/oferta_detalhes.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
@@ -69,12 +71,23 @@ class _DashboardState extends State<Dashboard> {
             )
           : null,
       // backgroundColor: Colors.grey[200],
-      appBar: AppBar(
+      appBar: GradientAppBar(
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: primaryColor,
+        // elevation: 0,
+        // backgroundColor: primaryColor,
         title:
-            Text('OFERTAS', style: logoWhiteStyle, textAlign: TextAlign.center),
+            Text('OFERTAS', 
+              style: TextStyle(
+              fontSize: 22,
+              fontFamily: "Poppins-Bold",
+              color: Colors.white,
+              letterSpacing: .6),),
+              gradient: LinearGradient(
+          colors: [
+            Colors.orange[900],
+            Colors.orange[300],
+          ],
+      ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.filter_vintage),
@@ -180,6 +193,30 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ],
               ),
+            ),
+                        Divider(),
+            ListTile(
+              title: Row(
+                children: <Widget>[
+                  Icon(Icons.star_border,
+                      color: Colors.orange.shade400, size: 30),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'Pay me Bitch',
+                      style: TextStyle(
+                          fontFamily: "Domine-Bold",
+                          fontSize: 16,
+                          color: Colors.black87,
+                          letterSpacing: .3),
+                                              ),
+                  ),
+                ],
+              ),
+              //               onTap: () {
+              //   Navigator.push(context,
+              //       MaterialPageRoute(builder: (context) => Pagamento ()));
+              // },
             ),
             Divider(),
             if (global.fbUser != null)
