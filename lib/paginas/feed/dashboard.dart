@@ -12,6 +12,7 @@ import 'package:ofertas/paginas/feed/feed_page.dart';
 import 'package:ofertas/paginas/feed/oferta_detalhes.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
 import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
+import 'package:ofertas/paginas/drawer/planos.dart';
 import 'package:ofertas/paginas/perfil/perfil_usuario.dart';
 import 'package:ofertas/shared/styles.dart';
 import 'package:provider/provider.dart';
@@ -180,6 +181,30 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ],
               ),
+            ),
+            Divider(),
+            ListTile(
+              title: Row(
+                children: <Widget>[
+                  Icon(Icons.sentiment_very_satisfied,
+                      color: Colors.orange.shade600, size: 30),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'Assine já',
+                      style: TextStyle(
+                          fontFamily: "Domine-Bold",
+                          fontSize: 16,
+                          color: Colors.black87,
+                          letterSpacing: .3),
+                    ),
+                  ),
+                ],
+              ),
+              onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Planos()));
+                },
             ),
             Divider(),
             if (global.fbUser != null)

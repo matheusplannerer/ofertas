@@ -6,6 +6,8 @@ import 'package:ofertas/paginas/cadastros/cadastro_empresa.dart';
 import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:ofertas/paginas/postagem/cartaz.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
+import 'package:ofertas/teles.dart';
+import 'package:ofertas/paginas/drawer/planos.dart';
 import 'package:provider/provider.dart';
 
 // import 'package:firebase_storage/firebase_storage.dart';

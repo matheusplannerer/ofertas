@@ -338,7 +338,7 @@ class _Entrar extends State<Entrar> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   SizedBox(height: ScreenUtil.getInstance().setHeight(25)),
