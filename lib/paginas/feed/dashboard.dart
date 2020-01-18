@@ -9,7 +9,6 @@ import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/cadastros/cadastro_page.dart';
 import 'package:ofertas/paginas/drawer/entreemcontato.dart';
-import 'package:ofertas/paginas/drawer/pagamento.dart';
 import 'package:ofertas/paginas/feed/feed_page.dart';
 import 'package:ofertas/paginas/feed/oferta_detalhes.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
@@ -194,30 +193,6 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ],
               ),
-            ),
-                        Divider(),
-            ListTile(
-              title: Row(
-                children: <Widget>[
-                  Icon(Icons.star_border,
-                      color: Colors.orange.shade400, size: 30),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      'Pay me Bitch',
-                      style: TextStyle(
-                          fontFamily: "Domine-Bold",
-                          fontSize: 16,
-                          color: Colors.black87,
-                          letterSpacing: .3),
-                                              ),
-                  ),
-                ],
-              ),
-              //               onTap: () {
-              //   Navigator.push(context,
-              //       MaterialPageRoute(builder: (context) => Pagamento ()));
-              // },
             ),
             Divider(),
             ListTile(
