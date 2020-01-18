@@ -9,6 +9,7 @@ import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/cadastros/cadastro_page.dart';
 import 'package:ofertas/paginas/drawer/entreemcontato.dart';
+import 'package:ofertas/paginas/feed/categorias.dart';
 import 'package:ofertas/paginas/feed/feed_page.dart';
 import 'package:ofertas/paginas/feed/oferta_detalhes.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
@@ -18,6 +19,7 @@ import 'package:ofertas/paginas/perfil/perfil_usuario.dart';
 import 'package:ofertas/shared/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:ofertas/paginas/feed/categorias.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -90,9 +92,10 @@ class _DashboardState extends State<Dashboard> {
       ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.filter_vintage),
+            icon: Icon(Icons.search),
             onPressed: () {
-              print('4');
+              Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CategoriasPage()));
             },
           ),
         ],
