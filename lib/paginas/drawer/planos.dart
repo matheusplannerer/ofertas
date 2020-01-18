@@ -27,7 +27,8 @@ class PlanosState extends State<Planos> {
         ),
         centerTitle: true,
       ),
-      body: Column(
+      body: ListView(children: <Widget>[
+        Column(
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Container(
@@ -686,6 +687,7 @@ class PlanosState extends State<Planos> {
           ),
         ],
       ),
+      ],)
     );
   }
 }
