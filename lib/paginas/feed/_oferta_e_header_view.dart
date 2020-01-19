@@ -92,13 +92,12 @@ class _ViewFeedState extends State<ViewFeed> {
     // TODO: implement build
     return Column(
       children: <Widget>[
-        SizedBox(height: 5),
+        // SizedBox(height: 5),
         Container(
           decoration: BoxDecoration(
-            // color: Colors.orange[300],
+            // color: Colors.orange[200],
             border: Border(
-              bottom: BorderSide(color: Colors.orange),
-              top: BorderSide(color: Colors.orange),
+              top: BorderSide(color: Colors.grey[200], width: 5),
             ),
           ),
           child: ListTile(
@@ -140,13 +139,9 @@ class _ViewFeedState extends State<ViewFeed> {
           ),
         ),
         Container(
-          height: 10,
-          color: Colors.white,
-        ),
-        Container(
           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
           height: 140,
-          // color: Colors.green,
+          // color: Colors.grey[100],
           width: MediaQuery.of(context).size.width,
           // color: Colors.red,
           child: ListView.builder(
