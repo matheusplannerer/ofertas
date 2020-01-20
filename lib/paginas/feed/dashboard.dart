@@ -77,25 +77,26 @@ class _DashboardState extends State<Dashboard> {
         centerTitle: true,
         // elevation: 0,
         // backgroundColor: primaryColor,
-        title:
-            Text('OFERTAS', 
-              style: TextStyle(
+        title: Text(
+          'OFERTAS',
+          style: TextStyle(
               fontSize: 22,
               fontFamily: "Poppins-Bold",
               color: Colors.white,
-              letterSpacing: .6),),
-              gradient: LinearGradient(
+              letterSpacing: .6),
+        ),
+        gradient: LinearGradient(
           colors: [
             Colors.orange[900],
             Colors.orange[300],
           ],
-      ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
               Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CategoriasPage()));
+                  MaterialPageRoute(builder: (context) => CategoriasPage()));
             },
           ),
         ],
@@ -217,9 +218,9 @@ class _DashboardState extends State<Dashboard> {
                 ],
               ),
               onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Planos()));
-                },
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Planos()));
+              },
             ),
             Divider(),
             if (global.fbUser != null)

@@ -40,10 +40,17 @@ class _FeedPageState extends State<FeedPage> {
       for (var i = 0; i < doc.documents.length; i++) {
         PerfilEmpresa aux = PerfilEmpresa.fromJson(
             doc.documents[i].data, doc.documents[i].documentID);
+        var oferta = await Firestore.instance
+            .collection('ofertas')
+            .where('empresaDona', isEqualTo: aux.empresaID)
+            .limit(1)
+            .getDocuments();
 
-        setState(() {
-          empresas.add(aux);
-        });
+        if (oferta.documents.length > 0) {
+          setState(() {
+            empresas.add(aux);
+          });
+        }
       }
       lastDocument = doc.documents[doc.documents.length - 1];
     } else {
@@ -114,48 +121,5 @@ class _FeedPageState extends State<FeedPage> {
           );
       },
     );
-
-    // return StreamBuilder<QuerySnapshot>(
-    //   stream: stream,
-    //   builder: (context, snapshot) {
-    //     if (snapshot.hasData) {
-    //       if (snapshot.data.documents.length > 0) {
-    //         // print(snapshot.data.documents);
-    //         hasMore = true;
-    //         for (var i = 0; i < snapshot.data.documents.length; i++) {
-    //           PerfilEmpresa aux = PerfilEmpresa.fromJson(
-    //               snapshot.data.documents[i].data,
-    //               snapshot.data.documents[i].documentID);
-    //           print("ADICINOU EMPRESA $i");
-    //           empresas.add(aux);
-    //         }
-
-    //         lastDocument =
-    //             snapshot.data.documents[snapshot.data.documents.length - 1];
-
-    //         // querySnapshot = snapshot.data;
-    //       } else {
-    //         hasMore = false;
-    //       }
-
-    //       return ListView.builder(
-    //         controller: _scrollController,
-    //         itemCount: empresas.length,
-    //         itemBuilder: (context, i) {
-    //           return Container(
-    //             height: MediaQuery.of(context).size.height + 100,
-    //             child: Center(
-    //               child: Text("empresa $i"),
-    //             ),
-    //           );
-    //         },
-    //       );
-    //     } else {
-    //       return Center(
-    //         child: CircularProgressIndicator(),
-    //       );
-    //     }
-    //   },
-    // );
   }
 }

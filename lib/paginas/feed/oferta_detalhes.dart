@@ -89,7 +89,22 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
         children: <Widget>[
           Stack(
             children: <Widget>[
-              Image.network(widget.produto.imagem),
+              Image.network(
+                widget.produto.imagem,
+                loadingBuilder: (context, child, imgChunck) {
+                  if (imgChunck == null) {
+                    return child;
+                  } else {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height / 2,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                },
+              ),
               Positioned(
                 child: IconButton(
                   icon: Icon(Icons.local_mall),
@@ -119,30 +134,38 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
           ),
           ListTile(
             title: Text("PRODUTO: "),
-            subtitle: Text(widget.produto.nomeProduto),
+            subtitle: Text(widget.produto.nomeProduto != null
+                ? widget.produto.nomeProduto
+                : ''),
           ),
           Divider(color: Colors.orange),
           ListTile(
             title: Text("PREÇO: "),
-            subtitle: Text(widget.produto.preco),
+            subtitle:
+                Text(widget.produto.preco != null ? widget.produto.preco : ""),
           ),
           Divider(
             color: Colors.orange,
           ),
           ListTile(
             title: Text("C/ DESCONTO: "),
-            subtitle: Text(widget.produto.desconto),
+            subtitle: Text(widget.produto.desconto != null
+                ? widget.produto.desconto
+                : "-"),
           ),
           Divider(),
           ListTile(
             title: Text("VALIDADE: "),
-            subtitle: Text(DateFormat("dd/MM/yy")
-                .format(widget.produto.validade.toDate())),
+            subtitle: widget.produto.validade != null
+                ? Text(DateFormat("dd/MM/yy")
+                    .format(widget.produto.validade.toDate()))
+                : Text("INDEFINIDA"),
           ),
           Divider(color: Colors.orange),
           ListTile(
             title: Text("INFORMAÇÕES: "),
-            subtitle: Text(widget.produto.infos),
+            subtitle:
+                Text(widget.produto.infos != null ? widget.produto.infos : ""),
           )
         ],
       ),

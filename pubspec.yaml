@@ -40,7 +40,7 @@ dependencies:
   flutter_signin_button: ^1.0.0
   font_awesome_flutter: 8.5.0
   carousel_slider: ^1.4.1
-
+  moneytextformfield: ^0.3.5+1
 
 
   
