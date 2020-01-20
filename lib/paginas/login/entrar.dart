@@ -169,7 +169,7 @@ class _Entrar extends State<Entrar> {
                               fontSize: ScreenUtil.getInstance().setSp(36),
                             ),
                           ),
-                          TextField(
+                          TextFormField(
                             controller: senha,
                             obscureText: true,
                             decoration: InputDecoration(

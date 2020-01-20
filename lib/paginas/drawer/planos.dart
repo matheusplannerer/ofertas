@@ -648,7 +648,7 @@ class PlanosState extends State<Planos> {
               ],
             ),
           ),
-          SizedBox(height: 90),
+          SizedBox(height: 30),
           Container(
             height: 50,
             width: 250,

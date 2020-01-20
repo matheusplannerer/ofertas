@@ -202,6 +202,45 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> categorias = [
+      "Agro, Comércio e Indústria",
+      "Alimentos e Bebidas",
+      "Animais",
+      "Antiguidades",
+      "Arte e Artesanato",
+      "Artigos Religiosos",
+      "Bebes",
+      "Brinquedos",
+      "Calçados, Roupas e Bolsas",
+      "Câmeras e Acessorios",
+      "Casa, Móveis e Decoração",
+      "Celular e Telefone",
+      "Coleções e Comics",
+      "Construção",
+      "Diversos e Outros",
+      "Educação",
+      "Eletrônicos",
+      "Eletrodomésticos",
+      "Esportes",
+      "Festas e Eventos",
+      "Filme e seriados",
+      "Gráficas e Impressão",
+      "Games e Jogos",
+      "Informática",
+      "Imóveis",
+      "Jóias e Relógios",
+      "Limpeza",
+      "Livros",
+      "Marketing e Internet",
+      "Motoristas Particulares",
+      "Música",
+      "Saúde e Beleza",
+      "Uso Pessoal",
+      "Utensílios Domésticos",
+      "Veículos",
+      "Viagens e Turismo"
+    ];
+
     var global = Provider.of<Global>(context);
     return Scaffold(
       appBar: GradientAppBar(
@@ -248,19 +287,9 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
             },
             value: cadastro.categoria,
             icon: Icon(Icons.list),
-            items: [
-              DropdownMenuItem(child: Text("ACADEMIAS"), value: "ACADEMIAS"),
-              DropdownMenuItem(
-                  child: Text("ACESSORIOS PARA LOJAS"),
-                  value: "ACESSORIOS PARA LOJAS"),
-              DropdownMenuItem(
-                  child: Text("ACESSORIOS PET"), value: "ACESSORIOS PET"),
-              DropdownMenuItem(
-                  child: Text("AÇOUGUES E PEIXARIAS"),
-                  value: "AÇOUGUES E PEIXARIAS"),
-              DropdownMenuItem(child: Text("ACUPUNTURA"), value: "ACUPUNTURA"),
-              DropdownMenuItem(child: Text("ADEGAS"), value: "ADEGAS"),
-            ],
+            items: categorias.map((value) {
+              return DropdownMenuItem<String>(value: value, child: Text(value));
+            }).toList(),
           ),
           if (_erroCategoria)
             Text(

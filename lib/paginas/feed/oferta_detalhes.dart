@@ -86,66 +86,181 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
         ],
       ),
       body: ListView(
+        shrinkWrap: true,
         children: <Widget>[
-          Stack(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Image.network(widget.produto.imagem),
-              Positioned(
-                child: IconButton(
-                  icon: Icon(Icons.local_mall),
-                  iconSize: 40,
-                  color: Colors.orange,
-                  onPressed: () async {
-                    showLoadingDialog(tapDismiss: false);
-                    var doc = await Firestore.instance
-                        .collection('empresas')
-                        .document(widget.produto.empresaDona)
-                        .get()
-                        .timeout(Duration(seconds: 15));
-                    hideLoadingDialog();
-                    if (doc != null) {
-                      PerfilEmpresa aux =
-                          PerfilEmpresa.fromJson(doc.data, doc.documentID);
+              Stack(
+                children: <Widget>[
+                  Container(
+                    child: Image.network(
+                      widget.produto.imagem,
+                      fit: BoxFit.cover,
+                    ),
+                    // height: 275,
+                  ),
+                  Positioned(
+                    child: IconButton(
+                      icon: Icon(Icons.local_mall),
+                      iconSize: 40,
+                      color: Colors.orange,
+                      onPressed: () async {
+                        showLoadingDialog(tapDismiss: false);
+                        var doc = await Firestore.instance
+                            .collection('empresas')
+                            .document(widget.produto.empresaDona)
+                            .get()
+                            .timeout(Duration(seconds: 15));
+                        hideLoadingDialog();
+                        if (doc != null) {
+                          PerfilEmpresa aux =
+                              PerfilEmpresa.fromJson(doc.data, doc.documentID);
 
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => PerfilEmpresaPage(aux)));
-                    }
-                  },
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => PerfilEmpresaPage(aux)));
+                        }
+                      },
+                    ),
+                    bottom: 0,
+                    right: 0,
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 15),
+                child: Text(
+                  "Oferta válida até: " +
+                      DateFormat("dd/MM/yy")
+                          .format(widget.produto.validade.toDate()),
+                  style: TextStyle(
+                      // fontFamily: 'Montserrat',
+                      fontSize: 15.0,
+                      color: Colors.grey),
                 ),
-                bottom: 0,
-                right: 0,
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                child: Text(
+                  widget.produto.nomeProduto,
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                child: Row(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text( 
+                          widget.produto.desconto + "% de desconto",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey
+                          ),
+                        ),
+                        Text(
+                          "R\$ " + widget.produto.preco,
+                          style: TextStyle(
+                              fontSize: 25.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Expanded(
+                      child: Container(
+                        width: (MediaQuery.of(context).size.width / 2),
+                        child: Text(
+                          "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          // widget.produto.infos,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.grey.withOpacity(0.8),
+                          ),
+                        ),
+                      ),
+                    ),
+                    
+                  ],
+                ),
               )
             ],
-          ),
-          ListTile(
-            title: Text("PRODUTO: "),
-            subtitle: Text(widget.produto.nomeProduto),
-          ),
-          Divider(color: Colors.orange),
-          ListTile(
-            title: Text("PREÇO: "),
-            subtitle: Text(widget.produto.preco),
-          ),
-          Divider(
-            color: Colors.orange,
-          ),
-          ListTile(
-            title: Text("C/ DESCONTO: "),
-            subtitle: Text(widget.produto.desconto),
-          ),
-          Divider(),
-          ListTile(
-            title: Text("VALIDADE: "),
-            subtitle: Text(DateFormat("dd/MM/yy")
-                .format(widget.produto.validade.toDate())),
-          ),
-          Divider(color: Colors.orange),
-          ListTile(
-            title: Text("INFORMAÇÕES: "),
-            subtitle: Text(widget.produto.infos),
           )
         ],
       ),
+      // body: ListView(
+      //   children: <Widget>[
+      //     Stack(
+      //       children: <Widget>[
+      //         Image.network(widget.produto.imagem),
+      //         Positioned(
+      //           child: IconButton(
+      //             icon: Icon(Icons.local_mall),
+      //             iconSize: 40,
+      //             color: Colors.orange,
+      //             onPressed: () async {
+      //               showLoadingDialog(tapDismiss: false);
+      //               var doc = await Firestore.instance
+      //                   .collection('empresas')
+      //                   .document(widget.produto.empresaDona)
+      //                   .get()
+      //                   .timeout(Duration(seconds: 15));
+      //               hideLoadingDialog();
+      //               if (doc != null) {
+      //                 PerfilEmpresa aux =
+      //                     PerfilEmpresa.fromJson(doc.data, doc.documentID);
+
+      //                 Navigator.of(context).push(MaterialPageRoute(
+      //                     builder: (context) => PerfilEmpresaPage(aux)));
+      //               }
+      //             },
+      //           ),
+      //           bottom: 0,
+      //           right: 0,
+      //         )
+      //       ],
+      //     ),
+      //     ListTile(
+      //       title: Text("PRODUTO: "),
+      //       subtitle: Text(widget.produto.nomeProduto),
+      //     ),
+      //     Divider(color: Colors.orange),
+      //     ListTile(
+      //       title: Text("PREÇO: "),
+      //       subtitle: Text(widget.produto.preco),
+      //     ),
+      //     Divider(
+      //       color: Colors.orange,
+      //     ),
+      //     ListTile(
+      //       title: Text("C/ DESCONTO: "),
+      //       subtitle: Text(widget.produto.desconto),
+      //     ),
+      //     Divider(),
+      //     ListTile(
+      //       title: Text("VALIDADE: "),
+      //       subtitle: Text(DateFormat("dd/MM/yy")
+      //           .format(widget.produto.validade.toDate())),
+      //     ),
+      //     Divider(color: Colors.orange),
+      //     ListTile(
+      //       title: Text("INFORMAÇÕES: "),
+      //       subtitle: Text(widget.produto.infos),
+      //     )
+      //   ],
+      // ),
     );
   }
 }
