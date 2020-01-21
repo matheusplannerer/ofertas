@@ -61,27 +61,8 @@ class _FeedItemState extends State<FeedItem> {
                         )));
               },
               child: Image.network(produto.imagem),
-              // child: Hero(
-              //   transitionOnUserGestures: true,
-              //   tag: produto.produto,
-              //   child: Image.asset("assets/mogi1.jpg"),
-              // ),
             ),
           ),
-          // Positioned(
-          //   bottom: 70,
-          //   right: 0,
-          //   child: FlatButton(
-          //     padding: EdgeInsets.all(20),
-          //     shape: CircleBorder(),
-          //     onPressed: () {},
-          //     child: Icon(
-          //       (produto.isFavorite) ? Icons.favorite : Icons.favorite_border,
-          //       color: (produto.isFavorite) ? primaryColor : darkText,
-          //       size: 30,
-          //     ),
-          //   ),
-          // ),
           Positioned(
             bottom: 10,
             left: 0,

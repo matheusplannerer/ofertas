@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:ofertas/paginas/feed/feed_page.dart';
 import 'package:ofertas/paginas/login/login.dart';
 
 class CategoriasPage extends StatelessWidget {
@@ -129,11 +130,16 @@ class CategoriasPage extends StatelessWidget {
   }
 }
 
-Widget _widgetCategorias(context, categoria, foto) {
+Widget _widgetCategorias(context, String categoria, foto) {
   return GestureDetector(
     onTap: () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => FeedPage(
+            filtro: categoria.toUpperCase(),
+          ),
+        ),
+      );
     },
     child: Container(
       width: MediaQuery.of(context).size.width / 3 - 40,
