@@ -15,6 +15,7 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:ofertas/paginas/cadastros/cadastro_empresa.dart';
 
 class PerfilEmpresaPage extends StatefulWidget {
   PerfilEmpresaPage(this.empresa);
@@ -22,13 +23,113 @@ class PerfilEmpresaPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _PerfilEmpresaPageState(empresa);
   }
 }
 
 class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
-  double _rating = 4;
+  List<Widget> empresas = [];
+
+  void _showDialog(context) {
+    var global = Provider.of<Global>(context);
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // actions: <Widget>[
+          //   IconButton(
+          //       icon: Icon(Icons.arrow_back, color: Colors.orange),
+          //       onPressed: () {
+          //         Navigator.of(context).pop();
+          //       },
+          //     )
+          // ],
+          title: Text('Escolha um perfil'),
+          content: Container(
+            height: 200,
+            width: 200,
+            child: ListView(
+              children: <Widget>[
+                FutureBuilder<QuerySnapshot>(
+                  future: Firestore.instance
+                      .collection("empresas")
+                      .where("donoEmpresa", isEqualTo: global.fbUser.uid)
+                      .getDocuments(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      if (snapshot.data.documentChanges.length > 0) {
+                        empresas = [];
+                        for (var i = 0;
+                            i < snapshot.data.documentChanges.length;
+                            i++) {
+                          empresas.add(
+                            ListTile(
+                              title: Text(snapshot.data.documentChanges[i]
+                                  .document['nomeEmpresa']),
+                              onTap: () async {
+                                showLoadingDialog(tapDismiss: false);
+                                var doc = await Firestore.instance
+                                    .collection('empresas')
+                                    .document(snapshot.data.documentChanges[i]
+                                        .document.documentID)
+                                    .get()
+                                    .timeout(Duration(seconds: 15));
+                                hideLoadingDialog();
+                                if (doc != null) {
+                                  PerfilEmpresa aux = PerfilEmpresa.fromJson(
+                                      doc.data, doc.documentID);
+
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          PerfilEmpresaPage(aux)));
+                                }
+                              },
+                            ),
+                          );
+                        }
+                        // empresas.add(
+                        //   RaisedButton(
+                        //     onPressed: () {
+                        //       Navigator.of(context).push(MaterialPageRoute(
+                        //           builder: (context) => CadastroEmpresa()));
+                        //     },
+                        //     child: Text("ADICIONAR EMPRESA"),
+                        //   ),
+                        // );
+                        return Column(
+                          children: <Widget>[...empresas],
+                        );
+                      } else {
+                        return Center(
+                          child: Column(
+                            children: [
+                              Text("NENHUMA EMPRESA CADASTRADA"),
+                              RaisedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => CadastroEmpresa()));
+                                },
+                                child: Text("ADICIONAR EMPRESA"),
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   _PerfilEmpresaPageState(this.empresa);
   PerfilEmpresa empresa;
@@ -96,6 +197,16 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: GradientAppBar(
+        actions: <Widget>[
+          if (global.fbUser != null)
+          IconButton(
+            icon: Icon(Icons.keyboard_arrow_down),
+            tooltip: 'Troca de perfil',
+            onPressed: () {
+              _showDialog(context);
+            },
+          )
+        ],
         gradient: LinearGradient(
           colors: [
             Colors.orange[900],
@@ -157,21 +268,24 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                           });
                                     },
                                     child: Container(
-                                      height: 90,
-                                      width: 90,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.orange, width: 2.0
-                                      ),
-                                      borderRadius: BorderRadius.circular(45),
-                                      image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image:
-                                          empresaSnap.data.data['foto'] != null
-                                              ? NetworkImage(
-                                                  empresaSnap.data.data['foto'])
-                                              : AssetImage('assets/logo2.jpg'),
-                                    ))
-                                    ),
+                                        height: 90,
+                                        width: 90,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.orange,
+                                                width: 2.0),
+                                            borderRadius:
+                                                BorderRadius.circular(45),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: empresaSnap
+                                                          .data.data['foto'] !=
+                                                      null
+                                                  ? NetworkImage(empresaSnap
+                                                      .data.data['foto'])
+                                                  : AssetImage(
+                                                      'assets/logo2.jpg'),
+                                            ))),
                                     // child: CircleAvatar(
 
                                     //   radius: 50.0,
@@ -197,10 +311,10 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(              
-              fontFamily: "Bitter-Bold",
-              color: Colors.black,
-              letterSpacing: .6,
+                                    style: TextStyle(
+                                      fontFamily: "Bitter-Bold",
+                                      color: Colors.black,
+                                      letterSpacing: .6,
                                       fontSize: 27,
                                     ),
                                   ),
@@ -211,9 +325,9 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                                    fontSize: 18,
-              fontFamily: "Bitter-Bold",
-              letterSpacing: .6,
+                                      fontSize: 18,
+                                      fontFamily: "Bitter-Bold",
+                                      letterSpacing: .6,
                                       color: Colors.grey[700],
                                     ),
                                   ),
@@ -257,21 +371,24 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     builder: (context) {
                                       return AlertDialog(
                                         shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(20.0)),
+                                            borderRadius:
+                                                BorderRadius.circular(20.0)),
                                         title: Text(
-                                            "ENDEREÇO:",
-                                            style: TextStyle(
-              fontSize: 22,
-              fontFamily: "Bitter-Bold",
-              color: Colors.black,
-              letterSpacing: .6),),
-                                             content:Text("${empresaSnap.data.data['complemento']}",
-                                             style: TextStyle(
-              fontSize: 18,
-              fontFamily: "Domine-Regular",
-              color: Colors.black,
-              letterSpacing: .6),),
+                                          "ENDEREÇO:",
+                                          style: TextStyle(
+                                              fontSize: 22,
+                                              fontFamily: "Bitter-Bold",
+                                              color: Colors.black,
+                                              letterSpacing: .6),
+                                        ),
+                                        content: Text(
+                                          "${empresaSnap.data.data['complemento']}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: "Domine-Regular",
+                                              color: Colors.black,
+                                              letterSpacing: .6),
+                                        ),
                                         actions: <Widget>[
                                           FlatButton(
                                             child: Text("OK"),
@@ -291,22 +408,25 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                 await showDialog(
                                     builder: (context) {
                                       return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(20.0)),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0)),
                                         title: Text(
-                                            "CONTATO:",
-                                            style: TextStyle(
-              fontSize: 22,
-              fontFamily: "Bitter-Bold",
-              color: Colors.black,
-              letterSpacing: .6),),
-              content:Text( "${empresaSnap.data.data['telefone'].toString()}",
-              style: TextStyle(
-              fontSize: 18,
-              fontFamily: "Domine-Regular",
-              color: Colors.black,
-              letterSpacing: .6),),
+                                          "CONTATO:",
+                                          style: TextStyle(
+                                              fontSize: 22,
+                                              fontFamily: "Bitter-Bold",
+                                              color: Colors.black,
+                                              letterSpacing: .6),
+                                        ),
+                                        content: Text(
+                                          "${empresaSnap.data.data['telefone'].toString()}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: "Domine-Regular",
+                                              color: Colors.black,
+                                              letterSpacing: .6),
+                                        ),
                                         actions: <Widget>[
                                           FlatButton(
                                             child: Text("MENSAGEM"),
@@ -345,18 +465,21 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     builder: (context) {
                                       return AlertDialog(
                                         shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(20.0)),
-                                        title: Text("HORÁRIO DE FUNCIONAMENTO:",
-                                        style: TextStyle(
-                                        fontSize: 22,
-              fontFamily: "Bitter-Bold",
-              color: Colors.black,),),
+                                            borderRadius:
+                                                BorderRadius.circular(20.0)),
+                                        title: Text(
+                                          "HORÁRIO DE FUNCIONAMENTO:",
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            fontFamily: "Bitter-Bold",
+                                            color: Colors.black,
+                                          ),
+                                        ),
                                         content: SingleChildScrollView(
                                           child: Column(
                                             children: <Widget>[
-                                              Text(empresaSnap
-                                                          .data.data['segVal'] ==
+                                              Text(empresaSnap.data
+                                                          .data['segVal'] ==
                                                       true
                                                   ? "Seg " +
                                                       empresaSnap.data
@@ -365,8 +488,8 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                                       empresaSnap.data
                                                           .data['horaTermino']
                                                   : ''),
-                                              Text(empresaSnap
-                                                          .data.data['terVal'] ==
+                                              Text(empresaSnap.data
+                                                          .data['terVal'] ==
                                                       true
                                                   ? "Ter " +
                                                       empresaSnap.data
@@ -375,8 +498,8 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                                       empresaSnap.data
                                                           .data['horaTermino']
                                                   : ''),
-                                              Text(empresaSnap
-                                                          .data.data['quaVal'] ==
+                                              Text(empresaSnap.data
+                                                          .data['quaVal'] ==
                                                       true
                                                   ? "Qua " +
                                                       empresaSnap.data
@@ -385,8 +508,8 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                                       empresaSnap.data
                                                           .data['horaTermino']
                                                   : ''),
-                                              Text(empresaSnap
-                                                          .data.data['quiVal'] ==
+                                              Text(empresaSnap.data
+                                                          .data['quiVal'] ==
                                                       true
                                                   ? "Qui " +
                                                       empresaSnap.data
@@ -395,8 +518,8 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                                       empresaSnap.data
                                                           .data['horaTermino']
                                                   : ''),
-                                              Text(empresaSnap
-                                                          .data.data['sexVal'] ==
+                                              Text(empresaSnap.data
+                                                          .data['sexVal'] ==
                                                       true
                                                   ? "Sex " +
                                                       empresaSnap.data
@@ -405,8 +528,8 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                                       empresaSnap.data
                                                           .data['horaTermino']
                                                   : ''),
-                                              Text(empresaSnap
-                                                          .data.data['sabVal'] ==
+                                              Text(empresaSnap.data
+                                                          .data['sabVal'] ==
                                                       true
                                                   ? "Sáb " +
                                                       empresaSnap.data
@@ -415,8 +538,8 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                                       empresaSnap.data
                                                           .data['horaTermino']
                                                   : ''),
-                                              Text(empresaSnap
-                                                          .data.data['domVal'] ==
+                                              Text(empresaSnap.data
+                                                          .data['domVal'] ==
                                                       true
                                                   ? "Dom " +
                                                       empresaSnap.data

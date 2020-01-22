@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
+import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/paginas/cadastros/cadastro_empresa.dart';
 import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:ofertas/paginas/postagem/cartaz.dart';
 import 'package:ofertas/paginas/login/entrar.dart';
 import 'package:ofertas/teles.dart';
 import 'package:ofertas/paginas/drawer/planos.dart';
+import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 import 'package:provider/provider.dart';
 
 // import 'package:firebase_storage/firebase_storage.dart';

@@ -160,7 +160,7 @@ class PlanosState extends State<Planos> {
                                         ),
                                       ),
                                       Text(
-                                        '3000,00',
+                                        '3.000,00',
                                         style: TextStyle(
                                           fontFamily: 'Body',
                                           fontWeight: FontWeight.w600,
