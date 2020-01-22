@@ -8,6 +8,7 @@ import 'package:ofertas/global/global.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/feed/oferta_detalhes.dart';
+import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:ofertas/paginas/postagem/crop.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -41,7 +42,8 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                 FutureBuilder<QuerySnapshot>(
                   future: Firestore.instance
                       .collection("empresas")
-                      .where("donoEmpresa", isEqualTo: global.fbUser.uid)
+                      .where("donoEmpresa",
+                          isEqualTo: global.fbUser.uid)
                       .getDocuments(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -209,6 +211,12 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: GradientAppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Dashboard()));
+            }),
         gradient: LinearGradient(
           colors: [
             Colors.orange[900],
