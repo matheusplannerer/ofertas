@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +30,25 @@ class PerfilEmpresaPage extends StatefulWidget {
 class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
   List<Widget> empresas = [];
 
-  mainBottomSheet(BuildContext context) {
+  void _showDialog(context) {
     var global = Provider.of<Global>(context);
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // actions: <Widget>[
+          //   IconButton(
+          //       icon: Icon(Icons.arrow_back, color: Colors.orange),
+          //       onPressed: () {
+          //         Navigator.of(context).pop();
+          //       },
+          //     )
+          // ],
+          title: Text('Escolha um perfil'),
+          content: Container(
             height: 200,
+            width: 200,
             child: ListView(
               children: <Widget>[
                 FutureBuilder<QuerySnapshot>(
@@ -76,45 +89,18 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                           PerfilEmpresaPage(aux)));
                                 }
                               },
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                child: ClipOval(
-                                  child: snapshot.data.documentChanges[i]
-                                              .document['foto'] !=
-                                          null
-                                      ? Image.network(
-                                          snapshot.data.documentChanges[i]
-                                              .document['foto'],
-                                          width: 200,
-                                          fit: BoxFit.cover,
-                                          loadingBuilder:
-                                              (context, child, imgChunck) {
-                                            if (imgChunck == null) {
-                                              return child;
-                                            } else {
-                                              return CircularProgressIndicator();
-                                            }
-                                          },
-                                        )
-                                      : Image.asset(
-                                          "assets/mogi.jpg",
-                                          fit: BoxFit.cover,
-                                          width: 200,
-                                        ),
-                                ),
-                              ),
                             ),
                           );
                         }
-                        empresas.add(
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => CadastroEmpresa()));
-                            },
-                            child: Text("ADICIONAR EMPRESA"),
-                          ),
-                        );
+                        // empresas.add(
+                        //   RaisedButton(
+                        //     onPressed: () {
+                        //       Navigator.of(context).push(MaterialPageRoute(
+                        //           builder: (context) => CadastroEmpresa()));
+                        //     },
+                        //     child: Text("ADICIONAR EMPRESA"),
+                        //   ),
+                        // );
                         return Column(
                           children: <Widget>[...empresas],
                         );
@@ -139,8 +125,10 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                 ),
               ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   _PerfilEmpresaPageState(this.empresa);
@@ -209,6 +197,16 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: GradientAppBar(
+        actions: <Widget>[
+          if (global.fbUser != null)
+          IconButton(
+            icon: Icon(Icons.keyboard_arrow_down),
+            tooltip: 'Troca de perfil',
+            onPressed: () {
+              _showDialog(context);
+            },
+          )
+        ],
         gradient: LinearGradient(
           colors: [
             Colors.orange[900],
@@ -653,52 +651,16 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
           // children: <Widget>[
           // ],
           ),
-      floatingActionButton: (global.fbUser != null &&
-              empresa.donoEmpresa == global.fbUser.uid)
-          ? Wrap(
-              direction: Axis.horizontal,
-              children: <Widget>[
-                new FloatingActionButton(
-                  heroTag: null,
-                  onPressed: () => mainBottomSheet(context),
-                  child: new Icon(Icons.keyboard_arrow_up),
-                ),
-                SizedBox(width: 10),
-                FloatingActionButton(
-                  heroTag: null,
+      floatingActionButton:
+          (global.fbUser != null && empresa.donoEmpresa == global.fbUser.uid)
+              ? FloatingActionButton(
                   child: Icon(Icons.add_a_photo),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ImageCapture(empresa.empresaID)));
                   },
-                ),
-              ],
-            )
-          : null,
+                )
+              : null,
     );
   }
 }
-
-// ListTile _createTile(
-//     BuildContext context, String name, IconData icon, Function action) {
-//   return ListTile(
-//     leading: Icon(icon),
-//     title: Text(name),
-//     onTap: () {
-//       Navigator.pop(context);
-//       action();
-//     },
-//   );
-// }
-
-// _action1() {
-//   print('action 1');
-// }
-
-// _action2() {
-//   print('action 2');
-// }
-
-// _action3() {
-//   print('action 3');
-// }
