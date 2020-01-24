@@ -29,7 +29,8 @@ class _ImageCaptureState extends State<ImageCapture> {
   OfertaModel produto = OfertaModel();
 
   Future<void> _pickImage(ImageSource source) async {
-    File selected = await ImagePicker.pickImage(source: source);
+    File selected =
+        await ImagePicker.pickImage(source: source, imageQuality: 30);
 
     setState(() {
       _imageFile = selected;

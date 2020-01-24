@@ -32,18 +32,23 @@ class _CadastroPageState extends State<CadastroPage> {
   TextEditingController _senha;
   TextEditingController _confirmSenha;
 
-  bool _validateNome;
-  bool _validateContato;
-  bool _validateEmail;
-  bool _validateSenha;
+  String _textErroValidateNome;
+  String _textErroValidateContato;
+  String _textErroValidateEmail;
+  String _textErroValidateSenha;
+
+  bool _erroValidateNome;
+  bool _erroValidateContato;
+  bool _erroValidateEmail;
+  bool _erroValidateSenha;
 
   @override
   void initState() {
     // TODO: implement initState
-    _validateNome = false;
-    _validateContato = false;
-    _validateEmail = false;
-    _validateSenha = false;
+    _erroValidateNome = false;
+    _erroValidateContato = false;
+    _erroValidateEmail = false;
+    _erroValidateSenha = false;
     _nomeCompleto = TextEditingController();
     _contato = TextEditingController();
     _email = TextEditingController();
@@ -68,21 +73,27 @@ class _CadastroPageState extends State<CadastroPage> {
         text.length <= 2 ||
         numeroLetras <= 2) {
       setState(() {
-        _validateNome = true;
+        _erroValidateNome = true;
+        _textErroValidateNome = 'Insira um nome válido';
       });
     } else {
-      _validateNome = false;
+      setState(() {
+        _erroValidateNome = false;
+        _textErroValidateNome = '';
+      });
     }
   }
 
   void _validateEmailFunc(String text) {
     if (!text.contains("@") || text.length < 5) {
       setState(() {
-        _validateEmail = true;
+        _erroValidateEmail = true;
+        _textErroValidateEmail = 'Insira um e-mail válido';
       });
     } else {
       setState(() {
-        _validateEmail = false;
+        _erroValidateEmail = false;
+        _textErroValidateEmail = '';
       });
     }
   }
@@ -90,11 +101,13 @@ class _CadastroPageState extends State<CadastroPage> {
   void _validateContatoFunc(String text) {
     if (text.length <= 5) {
       setState(() {
-        _validateContato = true;
+        _erroValidateContato = true;
+        _textErroValidateContato = 'Insira um contato válido';
       });
     } else {
       setState(() {
-        _validateContato = false;
+        _erroValidateContato = false;
+        _textErroValidateContato = '';
       });
     }
   }
@@ -102,13 +115,25 @@ class _CadastroPageState extends State<CadastroPage> {
   void _validateSenhaFunc(String senha, String confirmSenha) {
     if (senha != confirmSenha) {
       setState(() {
-        _validateSenha = true;
+        _erroValidateSenha = true;
+        _textErroValidateSenha = 'As senhas não coincidem';
       });
-    } else {
-      setState(() {
-        _validateSenha = false;
-      });
+      return;
     }
+
+    if (senha.length < 6) {
+      print('SENHA RUIM');
+      setState(() {
+        _erroValidateSenha = true;
+        _textErroValidateSenha = 'Senha muito fraca';
+      });
+      return;
+    }
+
+    setState(() {
+      _erroValidateSenha = false;
+      _textErroValidateSenha = '';
+    });
   }
 
   @override
@@ -144,7 +169,7 @@ class _CadastroPageState extends State<CadastroPage> {
                   // inputFormatters: [],
                   controller: _nomeCompleto,
                   decoration: InputDecoration(
-                    errorText: _validateNome ? "Nome inválido" : null,
+                    errorText: _erroValidateNome ? _textErroValidateNome : null,
                     labelStyle: TextStyle(color: Colors.black38, fontSize: 15),
                     labelText: 'Nome completo',
                     fillColor: Colors.white,
@@ -160,7 +185,8 @@ class _CadastroPageState extends State<CadastroPage> {
                   controller: _contato,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    errorText: _validateContato ? "Número inválido" : null,
+                    errorText:
+                        _erroValidateContato ? _textErroValidateContato : null,
                     labelStyle: TextStyle(color: Colors.black38, fontSize: 15),
                     labelText: 'Contato',
                     hintText: '(DDD) XXXXX-XXXX',
@@ -175,7 +201,8 @@ class _CadastroPageState extends State<CadastroPage> {
                 TextField(
                   controller: _email,
                   decoration: InputDecoration(
-                    errorText: _validateEmail ? "E-mail inválido" : null,
+                    errorText:
+                        _erroValidateEmail ? _textErroValidateEmail : null,
                     labelStyle: TextStyle(color: Colors.black38, fontSize: 15),
                     labelText: 'E-mail',
                     fillColor: Colors.white,
@@ -190,7 +217,8 @@ class _CadastroPageState extends State<CadastroPage> {
                   controller: _senha,
                   obscureText: true,
                   decoration: InputDecoration(
-                    errorText: _validateSenha ? "Senhas não coincidem" : null,
+                    errorText:
+                        _erroValidateSenha ? _textErroValidateSenha : null,
                     labelStyle: TextStyle(color: Colors.black38, fontSize: 15),
                     labelText: 'Senha (utilizado para acesso ao app)',
                     hintText: 'Mínimo de 6 caracteres e ao menos 1 número',
@@ -207,7 +235,8 @@ class _CadastroPageState extends State<CadastroPage> {
                   decoration: InputDecoration(
                     labelStyle: TextStyle(color: Colors.black38, fontSize: 15),
                     labelText: 'Confirme sua senha',
-                    errorText: _validateSenha ? "Senhas não coincidem" : null,
+                    errorText:
+                        _erroValidateSenha ? _textErroValidateSenha : null,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25.0),
@@ -226,7 +255,7 @@ class _CadastroPageState extends State<CadastroPage> {
                         children: <Widget>[
                           InkWell(
                             child: Container(
-                              width: ScreenUtil.getInstance().setWidth(630),
+                              width: MediaQuery.of(context).size.width - 60,
                               height: ScreenUtil.getInstance().setHeight(100),
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
@@ -259,10 +288,13 @@ class _CadastroPageState extends State<CadastroPage> {
                                     _validateSenhaFunc(
                                         _senha.text, _confirmSenha.text);
 
-                                    if (_validateContato ||
-                                        _validateEmail ||
-                                        _validateNome ||
-                                        _validateSenha) return;
+                                    if (_erroValidateContato ||
+                                        _erroValidateEmail ||
+                                        _erroValidateNome ||
+                                        _erroValidateSenha) {
+                                      print('testando');
+                                      return;
+                                    }
 
                                     usuario.email =
                                         _email.text.toLowerCase().trim();

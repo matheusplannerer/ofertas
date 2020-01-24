@@ -132,45 +132,59 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 15),
-                child: Text(
-                  "Oferta válida até: " +
-                      DateFormat("dd/MM/yy")
-                          .format(widget.produto.validade.toDate()),
-                  style: TextStyle(
-                      // fontFamily: 'Montserrat',
-                      fontSize: 15.0,
-                      color: Colors.grey),
-                ),
+                child: widget.produto.validade != null
+                    ? Text(
+                        "Oferta válida até: " +
+                            DateFormat("dd/MM/yy")
+                                .format(widget.produto.validade.toDate()),
+                        style: TextStyle(
+                            // fontFamily: 'Montserrat',
+                            fontSize: 15.0,
+                            color: Colors.grey),
+                      )
+                    : Text(
+                        "Oferta válida até: indefinido",
+                        style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 15.0,
+                            color: Colors.black),
+                      ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
-                child: Text(
-                  widget.produto.nomeProduto,
-                  style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
+              if (widget.produto.nomeProduto != '' &&
+                  widget.produto.nomeProduto != null)
+                Padding(
+                  padding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+                  child: Text(
+                    widget.produto.nomeProduto,
+                    style: TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
               Padding(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                padding: EdgeInsets.fromLTRB(15, 0, 10, 15),
                 child: Row(
                   children: <Widget>[
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text( 
+                        Text(
                           widget.produto.desconto + "% de desconto",
                           style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey
+                            fontSize: 15,
+                            color: Colors.black,
+                            fontFamily: "Poppins",
                           ),
                         ),
                         Text(
                           "R\$ " + widget.produto.preco,
                           style: TextStyle(
-                              fontSize: 25.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
+                            fontSize: 25.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
                       ],
                     ),
@@ -181,8 +195,8 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
                       child: Container(
                         width: (MediaQuery.of(context).size.width / 2),
                         child: Text(
-                          "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                          // widget.produto.infos,
+                          // "",
+                          widget.produto.infos,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -192,7 +206,6 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
                         ),
                       ),
                     ),
-                    
                   ],
                 ),
               )

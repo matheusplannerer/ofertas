@@ -117,7 +117,7 @@ class _Entrar extends State<Entrar> {
                   ),
                   Container(
                     width: double.infinity,
-                    height: ScreenUtil.getInstance().setHeight(450),
+                    height: ScreenUtil.getInstance().setHeight(500),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0),
@@ -144,7 +144,8 @@ class _Entrar extends State<Entrar> {
                           //         fontFamily: "Poppins-Bold",
                           //         letterSpacing: .6)),
                           SizedBox(
-                              height: ScreenUtil.getInstance().setHeight(30)),
+                            height: ScreenUtil.getInstance().setHeight(30),
+                          ),
                           Text(
                             "E-mail",
                             style: TextStyle(
@@ -257,21 +258,7 @@ class _Entrar extends State<Entrar> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Row(
-                        children: <Widget>[
-                          // SizedBox(
-                          //   width: 12.0,
-                          // ),
-                          // GestureDetector(
-                          //   onTap: _radio,
-                          //   child: radioButton(_isSelected),
-                          // ),
-                          // SizedBox(
-                          //   width: 8.0,
-                          // ),
-                          // Text("Lembre de mim",
-                          //     style: TextStyle(
-                          //         fontSize: 12, fontFamily: "Poppins-Medium"))
-                        ],
+                        children: <Widget>[],
                       ),
                       InkWell(
                         child: Container(

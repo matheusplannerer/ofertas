@@ -21,6 +21,8 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   bool incrementou = false;
 
+  bool noEmpresas = false;
+
   bool hasMore = true;
 
   QuerySnapshot querySnapshot;
@@ -58,9 +60,10 @@ class _FeedPageState extends State<FeedPage> {
             .getDocuments();
 
         if (docAux.documents.length > 0) {
-          setState(() {
-            empresas.add(aux);
-          });
+          if (mounted)
+            setState(() {
+              empresas.add(aux);
+            });
         }
       }
       if (doc.documents.length > 0)
@@ -88,9 +91,10 @@ class _FeedPageState extends State<FeedPage> {
                 .getDocuments();
 
             if (docAux.documents.length > 0) {
-              setState(() {
-                empresas.add(aux);
-              });
+              if (mounted)
+                setState(() {
+                  empresas.add(aux);
+                });
             }
           }
           if (doc.documents.length > 0)
@@ -100,10 +104,10 @@ class _FeedPageState extends State<FeedPage> {
         }
       }
     }
-
-    setState(() {
-      carregou = true;
-    });
+    if (mounted)
+      setState(() {
+        carregou = true;
+      });
   }
 
   getEmpresas() async {
@@ -124,12 +128,15 @@ class _FeedPageState extends State<FeedPage> {
             .getDocuments();
 
         if (docAux.documents.length > 0) {
-          setState(() {
-            empresas.add(aux);
-          });
+          if (mounted)
+            setState(() {
+              empresas.add(aux);
+            });
         }
       }
-      lastDocument = doc.documents[doc.documents.length - 1];
+
+      if (doc.documents.length > 0)
+        lastDocument = doc.documents[doc.documents.length - 1];
     } else {
       if (hasMore) {
         var doc = await Firestore.instance
@@ -152,21 +159,23 @@ class _FeedPageState extends State<FeedPage> {
                 .getDocuments();
 
             if (docAux.documents.length > 0) {
-              setState(() {
-                empresas.add(aux);
-              });
+              if (mounted)
+                setState(() {
+                  empresas.add(aux);
+                });
             }
           }
-          lastDocument = doc.documents[doc.documents.length - 1];
+          if (doc.documents.length > 0)
+            lastDocument = doc.documents[doc.documents.length - 1];
         } else {
           hasMore = false;
         }
       }
     }
-
-    setState(() {
-      carregou = true;
-    });
+    if (mounted)
+      setState(() {
+        carregou = true;
+      });
   }
 
   @override
@@ -191,6 +200,21 @@ class _FeedPageState extends State<FeedPage> {
     else
       getEmpresas();
     // TODO: implement initState
+
+    Future.delayed(Duration(seconds: 15)).then((data) {
+      if (empresas.length == 0) {
+        if (mounted)
+          setState(() {
+            noEmpresas = true;
+          });
+      } else {
+        if (mounted)
+          setState(() {
+            noEmpresas = false;
+          });
+      }
+    });
+
     super.initState();
   }
 
@@ -244,14 +268,20 @@ class _FeedPageState extends State<FeedPage> {
         itemCount: empresas.length == 0 ? 1 : empresas.length,
         controller: _scrollController,
         itemBuilder: (context, i) {
-          if (empresas.length == 0) {
+          if (!noEmpresas) {
+            if (empresas.length == 0) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else
+              return ViewFeed(
+                empresa: empresas[i],
+              );
+          } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: Text("TENTE NOVAMENTE MAIS TARDE."),
             );
-          } else
-            return ViewFeed(
-              empresa: empresas[i],
-            );
+          }
         },
       );
     }

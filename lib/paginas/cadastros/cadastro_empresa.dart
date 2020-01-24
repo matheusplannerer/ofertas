@@ -200,47 +200,63 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
       return false;
   }
 
+  List<DropdownMenuItem> categoriasAux = [];
+
+  List<String> categorias = [
+    "Agro, Comércio e Indústria",
+    "Alimentos e Bebidas",
+    "Animais",
+    "Antiguidades",
+    "Arte e Artesanato",
+    "Artigos Religiosos",
+    "Bebes",
+    "Brinquedos",
+    "Calçados, Roupas e Bolsas",
+    "Câmeras e Acessorios",
+    "Casa, Móveis e Decoração",
+    "Celular e Telefone",
+    "Coleções e Comics",
+    "Construção",
+    "Diversos e Outros",
+    "Educação",
+    "Eletrônicos",
+    "Eletrodomésticos",
+    "Esportes",
+    "Festas e Eventos",
+    "Filme e seriados",
+    "Gráficas e Impressão",
+    "Games e Jogos",
+    "Informática",
+    "Imóveis",
+    "Jóias e Relógios",
+    "Limpeza",
+    "Livros",
+    "Marketing e Internet",
+    "Motoristas Particulares",
+    "Música",
+    "Saúde e Beleza",
+    "Uso Pessoal",
+    "Utensílios Domésticos",
+    "Veículos",
+    "Viagens e Turismo"
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for (var i = 0; i < categorias.length; i++) {
+      DropdownMenuItem aux = DropdownMenuItem(
+        child: Text(categorias[i]),
+        value: categorias[i],
+      );
+
+      categoriasAux.add(aux);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<String> categorias = [
-      "Agro, Comércio e Indústria",
-      "Alimentos e Bebidas",
-      "Animais",
-      "Antiguidades",
-      "Arte e Artesanato",
-      "Artigos Religiosos",
-      "Bebes",
-      "Brinquedos",
-      "Calçados, Roupas e Bolsas",
-      "Câmeras e Acessorios",
-      "Casa, Móveis e Decoração",
-      "Celular e Telefone",
-      "Coleções e Comics",
-      "Construção",
-      "Diversos e Outros",
-      "Educação",
-      "Eletrônicos",
-      "Eletrodomésticos",
-      "Esportes",
-      "Festas e Eventos",
-      "Filme e seriados",
-      "Gráficas e Impressão",
-      "Games e Jogos",
-      "Informática",
-      "Imóveis",
-      "Jóias e Relógios",
-      "Limpeza",
-      "Livros",
-      "Marketing e Internet",
-      "Motoristas Particulares",
-      "Música",
-      "Saúde e Beleza",
-      "Uso Pessoal",
-      "Utensílios Domésticos",
-      "Veículos",
-      "Viagens e Turismo"
-    ];
-
     var global = Provider.of<Global>(context);
     return Scaffold(
       appBar: GradientAppBar(
@@ -279,17 +295,22 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
           Padding(
             padding: EdgeInsets.only(top: 25.0),
           ),
-          DropdownButton(
-            onChanged: (data) {
-              setState(() {
-                cadastro.categoria = data;
-              });
-            },
-            value: cadastro.categoria,
-            icon: Icon(Icons.list),
-            items: categorias.map((value) {
-              return DropdownMenuItem<String>(value: value, child: Text(value));
-            }).toList(),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            alignment: Alignment.center,
+            child: DropdownButton(
+              hint: Text("CATEGORIA"),
+              onChanged: (data) {
+                setState(() {
+                  cadastro.categoria = data;
+                });
+              },
+              value: cadastro.categoria,
+              icon: Icon(Icons.list),
+              items: [...categoriasAux],
+            ),
           ),
           if (_erroCategoria)
             Text(

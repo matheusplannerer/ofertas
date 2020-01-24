@@ -17,7 +17,7 @@ class PerfilEmpresa {
     this.senha = '', //
     this.empresaID = '', //
     this.donoEmpresa, //
-    this.categoria = '', //
+    this.categoria, //
   }) {
     funcionamento = {
       "domVal": false,
