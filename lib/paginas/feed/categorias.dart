@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:ofertas/paginas/feed/feed_page.dart';
-import 'package:ofertas/paginas/login/login.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class CategoriasPage extends StatefulWidget {

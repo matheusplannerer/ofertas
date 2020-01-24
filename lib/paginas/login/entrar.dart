@@ -25,6 +25,42 @@ class _Entrar extends State<Entrar> {
   TextEditingController email;
   TextEditingController senha;
 
+  bool _erroEmail = false;
+  bool _erroSenha = false;
+
+  String _textErroEmail = '';
+  String _textErroSenha = '';
+
+  void _validateEmail(String email) {
+    if (email.contains(" ") || !email.contains("@") || email.length < 5) {
+      setState(() {
+        _erroEmail = true;
+        _textErroEmail = "Insira um e-mail válido";
+      });
+      return;
+    }
+
+    setState(() {
+      _erroEmail = false;
+      _textErroEmail = "";
+    });
+  }
+
+  void _validateSenha([e]) {
+    if (senha.text.length < 6) {
+      setState(() {
+        _erroSenha = true;
+        _textErroSenha = "Senha inválida";
+      });
+      return;
+    }
+
+    setState(() {
+      _erroSenha = false;
+      _textErroSenha = '';
+    });
+  }
+
   dynamic fbUser;
 
   bool _errorMsg = false;
@@ -117,7 +153,7 @@ class _Entrar extends State<Entrar> {
                   ),
                   Container(
                     width: double.infinity,
-                    height: ScreenUtil.getInstance().setHeight(500),
+                    height: ScreenUtil.getInstance().setHeight(600),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0),
@@ -157,6 +193,7 @@ class _Entrar extends State<Entrar> {
                             controller: email,
                             decoration: InputDecoration(
                               hintText: "E-mail",
+                              errorText: _erroEmail ? _textErroEmail : null,
                               hintStyle:
                                   TextStyle(color: Colors.grey, fontSize: 12.0),
                             ),
@@ -175,6 +212,7 @@ class _Entrar extends State<Entrar> {
                             obscureText: true,
                             decoration: InputDecoration(
                               hintText: "Senha",
+                              errorText: _erroSenha ? _textErroSenha : null,
                               hintStyle:
                                   TextStyle(color: Colors.grey, fontSize: 12.0),
                             ),
@@ -203,7 +241,8 @@ class _Entrar extends State<Entrar> {
                                           content: TextField(
                                             controller: _email,
                                             decoration: InputDecoration(
-                                                labelText: "EMAIL"),
+                                              labelText: "EMAIL",
+                                            ),
                                           ),
                                           actions: <Widget>[
                                             FlatButton(
@@ -284,7 +323,9 @@ class _Entrar extends State<Entrar> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () async {
-                                if (email.text != "" && senha.text != "") {
+                                _validateEmail(email.text.toLowerCase());
+                                _validateSenha();
+                                if (!_erroEmail && !_erroSenha) {
                                   showLoadingDialog();
                                   fbUser = await services.auth
                                       .login(email.text, senha.text);

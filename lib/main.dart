@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           buttonColor: Colors.blueGrey[300],
         ),
       ),
-      home: Dashboard(),
+      home: Entrar(),
       // home: Teste(),
     );
   }

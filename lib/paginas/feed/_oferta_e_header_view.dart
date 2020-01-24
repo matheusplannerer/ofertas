@@ -95,10 +95,9 @@ class _ViewFeedState extends State<ViewFeed> {
         SizedBox(height: 5),
         Container(
           decoration: BoxDecoration(
-            // color: Colors.orange[300],
+            // color: Colors.orange[200],
             border: Border(
-              bottom: BorderSide(color: Colors.orange),
-              top: BorderSide(color: Colors.orange),
+              top: BorderSide(color: Colors.grey[200], width: 5),
             ),
           ),
           child: ListTile(
