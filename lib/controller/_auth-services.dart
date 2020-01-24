@@ -10,8 +10,7 @@ class AuthServices {
       print(email);
       print(senha);
       // print(FirebaseAuth.instance);
-      FirebaseApp a = FirebaseApp(name: "[DEFAULT]");
-      var data = await FirebaseAuth.fromApp(a).signInWithEmailAndPassword(
+      var data = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email.toLowerCase(), password: senha);
       return data;
     } catch (e) {

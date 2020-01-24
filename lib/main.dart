@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
@@ -11,54 +12,76 @@ import 'package:ofertas/teles.dart';
 import 'package:ofertas/paginas/drawer/planos.dart';
 import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
 
 // import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:image_picker/image_picker.dart';
 
-Future<FirebaseUser> isConnected() async {
-  try {
-    var fbUser = await FirebaseAuth.instance.currentUser();
-    return fbUser;
-  } catch (e) {
-    return null;
-  }
-}
+// Future<FirebaseUser> isConnected() async {
+//   try {
+//     var fbUser = await FirebaseAuth.fromApp(FirebaseApp(name: "[DEFAULT]"))
+//         .currentUser();
+//     print(fbUser);
+//     return fbUser;
+//   } catch (e) {
+//     print(e);
+//     return null;
+//   }
+// }
 
-void main() async {
-  var fbUser = await isConnected();
+Future<Widget> getLandingPage() async {
+  return StreamBuilder<FirebaseUser>(
+    stream: FirebaseAuth.instance.onAuthStateChanged,
+    builder: (BuildContext context, snapshot) {
+      if (snapshot.hasData && (!snapshot.data.isAnonymous)) {
+        return Dashboard(snapshot.data);
+      }
 
-  return runApp(
-    ChangeNotifierProvider<Global>(
-      builder: (context) => Global(fbUser: fbUser),
-      child: LoadingProvider(
-        child: MyApp(),
-      ),
-    ),
+      return Dashboard();
+    },
   );
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        // appBarTheme: AppBarTheme(
-        // color: Colors.orange
-        // ),
-        primarySwatch: Colors.orange,
-        buttonColor: Colors.orange,
-        buttonTheme: ButtonThemeData(
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(5.0),
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseApp.configure(
+    name: 'default',
+    options: Platform.isIOS
+        ? FirebaseOptions(
+            googleAppID: '',
+          )
+        : FirebaseOptions(
+            apiKey: "AIzaSyANKFx2A_kS9zc-t4GnE05XbNgU6PMNWcA",
+            databaseURL: "https://ofertas-dd295.firebaseio.com",
+            projectID: "ofertas-dd295",
+            storageBucket: "ofertas-dd295.appspot.com",
+            googleAppID: "1:115359535931:android:374033c17ec3822b2b1d1e",
           ),
-          minWidth: 325.0,
-          height: 50.0,
-          buttonColor: Colors.blueGrey[300],
+  );
+  runApp(
+    ChangeNotifierProvider<Global>(
+      builder: (context) => Global(),
+      child: LoadingProvider(
+        child: MaterialApp(
+          theme: ThemeData(
+            // appBarTheme: AppBarTheme(
+            // color: Colors.orange
+            // ),
+            primarySwatch: Colors.orange,
+            buttonColor: Colors.orange,
+            buttonTheme: ButtonThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(5.0),
+              ),
+              minWidth: 325.0,
+              height: 50.0,
+              buttonColor: Colors.blueGrey[300],
+            ),
+          ),
+          home: await getLandingPage(),
+          // home: Teste(),
         ),
       ),
-      home: Entrar(),
-      // home: Teste(),
-    );
-  }
+    ),
+  );
 }

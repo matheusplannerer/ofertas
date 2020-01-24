@@ -1,6 +1,7 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
@@ -22,6 +23,9 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:ofertas/paginas/feed/categorias.dart';
 
 class Dashboard extends StatefulWidget {
+  final FirebaseUser fbUser;
+  Dashboard([this.fbUser]);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -43,6 +47,9 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<Global>(context);
+    if (widget.fbUser != null) {
+      global.fbUser = widget.fbUser;
+    }
     // TODO: implement build
     return Scaffold(
       bottomNavigationBar: global.fbUser != null
@@ -77,25 +84,26 @@ class _DashboardState extends State<Dashboard> {
         centerTitle: true,
         // elevation: 0,
         // backgroundColor: primaryColor,
-        title:
-            Text('OFERTAS', 
-              style: TextStyle(
+        title: Text(
+          'OFERTAS',
+          style: TextStyle(
               fontSize: 22,
               fontFamily: "Poppins-Bold",
               color: Colors.white,
-              letterSpacing: .6),),
-              gradient: LinearGradient(
+              letterSpacing: .6),
+        ),
+        gradient: LinearGradient(
           colors: [
             Colors.orange[900],
             Colors.orange[300],
           ],
-      ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
               Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CategoriasPage()));
+                  MaterialPageRoute(builder: (context) => CategoriasPage()));
             },
           ),
         ],
@@ -217,9 +225,9 @@ class _DashboardState extends State<Dashboard> {
                 ],
               ),
               onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Planos()));
-                },
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Planos()));
+              },
             ),
             Divider(),
             if (global.fbUser != null)
@@ -238,7 +246,8 @@ class _DashboardState extends State<Dashboard> {
                   showLoadingDialog();
                   await Future.delayed(Duration(milliseconds: 400));
                   global.isEmpresa = false;
-                  await FirebaseAuth.instance.signOut();
+                  await FirebaseAuth.instance
+                      .signOut();
                   hideLoadingDialog();
                   global.fbUser = null;
                   Navigator.of(context).pushReplacement(

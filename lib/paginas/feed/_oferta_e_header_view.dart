@@ -167,7 +167,7 @@ class _ViewFeedState extends State<ViewFeed> {
                 return Container(
                   width: MediaQuery.of(context).size.width,
                   child: Center(
-                    child: Text("SEM OFERTAS PUBLICADAS"),
+                    child: CircularProgressIndicator(),
                   ),
                 );
               }
