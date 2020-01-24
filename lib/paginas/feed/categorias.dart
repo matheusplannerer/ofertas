@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:ofertas/paginas/feed/feed_page.dart';
 import 'package:ofertas/paginas/login/login.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-class CategoriasPage extends StatelessWidget {
+class CategoriasPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _CategoriasPageState();
+  }
+}
+
+class _CategoriasPageState extends State<CategoriasPage> {
   Map<String, String> categorias = {
     "Agro, Comércio e Indústria":
         "https://images.pexels.com/photos/1615784/pexels-photo-1615784.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -81,6 +90,16 @@ class CategoriasPage extends StatelessWidget {
 
   ScrollController _scrollController = ScrollController();
 
+  List<String> categoriasKeys = [];
+  List<String> valuesKeys = [];
+
+  @override
+  void initState() {
+    super.initState();
+    categoriasKeys = categorias.keys.toList();
+    valuesKeys = categorias.values.toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -98,66 +117,76 @@ class CategoriasPage extends StatelessWidget {
           ],
         ),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: GridView.builder(
           itemCount: categorias.length,
           controller: _scrollController,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
+            crossAxisCount: 2,
             crossAxisSpacing: 10.0,
             mainAxisSpacing: 10.0,
           ),
           itemBuilder: (context, i) {
-            return _widgetCategorias(context, categorias.keys.toList()[i],
-                categorias.values.toList()[i]);
+            return _ImageCategory(
+              categoria: categoriasKeys[i],
+              context: context,
+              foto: valuesKeys[i],
+            );
           },
         ),
       ),
-      // body: GridView(
-      //   padding: EdgeInsets.all(10.0),
-      //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      //     crossAxisCount: 3,
-      //     crossAxisSpacing: 10.0,
-      //     mainAxisSpacing: 10.0,
-      //   ),
-      //   children: <Widget>[
-
-      //   ],
-      // ),
     );
   }
 }
 
-Widget _widgetCategorias(context, String categoria, foto) {
-  return GestureDetector(
-    onTap: () {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => FeedPage(
-            filtro: categoria.toUpperCase(),
+class _ImageCategory extends StatefulWidget {
+  final BuildContext context;
+  final String categoria;
+  final String foto;
+
+  _ImageCategory({this.categoria, this.context, this.foto});
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _ImageCategoryState();
+  }
+}
+
+class _ImageCategoryState extends State<_ImageCategory> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(widget.context).push(
+          MaterialPageRoute(
+            builder: (context) => FeedPage(
+              filtro: widget.categoria.toUpperCase(),
+            ),
+          ),
+        );
+      },
+      child: Container(
+        width: MediaQuery.of(widget.context).size.width / 3 - 40,
+        height: MediaQuery.of(widget.context).size.width / 3 - 40,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: CachedNetworkImageProvider(widget.foto),
           ),
         ),
-      );
-    },
-    child: Container(
-      width: MediaQuery.of(context).size.width / 3 - 40,
-      height: MediaQuery.of(context).size.width / 3 - 40,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-        fit: BoxFit.cover,
-        image: NetworkImage(foto),
-      )),
-      child: Center(
-        child: Text(
-          categoria,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        child: Center(
+          child: Text(
+            widget.categoria,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

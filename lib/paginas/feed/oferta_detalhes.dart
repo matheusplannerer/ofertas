@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -94,9 +95,19 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
               Stack(
                 children: <Widget>[
                   Container(
-                    child: Image.network(
-                      widget.produto.imagem,
-                      fit: BoxFit.cover,
+                    child: CachedNetworkImage(
+                      imageUrl: widget.produto.imagem,
+                      fit: BoxFit.fill,
+                      errorWidget: (context, string, obj) {
+                        return Center(
+                          child: Text("ERRO NO CARREGAMENTO"),
+                        );
+                      },
+                      placeholder: (context, url) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
                     ),
                     // height: 275,
                   ),
@@ -213,67 +224,6 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
           )
         ],
       ),
-      // body: ListView(
-      //   children: <Widget>[
-      //     Stack(
-      //       children: <Widget>[
-      //         Image.network(widget.produto.imagem),
-      //         Positioned(
-      //           child: IconButton(
-      //             icon: Icon(Icons.local_mall),
-      //             iconSize: 40,
-      //             color: Colors.orange,
-      //             onPressed: () async {
-      //               showLoadingDialog(tapDismiss: false);
-      //               var doc = await Firestore.instance
-      //                   .collection('empresas')
-      //                   .document(widget.produto.empresaDona)
-      //                   .get()
-      //                   .timeout(Duration(seconds: 15));
-      //               hideLoadingDialog();
-      //               if (doc != null) {
-      //                 PerfilEmpresa aux =
-      //                     PerfilEmpresa.fromJson(doc.data, doc.documentID);
-
-      //                 Navigator.of(context).push(MaterialPageRoute(
-      //                     builder: (context) => PerfilEmpresaPage(aux)));
-      //               }
-      //             },
-      //           ),
-      //           bottom: 0,
-      //           right: 0,
-      //         )
-      //       ],
-      //     ),
-      //     ListTile(
-      //       title: Text("PRODUTO: "),
-      //       subtitle: Text(widget.produto.nomeProduto),
-      //     ),
-      //     Divider(color: Colors.orange),
-      //     ListTile(
-      //       title: Text("PREÇO: "),
-      //       subtitle: Text(widget.produto.preco),
-      //     ),
-      //     Divider(
-      //       color: Colors.orange,
-      //     ),
-      //     ListTile(
-      //       title: Text("C/ DESCONTO: "),
-      //       subtitle: Text(widget.produto.desconto),
-      //     ),
-      //     Divider(),
-      //     ListTile(
-      //       title: Text("VALIDADE: "),
-      //       subtitle: Text(DateFormat("dd/MM/yy")
-      //           .format(widget.produto.validade.toDate())),
-      //     ),
-      //     Divider(color: Colors.orange),
-      //     ListTile(
-      //       title: Text("INFORMAÇÕES: "),
-      //       subtitle: Text(widget.produto.infos),
-      //     )
-      //   ],
-      // ),
     );
   }
 }

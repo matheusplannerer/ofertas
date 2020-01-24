@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:load/load.dart';
@@ -52,15 +53,18 @@ class _HeaderEmpresaViewState extends State<HeaderEmpresaView> {
           ),
         ),
         child: widget.empresa.foto != null
-            ? Image.network(
-                widget.empresa.foto,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, imgChunck) {
-                  if (imgChunck == null) {
-                    return child;
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
+            ? CachedNetworkImage(
+                imageUrl: widget.empresa.foto,
+                fit: BoxFit.fill,
+                errorWidget: (context, string, obj) {
+                  return Center(
+                    child: Text("ERRO NO CARREGAMENTO"),
+                  );
+                },
+                placeholder: (context, url) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 },
               )
             : Image.asset(
@@ -69,48 +73,5 @@ class _HeaderEmpresaViewState extends State<HeaderEmpresaView> {
               ),
       ),
     );
-
-    // return Row(
-    //   children: <Widget>[
-    // Expanded(
-    //   flex: 1,
-    //   child: widget.empresa.foto != null
-    //       ? Image.network(
-    //           widget.empresa.foto,
-    //           fit: BoxFit.cover,
-    //           loadingBuilder: (context, child, imgChunck) {
-    //             if (imgChunck == null) {
-    //               return child;
-    //             } else {
-    //               return Center(child: CircularProgressIndicator());
-    //             }
-    //           },
-    //         )
-    //       : Image.asset(
-    //           "assets/mogi.jpg",
-    //           fit: BoxFit.cover,
-    //         ),
-    // ),
-    // Expanded(
-    //   flex: 3,
-    //   child: Container(
-    //     decoration: BoxDecoration(
-    //       border: Border(
-    //         left: BorderSide(width: 1),
-    //       ),
-    //     ),
-    //     child: Center(
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: <Widget>[
-    //           Text(widget.empresa.nomeEmpresa),
-    //           Text(widget.empresa.categoria),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // )
-    //   ],
-    // );
   }
 }

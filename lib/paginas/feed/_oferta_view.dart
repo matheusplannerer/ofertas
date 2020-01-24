@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ofertas/models/produtos.dart';
@@ -57,15 +58,18 @@ class _ModeloOfertaViewState extends State<ModeloOfertaView> {
                     overflow: Overflow.visible,
                     fit: StackFit.expand,
                     children: [
-                      Image.network(
-                        widget.produto.imagem,
+                      CachedNetworkImage(
+                        imageUrl: widget.produto.imagem,
                         fit: BoxFit.fill,
-                        loadingBuilder: (context, child, imgChunck) {
-                          if (imgChunck == null) {
-                            return child;
-                          } else {
-                            return Center(child: CircularProgressIndicator());
-                          }
+                        errorWidget: (context, string, obj) {
+                          return Center(
+                            child: Text("ERRO NO CARREGAMENTO"),
+                          );
+                        },
+                        placeholder: (context, url) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
                         },
                       ),
                       Positioned(
@@ -110,15 +114,18 @@ class _ModeloOfertaViewState extends State<ModeloOfertaView> {
                 overflow: Overflow.visible,
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
-                    widget.produto.imagem,
+                  CachedNetworkImage(
+                    imageUrl: widget.produto.imagem,
                     fit: BoxFit.fill,
-                    loadingBuilder: (context, child, imgChunck) {
-                      if (imgChunck == null) {
-                        return child;
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
+                    errorWidget: (context, string, obj) {
+                      return Center(
+                        child: Text("ERRO NO CARREGAMENTO"),
+                      );
+                    },
+                    placeholder: (context, url) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
                     },
                   ),
                 ],

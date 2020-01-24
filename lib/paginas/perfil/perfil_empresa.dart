@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +43,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                 FutureBuilder<QuerySnapshot>(
                   future: Firestore.instance
                       .collection("empresas")
-                      .where("donoEmpresa",
-                          isEqualTo: global.fbUser.uid)
+                      .where("donoEmpresa", isEqualTo: global.fbUser.uid)
                       .getDocuments(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -84,18 +84,24 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                   child: snapshot.data.documentChanges[i]
                                               .document['foto'] !=
                                           null
-                                      ? Image.network(
-                                          snapshot.data.documentChanges[i]
-                                              .document['foto'],
-                                          width: 200,
-                                          fit: BoxFit.cover,
-                                          loadingBuilder:
-                                              (context, child, imgChunck) {
-                                            if (imgChunck == null) {
-                                              return child;
-                                            } else {
-                                              return CircularProgressIndicator();
-                                            }
+                                      ? CachedNetworkImage(
+                                          imageUrl: snapshot
+                                              .data
+                                              .documentChanges[i]
+                                              .document
+                                              .data['foto'],
+                                          fit: BoxFit.fill,
+                                          errorWidget: (context, string, obj) {
+                                            return Center(
+                                              child:
+                                                  Text("ERRO NO CARREGAMENTO"),
+                                            );
+                                          },
+                                          placeholder: (context, url) {
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
                                           },
                                         )
                                       : Image.asset(
@@ -618,19 +624,19 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                                       produto: produto,
                                                     )));
                                       },
-                                      child: Image.network(
-                                        snapshot.data.documents[index]
+                                      child: CachedNetworkImage(
+                                        imageUrl: snapshot.data.documents[index]
                                             .data['imagem'],
-                                        scale: 0.9,
-                                        loadingBuilder:
-                                            (context, child, imgChunck) {
-                                          if (imgChunck == null) {
-                                            return child;
-                                          } else {
-                                            return Center(
-                                                child:
-                                                    CircularProgressIndicator());
-                                          }
+                                        fit: BoxFit.fill,
+                                        errorWidget: (context, string, obj) {
+                                          return Center(
+                                            child: Text("ERRO NO CARREGAMENTO"),
+                                          );
+                                        },
+                                        placeholder: (context, url) {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
                                         },
                                       ),
                                     );

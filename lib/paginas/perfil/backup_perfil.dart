@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -199,13 +200,13 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
       appBar: GradientAppBar(
         actions: <Widget>[
           if (global.fbUser != null)
-          IconButton(
-            icon: Icon(Icons.keyboard_arrow_down),
-            tooltip: 'Troca de perfil',
-            onPressed: () {
-              _showDialog(context);
-            },
-          )
+            IconButton(
+              icon: Icon(Icons.keyboard_arrow_down),
+              tooltip: 'Troca de perfil',
+              onPressed: () {
+                _showDialog(context);
+              },
+            )
         ],
         gradient: LinearGradient(
           colors: [
@@ -605,19 +606,19 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                                     produto: produto,
                                                   )));
                                     },
-                                    child: Image.network(
-                                      snapshot
+                                    child: CachedNetworkImage(
+                                      imageUrl: snapshot
                                           .data.documents[index].data['imagem'],
-                                      scale: 0.9,
-                                      loadingBuilder:
-                                          (context, child, imgChunck) {
-                                        if (imgChunck == null) {
-                                          return child;
-                                        } else {
-                                          return Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        }
+                                      fit: BoxFit.fill,
+                                      errorWidget: (context, string, obj) {
+                                        return Center(
+                                          child: Text("ERRO NO CARREGAMENTO"),
+                                        );
+                                      },
+                                      placeholder: (context, url) {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
                                       },
                                     ),
                                   );

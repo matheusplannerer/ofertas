@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ofertas/models/produtos.dart';
 import 'package:ofertas/paginas/feed/oferta_detalhes.dart';
@@ -60,7 +61,20 @@ class _FeedItemState extends State<FeedItem> {
                           produto: produto,
                         )));
               },
-              child: Image.network(produto.imagem),
+              child: CachedNetworkImage(
+                imageUrl: produto.imagem,
+                fit: BoxFit.fill,
+                errorWidget: (context, string, obj) {
+                  return Center(
+                    child: Text("ERRO NO CARREGAMENTO"),
+                  );
+                },
+                placeholder: (context, url) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
             ),
           ),
           Positioned(
