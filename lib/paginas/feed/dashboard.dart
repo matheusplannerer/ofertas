@@ -26,7 +26,9 @@ import 'package:ofertas/paginas/feed/categorias.dart';
 
 class Dashboard extends StatefulWidget {
   final FirebaseUser fbUser;
-  Dashboard({this.fbUser});
+  final User user;
+  final PerfilEmpresa empresaLogada;
+  Dashboard({this.fbUser, this.user, this.empresaLogada});
 
   @override
   State<StatefulWidget> createState() {
@@ -61,11 +63,16 @@ class _DashboardState extends State<Dashboard> {
     if (widget.fbUser != null) {
       //Ta logado
       global.fbUser = widget.fbUser;
+      global.usuario = widget.user;
       if (global.usuario.empresaPerfil == null ||
           global.usuario.empresaPerfil == '') {
         //Não tem empresa
+        print("AQUI");
         secondPage = PerfilUsuario();
       } else {
+        global.empresaLogada = widget.empresaLogada;
+        print("AQUI2");
+        print(global.empresaLogada);
         secondPage = PerfilEmpresaPage(global.empresaLogada);
       }
     }

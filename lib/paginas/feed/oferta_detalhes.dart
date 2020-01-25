@@ -22,12 +22,23 @@ class OfertaDetalhe extends StatefulWidget {
 }
 
 class _OfertaDetalheState extends State<OfertaDetalhe> {
+  bool isCartaz = false; //Cartaz digital
+  bool isFolheto = false; //Folheto
+
   bool isOwner = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    if (widget.produto.preco == "0,00") {
+      isCartaz = false;
+      isFolheto = true;
+    }
+    if (widget.produto.preco == null) {
+      isCartaz = true;
+      isFolheto = false;
+    }
   }
 
   @override
@@ -95,6 +106,7 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
               Stack(
                 children: <Widget>[
                   Container(
+                    width: MediaQuery.of(context).size.width,
                     child: CachedNetworkImage(
                       imageUrl: widget.produto.imagem,
                       fit: BoxFit.fill,
@@ -109,7 +121,7 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
                         );
                       },
                     ),
-                    // height: 275,
+                    height: 275,
                   ),
                   Positioned(
                     child: IconButton(
@@ -180,23 +192,25 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          widget.produto.desconto + "% de desconto",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontFamily: "Poppins",
+                        if (isCartaz || (!isCartaz && !isFolheto))
+                          Text(
+                            "Preço com desconto: ${widget.produto.desconto}",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                              fontFamily: "Poppins",
+                            ),
                           ),
-                        ),
-                        Text(
-                          "R\$ " + widget.produto.preco,
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                        if (!isFolheto && !isCartaz)
+                          Text(
+                            "R\$ " + widget.produto.preco,
+                            style: TextStyle(
+                              fontSize: 25.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.left,
                           ),
-                          textAlign: TextAlign.left,
-                        ),
                       ],
                     ),
                     SizedBox(
@@ -206,13 +220,12 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
                       child: Container(
                         width: (MediaQuery.of(context).size.width / 2),
                         child: Text(
-                          // "",
                           widget.produto.infos,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 12.0,
-                            color: Colors.grey.withOpacity(0.8),
+                            color: Colors.black,
                           ),
                         ),
                       ),

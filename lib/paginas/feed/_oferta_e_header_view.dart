@@ -174,9 +174,11 @@ class _ViewFeedState extends State<ViewFeed> {
 
               return GestureDetector(
                 onTap: () {
+                  print("TESTE");
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
                           OfertaDetalhe(produto: ofertas[i])));
+                  print("TESTE");
                 },
                 child: ModeloOfertaView(
                   produto: ofertas[i],

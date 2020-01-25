@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
@@ -308,28 +309,13 @@ class _CadastroPageState extends State<CadastroPage> {
                                     var fbUser = await services.auth.signUp(
                                         usuario.email, usuario.senha, usuario);
 
-                                    if (fbUser == null) {
+                                    if (fbUser.runtimeType != FirebaseUser) {
                                       //Não cadastrou
                                       hideLoadingDialog();
-                                      await showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text("OK"),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                )
-                                              ],
-                                              title: Text("Algo deu errado!"),
-                                              content: SingleChildScrollView(
-                                                child: Text(
-                                                    "Se o problema persistir, entre em contato com o suporte"),
-                                              ),
-                                            );
-                                          });
+                                      setState(() {
+                                        _erroValidateEmail = true;
+                                        _textErroValidateEmail = fbUser;
+                                      });
                                       return;
                                     }
 

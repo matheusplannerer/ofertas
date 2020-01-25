@@ -306,7 +306,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     ),
                                   ),
                                   AutoSizeText(
-                                    empresaSnap.data.data['categoria'],
+                                    empresaSnap.data.data['categoria'] ?? "",
                                     //add categoria para poder puxar do database
                                     textAlign: TextAlign.center,
                                     maxLines: 1,

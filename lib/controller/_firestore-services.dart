@@ -19,7 +19,12 @@ class FirestoreServices {
           .collection('usuarios')
           .document(fbUser.uid)
           .get();
-    } catch (e) {}
+
+      User usuario = User.fromJson(data.data);
+      return usuario;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<bool> cadastrarEmpresa(

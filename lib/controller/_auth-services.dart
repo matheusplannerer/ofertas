@@ -42,7 +42,7 @@ class AuthServices {
     // }
   }
 
-  Future<FirebaseUser> signUp(String email, String senha, User user) async {
+  Future<dynamic> signUp(String email, String senha, User user) async {
     try {
       var data = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email.toLowerCase(), password: senha);
@@ -59,10 +59,18 @@ class AuthServices {
       });
       return data;
     } catch (e) {
+      PlatformException erro = e;
       print(e.toString());
       var data = await FirebaseAuth.instance.currentUser();
-      data.delete();
-      return null;
+      if (data != null) data.delete();
+      if (erro.code == "ERROR_EMAIL_ALREADY_IN_USE") {
+        return "E-mail já cadastrado";
+      }
+      if (erro.code == "ERROR_INVALID_EMAIL") {
+        return "E-mail inválido";
+      } else {
+        return "Um erro inesperado aconteceu, tente novamente!";
+      }
     }
   }
 

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 
 class PerfilUsuario extends StatefulWidget {
-  PerfilUsuario({Key key}) : super(key: key);
+  PerfilUsuario();
 
   @override
   _PerfilUsuarioState createState() => _PerfilUsuarioState();
