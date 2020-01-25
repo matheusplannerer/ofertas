@@ -29,6 +29,7 @@ class _CartazState extends State<Cartaz> {
   OfertaModel produto = OfertaModel();
 
   List<String> descontoPrecoAux = ['0', '0', '0'];
+  String lastDescontoPrecoAux = '';
 
   //Controladores do erro
   bool _erroNomeProduto = false;
@@ -52,9 +53,15 @@ class _CartazState extends State<Cartaz> {
 //Focusnode
   FocusNode _focusNodeDescontoPreco = FocusNode();
 
-//Funções de formatação
+  //Number Format
   void _formatDescontoPreco(String lastDigitoAux) {
-    String lastDigito = "$lastDigitoAux";
+    String lastDigito = '';
+    if (lastDescontoPrecoAux.length > lastDigitoAux.length) {
+      lastDigito = "null";
+    } else {
+      lastDigito = "${lastDigitoAux[lastDigitoAux.length - 1]}";
+    }
+    // print(lastDigito);
     String newText = '';
     if (lastDigito != 'null') {
       //ADICIONOU UM VALOR
@@ -84,8 +91,10 @@ class _CartazState extends State<Cartaz> {
     } else {
       //REMOVEU UM VALOR
       if (descontoPrecoAux.length > 3) {
+        print("Lenght era maior que 3");
         descontoPrecoAux.removeLast();
       } else {
+        print("Length MENOR q 3");
         descontoPrecoAux.insert(0, "0");
         descontoPrecoAux.removeLast();
       }
@@ -103,6 +112,16 @@ class _CartazState extends State<Cartaz> {
 
     setState(() {
       _precoDescontoProduto = TextEditingController(text: newText);
+      var cursorPos = _precoDescontoProduto.selection;
+
+      _precoDescontoProduto.text = newText ?? '';
+
+      if (cursorPos.start < _precoDescontoProduto.text.length) {
+        cursorPos = new TextSelection.fromPosition(
+            new TextPosition(offset: _precoDescontoProduto.text.length));
+      }
+      _precoDescontoProduto.selection = cursorPos;
+      lastDescontoPrecoAux = "${_precoDescontoProduto.text}";
     });
   }
 
@@ -135,11 +154,24 @@ class _CartazState extends State<Cartaz> {
     descontoPreco = descontoPrecoAux.join();
 
     if (int.tryParse(descontoPreco) != 0) {
+      //ok
+      if (descontoPrecoAux.length >= 6) {
+        //erro: maior q 999,99
+        setState(() {
+          _erroPrecoDescontoProduto = true;
+          _textErroPrecoDescontoProduto = "Máximo valor válido: R\$999,99";
+        });
+        return;
+      }
+
       setState(() {
+        //Sem erro, reseta
         _erroPrecoDescontoProduto = false;
         _textErroPrecoDescontoProduto = "";
       });
+      return;
     } else {
+      //Igual a 0: erro
       setState(() {
         _erroPrecoDescontoProduto = true;
         _textErroPrecoDescontoProduto = "Insira um valor com desconto válido";
@@ -318,35 +350,25 @@ class _CartazState extends State<Cartaz> {
                 Padding(
                   padding: EdgeInsets.only(top: 20),
                 ),
-                RawKeyboardListener(
-                  onKey: (char) {
-                    if (char.runtimeType.toString() == "RawKeyDownEvent") {
-                      if (char.character != null ||
-                          char.logicalKey.debugName == "Backspace") {
-                        _formatDescontoPreco(char.character);
-                      }
-                    }
-                    // print(char.character);
+                TextField(
+                  onChanged: (precoText) {
+                    _formatDescontoPreco(precoText);
                   },
-                  focusNode: _focusNodeDescontoPreco,
-                  child: TextField(
-                    onChanged: (precoText) {},
-                    keyboardType: TextInputType.number,
-                    controller: _precoDescontoProduto,
-                    decoration: InputDecoration(
-                      prefixText: "R\$",
-                      errorText: _erroPrecoDescontoProduto
-                          ? _textErroPrecoDescontoProduto
-                          : null,
-                      labelStyle:
-                          TextStyle(color: Colors.grey[700], fontSize: 15),
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide(),
-                      ),
-                      labelText: 'Valor com desconto',
+                  keyboardType: TextInputType.number,
+                  controller: _precoDescontoProduto,
+                  decoration: InputDecoration(
+                    prefixText: "R\$",
+                    errorText: _erroPrecoDescontoProduto
+                        ? _textErroPrecoDescontoProduto
+                        : null,
+                    labelStyle:
+                        TextStyle(color: Colors.grey[700], fontSize: 15),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                      borderSide: BorderSide(),
                     ),
+                    labelText: 'Valor com desconto',
                   ),
                 ),
                 Padding(

@@ -29,8 +29,8 @@ class _ImageCaptureState extends State<ImageCapture> {
   OfertaModel produto = OfertaModel();
 
   Future<void> _pickImage(ImageSource source) async {
-    File selected =
-        await ImagePicker.pickImage(source: source, imageQuality: 30);
+    File selected = await ImagePicker.pickImage(
+        source: source, maxHeight: 350, maxWidth: 350, imageQuality: 50);
 
     setState(() {
       _imageFile = selected;
@@ -183,8 +183,6 @@ class _UploaderState extends State<Uploader> {
                   .firestore
                   .cadastrarOferta(widget.produto, widget.empresaID);
             });
-            // Navigator.of(context)
-            //     .popUntil((Route<dynamic> route) => route.isFirst);
           }
 
           double progressPercent =

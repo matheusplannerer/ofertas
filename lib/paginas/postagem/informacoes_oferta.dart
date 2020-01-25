@@ -26,9 +26,20 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
   List<String> descontoPrecoAux = ['0', '0', '0'];
   List<String> precoAux = ['0', '0', '0'];
 
+  String lastPrecoAux = '';
+  String lastDescontoPrecoAux = '';
+
+  bool secondTime = false;
+
 //Number Format
   void _formatPreco(String lastDigitoAux) {
-    String lastDigito = "$lastDigitoAux";
+    String lastDigito = '';
+    if (lastPrecoAux.length > lastDigitoAux.length) {
+      lastDigito = "null";
+    } else {
+      lastDigito = "${lastDigitoAux[lastDigitoAux.length - 1]}";
+    }
+    // print(lastDigito);
     String newText = '';
     if (lastDigito != 'null') {
       //ADICIONOU UM VALOR
@@ -58,8 +69,10 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
     } else {
       //REMOVEU UM VALOR
       if (precoAux.length > 3) {
+        print("Lenght era maior que 3");
         precoAux.removeLast();
       } else {
+        print("Length MENOR q 3");
         precoAux.insert(0, "0");
         precoAux.removeLast();
       }
@@ -77,14 +90,38 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
 
     setState(() {
       _precoProduto = TextEditingController(text: newText);
+      var cursorPos = _precoProduto.selection;
+
+      _precoProduto.text = newText ?? '';
+
+      if (cursorPos.start < _precoProduto.text.length) {
+        cursorPos = new TextSelection.fromPosition(
+            new TextPosition(offset: _precoProduto.text.length));
+      }
+      _precoProduto.selection = cursorPos;
+      lastPrecoAux = "${_precoProduto.text}";
     });
   }
 
+  //Number Format
   void _formatDescontoPreco(String lastDigitoAux) {
-    String lastDigito = "$lastDigitoAux";
+    String lastDigito = '';
+    if (lastDescontoPrecoAux.length > lastDigitoAux.length) {
+      lastDigito = "null";
+    } else {
+      lastDigito = "${lastDigitoAux[lastDigitoAux.length - 1]}";
+    }
+    // print(lastDigito);
     String newText = '';
     if (lastDigito != 'null') {
+      //ADICIONOU UM VALOR
 
+      // String newText = '';
+      // newText = text;
+      // if (text.length > 3) {
+      //   newText.replaceRange(
+      //       newText.length - 3, newText.length - 3, "${newText[newText.length - 3]},");
+      // }
 
       if (descontoPrecoAux.first == "0") {
         //Substituir zeros
@@ -104,8 +141,10 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
     } else {
       //REMOVEU UM VALOR
       if (descontoPrecoAux.length > 3) {
+        print("Lenght era maior que 3");
         descontoPrecoAux.removeLast();
       } else {
+        print("Length MENOR q 3");
         descontoPrecoAux.insert(0, "0");
         descontoPrecoAux.removeLast();
       }
@@ -123,6 +162,16 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
 
     setState(() {
       _precoDescontoProduto = TextEditingController(text: newText);
+      var cursorPos = _precoDescontoProduto.selection;
+
+      _precoDescontoProduto.text = newText ?? '';
+
+      if (cursorPos.start < _precoDescontoProduto.text.length) {
+        cursorPos = new TextSelection.fromPosition(
+            new TextPosition(offset: _precoDescontoProduto.text.length));
+      }
+      _precoDescontoProduto.selection = cursorPos;
+      lastDescontoPrecoAux = "${_precoDescontoProduto.text}";
     });
   }
 
@@ -199,55 +248,56 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
   }
 
   void _validatePreco() {
-    String preco = '';
-    String descontoPreco = '';
+    setState(() {
+      _erroPrecoDescontoProduto = false;
+      _erroPrecoProduto = false;
+      _textErroPrecoProduto = "";
+      _textErroPrecoDescontoProduto = "";
+    });
 
-    bool isDescontoMaisCaro = false;
+    int preco;
+    int descontoPreco;
 
-    preco = precoAux.join();
-    descontoPreco = descontoPrecoAux.join();
+    preco = int.tryParse(precoAux.join());
+    descontoPreco = int.tryParse(descontoPrecoAux.join());
 
-    if (int.tryParse(preco) < int.tryParse(descontoPreco))
-      isDescontoMaisCaro = true;
-
-    if (int.tryParse(preco) != 0) {
-      if (isDescontoMaisCaro) {
-        setState(() {
-          _erroPrecoDescontoProduto = true;
-          _textErroPrecoDescontoProduto =
-              "Um desconto não pode ser mais caro que seu valor original!";
-        });
-      } else {
-        setState(() {
-          _erroPrecoDescontoProduto = false;
-          _textErroPrecoDescontoProduto =
-              "Um desconto não pode ser mais caro que seu valor original!";
-        });
-      }
-    } else {
-      if (int.tryParse(descontoPreco) != 0) {
-        setState(() {
-          _erroPrecoDescontoProduto = true;
-          _textErroPrecoDescontoProduto =
-              "Um desconto não pode ser mais caro que seu valor original!";
-        });
-      } else {
-        setState(() {
-          _erroPrecoDescontoProduto = false;
-          _textErroPrecoDescontoProduto =
-              "Um desconto não pode ser mais caro que seu valor original!";
-        });
-      }
+    //Caso onde: Se UM dos dois for diferente de 0, o outro também tem que ser
+    if ((preco != 0 && descontoPreco == 0) ||
+        (preco == 0 && descontoPreco != 0)) {
+      setState(() {
+        _erroPrecoDescontoProduto = true;
+        _erroPrecoProduto = true;
+        _textErroPrecoDescontoProduto =
+            "Campos iguais a R\$0,00 ou diferentes de R\$0,00";
+        _textErroPrecoProduto =
+            "Campos iguais a R\$0,00 ou diferentes de R\$0,00";
+      });
+      return;
     }
+
+    //Caso os dois diferentes de 0 - desconto tem q ser MENOR q preço
+    if (descontoPreco > preco && descontoPreco != 0 && preco != 0) {
+      setState(() {
+        _erroPrecoDescontoProduto = true;
+        _textErroPrecoDescontoProduto =
+            "Um desconto não pode ser mais caro que seu valor sem desconto!";
+      });
+      return;
+    }
+
+    setState(() {
+      _erroPrecoDescontoProduto = false;
+      _erroPrecoProduto = false;
+      _textErroPrecoProduto = "";
+      _textErroPrecoDescontoProduto = "";
+    });
+    return;
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // preco.addListener(() {
-    //   _formatPreco('');
-    // });
     produto = OfertaModel();
   }
 
@@ -277,67 +327,76 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
                   ),
                 ),
                 SizedBox(height: 10),
-                RawKeyboardListener(
-                  onKey: (char) {
-                    if (char.runtimeType.toString() == "RawKeyDownEvent") {
-                      if (char.character != null ||
-                          char.logicalKey.debugName == "Backspace") {
-                        _formatPreco(char.character);
-                      }
-                    }
-                    // print(char.character);
+                TextField(
+                  onChanged: (text) {
+                    _formatPreco(text);
                   },
-                  focusNode: _focusNodePreco,
-                  child: TextField(
-                    onChanged: (precoText) {},
-                    keyboardType: TextInputType.number,
-                    controller: _precoProduto,
-                    decoration: InputDecoration(
-                      helperText: "Opcional caso a foto seja um folheto",
-                      prefixText: "R\$",
-                      errorText:
-                          _erroPrecoProduto ? _textErroPrecoProduto : null,
-                      labelStyle:
-                          TextStyle(color: Colors.grey[700], fontSize: 15),
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide(),
-                      ),
-                      labelText: 'Valor sem desconto (opcional)',
+                  keyboardType: TextInputType.number,
+                  controller: _precoProduto,
+                  decoration: InputDecoration(
+                    helperText: "Opcional caso a foto seja um folheto",
+                    prefixText: "R\$",
+                    errorText: _erroPrecoProduto ? _textErroPrecoProduto : null,
+                    labelStyle:
+                        TextStyle(color: Colors.grey[700], fontSize: 15),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                      borderSide: BorderSide(),
                     ),
+                    labelText: 'Valor sem desconto (opcional)',
                   ),
                 ),
+                // RawKeyboardListener(
+                //   onKey: (char) {
+                //     print(char.data.runtimeType.toString());
+                //     if (char.runtimeType.toString() == "RawKeyDownEvent") {
+                //       if (char.character != null ||
+                //           char.logicalKey.debugName == "Backspace") {
+                //         _formatPreco(char.character);
+                //       }
+                //     }
+                //   },
+                //   focusNode: _focusNodePreco,
+                //   child: TextField(
+                //     keyboardType: TextInputType.number,
+                //     controller: _precoProduto,
+                //     decoration: InputDecoration(
+                //       helperText: "Opcional caso a foto seja um folheto",
+                //       prefixText: "R\$",
+                //       errorText:
+                //           _erroPrecoProduto ? _textErroPrecoProduto : null,
+                //       labelStyle:
+                //           TextStyle(color: Colors.grey[700], fontSize: 15),
+                //       fillColor: Colors.white,
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(25.0),
+                //         borderSide: BorderSide(),
+                //       ),
+                //       labelText: 'Valor sem desconto (opcional)',
+                //     ),
+                //   ),
+                // ),
                 SizedBox(height: 10),
-                RawKeyboardListener(
-                  onKey: (char) {
-                    if (char.runtimeType.toString() == "RawKeyDownEvent") {
-                      if (char.character != null ||
-                          char.logicalKey.debugName == "Backspace") {
-                        _formatDescontoPreco(char.character);
-                      }
-                    }
-                    // print(char.character);
+                TextField(
+                  onChanged: (precoText) {
+                    _formatDescontoPreco(precoText);
                   },
-                  focusNode: _focusNodeDescontoPreco,
-                  child: TextField(
-                    onChanged: (precoText) {},
-                    keyboardType: TextInputType.number,
-                    controller: _precoDescontoProduto,
-                    decoration: InputDecoration(
-                      prefixText: "R\$",
-                      errorText: _erroPrecoDescontoProduto
-                          ? _textErroPrecoDescontoProduto
-                          : null,
-                      labelStyle:
-                          TextStyle(color: Colors.grey[700], fontSize: 15),
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide(),
-                      ),
-                      labelText: 'Valor com desconto',
+                  keyboardType: TextInputType.number,
+                  controller: _precoDescontoProduto,
+                  decoration: InputDecoration(
+                    prefixText: "R\$",
+                    errorText: _erroPrecoDescontoProduto
+                        ? _textErroPrecoDescontoProduto
+                        : null,
+                    labelStyle:
+                        TextStyle(color: Colors.grey[700], fontSize: 15),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                      borderSide: BorderSide(),
                     ),
+                    labelText: 'Valor com desconto',
                   ),
                 ),
                 SizedBox(height: 10),
@@ -395,7 +454,6 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
                     !_erroPrecoDescontoProduto &&
                     !_erroPrecoProduto &&
                     !_erroValidadeOferta) {
-                  produto.desconto = _precoDescontoProduto.text;
                   produto.empresaDona = widget.empresaID;
                   produto.idOferta = Firestore.instance
                       .collection('ofertas')
@@ -404,6 +462,7 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
                   produto.infos = _infosAdicionais.text;
                   produto.mostrar = true;
                   produto.nomeProduto = _nomeProduto.text.toUpperCase();
+                  produto.desconto = _precoDescontoProduto.text;
                   produto.preco = _precoProduto.text;
 
                   Navigator.of(context).push(
