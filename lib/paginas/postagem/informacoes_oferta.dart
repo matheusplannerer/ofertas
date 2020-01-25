@@ -84,14 +84,7 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
     String lastDigito = "$lastDigitoAux";
     String newText = '';
     if (lastDigito != 'null') {
-      //ADICIONOU UM VALOR
 
-      // String newText = '';
-      // newText = text;
-      // if (text.length > 3) {
-      //   newText.replaceRange(
-      //       newText.length - 3, newText.length - 3, "${newText[newText.length - 3]},");
-      // }
 
       if (descontoPrecoAux.first == "0") {
         //Substituir zeros

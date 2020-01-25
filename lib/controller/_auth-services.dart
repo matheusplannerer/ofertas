@@ -55,6 +55,7 @@ class AuthServices {
         "email": user.email,
         "nome": user.nome,
         "id": data.uid,
+        "empresaPerfil": '',
       });
       return data;
     } catch (e) {

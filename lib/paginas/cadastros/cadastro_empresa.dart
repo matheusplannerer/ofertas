@@ -378,7 +378,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
               ),
               labelText: 'Logradouro',
             ),
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.text,
           ),
           Padding(
             padding: EdgeInsets.only(top: 25.0),
