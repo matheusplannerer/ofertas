@@ -45,7 +45,9 @@ class _ModeloOfertaViewState extends State<ModeloOfertaView> {
 
     return Card(
       elevation: 10,
-      child: (widget.produto.preco != null && widget.produto.nomeProduto != "")
+      child: (widget.produto.preco != null &&
+              widget.produto.nomeProduto != "" &&
+              double.tryParse(widget.produto.preco) != 0.0)
           ? Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

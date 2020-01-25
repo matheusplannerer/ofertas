@@ -437,7 +437,7 @@ class _InformacoesOfertaState extends State<InformacoesOferta> {
                       borderRadius: BorderRadius.circular(25.0),
                       borderSide: BorderSide(),
                     ),
-                    labelText: 'Informações adicionais (opcional)',
+                    labelText: 'Informações adicionais',
                   ),
                 ),
               ],

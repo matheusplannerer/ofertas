@@ -63,16 +63,13 @@ class _DashboardState extends State<Dashboard> {
     if (widget.fbUser != null) {
       //Ta logado
       global.fbUser = widget.fbUser;
-      global.usuario = widget.user;
+      if (widget.user != null) global.usuario = widget.user;
       if (global.usuario.empresaPerfil == null ||
           global.usuario.empresaPerfil == '') {
         //Não tem empresa
-        print("AQUI");
         secondPage = PerfilUsuario();
       } else {
         global.empresaLogada = widget.empresaLogada;
-        print("AQUI2");
-        print(global.empresaLogada);
         secondPage = PerfilEmpresaPage(global.empresaLogada);
       }
     }

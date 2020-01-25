@@ -41,7 +41,16 @@ Future<Widget> getLandingPage() async {
               .document(snapshot.data.uid)
               .get(),
           builder: (context, user) {
-            if (user.hasData) {
+            if (user.connectionState == ConnectionState.waiting) {
+              return Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+
+            if (user.hasData && user.data.data != null) {
+              print(user.data.data);
               User userAux = User.fromJson(user.data.data);
 
               return FutureBuilder<DocumentSnapshot>(
@@ -50,6 +59,14 @@ Future<Widget> getLandingPage() async {
                     .document(userAux.empresaPerfil)
                     .get(),
                 builder: (context, empresa) {
+                  if (empresa.connectionState == ConnectionState.waiting) {
+                    return Scaffold(
+                      body: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+
                   if (empresa.hasData) {
                     PerfilEmpresa empresaAux = PerfilEmpresa.fromJson(
                         empresa.data.data, empresa.data.documentID);
@@ -61,20 +78,15 @@ Future<Widget> getLandingPage() async {
                     );
                   }
 
-                  return Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                  return Dashboard(
+                    fbUser: snapshot.data,
+                    user: userAux,
                   );
                 },
               );
             }
 
-            return Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return Dashboard();
           },
         );
       }
