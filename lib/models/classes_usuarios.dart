@@ -1,24 +1,25 @@
 class PerfilEmpresa {
-  PerfilEmpresa({
-    this.bairro = '', //
-    this.cep = '', //
-    this.complemento = '', //
-    this.email = '', //
-    this.estado = '', //
-    this.funcionamento, //
-    this.horaInicio = '', //
-    this.horaTermino = '', //
-    this.logradouro = '', //
-    this.foto, //
-    this.nomeEmpresa = '', //
-    this.numero = '', //
-    this.telefone = '', //
-    this.site = '', //
-    this.senha = '', //
-    this.empresaID = '', //
-    this.donoEmpresa, //
-    this.categoria, //
-  }) {
+  PerfilEmpresa(
+      {this.bairro = '', //
+      this.cep = '', //
+      this.complemento = '', //
+      this.email = '', //
+      this.estado = '', //
+      this.funcionamento, //
+      this.horaInicio = '', //
+      this.horaTermino = '', //
+      this.logradouro = '', //
+      this.foto, //
+      this.nomeEmpresa = '', //
+      this.numero = '', //
+      this.telefone = '', //
+      this.site = '', //
+      this.senha = '', //
+      this.empresaID = '', //
+      this.donoEmpresa, //
+      this.categoria, //
+      this.lat,
+      this.lon}) {
     funcionamento = {
       "domVal": false,
       "segVal": false,
@@ -42,6 +43,8 @@ class PerfilEmpresa {
   String estado; //
   String categoria; //
   String site; //
+  double lat;
+  double lon;
   String email; //
   Map<String, dynamic> funcionamento;
   String horaInicio; //
@@ -64,6 +67,8 @@ class PerfilEmpresa {
         'sabVal': json['sabVal'] ??= ''
       },
       foto: json['foto'],
+      lat: json['latitude'] ??= 0.0,
+      lon: json['longitude'] ??= 0.0,
       horaInicio: json['horaInicio'] ??= '',
       horaTermino: json['horaTermino'] ??= '',
       nomeEmpresa: json['nomeEmpresa'] ??= '',

@@ -339,39 +339,17 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                             children: <Widget>[
                               IconButton(
                                 onPressed: () async {
-                                  await showDialog(
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0)),
-                                          title: Text(
-                                            "ENDEREÇO:",
-                                            style: TextStyle(
-                                                fontSize: 22,
-                                                fontFamily: "Bitter-Bold",
-                                                color: Colors.black,
-                                                letterSpacing: .6),
-                                          ),
-                                          content: Text(
-                                            "${empresaSnap.data.data['complemento']}",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontFamily: "Domine-Regular",
-                                                color: Colors.black,
-                                                letterSpacing: .6),
-                                          ),
-                                          actions: <Widget>[
-                                            FlatButton(
-                                              child: Text("OK"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            )
-                                          ],
-                                        );
-                                      },
-                                      context: context);
+                                  double lat = empresa.lat;
+                                  double lon = empresa.lon;
+                                  if (lat != 0 && lon != 0) {
+                                    final url =
+                                        'https://www.google.com/maps/search/?api=1&query=$lat,$lon';
+                                    if (await canLaunch(url)) {
+                                      await launch(url);
+                                    } else {
+                                      throw 'Could not launch $url';
+                                    }
+                                  }
                                 },
                                 icon: Icon(Icons.pin_drop, size: 30),
                               ),

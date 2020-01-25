@@ -24,6 +24,7 @@ dependencies:
   load: ^0.1.5+1
   datetime_picker_formfield: ^0.2.0
   provider: ^3.1.0
+  geolocator: ^5.2.0
   intl: ^0.15.0
   image_picker: ^0.6.0
   page_transition: ^1.1.0
@@ -41,7 +42,7 @@ dependencies:
   font_awesome_flutter: 8.5.0
   carousel_slider: ^1.4.1
   cached_network_image: ^2.0.0
-
+  geocoder: ^0.2.1
 
 
   

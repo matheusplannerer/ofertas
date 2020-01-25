@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/models/empresa.dart';
 import 'package:ofertas/models/produtos.dart';
@@ -24,11 +25,19 @@ class FirestoreServices {
   Future<bool> cadastrarEmpresa(
       PerfilEmpresa cadastro, FirebaseUser fbUser) async {
     try {
+      var geo = await Geolocator().placemarkFromAddress(
+          "${cadastro.logradouro} ${cadastro.numero}",
+          localeIdentifier: 'en');
+      print(geo[0].position.latitude);
+      print(geo[0].position.longitude);
+
       await Firestore.instance
           .collection('empresas')
           .document(cadastro.empresaID)
           .setData({
         "foto": null,
+        "latitude": geo[0].position.latitude,
+        "longitude": geo[0].position.longitude,
         "donoEmpresa": cadastro.donoEmpresa, //
         "categoria": cadastro.categoria, //
         "empresaID": cadastro.empresaID, //

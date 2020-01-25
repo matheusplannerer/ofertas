@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -273,7 +275,19 @@ class _DashboardState extends State<Dashboard> {
       //   ),
       // ),
       body: global.fbUser != null
-          ? PageView(
+          ?
+          // RaisedButton(
+          //     onPressed: () async {
+          //       var geo = await Geolocator().placemarkFromAddress(
+          //           'Rua Henrique Savi 14-44',
+          //           localeIdentifier: 'en');
+          //       print(geo[0].position.latitude);
+          //       print(geo[0].position.longitude);
+          //     },
+          //     child: Text("TESTE"),
+          //   )
+          // : Center()
+          PageView(
               controller: _pageController,
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
