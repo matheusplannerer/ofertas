@@ -34,7 +34,7 @@ Future<Widget> getLandingPage() async {
     stream: FirebaseAuth.instance.onAuthStateChanged,
     builder: (BuildContext context, snapshot) {
       if (snapshot.hasData && (!snapshot.data.isAnonymous)) {
-        return Dashboard(snapshot.data);
+        return Dashboard(fbUser: snapshot.data);
       }
 
       return Dashboard();

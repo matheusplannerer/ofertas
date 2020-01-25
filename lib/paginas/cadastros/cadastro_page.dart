@@ -5,6 +5,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
 import 'package:ofertas/paginas/cadastros/cadastro_empresa.dart';
+import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -338,10 +339,11 @@ class _CadastroPageState extends State<CadastroPage> {
                                     global.usuario = usuario;
                                     await fbUser.sendEmailVerification();
                                     hideLoadingDialog();
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                CadastroEmpresa()));
+                                    Navigator.of(context)
+                                        .pushReplacement(MaterialPageRoute(
+                                            builder: (context) => Dashboard(
+                                                  fbUser: global.fbUser,
+                                                )));
                                   },
                                   child: Center(
                                     child: Text(

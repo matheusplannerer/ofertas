@@ -33,11 +33,15 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
       builder: (context, aux) {
         if (aux.connectionState ==
             ConnectionState.waiting) //Se tiver conectando
+        {
+          print('travou aqui');
+
           return Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
           );
+        }
 
         User usuario = User.fromJson(aux.data.data);
         if (aux.hasData &&
@@ -58,6 +62,7 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
                 );
 
               if (auxDois.hasData) {
+                print("PASSOU AQUI");
                 PerfilEmpresa empresa = PerfilEmpresa.fromJson(
                   auxDois.data.data,
                   auxDois.data.documentID,

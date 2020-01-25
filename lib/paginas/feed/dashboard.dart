@@ -26,7 +26,7 @@ import 'package:ofertas/paginas/feed/categorias.dart';
 
 class Dashboard extends StatefulWidget {
   final FirebaseUser fbUser;
-  Dashboard([this.fbUser]);
+  Dashboard({this.fbUser});
 
   @override
   State<StatefulWidget> createState() {
@@ -51,6 +51,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     // TODO: implement initState
+    print("INIT STAT");
     super.initState();
   }
 
@@ -97,183 +98,6 @@ class _DashboardState extends State<Dashboard> {
               ],
             )
           : null,
-      // backgroundColor: Colors.grey[200],
-      // appBar: GradientAppBar(
-      //   centerTitle: true,
-      //   // elevation: 0,
-      //   // backgroundColor: primaryColor,
-      //   title: Text(
-      //     'OFERTAS',
-      //     style: TextStyle(
-      //         fontSize: 22,
-      //         fontFamily: "Poppins-Bold",
-      //         color: Colors.white,
-      //         letterSpacing: .6),
-      //   ),
-      //   gradient: LinearGradient(
-      //     colors: [
-      //       Colors.orange[900],
-      //       Colors.orange[300],
-      //     ],
-      //   ),
-      //   actions: <Widget>[
-      //     IconButton(
-      //       icon: Icon(Icons.search),
-      //       onPressed: () {
-      //         Navigator.push(context,
-      //             MaterialPageRoute(builder: (context) => CategoriasPage()));
-      //       },
-      //     ),
-      //   ],
-      // ),
-      // drawer: Drawer(
-      //   child: ListView(
-      //     children: <Widget>[
-      //       if (global.fbUser == null)
-      //         ListTile(
-      //           title: Row(
-      //             children: <Widget>[
-      //               Icon(Icons.store, color: Colors.orange.shade600, size: 30),
-      //               Padding(
-      //                 padding: EdgeInsets.only(left: 20.0),
-      //                 child: Text(
-      //                   'Entrar como empresa',
-      //                   style: TextStyle(
-      //                       fontFamily: "Domine-Bold",
-      //                       fontSize: 16,
-      //                       color: Colors.black87,
-      //                       letterSpacing: .3),
-      //                 ),
-      //               ),
-      //             ],
-      //           ),
-      //           onTap: () {
-      //             Navigator.push(context,
-      //                 MaterialPageRoute(builder: (context) => Entrar()));
-      //           },
-      //         ),
-      //       Divider(),
-      //       ListTile(
-      //         title: Row(
-      //           children: <Widget>[
-      //             Icon(Icons.chat_bubble_outline,
-      //                 color: Colors.orange.shade500, size: 30),
-      //             Padding(
-      //               padding: EdgeInsets.only(left: 20.0),
-      //               child: Text(
-      //                 'Entre em contato',
-      //                 style: TextStyle(
-      //                     fontFamily: "Domine-Bold",
-      //                     fontSize: 16,
-      //                     color: Colors.black87,
-      //                     letterSpacing: .3),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //         onTap: () {
-      //           Navigator.push(context,
-      //               MaterialPageRoute(builder: (context) => EntreEmContato()));
-      //         },
-      //       ),
-      //       Divider(),
-      //       ListTile(
-      //         title: Row(
-      //           children: <Widget>[
-      //             Icon(
-      //               Icons.group_add,
-      //               color: Colors.orange.shade600,
-      //               size: 30,
-      //             ),
-      //             Padding(
-      //               padding: EdgeInsets.only(left: 20.0),
-      //               child: Text(
-      //                 'Indique o App',
-      //                 style: TextStyle(
-      //                     fontFamily: "Domine-Bold",
-      //                     fontSize: 16,
-      //                     color: Colors.black87,
-      //                     letterSpacing: .3),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //         // onTap: () {
-      //         //   Navigator.push(context,
-      //         //       MaterialPageRoute(builder: (context) => Carteira()));
-      //         // },
-      //       ),
-      //       Divider(),
-      //       ListTile(
-      //         title: Row(
-      //           children: <Widget>[
-      //             Icon(Icons.star_border,
-      //                 color: Colors.orange.shade400, size: 30),
-      //             Padding(
-      //               padding: EdgeInsets.only(left: 20.0),
-      //               child: Text(
-      //                 'Avalie o app',
-      //                 style: TextStyle(
-      //                     fontFamily: "Domine-Bold",
-      //                     fontSize: 16,
-      //                     color: Colors.black87,
-      //                     letterSpacing: .3),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //       Divider(),
-      //       ListTile(
-      //         title: Row(
-      //           children: <Widget>[
-      //             Icon(Icons.sentiment_very_satisfied,
-      //                 color: Colors.orange.shade600, size: 30),
-      //             Padding(
-      //               padding: EdgeInsets.only(left: 20.0),
-      //               child: Text(
-      //                 'Assine já',
-      //                 style: TextStyle(
-      //                     fontFamily: "Domine-Bold",
-      //                     fontSize: 16,
-      //                     color: Colors.black87,
-      //                     letterSpacing: .3),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //         onTap: () {
-      //           Navigator.push(
-      //               context, MaterialPageRoute(builder: (context) => Planos()));
-      //         },
-      //       ),
-      //       Divider(),
-      //       if (global.fbUser != null)
-      //         ListTile(
-      //           trailing: Icon(Icons.arrow_back, color: Colors.orange.shade400),
-      //           title: Text(
-      //             'SAIR',
-      //             style: TextStyle(
-      //                 fontFamily: "Domine-Bold",
-      //                 fontSize: 16,
-      //                 color: Colors.black87,
-      //                 letterSpacing: .3),
-      //           ),
-      //           onTap: () async {
-      //             Navigator.of(context).pop();
-      //             showLoadingDialog();
-      //             await Future.delayed(Duration(milliseconds: 400));
-      //             global.isEmpresa = false;
-      //             await FirebaseAuth.instance.signOut();
-      //             hideLoadingDialog();
-      //             global.fbUser = null;
-      //             Navigator.of(context).pushReplacement(
-      //                 MaterialPageRoute(builder: (context) => Dashboard()));
-      //           },
-      //         ),
-      //     ],
-      //   ),
-      // ),
       body: global.fbUser != null
           ?
           // RaisedButton(

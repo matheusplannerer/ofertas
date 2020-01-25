@@ -7,6 +7,7 @@ import 'package:ofertas/controller/services.dart';
 import 'package:ofertas/global/global.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:ofertas/models/classes_usuarios.dart';
+import 'package:ofertas/paginas/feed/dashboard.dart';
 import 'package:ofertas/paginas/perfil/perfil_empresa.dart';
 import 'package:ofertas/services/via_cep_services.dart';
 import 'package:provider/provider.dart';
@@ -546,12 +547,15 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
               cadastro.numero = _numero.text.trim();
               cadastro.site = _site.text.toLowerCase().trim();
               cadastro.telefone = _telefone.text.trim();
-            
 
               if (!_allValid()) return;
               showLoadingDialog(tapDismiss: false);
               var cadastrou = await services.firestore
                   .cadastrarEmpresa(cadastro, global.fbUser);
+              await Firestore.instance
+                  .collection('usuarios')
+                  .document(global.fbUser.uid)
+                  .updateData({'empresaPerfil': cadastro.empresaID});
               if (!cadastrou) {
                 hideLoadingDialog();
                 await showDialog(
@@ -573,8 +577,8 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                         ),
                       );
                     });
-                Navigator.of(context)
-                    .popUntil((Route<dynamic> route) => route.isFirst);
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Dashboard()));
                 return;
               }
               hideLoadingDialog();
