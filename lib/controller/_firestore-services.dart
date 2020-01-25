@@ -12,6 +12,15 @@ class FirestoreServices {
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: 'gs://ofertas-dd295.appspot.com');
 
+  Future<User> getUsuario(FirebaseUser fbUser) async {
+    try {
+      var data = await Firestore.instance
+          .collection('usuarios')
+          .document(fbUser.uid)
+          .get();
+    } catch (e) {}
+  }
+
   Future<bool> cadastrarEmpresa(
       PerfilEmpresa cadastro, FirebaseUser fbUser) async {
     try {
@@ -19,6 +28,7 @@ class FirestoreServices {
           .collection('empresas')
           .document(cadastro.empresaID)
           .setData({
+        "foto": null,
         "donoEmpresa": cadastro.donoEmpresa, //
         "categoria": cadastro.categoria, //
         "empresaID": cadastro.empresaID, //
@@ -75,32 +85,25 @@ class FirestoreServices {
     }
   }
 
-  Future<Empresa> getFirstEmpresa(FirebaseUser fbUser) async {
+  Future<PerfilEmpresa> getEmpresaLogada(User usuario) async {
     try {
       var doc = await Firestore.instance
-          .collection('usuarios')
-          .document(fbUser.uid)
           .collection('empresas')
-          .getDocuments();
-      if (doc != null) {
-        if (doc.documents.length > 0) {
-          Empresa empresa = Empresa.fromJSON(doc.documents[0].data);
-          return empresa;
-        }
-        return null;
-      } else
-        return null;
+          .document(usuario.empresaPerfil)
+          .get();
+      PerfilEmpresa empresa = PerfilEmpresa.fromJson(doc.data, doc.documentID);
+      return empresa;
     } catch (e) {
       return null;
     }
   }
 
   Future<bool> deleteImage(
-      FirebaseUser fbUser, Empresa empresaLogada, String idOferta) async {
+      FirebaseUser fbUser, PerfilEmpresa empresaLogada, String idOferta) async {
     try {
       await Firestore.instance
           .collection('empresas')
-          .document(empresaLogada.idEmpresa)
+          .document(empresaLogada.empresaID)
           .collection('ofertas')
           .document(idOferta)
           .updateData({'mostrar': false});

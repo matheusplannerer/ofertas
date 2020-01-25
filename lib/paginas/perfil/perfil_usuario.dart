@@ -25,82 +25,70 @@ class _PerfilUsuarioState extends State<PerfilUsuario> {
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<Global>(context);
-    return Scaffold(
-      body: ListView(
-        children: [
-          FutureBuilder<QuerySnapshot>(
-            future: Firestore.instance
-                .collection("empresas")
-                .where("donoEmpresa", isEqualTo: global.fbUser.uid)
-                .getDocuments(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                if (snapshot.data.documentChanges.length > 0) {
-                  empresas = [];
-                  for (var i = 0;
-                      i < snapshot.data.documentChanges.length;
-                      i++) {
-                    empresas.add(
-                      ListTile(
-                        title: Text(snapshot
-                            .data.documentChanges[i].document['nomeEmpresa']),
-                        onTap: () async {
-                          showLoadingDialog(tapDismiss: false);
-                          var doc = await Firestore.instance
-                              .collection('empresas')
-                              .document(snapshot
-                                  .data.documentChanges[i].document.documentID)
-                              .get()
-                              .timeout(Duration(seconds: 15));
-                          hideLoadingDialog();
-                          if (doc != null) {
-                            PerfilEmpresa aux = PerfilEmpresa.fromJson(
-                                doc.data, doc.documentID);
+    return FutureBuilder<DocumentSnapshot>(
+      future: Firestore.instance
+          .collection('usuarios')
+          .document(global.fbUser.uid)
+          .get(),
+      builder: (context, aux) {
+        if (aux.connectionState ==
+            ConnectionState.waiting) //Se tiver conectando
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
 
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => PerfilEmpresaPage(aux)));
-                          }
-                        },
-                      ),
-                    );
-                  }
-                  empresas.add(
-                    RaisedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CadastroEmpresa()));
-                      },
-                      child: Text("ADICIONAR EMPRESA"),
-                    ),
-                  );
-                  return Column(
-                    children: <Widget>[...empresas],
-                  );
-                } else {
-                  return Center(
-                    child: Column(
-                      children: [
-                        Text("NENHUMA EMPRESA CADASTRADA"),
-                        RaisedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => CadastroEmpresa()));
-                          },
-                          child: Text("ADICIONAR EMPRESA"),
-                        )
-                      ],
-                    ),
-                  );
-                }
+        User usuario = User.fromJson(aux.data.data);
+        if (aux.hasData &&
+            usuario.empresaPerfil != null &&
+            usuario.empresaPerfil != '') {
+          //CASO TENHA USUARIO COM UMA EMPRESA PERFIL
+          return FutureBuilder<DocumentSnapshot>(
+            future: Firestore.instance
+                .collection('empresas')
+                .document(usuario.empresaPerfil)
+                .get(),
+            builder: (context, auxDois) {
+              if (auxDois.connectionState == ConnectionState.waiting)
+                return Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+
+              if (auxDois.hasData) {
+                PerfilEmpresa empresa = PerfilEmpresa.fromJson(
+                  auxDois.data.data,
+                  auxDois.data.documentID,
+                );
+                return PerfilEmpresaPage(empresa);
               }
+
+              return Center();
             },
+          );
+        }
+
+        return Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("NENHUMA EMPRESA CADASTRADA"),
+                RaisedButton(
+                  child: Text("CADASTRAR EMPRESA"),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CadastroEmpresa()));
+                  },
+                )
+              ],
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

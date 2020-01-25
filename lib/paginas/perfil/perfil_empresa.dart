@@ -34,127 +34,113 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
   mainBottomSheet(BuildContext context) {
     var global = Provider.of<Global>(context);
     showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            height: 200,
-            child: ListView(
-              children: <Widget>[
-                FutureBuilder<QuerySnapshot>(
-                  future: Firestore.instance
-                      .collection("empresas")
-                      .where("donoEmpresa", isEqualTo: global.fbUser.uid)
-                      .getDocuments(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      if (snapshot.data.documentChanges.length > 0) {
-                        empresas = [];
-                        for (var i = 0;
-                            i < snapshot.data.documentChanges.length;
-                            i++) {
-                          empresas.add(
-                            ListTile(
-                              title: Text(snapshot.data.documentChanges[i]
-                                  .document['nomeEmpresa']),
-                              onTap: () async {
-                                showLoadingDialog(tapDismiss: false);
-                                var doc = await Firestore.instance
-                                    .collection('empresas')
-                                    .document(snapshot.data.documentChanges[i]
-                                        .document.documentID)
-                                    .get()
-                                    .timeout(Duration(seconds: 15));
-                                hideLoadingDialog();
-                                if (doc != null) {
-                                  PerfilEmpresa aux = PerfilEmpresa.fromJson(
-                                      doc.data, doc.documentID);
-
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          PerfilEmpresaPage(aux)));
-                                }
-                              },
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                child: ClipOval(
-                                  child: snapshot.data.documentChanges[i]
-                                              .document['foto'] !=
-                                          null
-                                      ? CachedNetworkImage(
-                                          imageUrl: snapshot
-                                              .data
-                                              .documentChanges[i]
-                                              .document
-                                              .data['foto'],
-                                          fit: BoxFit.fill,
-                                          errorWidget: (context, string, obj) {
-                                            return Center(
-                                              child:
-                                                  Text("ERRO NO CARREGAMENTO"),
-                                            );
-                                          },
-                                          placeholder: (context, url) {
-                                            return Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            );
-                                          },
-                                        )
-                                      : Image.asset(
-                                          "assets/mogi.jpg",
-                                          fit: BoxFit.cover,
-                                          width: 200,
-                                        ),
-                                ),
-                              ),
-                            ),
-                          );
-                        }
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          child: ListView(
+            children: <Widget>[
+              FutureBuilder<QuerySnapshot>(
+                future: Firestore.instance
+                    .collection("empresas")
+                    .where("donoEmpresa", isEqualTo: global.fbUser.uid)
+                    .getDocuments(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    if (snapshot.data.documentChanges.length > 0) {
+                      empresas = [];
+                      for (var i = 0;
+                          i < snapshot.data.documentChanges.length;
+                          i++) {
                         empresas.add(
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => CadastroEmpresa()));
+                          ListTile(
+                            title: Text(
+                              snapshot.data.documentChanges[i]
+                                  .document['nomeEmpresa'],
+                            ),
+                            onTap: () async {
+                              PerfilEmpresa aux = PerfilEmpresa.fromJson(
+                                snapshot.data.documentChanges[i].document.data,
+                                snapshot.data.documentChanges[i].document
+                                    .documentID,
+                              );
+                              global.usuario.empresaPerfil = aux.empresaID;
+
+                              showLoadingDialog(tapDismiss: false);
+                              await Firestore.instance
+                                  .collection('usuarios')
+                                  .document(global.fbUser.uid)
+                                  .updateData({'empresaPerfil': aux.empresaID});
+                              hideLoadingDialog();
+                              setState(() {
+                                empresa = aux;
+                              });
+                              Navigator.of(context).popUntil(
+                                  (Route<dynamic> route) => route.isFirst);
                             },
-                            child: Text("ADICIONAR EMPRESA"),
-                          ),
-                        );
-                        return Column(
-                          children: <Widget>[...empresas],
-                        );
-                      } else {
-                        return Center(
-                          child: Column(
-                            children: [
-                              Text("NENHUMA EMPRESA CADASTRADA"),
-                              RaisedButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => CadastroEmpresa()));
-                                },
-                                child: Text("ADICIONAR EMPRESA"),
-                              )
-                            ],
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: snapshot.data.documentChanges[i]
+                                          .document['foto'] !=
+                                      null
+                                  ? CachedNetworkImageProvider(
+                                      snapshot.data.documentChanges[i].document
+                                          .data['foto'],
+                                    )
+                                  : AssetImage(
+                                      "assets/mogi.jpg",
+                                    ),
+                            ),
                           ),
                         );
                       }
+                      empresas.add(
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => CadastroEmpresa(),
+                              ),
+                            );
+                          },
+                          child: Text("ADICIONAR EMPRESA"),
+                        ),
+                      );
+                      return Column(
+                        children: <Widget>[...empresas],
+                      );
+                    } else {
+                      return Center(
+                        child: Column(
+                          children: [
+                            Text("NENHUMA EMPRESA CADASTRADA"),
+                            RaisedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => CadastroEmpresa()));
+                              },
+                              child: Text("ADICIONAR EMPRESA"),
+                            )
+                          ],
+                        ),
+                      );
                     }
-                  },
-                ),
-              ],
-            ),
-          );
-        });
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   _PerfilEmpresaPageState(this.empresa);
   PerfilEmpresa empresa;
-
-  // StorageReference ref = FirebaseStorage.instance.ref().child("cartaz2.jpg");
 
   String foto = '';
 
@@ -167,21 +153,16 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
   File _imageFile;
   String base64;
 
-  // _PerfilEmpresaPageState(this.empresaID) {
-  //   // getFoto();
-  // }
-
-  // Future<String> getFoto() async {
-  //   foto = await ref.getDownloadURL();
-  //   setState(() {
-  //     puxouFotos = true;
-  //   });
-  // }
-
   ligarEmpresa(String numero) async {
     if (await canLaunch('tel:+55${numero}')) {
       launch('tel:+55${numero}');
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -219,12 +200,6 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: GradientAppBar(
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.popUntil(
-                    context, ModalRoute.withName(Navigator.defaultRouteName));
-              }),
           gradient: LinearGradient(
             colors: [
               Colors.orange[900],
@@ -235,11 +210,12 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
         // appBar: AppBar(
         //   actions: <Widget>[],
         // ),
-        body: FutureBuilder<DocumentSnapshot>(
-            future: Firestore.instance
+        body: StreamBuilder<DocumentSnapshot>(
+            stream: Firestore.instance
                 .collection('empresas')
                 .document(empresa.empresaID)
-                .get(),
+                .get()
+                .asStream(),
             builder: (context, empresaSnap) {
               if (empresaSnap.hasData) {
                 return ListView(
@@ -258,67 +234,61 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                     GestureDetector(
                                       onTap: () async {
                                         await showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                content: SingleChildScrollView(
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      ListTile(
-                                                        title: Text(
-                                                            "ESCOLHER FOTO"),
-                                                        onTap: () {
-                                                          _pickImage(ImageSource
-                                                              .gallery);
-                                                        },
-                                                      ),
-                                                      ListTile(
-                                                        title:
-                                                            Text("TIRAR FOTO"),
-                                                        onTap: () {
-                                                          _pickImage(ImageSource
-                                                              .camera);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content: SingleChildScrollView(
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    ListTile(
+                                                      title:
+                                                          Text("ESCOLHER FOTO"),
+                                                      onTap: () {
+                                                        _pickImage(ImageSource
+                                                            .gallery);
+                                                      },
+                                                    ),
+                                                    ListTile(
+                                                      title: Text("TIRAR FOTO"),
+                                                      onTap: () {
+                                                        _pickImage(
+                                                            ImageSource.camera);
+                                                      },
+                                                    ),
+                                                  ],
                                                 ),
-                                              );
-                                            });
+                                              ),
+                                            );
+                                          },
+                                        );
                                       },
                                       child: Container(
-                                          height: 90,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.orange,
-                                                  width: 2.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(45),
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: empresaSnap.data
-                                                            .data['foto'] !=
+                                        height: 90,
+                                        width: 90,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.orange, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(45),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image:
+                                                empresaSnap.data.data['foto'] !=
                                                         null
-                                                    ? NetworkImage(empresaSnap
-                                                        .data.data['foto'])
+                                                    ? NetworkImage(
+                                                        empresaSnap
+                                                            .data.data['foto'],
+                                                      )
                                                     : AssetImage(
-                                                        'assets/logo2.jpg'),
-                                              ))),
-                                      // child: CircleAvatar(
-
-                                      //   radius: 50.0,
-                                      //   backgroundImage:
-                                      //       empresaSnap.data.data['foto'] != null
-                                      //           ? NetworkImage(
-                                      //               empresaSnap.data.data['foto'])
-                                      //           : AssetImage('assets/logo2.jpg'),
-                                      // ),
+                                                        'assets/logo2.jpg',
+                                                      ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    // Text("Clebinho", textScaleFactor: 1.25,)
                                   ],
                                 ),
                               ),
@@ -350,26 +320,9 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                         color: Colors.grey[700],
                                       ),
                                     ),
-                                    // SmoothStarRating(
-                                    //   allowHalfRating: false,
-                                    //   onRatingChanged: (v) {
-                                    //     setState(() {
-                                    //       _rating = v;
-                                    //     });
-                                    //   },
-                                    //   starCount: 5,
-                                    //   rating: _rating,
-                                    //   size: 27.0,
-                                    //   color: Colors.orange,
-                                    //   borderColor: Colors.orange,
-                                    // ),
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    // Text(
-                                    //   "$_rating",
-                                    //   textScaleFactor: 2,
-                                    // )
                                   ],
                                 ),
                               )
@@ -652,7 +605,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                           stream: Firestore.instance
                               .collection('ofertas')
                               .where("empresaDona",
-                                  isEqualTo: widget.empresa.empresaID)
+                                  isEqualTo: empresa.empresaID)
                               .where("mostrar", isEqualTo: true)
                               .getDocuments()
                               .asStream(),
@@ -670,54 +623,32 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
             // children: <Widget>[
             // ],
             ),
-        floatingActionButton:
-            (global.fbUser != null && empresa.donoEmpresa == global.fbUser.uid)
-                ? Wrap(
-                    direction: Axis.horizontal,
-                    children: <Widget>[
-                      new FloatingActionButton(
-                        heroTag: null,
-                        onPressed: () => mainBottomSheet(context),
-                        child: new Icon(Icons.keyboard_arrow_up),
-                      ),
-                      SizedBox(width: 10),
-                      FloatingActionButton(
-                        heroTag: null,
-                        child: Icon(Icons.add_a_photo),
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  ImageCapture(empresa.empresaID)));
-                        },
-                      ),
-                    ],
-                  )
-                : null,
+        floatingActionButton: (global.fbUser != null &&
+                empresa.donoEmpresa == global.fbUser.uid)
+            ? Wrap(
+                direction: Axis.horizontal,
+                children: <Widget>[
+                  new FloatingActionButton(
+                    heroTag: null,
+                    onPressed: () => mainBottomSheet(context),
+                    child: new Icon(Icons.keyboard_arrow_up),
+                  ),
+                  SizedBox(width: 10),
+                  FloatingActionButton(
+                    heroTag: null,
+                    child: Icon(Icons.add_a_photo),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ImageCapture(empresa.empresaID),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              )
+            : null,
       ),
     );
   }
 }
-
-// ListTile _createTile(
-//     BuildContext context, String name, IconData icon, Function action) {
-//   return ListTile(
-//     leading: Icon(icon),
-//     title: Text(name),
-//     onTap: () {
-//       Navigator.pop(context);
-//       action();
-//     },
-//   );
-// }
-
-// _action1() {
-//   print('action 1');
-// }
-
-// _action2() {
-//   print('action 2');
-// }
-
-// _action3() {
-//   print('action 3');
-// }

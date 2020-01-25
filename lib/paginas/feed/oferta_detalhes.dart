@@ -33,7 +33,7 @@ class _OfertaDetalheState extends State<OfertaDetalhe> {
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<Global>(context);
-    if (widget.produto.empresaDona == global.empresaLogada.idEmpresa) {
+    if (widget.produto.empresaDona == global.empresaLogada.empresaID) {
       isOwner = true;
     }
     // TODO: implement build

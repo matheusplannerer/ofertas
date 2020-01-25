@@ -515,187 +515,6 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
           Padding(
             padding: EdgeInsets.only(top: 25.0),
           ),
-          // Row(
-          //   children: <Widget>[
-          //     Expanded(
-          //       child: Container(
-          //         decoration: new BoxDecoration(
-          //           border: Border.all(color: Colors.grey[700]),
-          //           borderRadius: BorderRadius.all(
-          //             Radius.circular(24.0),
-          //           ),
-          //         ),
-          //         child: BasicTimeField(
-          //           text: "Hora Abertura",
-          //           controller: _horaAbertura,
-          //         ),
-          //       ),
-          //     ),
-          //     SizedBox(width: 15),
-          //     Expanded(
-          //       child: Container(
-          //         decoration: BoxDecoration(
-          //           border: Border.all(color: Colors.grey[700]),
-          //           borderRadius: BorderRadius.all(
-          //             Radius.circular(24.0),
-          //           ),
-          //         ),
-          //         child: BasicTimeField(
-          //           text: "Hora Término",
-          //           controller: _horaFechamento,
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // Padding(
-          //   padding: EdgeInsets.only(top: 15.0),
-          // ),
-          // Container(
-          //   margin: EdgeInsets.only(top: 20.0),
-          //   child: Column(
-          //     children: [
-          //       Wrap(
-          //         spacing: -1,
-          //         children: [
-          //           Column(
-          //             children: <Widget>[
-          //               Text(
-          //                 'DOM',
-          //                 maxLines: 1,
-          //                 textAlign: TextAlign.center,
-          //               ),
-          //               Checkbox(
-          //                 value: cadastro.funcionamento['domVal'],
-          //                 onChanged: (bool value) {
-          //                   setState(
-          //                     () {
-          //                       cadastro.funcionamento['domVal'] = value;
-          //                     },
-          //                   );
-          //                 },
-          //               ),
-          //             ],
-          //           ),
-          //           Column(
-          //             children: <Widget>[
-          //               Text(
-          //                 'SEG',
-          //                 maxLines: 1,
-          //                 textAlign: TextAlign.center,
-          //               ),
-          //               Checkbox(
-          //                 value: cadastro.funcionamento['segVal'],
-          //                 onChanged: (bool value) {
-          //                   setState(
-          //                     () {
-          //                       cadastro.funcionamento['segVal'] = value;
-          //                     },
-          //                   );
-          //                 },
-          //               ),
-          //             ],
-          //           ),
-          //           Column(
-          //             children: <Widget>[
-          //               Text(
-          //                 'TER',
-          //                 maxLines: 1,
-          //                 textAlign: TextAlign.center,
-          //               ),
-          //               Checkbox(
-          //                 value: cadastro.funcionamento['terVal'],
-          //                 onChanged: (bool value) {
-          //                   setState(
-          //                     () {
-          //                       cadastro.funcionamento['terVal'] = value;
-          //                     },
-          //                   );
-          //                 },
-          //               ),
-          //             ],
-          //           ),
-          //           Column(
-          //             children: <Widget>[
-          //               Text(
-          //                 'QUA',
-          //                 maxLines: 1,
-          //                 textAlign: TextAlign.center,
-          //               ),
-          //               Checkbox(
-          //                 value: cadastro.funcionamento['quaVal'],
-          //                 onChanged: (bool value) {
-          //                   setState(
-          //                     () {
-          //                       cadastro.funcionamento['quaVal'] = value;
-          //                     },
-          //                   );
-          //                 },
-          //               ),
-          //             ],
-          //           ),
-          //           Column(
-          //             children: <Widget>[
-          //               Text(
-          //                 'QUI',
-          //                 maxLines: 1,
-          //                 textAlign: TextAlign.center,
-          //               ),
-          //               Checkbox(
-          //                 value: cadastro.funcionamento['quiVal'],
-          //                 onChanged: (bool value) {
-          //                   setState(
-          //                     () {
-          //                       cadastro.funcionamento['quiVal'] = value;
-          //                     },
-          //                   );
-          //                 },
-          //               ),
-          //             ],
-          //           ),
-          //           Column(
-          //             children: <Widget>[
-          //               Text(
-          //                 'SEX',
-          //                 maxLines: 1,
-          //                 textAlign: TextAlign.center,
-          //               ),
-          //               Checkbox(
-          //                 value: cadastro.funcionamento['sexVal'],
-          //                 onChanged: (bool value) {
-          //                   setState(
-          //                     () {
-          //                       cadastro.funcionamento['sexVal'] = value;
-          //                     },
-          //                   );
-          //                 },
-          //               ),
-          //             ],
-          //           ),
-          //           Column(
-          //             children: <Widget>[
-          //               Text(
-          //                 'SAB',
-          //                 maxLines: 1,
-          //                 textAlign: TextAlign.center,
-          //               ),
-          //               Checkbox(
-          //                 value: cadastro.funcionamento['sabVal'],
-          //                 onChanged: (bool value) {
-          //                   setState(
-          //                     () {
-          //                       cadastro.funcionamento['sabVal'] = value;
-          //                     },
-          //                   );
-          //                 },
-          //               ),
-          //             ],
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
           Padding(
             padding: EdgeInsets.only(top: 25.0),
           ),
@@ -727,6 +546,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
               cadastro.numero = _numero.text.trim();
               cadastro.site = _site.text.toLowerCase().trim();
               cadastro.telefone = _telefone.text.trim();
+            
 
               if (!_allValid()) return;
               showLoadingDialog(tapDismiss: false);
@@ -758,8 +578,8 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
                 return;
               }
               hideLoadingDialog();
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => PerfilEmpresaPage(cadastro)));
+              Navigator.of(context)
+                  .popUntil((Route<dynamic> route) => route.isFirst);
             },
             child: Text(
               "CADASTRAR",

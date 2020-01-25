@@ -75,7 +75,6 @@ class _Entrar extends State<Entrar> {
     email = TextEditingController();
     senha = TextEditingController();
     super.initState();
-
   }
 
   final Services services = Services();
@@ -336,9 +335,16 @@ class _Entrar extends State<Entrar> {
                                     //Logou com sucesso
                                     global.fbUser = fbUser;
                                     global.isEmpresa = true;
-                                    global.empresaLogada = await services
-                                        .firestore
-                                        .getFirstEmpresa(fbUser);
+                                    var usuario = await services.firestore
+                                        .getUsuario(fbUser);
+                                    global.usuario = usuario;
+                                    if (global.usuario.empresaPerfil != null &&
+                                        global.usuario.empresaPerfil != '')
+                                      global.empresaLogada = await services
+                                          .firestore
+                                          .getEmpresaLogada(global.usuario);
+                                    else
+                                      global.empresaLogada = null;
                                     hideLoadingDialog();
                                     print("LOGADO");
                                     Navigator.of(context).pushReplacement(

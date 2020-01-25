@@ -8,12 +8,9 @@ class Global extends ChangeNotifier {
 
   User usuario = User();
 
-  PerfilEmpresa empresa = PerfilEmpresa();
-
-  Empresa empresaLogada = Empresa();
+  PerfilEmpresa empresaLogada = PerfilEmpresa();
 
   FirebaseUser fbUser;
 
   bool isEmpresa = false;
-
 }

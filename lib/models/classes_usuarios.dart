@@ -51,31 +51,31 @@ class PerfilEmpresa {
 
   factory PerfilEmpresa.fromJson(Map<String, dynamic> json, String idEmpresa) {
     return new PerfilEmpresa(
-      cep: json['cep'],
-      email: json['email'],
-      donoEmpresa: json['donoEmpresa'],
+      cep: json['cep'] ??= '',
+      email: json['email'] ??= '',
+      donoEmpresa: json['donoEmpresa'] ??= '',
       funcionamento: {
-        'domVal': json['domVal'],
-        'segVal': json['segVal'],
-        'terVal': json['terVal'],
-        'quaVal': json['quaVal'],
-        'quiVal': json['quiVal'],
-        'sexVal': json['sexVal'],
-        'sabVal': json['sabVal']
+        'domVal': json['domVal'] ??= '',
+        'segVal': json['segVal'] ??= '',
+        'terVal': json['terVal'] ??= '',
+        'quaVal': json['quaVal'] ??= '',
+        'quiVal': json['quiVal'] ??= '',
+        'sexVal': json['sexVal'] ??= '',
+        'sabVal': json['sabVal'] ??= ''
       },
       foto: json['foto'],
-      horaInicio: json['horaInicio'],
-      horaTermino: json['horaTermino'],
-      nomeEmpresa: json['nomeEmpresa'],
-      numero: json['numero'],
-      site: json['site'],
-      categoria: json['categoria'],
-      bairro: json['bairro'],
-      complemento: json['complemento'],
+      horaInicio: json['horaInicio'] ??= '',
+      horaTermino: json['horaTermino'] ??= '',
+      nomeEmpresa: json['nomeEmpresa'] ??= '',
+      numero: json['numero'] ??= '',
+      site: json['site'] ??= '',
+      categoria: json['categoria'] ??= '',
+      bairro: json['bairro'] ??= '',
+      complemento: json['complemento'] ??= '',
       empresaID: idEmpresa,
-      estado: json['estado'],
-      logradouro: json['logradouro'],
-      telefone: json['telefone'],
+      estado: json['estado'] ??= '',
+      logradouro: json['logradouro'] ??= '',
+      telefone: json['telefone'] ??= '',
     );
   }
 }
@@ -83,17 +83,28 @@ class PerfilEmpresa {
 class User {
   String nome;
   String cpf;
-  String celular;
   String email;
   String senha;
+  String celular;
+  String empresaPerfil;
   String usuarioID;
 
   User({
-    this.email = '',
-    this.senha = '',
-    this.celular = '',
-    this.cpf = '',
-    this.nome = '',
-    this.usuarioID = '',
+    this.email,
+    this.cpf,
+    this.nome,
+    this.celular,
+    this.empresaPerfil,
+    this.usuarioID,
   });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return new User(
+      celular: json['celular'],
+      email: json['email'],
+      usuarioID: json[''],
+      nome: json['nome'],
+      empresaPerfil: json['empresaPerfil'],
+    );
+  }
 }
