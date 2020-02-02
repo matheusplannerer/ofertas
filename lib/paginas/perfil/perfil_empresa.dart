@@ -241,12 +241,6 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage>
       //   )
       appBar: GradientAppBar(
         key: _appBarKey,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {},
-          )
-        ],
         gradient: LinearGradient(
           colors: [
             Colors.orange[900],
@@ -483,7 +477,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage>
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  Horarios()));
+                                                  Horarios(isDono)));
                                     },
                                     icon: Icon(Icons.timer, size: 30),
                                   ),

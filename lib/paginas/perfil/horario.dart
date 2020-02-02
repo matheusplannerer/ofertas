@@ -3,6 +3,9 @@ import 'perfil_empresa.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class Horarios extends StatefulWidget {
+  final bool isDono;
+  Horarios(this.isDono);
+
   _HorariosPageState createState() => _HorariosPageState();
 }
 
@@ -14,6 +17,17 @@ class _HorariosPageState extends State<Horarios> {
   bool _valorQuinta = true;
   bool _valorSexta = true;
   bool _valorSabado = true;
+
+  bool isDono;
+  bool editable = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isDono = widget.isDono;
+    if (isDono) editable = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,20 +59,23 @@ class _HorariosPageState extends State<Horarios> {
               columnSpacing: 25,
               columns: [
                 DataColumn(
-                    label: Text(
-                  "",
-                  style: TextStyle(color: Colors.orange),
-                )),
+                  label: Text(
+                    "",
+                    style: TextStyle(color: Colors.orange),
+                  ),
+                ),
                 DataColumn(
-                    label: Text(
-                  "Dia",
-                  style: TextStyle(color: Colors.orange),
-                )),
+                  label: Text(
+                    "Dia",
+                    style: TextStyle(color: Colors.orange),
+                  ),
+                ),
                 DataColumn(
-                    label: Text(
-                  "Abre às:",
-                  style: TextStyle(color: Colors.orange),
-                )),
+                  label: Text(
+                    "Abre às:",
+                    style: TextStyle(color: Colors.orange),
+                  ),
+                ),
                 DataColumn(
                   label: Text(
                     "Fecha às:",
@@ -73,9 +90,11 @@ class _HorariosPageState extends State<Horarios> {
                       Checkbox(
                         value: _valorDomingo,
                         onChanged: (bool novoValor) {
-                          setState(() {
-                            _valorDomingo = novoValor;
-                          });
+                          if (editable) {
+                            setState(() {
+                              _valorDomingo = novoValor;
+                            });
+                          }
                         },
                       ),
                     ),
@@ -87,6 +106,7 @@ class _HorariosPageState extends State<Horarios> {
                         width: 70,
                         height: 40,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -100,6 +120,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -116,9 +137,11 @@ class _HorariosPageState extends State<Horarios> {
                       Checkbox(
                         value: _valorSegunda,
                         onChanged: (bool novoValor) {
-                          setState(() {
-                            _valorSegunda = novoValor;
-                          });
+                          if (editable) {
+                            setState(() {
+                              _valorSegunda = novoValor;
+                            });
+                          }
                         },
                       ),
                     ),
@@ -130,6 +153,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -143,6 +167,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -159,9 +184,11 @@ class _HorariosPageState extends State<Horarios> {
                       Checkbox(
                         value: _valorTerca,
                         onChanged: (bool novoValor) {
-                          setState(() {
-                            _valorTerca = novoValor;
-                          });
+                          if (editable) {
+                            setState(() {
+                              _valorTerca = novoValor;
+                            });
+                          }
                         },
                       ),
                     ),
@@ -171,6 +198,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -184,6 +212,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -200,9 +229,11 @@ class _HorariosPageState extends State<Horarios> {
                       Checkbox(
                         value: _valorQuarta,
                         onChanged: (bool novoValor) {
-                          setState(() {
-                            _valorQuarta = novoValor;
-                          });
+                          if (editable) {
+                            setState(() {
+                              _valorQuarta = novoValor;
+                            });
+                          }
                         },
                       ),
                     ),
@@ -214,6 +245,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -227,6 +259,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -243,9 +276,11 @@ class _HorariosPageState extends State<Horarios> {
                       Checkbox(
                         value: _valorQuinta,
                         onChanged: (bool novoValor) {
-                          setState(() {
-                            _valorQuinta = novoValor;
-                          });
+                          if (editable) {
+                            setState(() {
+                              _valorQuinta = novoValor;
+                            });
+                          }
                         },
                       ),
                     ),
@@ -257,6 +292,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -270,6 +306,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -286,9 +323,11 @@ class _HorariosPageState extends State<Horarios> {
                       Checkbox(
                         value: _valorSexta,
                         onChanged: (bool novoValor) {
-                          setState(() {
-                            _valorSexta = novoValor;
-                          });
+                          if (editable) {
+                            setState(() {
+                              _valorSexta = novoValor;
+                            });
+                          }
                         },
                       ),
                     ),
@@ -300,6 +339,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -313,6 +353,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -329,9 +370,11 @@ class _HorariosPageState extends State<Horarios> {
                       Checkbox(
                         value: _valorSabado,
                         onChanged: (bool novoValor) {
-                          setState(() {
-                            _valorSabado = novoValor;
-                          });
+                          if (editable) {
+                            setState(() {
+                              _valorSabado = novoValor;
+                            });
+                          }
                         },
                       ),
                     ),
@@ -343,6 +386,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -356,6 +400,7 @@ class _HorariosPageState extends State<Horarios> {
                         height: 40,
                         width: 70,
                         child: TextField(
+                          enabled: editable,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
@@ -369,18 +414,19 @@ class _HorariosPageState extends State<Horarios> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+          if (isDono)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                color: Colors.orange,
+                textColor: Colors.white,
+                child: Text("SALVAR"),
+                onPressed: () {},
               ),
-              color: Colors.orange,
-              textColor: Colors.white,
-              child: Text("SALVAR"),
-              onPressed: () {},
-            ),
-          )
+            )
         ],
       ),
     );
