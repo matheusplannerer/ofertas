@@ -27,7 +27,8 @@ class FeedPage extends StatefulWidget {
   }
 }
 
-class _FeedPageState extends State<FeedPage> {
+class _FeedPageState extends State<FeedPage>
+    with AutomaticKeepAliveClientMixin<FeedPage> {
   bool incrementou = false;
 
   bool noEmpresas = false;
@@ -198,10 +199,12 @@ class _FeedPageState extends State<FeedPage> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        if (filtro != null)
+        if (filtro != null) {
+          print("GET FILTRADAS");
           getEmpresasFiltradas();
-        else
+        } else {
           getEmpresas();
+        }
       }
     });
     if (filtro != null)
@@ -230,6 +233,7 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    super.build(context);
     var global = Provider.of<Global>(context);
     if (filtro != null) {
       return Scaffold(
@@ -256,6 +260,7 @@ class _FeedPageState extends State<FeedPage> {
           itemCount: empresas.length == 0 ? 1 : empresas.length,
           controller: _scrollController,
           itemBuilder: (context, i) {
+            print(empresas.length);
             if (empresas.length == 0) {
               if (!carregou) {
                 return Center(
@@ -326,6 +331,7 @@ class _FeedPageState extends State<FeedPage> {
                     ],
                   ),
                   onTap: () {
+                    Navigator.of(context).pop();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Entrar()));
                   },
@@ -350,6 +356,8 @@ class _FeedPageState extends State<FeedPage> {
                   ],
                 ),
                 onTap: () {
+                  Navigator.of(context).pop();
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -478,4 +486,7 @@ class _FeedPageState extends State<FeedPage> {
       );
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

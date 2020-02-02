@@ -159,6 +159,7 @@ class _ImageCategoryState extends State<_ImageCategory> {
     // TODO: implement build
     return GestureDetector(
       onTap: () {
+        print(widget.categoria);
         Navigator.of(widget.context).push(
           MaterialPageRoute(
             builder: (context) => FeedPage(

@@ -301,11 +301,11 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
               borderRadius: BorderRadius.circular(25),
             ),
             alignment: Alignment.center,
-            child: DropdownButton(
+            child: DropdownButton<String>(
               hint: Text("CATEGORIA"),
               onChanged: (data) {
                 setState(() {
-                  cadastro.categoria = data;
+                  cadastro.categoria = data.toUpperCase();
                 });
               },
               value: cadastro.categoria,

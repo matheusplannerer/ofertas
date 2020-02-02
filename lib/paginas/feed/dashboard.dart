@@ -69,6 +69,8 @@ class _DashboardState extends State<Dashboard> {
         //Não tem empresa
         secondPage = PerfilUsuario();
       } else {
+        print("BUILDEI A PAGINA!!!");
+
         global.empresaLogada = widget.empresaLogada;
         secondPage = PerfilEmpresaPage(global.empresaLogada);
       }
@@ -80,14 +82,15 @@ class _DashboardState extends State<Dashboard> {
               currentIndex: _selected,
               onTap: (index) {
                 if (_selected != index) {
-                  setState(() {
-                    _selected = index;
-                    _pageController.animateToPage(
-                      _selected,
-                      duration: Duration(microseconds: 10),
-                      curve: Curves.linear,
-                    );
-                  });
+                  if (mounted)
+                    setState(() {
+                      _selected = index;
+                      _pageController.animateToPage(
+                        _selected,
+                        duration: Duration(microseconds: 10),
+                        curve: Curves.linear,
+                      );
+                    });
                 }
               },
               items: [
