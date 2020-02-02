@@ -19,7 +19,6 @@ class FirestoreServices {
           .collection('usuarios')
           .document(fbUser.uid)
           .get();
-
       User usuario = User.fromJson(data.data);
       return usuario;
     } catch (e) {

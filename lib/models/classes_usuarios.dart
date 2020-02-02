@@ -107,7 +107,7 @@ class User {
     return new User(
       celular: json['celular'],
       email: json['email'],
-      usuarioID: json[''],
+      usuarioID: json['id'],
       nome: json['nome'],
       empresaPerfil: json['empresaPerfil'],
     );

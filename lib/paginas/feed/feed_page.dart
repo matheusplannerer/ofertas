@@ -39,6 +39,8 @@ class _FeedPageState extends State<FeedPage>
   DocumentSnapshot lastDocument;
   int queryLimit;
 
+  bool buscando = false;
+
   List<PerfilEmpresa> empresas;
   List<OfertaModel> ofertas;
 
@@ -51,141 +53,154 @@ class _FeedPageState extends State<FeedPage>
   Stream<QuerySnapshot> stream;
 
   getEmpresasFiltradas() async {
-    if (lastDocument == null) {
-      // print("LAST DOC");
-      var doc = await Firestore.instance
-          .collection('empresas')
-          .where('categoria', isEqualTo: filtro)
-          .limit(queryLimit)
-          .getDocuments();
-      print(doc.documents.length);
-      for (var i = 0; i < doc.documents.length; i++) {
-        PerfilEmpresa aux = PerfilEmpresa.fromJson(
-            doc.documents[i].data, doc.documents[i].documentID);
-
-        var docAux = await Firestore.instance
-            .collection('ofertas')
-            .where('empresaDona', isEqualTo: aux.empresaID)
-            .limit(1)
-            .getDocuments();
-
-        if (docAux.documents.length > 0) {
-          if (mounted)
-            setState(() {
-              empresas.add(aux);
-            });
-        }
-      }
-      if (doc.documents.length > 0)
-        lastDocument = doc.documents[doc.documents.length - 1];
-    } else {
-      if (hasMore) {
+    if (!buscando) {
+      buscando = true;
+      if (lastDocument == null) {
+        // print("LAST DOC");
         var doc = await Firestore.instance
             .collection('empresas')
             .where('categoria', isEqualTo: filtro)
             .limit(queryLimit)
-            .startAfterDocument(lastDocument)
             .getDocuments();
+        print(doc.documents.length);
+        for (var i = 0; i < doc.documents.length; i++) {
+          PerfilEmpresa aux = PerfilEmpresa.fromJson(
+              doc.documents[i].data, doc.documents[i].documentID);
 
-        if (doc.documents.length > 0) {
-          hasMore = true;
+          var docAux = await Firestore.instance
+              .collection('ofertas')
+              .where('empresaDona', isEqualTo: aux.empresaID)
+              .limit(1)
+              .getDocuments();
 
-          for (var i = 0; i < doc.documents.length; i++) {
-            PerfilEmpresa aux = PerfilEmpresa.fromJson(
-                doc.documents[i].data, doc.documents[i].documentID);
-
-            var docAux = await Firestore.instance
-                .collection('ofertas')
-                .where('empresaDona', isEqualTo: aux.empresaID)
-                .limit(1)
-                .getDocuments();
-
-            if (docAux.documents.length > 0) {
-              if (mounted)
-                setState(() {
-                  empresas.add(aux);
-                });
-            }
+          if (docAux.documents.length > 0) {
+            if (mounted)
+              setState(() {
+                if (!empresas.contains(aux)) empresas.add(aux);
+              });
           }
-          if (doc.documents.length > 0)
-            lastDocument = doc.documents[doc.documents.length - 1];
-        } else {
-          hasMore = false;
+        }
+        if (doc.documents.length > 0)
+          lastDocument = doc.documents[doc.documents.length - 1];
+      } else {
+        if (hasMore) {
+          var doc = await Firestore.instance
+              .collection('empresas')
+              .where('categoria', isEqualTo: filtro)
+              .limit(queryLimit)
+              .startAfterDocument(lastDocument)
+              .getDocuments();
+
+          if (doc.documents.length > 0) {
+            hasMore = true;
+
+            for (var i = 0; i < doc.documents.length; i++) {
+              PerfilEmpresa aux = PerfilEmpresa.fromJson(
+                  doc.documents[i].data, doc.documents[i].documentID);
+
+              var docAux = await Firestore.instance
+                  .collection('ofertas')
+                  .where('empresaDona', isEqualTo: aux.empresaID)
+                  .limit(1)
+                  .getDocuments();
+
+              if (docAux.documents.length > 0) {
+                if (mounted)
+                  setState(() {
+                    if (!empresas.contains(aux)) empresas.add(aux);
+                  });
+              }
+            }
+            if (doc.documents.length > 0)
+              lastDocument = doc.documents[doc.documents.length - 1];
+          } else {
+            hasMore = false;
+          }
         }
       }
+      if (mounted)
+        setState(() {
+          carregou = true;
+        });
+      buscando = false;
     }
-    if (mounted)
-      setState(() {
-        carregou = true;
-      });
   }
 
   getEmpresas() async {
-    if (lastDocument == null) {
-      print("LAST DOC");
-      var doc = await Firestore.instance
-          .collection('empresas')
-          .limit(queryLimit)
-          .getDocuments();
-      for (var i = 0; i < doc.documents.length; i++) {
-        PerfilEmpresa aux = PerfilEmpresa.fromJson(
-            doc.documents[i].data, doc.documents[i].documentID);
-
-        var docAux = await Firestore.instance
-            .collection('ofertas')
-            .where('empresaDona', isEqualTo: aux.empresaID)
-            .limit(1)
-            .getDocuments();
-
-        if (docAux.documents.length > 0) {
-          if (mounted)
-            setState(() {
-              empresas.add(aux);
-            });
-        }
-      }
-
-      if (doc.documents.length > 0)
-        lastDocument = doc.documents[doc.documents.length - 1];
-    } else {
-      if (hasMore) {
+    if (!buscando) {
+      buscando = true;
+      if (lastDocument == null) {
+        print("LAST DOC");
         var doc = await Firestore.instance
             .collection('empresas')
             .limit(queryLimit)
-            .startAfterDocument(lastDocument)
             .getDocuments();
+        for (var i = 0; i < doc.documents.length; i++) {
+          PerfilEmpresa aux = PerfilEmpresa.fromJson(
+              doc.documents[i].data, doc.documents[i].documentID);
 
-        if (doc.documents.length > 0) {
-          hasMore = true;
+          var docAux = await Firestore.instance
+              .collection('ofertas')
+              .where('empresaDona', isEqualTo: aux.empresaID)
+              .limit(1)
+              .getDocuments();
 
-          for (var i = 0; i < doc.documents.length; i++) {
-            PerfilEmpresa aux = PerfilEmpresa.fromJson(
-                doc.documents[i].data, doc.documents[i].documentID);
-
-            var docAux = await Firestore.instance
-                .collection('ofertas')
-                .where('empresaDona', isEqualTo: aux.empresaID)
-                .limit(1)
-                .getDocuments();
-
-            if (docAux.documents.length > 0) {
-              if (mounted)
-                setState(() {
-                  empresas.add(aux);
-                });
-            }
+          if (docAux.documents.length > 0) {
+            if (mounted)
+              setState(() {
+                if (!empresas.contains(aux)) empresas.add(aux);
+              });
           }
-          if (doc.documents.length > 0)
-            lastDocument = doc.documents[doc.documents.length - 1];
-        } else {
-          hasMore = false;
+        }
+
+        if (doc.documents.length > 0)
+          lastDocument = doc.documents[doc.documents.length - 1];
+      } else {
+        if (hasMore) {
+          var doc = await Firestore.instance
+              .collection('empresas')
+              .limit(queryLimit)
+              .startAfterDocument(lastDocument)
+              .getDocuments();
+
+          if (doc.documents.length > 0) {
+            hasMore = true;
+
+            for (var i = 0; i < doc.documents.length; i++) {
+              PerfilEmpresa aux = PerfilEmpresa.fromJson(
+                  doc.documents[i].data, doc.documents[i].documentID);
+
+              var docAux = await Firestore.instance
+                  .collection('ofertas')
+                  .where('empresaDona', isEqualTo: aux.empresaID)
+                  .limit(1)
+                  .getDocuments();
+
+              if (docAux.documents.length > 0) {
+                if (mounted) {
+                  if (!empresas.contains(aux)) {
+                    setState(() {
+                      print("DUPLICOU");
+                      empresas.add(aux);
+                    });
+                  }
+                }
+              }
+            }
+            if (doc.documents.length > 0)
+              lastDocument = doc.documents[doc.documents.length - 1];
+          } else {
+            hasMore = false;
+          }
         }
       }
+      if (mounted)
+        setState(() {
+          carregou = true;
+        });
+      print(empresas);
+      buscando = false;
     }
-    if (mounted)
-      setState(() {
-        carregou = true;
-      });
   }
 
   @override
@@ -201,9 +216,13 @@ class _FeedPageState extends State<FeedPage>
           _scrollController.position.maxScrollExtent) {
         if (filtro != null) {
           print("GET FILTRADAS");
-          getEmpresasFiltradas();
+          if (!buscando) {
+            getEmpresasFiltradas();
+          }
         } else {
-          getEmpresas();
+          if (!buscando) {
+            getEmpresas();
+          }
         }
       }
     });
@@ -331,8 +350,7 @@ class _FeedPageState extends State<FeedPage>
                     ],
                   ),
                   onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(context,
+                    Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) => Entrar()));
                   },
                 ),

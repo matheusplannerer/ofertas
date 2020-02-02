@@ -347,10 +347,14 @@ class _Entrar extends State<Entrar> {
                                       global.empresaLogada = null;
                                     hideLoadingDialog();
                                     print("LOGADO");
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Dashboard())); //Ver certinho qual a página inicial
+                                    Navigator.of(context)
+                                        .pushReplacement(MaterialPageRoute(
+                                            builder: (context) => Dashboard(
+                                                  empresaLogada:
+                                                      global.empresaLogada,
+                                                  fbUser: global.fbUser,
+                                                  user: global.usuario,
+                                                ))); //Ver certinho qual a página inicial
                                   } else {
                                     hideLoadingDialog();
 

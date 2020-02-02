@@ -160,10 +160,6 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage>
 
   File _imageFile;
   String base64;
-  GlobalKey _headerKey = GlobalKey();
-  GlobalKey _appBarKey = GlobalKey();
-  GlobalKey _bodyKey = GlobalKey();
-  double _imgsHeight;
 
   ligarEmpresa(String numero) async {
     if (await canLaunch('tel:+55${numero}')) {
@@ -240,7 +236,6 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage>
       //     ),
       //   )
       appBar: GradientAppBar(
-        key: _appBarKey,
         gradient: LinearGradient(
           colors: [
             Colors.orange[900],
@@ -269,7 +264,6 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage>
                         fit: FlexFit.loose,
                         // width: MediaQuery.of(context).size.width,
                         child: Column(
-                          key: _headerKey,
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
