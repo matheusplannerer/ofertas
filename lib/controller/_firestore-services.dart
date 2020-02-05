@@ -43,7 +43,7 @@ class FirestoreServices {
         "latitude": geo[0].position.latitude,
         "longitude": geo[0].position.longitude,
         "donoEmpresa": cadastro.donoEmpresa, //
-        "categoria": cadastro.categoria, //
+        "categoria": cadastro.categoria.toUpperCase(), //
         "empresaID": cadastro.empresaID, //
         "nomeEmpresa": cadastro.nomeEmpresa, //
         "horaInicio": cadastro.horaInicio, //

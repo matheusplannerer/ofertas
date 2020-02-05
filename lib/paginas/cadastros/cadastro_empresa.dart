@@ -201,7 +201,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
       return false;
   }
 
-  List<DropdownMenuItem> categoriasAux = [];
+  List<DropdownMenuItem<String>> categoriasAux = [];
 
   List<String> categorias = [
     "Agro, Comércio e Indústria",
@@ -247,7 +247,7 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
     // TODO: implement initState
     super.initState();
     for (var i = 0; i < categorias.length; i++) {
-      DropdownMenuItem aux = DropdownMenuItem(
+      DropdownMenuItem<String> aux = DropdownMenuItem<String>(
         child: Text(categorias[i]),
         value: categorias[i],
       );
@@ -276,8 +276,10 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
         padding: EdgeInsets.symmetric(horizontal: 15),
         children: <Widget>[
           SizedBox(height: 30),
-          Text("Complete as informações abaixo para finalizar seu cadastro.",
-              style: TextStyle(color: Colors.grey[700], fontSize: 20)),
+          Text(
+            "Complete as informações abaixo para finalizar seu cadastro.",
+            style: TextStyle(color: Colors.grey[700], fontSize: 20),
+          ),
           SizedBox(height: 20),
           TextField(
             controller: _nomeUnidade,
@@ -305,12 +307,14 @@ class _CadastroEmpresaState extends State<CadastroEmpresa> {
               hint: Text("CATEGORIA"),
               onChanged: (data) {
                 setState(() {
-                  cadastro.categoria = data.toUpperCase();
+                  cadastro.categoria = data;
                 });
               },
               value: cadastro.categoria,
               icon: Icon(Icons.list),
-              items: [...categoriasAux],
+              items: [
+                ...categoriasAux,
+              ],
             ),
           ),
           if (_erroCategoria)

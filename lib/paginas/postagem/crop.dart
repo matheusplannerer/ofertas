@@ -29,8 +29,8 @@ class _ImageCaptureState extends State<ImageCapture> {
   OfertaModel produto = OfertaModel();
 
   Future<void> _pickImage(ImageSource source) async {
-    File selected = await ImagePicker.pickImage(
-        source: source, maxHeight: 350, maxWidth: 350, imageQuality: 50);
+    File selected =
+        await ImagePicker.pickImage(source: source, imageQuality: 50);
 
     setState(() {
       _imageFile = selected;
@@ -47,12 +47,6 @@ class _ImageCaptureState extends State<ImageCapture> {
   TextEditingController nome = TextEditingController();
   TextEditingController preco = TextEditingController();
   TextEditingController desconto = TextEditingController();
-
-  void _updateDados() {
-    produto.nomeProduto = nome.text.toUpperCase();
-    produto.preco = preco.text;
-    produto.desconto = desconto.text;
-  }
 
   @override
   Widget build(BuildContext context) {
