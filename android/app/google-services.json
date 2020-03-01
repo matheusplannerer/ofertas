@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "115359535931",
-    "firebase_url": "https://ofertas-dd295.firebaseio.com",
-    "project_id": "ofertas-dd295",
-    "storage_bucket": "ofertas-dd295.appspot.com"
+    "project_number": "86861932628",
+    "firebase_url": "https://ofertas-8428f.firebaseio.com",
+    "project_id": "ofertas-8428f",
+    "storage_bucket": "ofertas-8428f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:115359535931:android:374033c17ec3822b2b1d1e",
+        "mobilesdk_app_id": "1:86861932628:android:69f2feef19bf6d9c7fa5c1",
         "android_client_info": {
           "package_name": "com.example.ofertas"
         }
       },
       "oauth_client": [
         {
-          "client_id": "115359535931-j37uk1moetqiia6rm4puhbncmumnq0q3.apps.googleusercontent.com",
+          "client_id": "86861932628-3iuals09vs4e4ftgu8r4blpusnr1vc78.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyANKFx2A_kS9zc-t4GnE05XbNgU6PMNWcA"
+          "current_key": "AIzaSyCA35L5BDxF6B2g98vpPzrqpRhfbSNwUAY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "115359535931-j37uk1moetqiia6rm4puhbncmumnq0q3.apps.googleusercontent.com",
+              "client_id": "86861932628-3iuals09vs4e4ftgu8r4blpusnr1vc78.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
