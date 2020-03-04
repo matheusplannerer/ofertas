@@ -18,10 +18,57 @@ class NavigationBarPage extends StatefulWidget {
 
 class _NavigationBarPageState extends State<NavigationBarPage> {
   var _navController = NavigationBarController();
+  List<Widget> pages;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<GlobalService>(context);
+    pages = [
+      Navigator(
+        key: global.navigatorKeyFeed,
+        initialRoute: '/',
+        onGenerateRoute: (RouteSettings settings) {
+          print(settings.arguments);
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (BuildContext context) {
+              switch (settings.name) {
+                case '/':
+                  return FeedPage();
+                case '/perfilEmpresa':
+                  return PerfilEmpresaPage(
+                    empresaID: settings.arguments,
+                  );
+              }
+            },
+          );
+        },
+      ),
+      Navigator(
+        key: global.navigatorKeyPerfil,
+        initialRoute: '/',
+        onGenerateRoute: (RouteSettings settings) {
+          print(settings.arguments);
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (BuildContext context) {
+              switch (settings.name) {
+                case '/':
+                  return PerfilEmpresaPage(
+                    empresaID: settings.arguments,
+                  );
+              }
+            },
+          );
+        },
+      ),
+    ];
 
     return Observer(
       builder: (_) {
@@ -44,12 +91,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
           body: IndexedStack(
             index: _navController.navIndex,
             children: <Widget>[
-              FeedPage(
-                title: "FEED1",
-              ),
-              PerfilEmpresaPage(
-                title: "FEED2",
-              ),
+              ...pages,
             ],
           ),
         );

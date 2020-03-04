@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/feed/components/empresas_view/empresas_view_widget.dart';
@@ -14,7 +15,9 @@ import 'package:provider/provider.dart';
 
 class FeedPage extends StatefulWidget {
   final String title;
-  const FeedPage({Key key, this.title = "Feed"}) : super(key: key);
+  const FeedPage({Key key, this.title = "Feed", this.navigatorKey})
+      : super(key: key);
+  final GlobalKey<NavigatorState> navigatorKey;
 
   @override
   _FeedPageState createState() => _FeedPageState();
@@ -43,7 +46,7 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<GlobalService>(context);
-
+    print("BUILDOU");
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -67,8 +70,9 @@ class _FeedPageState extends State<FeedPage> {
                   ],
                 ),
                 onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacementNamed('/login');
+                  global.navigatorKeyFeed.currentState.pop();
+                  Modular.navigatorKey.currentState
+                      .pushReplacementNamed('/login');
                 },
               ),
             Divider(),
@@ -91,7 +95,7 @@ class _FeedPageState extends State<FeedPage> {
                 ],
               ),
               onTap: () {
-                Navigator.of(context).pop();
+                global.navigatorKeyFeed.currentState.pop();
 
                 // Navigator.push(context,
                 //     MaterialPageRoute(builder: (context) => EntreEmContato()));
@@ -182,13 +186,14 @@ class _FeedPageState extends State<FeedPage> {
                       letterSpacing: .3),
                 ),
                 onTap: () async {
-                  Navigator.of(context).pop();
+                  global.navigatorKeyFeed.currentState.pop();
                   showLoadingDialog();
                   await Future.delayed(Duration(milliseconds: 500));
                   await FirebaseAuth.instance.signOut();
                   global.signOut();
                   hideLoadingDialog();
-                  Navigator.of(context).pushReplacementNamed('/login');
+                  Modular.navigatorKey.currentState
+                      .pushReplacementNamed('/login');
                 },
               ),
           ],
@@ -208,7 +213,7 @@ class _FeedPageState extends State<FeedPage> {
           return ListView.builder(
             itemCount: _feedController.empresas.length,
             controller: _scrollController,
-            itemBuilder: (_, index) {
+            itemBuilder: (context, index) {
               if (_feedController.empresas.length == 0) {
                 if (!_feedController.carregou) {
                   return Center(

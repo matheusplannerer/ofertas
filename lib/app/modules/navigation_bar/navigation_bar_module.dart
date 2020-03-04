@@ -28,7 +28,12 @@ class NavigationBarModule extends ChildModule {
   List<Router> get routers => [
         Router('/', child: (_, args) => NavigationBarPage()),
         Router('/feed', child: (_, args) => FeedPage()),
-        Router('/perfilEmpresa', child: (_, args) => PerfilEmpresaPage()),
+        // Router(
+        //   '/perfilEmpresa/:id',
+        //   child: (_, args) => PerfilEmpresaPage(
+        //     empresaID: args.params['id'],
+        //   ),
+        // ),
       ];
 
   static Inject get to => Inject<NavigationBarModule>.of();

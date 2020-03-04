@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
@@ -440,7 +441,7 @@ abstract class _CadastroEmpresaBase with Store {
               FlatButton(
                 child: Text("OK"),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Modular.navigatorKey.currentState.pop();
                 },
               )
             ],

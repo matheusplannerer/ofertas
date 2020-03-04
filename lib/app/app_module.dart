@@ -22,7 +22,7 @@ class AppModule extends MainModule {
 
   @override
   List<Router> get routers => [
-        Router('/navbarHome', module: NavigationBarModule()),
+        Router('/', module: NavigationBarModule()),
         // Router('/feed', module: FeedModule()),
         Router('/login', module: LoginModule()),
         Router('/cadastroUsuario', module: CadastroUsuarioModule()),

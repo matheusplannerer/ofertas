@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
@@ -158,7 +159,8 @@ class _CadastroUsuarioPageState extends State<CadastroUsuarioPage> {
                           global.signIn(
                               fire: fbUser, user: _cadastroController.usuario);
                           fbUser.sendEmailVerification();
-                          Navigator.of(context).pushReplacementNamed('/');
+                          Modular.navigatorKey.currentState
+                              .pushReplacementNamed('/');
                           return;
                         }
 

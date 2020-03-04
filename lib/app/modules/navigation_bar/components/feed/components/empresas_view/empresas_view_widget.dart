@@ -2,13 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/feed/components/empresas_view/empresas_view_controller.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/feed/components/ofertas_view/ofertas_view_widget.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/oferta_details/oferta_details_page.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/perfil_empresa_page.dart';
+import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
+import 'package:provider/provider.dart';
 
 class EmpresasViewWidget extends StatefulWidget {
   final PerfilEmpresaModel empresa;
@@ -45,6 +48,8 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var global = Provider.of<GlobalService>(context);
+
     return Observer(
       builder: (_) {
         return Column(
@@ -74,9 +79,11 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
                   if (doc != null) {
                     PerfilEmpresaModel aux =
                         PerfilEmpresaModel.fromJson(doc.data, doc.documentID);
-
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PerfilEmpresaPage(empresa: aux)));
+                    print(aux.nomeEmpresa);
+                    global.navigatorKeyFeed.currentState
+                        .pushNamed('/perfilEmpresa', arguments: aux.empresaID);
+                    // widget.navigatorKey.currentState.pushNamed('/login');
+                    // Modular.navigatorKey.currentState.pushNamed('/login');
                   }
                 },
                 leading: Container(

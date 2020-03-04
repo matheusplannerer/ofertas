@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ofertas/app/modules/publicar_ofertas/components/publicar_cartaz/publicar_cartaz_page.dart';
+import 'package:ofertas/app/modules/publicar_ofertas/components/publicar_upload/publicar_upload_page.dart';
 import 'package:ofertas/app/modules/publicar_ofertas/publicar_ofertas_controller.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 
 class PublicarOfertasPage extends StatefulWidget {
-  final String title;
-  const PublicarOfertasPage({Key key, this.title = "PublicarOfertas"})
-      : super(key: key);
+  final String empresaID;
+  const PublicarOfertasPage({Key key, this.empresaID}) : super(key: key);
 
   @override
   _PublicarOfertasPageState createState() => _PublicarOfertasPageState();
@@ -67,10 +68,17 @@ class _PublicarOfertasPageState extends State<PublicarOfertasPage> {
         builder: (_) {
           return BottomNavigationBar(
             iconSize: 30,
-            selectedItemColor: Colors.orange,
+            // selectedItemColor: Colors.orange,
+            unselectedItemColor: Colors.grey,
+            selectedItemColor: Colors.grey,
             // selectedIconTheme: IconThemeData(color: Colors.grey, ),
             currentIndex: controller.pageIndex,
-            onTap: controller.setPageIndex,
+            onTap: (index) async {
+              controller.setPageIndex(index);
+              var x =
+                  await controller.getImage(index, MediaQuery.of(context).size);
+              print(x);
+            },
             // async {
             // setState(() {
 
@@ -119,19 +127,25 @@ class _PublicarOfertasPageState extends State<PublicarOfertasPage> {
           );
         },
       ),
-      body: PageView(
-        controller: controller.pageController,
-        children: <Widget>[
-          Scaffold(
-            body: Text("1"),
-          ),
-          Scaffold(
-            body: Text("2"),
-          ),
-          Scaffold(
-            body: Text("3"),
-          ),
-        ],
+      body: Observer(
+        builder: (_) {
+          print("TESTANDO OFERTA");
+          return PageView(
+            controller: controller.pageController,
+            physics: NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              PublicarUploadPage(
+                imgFile: controller.imgFile,
+              ),
+              PublicarUploadPage(
+                imgFile: controller.imgFile,
+              ),
+              PublicarCartazPage(
+                bs64Img: controller.bs64Cartaz,
+              ),
+            ],
+          );
+        },
       ),
       // ListView(
       //   children: <Widget>[

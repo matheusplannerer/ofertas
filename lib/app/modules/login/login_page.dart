@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_signin_button/button_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +15,9 @@ import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
-  const LoginPage({Key key, this.title = "Login"}) : super(key: key);
+  const LoginPage({Key key, this.title = "Login", this.navigatorKey})
+      : super(key: key);
+  final GlobalKey<NavigatorState> navigatorKey;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -64,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
         leading: IconButton(
           icon: Icon(Icons.account_circle),
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/navbarHome');
+            Modular.navigatorKey.currentState.pushReplacementNamed('/');
           },
         ),
         title: Text(
@@ -207,7 +210,9 @@ class _LoginPageState extends State<LoginPage> {
                                                 FlatButton(
                                                   child: Text("CANCELAR"),
                                                   onPressed: () {
-                                                    Navigator.of(context).pop();
+                                                    Modular.navigatorKey
+                                                        .currentState
+                                                        .pop();
                                                   },
                                                 ),
                                                 FlatButton(
@@ -223,7 +228,8 @@ class _LoginPageState extends State<LoginPage> {
                                                                   _loginController
                                                                       .email);
                                                       hideLoadingDialog();
-                                                      Navigator.of(context)
+                                                      Modular.navigatorKey
+                                                          .currentState
                                                           .pop(true);
                                                     }
                                                   },
@@ -307,9 +313,8 @@ class _LoginPageState extends State<LoginPage> {
                                         // _service.getEmpresaLogada(usuario);
 
                                         print("LOGADO");
-                                        Navigator.of(context)
-                                            .pushReplacementNamed(
-                                                '/navbarHome');
+                                        Modular.navigatorKey.currentState
+                                            .pushReplacementNamed('/');
                                       } else if (fbUser is String) {
                                         hideLoadingDialog();
 
@@ -388,7 +393,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context)
+                              Modular.navigatorKey.currentState
                                   .pushNamed('/cadastroUsuario');
                             },
                             child: Text(

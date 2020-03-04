@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 
 class NovaEmpresaPage extends StatefulWidget {
@@ -25,7 +26,7 @@ class _NovaEmpresaPageState extends State<NovaEmpresaPage> {
             height: 50,
             width: MediaQuery.of(context).size.width - 60,
             onTap: () {
-              Navigator.of(context).pushNamed('/cadastroEmpresa');
+              Modular.navigatorKey.currentState.pushNamed('/cadastroEmpresa');
             },
             text: "NOVA EMPRESA",
           ),

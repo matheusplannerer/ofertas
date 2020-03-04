@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/modules/cadastro_empresa/cadastro_empresa_controller.dart';
@@ -368,13 +369,13 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
               if (!cadastrou) {
                 hideLoadingDialog();
                 await _cadastroController.errorDialog(context);
-                Navigator.of(context)
+                Modular.navigatorKey.currentState
                     .popUntil((Route<dynamic> route) => route.isFirst);
                 return;
               }
               hideLoadingDialog();
               global.setEmpresaLogada(_cadastroController.cadastro);
-              Navigator.of(context)
+              Modular.navigatorKey.currentState
                   .popUntil((Route<dynamic> route) => route.isFirst);
             },
             text: "CADASTRAR",

@@ -12,18 +12,30 @@ class PublicarOfertasController = _PublicarOfertasBase
 abstract class _PublicarOfertasBase with Store {
   PageController pageController = PageController();
 
-  Future<File> _selectGalleryImage() async {
+  Future<File> _selectGalleryImage(Size device) async {
     File selected = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 60);
+        source: ImageSource.gallery,
+        imageQuality: 60,
+        maxHeight: device.height - 100,
+        maxWidth: device.width);
 
     return selected;
   }
 
-  Future<File> _takeCameraImage() async {
+  Future<File> _takeCameraImage(Size device) async {
     File selected = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 60);
+        source: ImageSource.camera,
+        imageQuality: 60,
+        maxHeight: device.height - 100,
+        maxWidth: device.width);
     return selected;
   }
+
+  @observable
+  File imgFile;
+
+  @observable
+  String bs64Cartaz;
 
   @observable
   int pageIndex = 0;
@@ -31,14 +43,21 @@ abstract class _PublicarOfertasBase with Store {
   @action
   void setPageIndex(int value) {
     pageIndex = value;
-    pageController.animateToPage(value,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.fastLinearToSlowEaseIn);
+    pageController.jumpToPage(value);
+  }
 
+  @action
+  Future getImage(int value, Size device) async {
+    imgFile = null;
+    bs64Cartaz = null;
     if (value == 0) {
-      _selectGalleryImage();
+      imgFile = await _selectGalleryImage(device);
+      return imgFile;
     } else if (value == 1) {
-      _takeCameraImage();
+      imgFile = await _takeCameraImage(device);
+      return imgFile;
+    } else {
+      // await _selectGalleryImage();
     }
   }
 }

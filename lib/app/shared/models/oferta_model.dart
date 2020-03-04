@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OfertaModel {
   String nomeProduto;
   String infos;
   // bool isFavorite;
+  File imgFileAux;
+  String bs64ImgAux;
   String idOferta;
   String desconto, preco;
   String imagem;
@@ -18,7 +22,7 @@ class OfertaModel {
     this.empresaDona,
     this.imagem,
     this.validade,
-    this.mostrar,
+    this.mostrar = true,
     this.idOferta,
   });
 

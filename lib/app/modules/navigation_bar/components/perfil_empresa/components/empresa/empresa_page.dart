@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/shared/global_service.dart';
@@ -88,17 +89,11 @@ class _EmpresaPageState extends State<EmpresaPage> {
                                   empresa = aux;
                                   global.setEmpresaLogada(empresa);
                                 });
-                                Navigator.of(context).pop();
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/navbarHome');
-                                // Navigator.of(context)
-                                //     .pushReplacement(MaterialPageRoute(
-                                //         builder: (context) => Dashboard(
-                                //               empresaLogada:
-                                //                   global.empresaLogada,
-                                //               fbUser: global.fbUser,
-                                //               user: global.usuario,
-                                //             )));
+
+                                global.navigatorKeyPerfil.currentState.pop();
+                                global.navigatorKeyPerfil.currentState
+                                    .pushReplacementNamed('/',
+                                        arguments: empresa.empresaID);
                               },
                               leading: CircleAvatar(
                                 backgroundColor: Colors.transparent,
@@ -121,7 +116,7 @@ class _EmpresaPageState extends State<EmpresaPage> {
                         empresas.add(
                           FlatButton(
                             onPressed: () {
-                              Navigator.of(context)
+                              Modular.navigatorKey.currentState
                                   .pushNamed('/cadastroEmpresa');
                             },
                             child: Text("ADICIONAR EMPRESA"),
@@ -137,7 +132,7 @@ class _EmpresaPageState extends State<EmpresaPage> {
                               Text("NENHUMA EMPRESA CADASTRADA"),
                               RaisedButton(
                                 onPressed: () {
-                                  Navigator.of(context)
+                                  Modular.navigatorKey.currentState
                                       .pushNamed('/cadastroEmpresa');
                                 },
                                 child: Text("ADICIONAR EMPRESA"),
@@ -222,14 +217,13 @@ class _EmpresaPageState extends State<EmpresaPage> {
                                     borderRadius: BorderRadius.circular(45),
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image:
-                                          empresaSnap.data.data['foto'] != null
-                                              ? NetworkImage(
-                                                  empresaSnap.data.data['foto'],
-                                                )
-                                              : AssetImage(
-                                                  'assets/logo2.jpg',
-                                                ),
+                                      image: empresa.foto != null
+                                          ? NetworkImage(
+                                              empresaSnap.data.data['foto'],
+                                            )
+                                          : AssetImage(
+                                              'assets/logo2.jpg',
+                                            ),
                                     ),
                                   ),
                                 ),
@@ -244,7 +238,7 @@ class _EmpresaPageState extends State<EmpresaPage> {
                           child: Column(
                             children: <Widget>[
                               AutoSizeText(
-                                empresaSnap.data.data['nomeEmpresa'] ??= '',
+                                empresa.nomeEmpresa ??= '',
                                 textAlign: TextAlign.center,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -256,7 +250,7 @@ class _EmpresaPageState extends State<EmpresaPage> {
                                 ),
                               ),
                               AutoSizeText(
-                                empresaSnap.data.data['categoria'] ?? "",
+                                empresa.categoria ?? "",
                                 //add categoria para poder puxar do database
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
@@ -318,7 +312,7 @@ class _EmpresaPageState extends State<EmpresaPage> {
                                           letterSpacing: .6),
                                     ),
                                     content: Text(
-                                      "${empresaSnap.data.data['telefone'].toString()}",
+                                      "${empresa.telefone.toString()}",
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontFamily: "Domine-Regular",
@@ -333,7 +327,8 @@ class _EmpresaPageState extends State<EmpresaPage> {
                                           //     empresaSnap.data
                                           //         .data['telefone']
                                           //         .toString());
-                                          Navigator.of(context).pop();
+                                          global.navigatorKeyPerfil.currentState
+                                              .pop();
                                         },
                                       ),
                                       FlatButton(
@@ -343,13 +338,15 @@ class _EmpresaPageState extends State<EmpresaPage> {
                                           //     empresaSnap.data
                                           //         .data['telefone']
                                           //         .toString());
-                                          Navigator.of(context).pop();
+                                          global.navigatorKeyPerfil.currentState
+                                              .pop();
                                         },
                                       ),
                                       FlatButton(
                                         child: Text("OK"),
                                         onPressed: () {
-                                          Navigator.of(context).pop();
+                                          global.navigatorKeyPerfil.currentState
+                                              .pop();
                                         },
                                       ),
                                     ],
@@ -360,12 +357,7 @@ class _EmpresaPageState extends State<EmpresaPage> {
                           icon: Icon(Icons.phone, size: 30),
                         ),
                         IconButton(
-                          onPressed: () {
-                            // Navigator.of(context).push(
-                            //     MaterialPageRoute(
-                            //         builder: (context) =>
-                            //             Horarios(isDono)));
-                          },
+                          onPressed: () {},
                           icon: Icon(Icons.timer, size: 30),
                         ),
                       ],
@@ -459,12 +451,8 @@ class _EmpresaPageState extends State<EmpresaPage> {
                   heroTag: null,
                   child: Icon(Icons.add_a_photo),
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/publicarOfertas');
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => ImageCapture(empresa.empresaID),
-                    //   ),
-                    // );
+                    Modular.navigatorKey.currentState.pushNamed(
+                        '/publicarOfertas/${widget.empresa.empresaID}');
                   },
                 ),
               ],

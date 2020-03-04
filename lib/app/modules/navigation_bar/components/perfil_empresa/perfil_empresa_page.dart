@@ -40,6 +40,38 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
   Widget build(BuildContext context) {
     var global = Provider.of<GlobalService>(context);
 
+    Widget _selectPage() {
+      if (global.usuario?.empresaPerfil == '' ||
+          global.usuario?.empresaPerfil == null) {
+        return NovaEmpresaPage();
+      } else {
+        return StreamBuilder<DocumentSnapshot>(
+          builder: (context, empresaSnap) {
+            if (_empresaController.fetched(empresaSnap)) {
+              PerfilEmpresaModel empresaModel = PerfilEmpresaModel.fromJson(
+                  empresaSnap.data.data, empresaSnap.data.documentID);
+              return EmpresaPage(
+                empresaSnap: empresaSnap,
+                empresa: empresaModel,
+              );
+            } else if (_empresaController.isFetching(empresaSnap)) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+          stream: Firestore.instance
+              .collection('empresas')
+              .document(widget.empresaID == null
+                  ? global.usuario.empresaPerfil
+                  : widget.empresaID)
+              .get()
+              .asStream(),
+          initialData: null,
+        );
+      }
+    }
+
     return Scaffold(
       appBar: GradientAppBar(
         // title: Text(titulo),
@@ -50,51 +82,51 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
           ],
         ),
       ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: Firestore.instance
-            .collection('usuarios')
-            .document(global.fbUser?.uid)
-            .get()
-            .asStream(),
-        builder: (context, usuario) {
-          // print(empresaSnap.data.data);
-          print(usuario.connectionState);
-          if (_empresaController.fetched(usuario)) {
-            UserModel userModel = UserModel.fromJson(usuario.data.data);
-            return StreamBuilder<DocumentSnapshot>(
-              builder: (context, empresaSnap) {
-                if (_empresaController.fetched(empresaSnap) &&
-                    usuario.data.data['empresaPerfil'] != null) {
-                  PerfilEmpresaModel empresaModel = PerfilEmpresaModel.fromJson(
-                      empresaSnap.data.data, empresaSnap.data.documentID);
-                  return EmpresaPage(
-                    empresaSnap: empresaSnap,
-                    empresa: empresaModel,
-                  );
-                } else if (_empresaController.isFetching(empresaSnap)) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return NovaEmpresaPage();
-                }
-              },
-              stream: Firestore.instance
-                  .collection('empresas')
-                  .document(userModel.empresaPerfil)
-                  .get()
-                  .asStream(),
-              initialData: null,
-            );
-          } else if (_empresaController.isFetching(usuario)) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return NovaEmpresaPage();
-          }
-        },
-      ),
+      body: _selectPage(),
+      // StreamBuilder<DocumentSnapshot>(
+      //   stream: Firestore.instance
+      //       .collection('usuarios')
+      //       .document(global.fbUser?.uid)
+      //       .get()
+      //       .asStream(),
+      //   builder: (context, usuario) {
+      //     // print(empresaSnap.data.data);
+      //     if (_empresaController.fetched(usuario)) {
+      //       UserModel userModel = UserModel.fromJson(usuario.data.data);
+      //       return StreamBuilder<DocumentSnapshot>(
+      //         builder: (context, empresaSnap) {
+      //           if (_empresaController.fetched(empresaSnap) &&
+      //               usuario.data.data['empresaPerfil'] != null) {
+      //             PerfilEmpresaModel empresaModel = PerfilEmpresaModel.fromJson(
+      //                 empresaSnap.data.data, empresaSnap.data.documentID);
+      //             return EmpresaPage(
+      //               empresaSnap: empresaSnap,
+      //               empresa: empresaModel,
+      //             );
+      //           } else if (_empresaController.isFetching(empresaSnap)) {
+      //             return Center(
+      //               child: CircularProgressIndicator(),
+      //             );
+      //           } else {
+      //             return NovaEmpresaPage();
+      //           }
+      //         },
+      //         stream: Firestore.instance
+      //             .collection('empresas')
+      //             .document(userModel.empresaPerfil)
+      //             .get()
+      //             .asStream(),
+      //         initialData: null,
+      //       );
+      //     } else if (_empresaController.isFetching(usuario)) {
+      //       return Center(
+      //         child: CircularProgressIndicator(),
+      //       );
+      //     } else {
+      //       return NovaEmpresaPage();
+      //     }
+      //   },
+      // ),
     );
   }
 }
