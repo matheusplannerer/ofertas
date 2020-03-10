@@ -28,12 +28,14 @@ class PerfilEmpresaPage extends StatefulWidget {
 
 class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
   PerfilEmpresaModel empresa;
+  String empresaID;
   var _empresaController = PerfilEmpresaController();
 
   @override
   void initState() {
     super.initState();
     empresa = widget.empresa;
+    empresaID = widget.empresaID;
   }
 
   @override
@@ -41,10 +43,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
     var global = Provider.of<GlobalService>(context);
 
     Widget _selectPage() {
-      if (global.usuario?.empresaPerfil == '' ||
-          global.usuario?.empresaPerfil == null) {
-        return NovaEmpresaPage();
-      } else {
+      if (empresaID != null || global.usuario?.empresaPerfil != null) {
         return StreamBuilder<DocumentSnapshot>(
           builder: (context, empresaSnap) {
             if (_empresaController.fetched(empresaSnap)) {
@@ -58,7 +57,10 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            }
+            } else
+              return Center(
+                child: CircularProgressIndicator(),
+              );
           },
           stream: Firestore.instance
               .collection('empresas')
@@ -69,12 +71,13 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
               .asStream(),
           initialData: null,
         );
+      } else {
+        return NovaEmpresaPage();
       }
     }
 
     return Scaffold(
       appBar: GradientAppBar(
-        // title: Text(titulo),
         gradient: LinearGradient(
           colors: [
             Colors.orange[900],
@@ -83,50 +86,6 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
         ),
       ),
       body: _selectPage(),
-      // StreamBuilder<DocumentSnapshot>(
-      //   stream: Firestore.instance
-      //       .collection('usuarios')
-      //       .document(global.fbUser?.uid)
-      //       .get()
-      //       .asStream(),
-      //   builder: (context, usuario) {
-      //     // print(empresaSnap.data.data);
-      //     if (_empresaController.fetched(usuario)) {
-      //       UserModel userModel = UserModel.fromJson(usuario.data.data);
-      //       return StreamBuilder<DocumentSnapshot>(
-      //         builder: (context, empresaSnap) {
-      //           if (_empresaController.fetched(empresaSnap) &&
-      //               usuario.data.data['empresaPerfil'] != null) {
-      //             PerfilEmpresaModel empresaModel = PerfilEmpresaModel.fromJson(
-      //                 empresaSnap.data.data, empresaSnap.data.documentID);
-      //             return EmpresaPage(
-      //               empresaSnap: empresaSnap,
-      //               empresa: empresaModel,
-      //             );
-      //           } else if (_empresaController.isFetching(empresaSnap)) {
-      //             return Center(
-      //               child: CircularProgressIndicator(),
-      //             );
-      //           } else {
-      //             return NovaEmpresaPage();
-      //           }
-      //         },
-      //         stream: Firestore.instance
-      //             .collection('empresas')
-      //             .document(userModel.empresaPerfil)
-      //             .get()
-      //             .asStream(),
-      //         initialData: null,
-      //       );
-      //     } else if (_empresaController.isFetching(usuario)) {
-      //       return Center(
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     } else {
-      //       return NovaEmpresaPage();
-      //     }
-      //   },
-      // ),
     );
   }
 }

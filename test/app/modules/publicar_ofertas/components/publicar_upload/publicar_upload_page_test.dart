@@ -6,8 +6,8 @@ import 'package:ofertas/app/modules/publicar_ofertas/components/publicar_upload/
 
 main() {
   testWidgets('PublicarUploadPage has title', (WidgetTester tester) async {
-    await tester.pumpWidget(
-        buildTestableWidget(PublicarUploadPage(title: 'PublicarUpload')));
+    // await tester.pumpWidget(
+    //     buildTestableWidget(PublicarUploadPage(title: 'PublicarUpload')));
     final titleFinder = find.text('PublicarUpload');
     expect(titleFinder, findsOneWidget);
   });

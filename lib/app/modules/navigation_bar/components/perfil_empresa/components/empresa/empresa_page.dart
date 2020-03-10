@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/shared/global_service.dart';
+import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:provider/provider.dart';
 
@@ -382,9 +383,6 @@ class _EmpresaPageState extends State<EmpresaPage> {
                   .asStream(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  // return Flexible(
-                  //   fit: FlexFit.loose,
-                  //   child:
                   return GridView.builder(
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
@@ -396,20 +394,17 @@ class _EmpresaPageState extends State<EmpresaPage> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          // OfertaModel produto = OfertaModel.fromJson(
-                          //     snapshot.data.documents[index].data,
-                          //     snapshot
-                          //         .data.documents[index].documentID);
-                          // Navigator.of(context)
-                          //     .push(MaterialPageRoute(
-                          //         builder: (context) => OfertaDetalhe(
-                          //               produto: produto,
-                          //             )));
+                          OfertaModel oferta = OfertaModel.fromJson(
+                              snapshot.data.documents[index].data,
+                              snapshot.data.documents[index].documentID);
+                          global.actualNavigator.currentState
+                              .pushNamed('/oferta_details', arguments: oferta);
                         },
                         child: CachedNetworkImage(
+                          alignment: Alignment.center,
                           imageUrl:
                               snapshot.data.documents[index].data['imagem'],
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                           errorWidget: (context, string, obj) {
                             return Center(
                               child: Text("ERRO NO CARREGAMENTO"),
@@ -424,7 +419,6 @@ class _EmpresaPageState extends State<EmpresaPage> {
                       );
                     },
                   );
-                  // );
                 } else {
                   return Center(
                     child: CircularProgressIndicator(),

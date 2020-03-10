@@ -576,6 +576,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  photo_view:
+    dependency: "direct main"
+    description:
+      name: photo_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.2"
   platform:
     dependency: transitive
     description:
@@ -651,6 +658,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4+2"
+  solid_bottom_sheet:
+    dependency: "direct main"
+    description:
+      name: solid_bottom_sheet
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.9"
   source_gen:
     dependency: transitive
     description:

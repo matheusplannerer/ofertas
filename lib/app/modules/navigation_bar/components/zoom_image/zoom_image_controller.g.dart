@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'informacoes_upload_controller.dart';
+part of 'zoom_image_controller.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,8 +8,8 @@ part of 'informacoes_upload_controller.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$InformacoesUploadController on _InformacoesUploadBase, Store {
-  final _$valueAtom = Atom(name: '_InformacoesUploadBase.value');
+mixin _$ZoomImageController on _ZoomImageBase, Store {
+  final _$valueAtom = Atom(name: '_ZoomImageBase.value');
 
   @override
   int get value {
@@ -26,16 +26,16 @@ mixin _$InformacoesUploadController on _InformacoesUploadBase, Store {
     }, _$valueAtom, name: '${_$valueAtom.name}_set');
   }
 
-  final _$_InformacoesUploadBaseActionController =
-      ActionController(name: '_InformacoesUploadBase');
+  final _$_ZoomImageBaseActionController =
+      ActionController(name: '_ZoomImageBase');
 
   @override
   void increment() {
-    final _$actionInfo = _$_InformacoesUploadBaseActionController.startAction();
+    final _$actionInfo = _$_ZoomImageBaseActionController.startAction();
     try {
       return super.increment();
     } finally {
-      _$_InformacoesUploadBaseActionController.endAction(_$actionInfo);
+      _$_ZoomImageBaseActionController.endAction(_$actionInfo);
     }
   }
 

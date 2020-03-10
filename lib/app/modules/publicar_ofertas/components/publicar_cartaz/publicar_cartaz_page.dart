@@ -12,10 +12,9 @@ import 'package:ofertas/app/shared/global_service.dart';
 import 'package:provider/provider.dart';
 
 class PublicarCartazPage extends StatefulWidget {
-  final String title;
+  final String empresaID;
   final String bs64Img;
-  const PublicarCartazPage(
-      {Key key, this.title = "PublicarCartaz", this.bs64Img})
+  const PublicarCartazPage({Key key, this.empresaID, this.bs64Img})
       : super(key: key);
 
   @override
@@ -23,12 +22,13 @@ class PublicarCartazPage extends StatefulWidget {
 }
 
 class _PublicarCartazPageState extends State<PublicarCartazPage> {
-  var controller = PublicarCartazController();
+  PublicarCartazController controller;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    controller = PublicarCartazController();
   }
 
   @override
@@ -49,7 +49,7 @@ class _PublicarCartazPageState extends State<PublicarCartazPage> {
                       width: 350,
                       child: Image.asset(
                         "assets/cartaz2.jpg",
-                        fit: BoxFit.fill,
+                        fit: BoxFit.contain,
                       ),
                     ),
                     Container(
@@ -255,38 +255,14 @@ class _PublicarCartazPageState extends State<PublicarCartazPage> {
 
                         await controller.updateBs64();
                         Modular.navigatorKey.currentState.pushNamed(
-                            '/publicarOfertas/concluir_oferta',
-                            arguments: controller.oferta);
+                            '/publicarOfertas/concluir_oferta/cartaz',
+                            arguments: {
+                              'oferta': controller.oferta,
+                              'id': widget.empresaID
+                            });
                       },
                       text: "AVANÇAR",
                     )
-                    // Container(
-                    //   child: RaisedButton(
-                    //     color: Colors.orange,
-                    //     child: Text('Visualizar Cartaz'),
-                    //     onPressed: () async {
-                    //       // _validateNomeProduto(_nomeProduto.text);
-                    //       // _validatePreco();
-                    //       // FocusScope.of(context).requestFocus(FocusNode());
-                    //       // showLoadingDialog(tapDismiss: false);
-                    //       // await Future.delayed(
-                    //       //     Duration(seconds: 1, milliseconds: 500));
-                    //       // hideLoadingDialog();
-                    //       // if (!_erroInfosAdicionais &&
-                    //       //     !_erroNomeProduto &&
-                    //       //     !_erroValidadeOferta &&
-                    //       //     !_erroPrecoDescontoProduto) {
-                    //       //   produto.nomeProduto =
-                    //       //       _nomeProduto.text.toUpperCase();
-                    //       //   produto.desconto = _precoDescontoProduto.text;
-                    //       //   produto.infos = _infosAdicionais.text;
-                    //       //   produto.mostrar = true;
-
-                    //       //   var base64 = await _capturePng();
-                    //       //   Navigator.of(context).pop([base64, produto]);
-                    //     },
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

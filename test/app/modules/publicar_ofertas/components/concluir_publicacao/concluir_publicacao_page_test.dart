@@ -6,8 +6,8 @@ import 'package:ofertas/app/modules/publicar_ofertas/components/concluir_publica
 
 main() {
   testWidgets('ConcluirPublicacaoPage has title', (WidgetTester tester) async {
-    await tester.pumpWidget(buildTestableWidget(
-        ConcluirPublicacaoPage(title: 'ConcluirPublicacao')));
+    // await tester.pumpWidget(buildTestableWidget(
+    //     ConcluirPublicacaoPage(title: 'ConcluirPublicacao')));
     final titleFinder = find.text('ConcluirPublicacao');
     expect(titleFinder, findsOneWidget);
   });

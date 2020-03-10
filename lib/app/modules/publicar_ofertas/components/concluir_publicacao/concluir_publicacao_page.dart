@@ -1,17 +1,22 @@
 import 'dart:convert';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:load/load.dart';
 import 'package:ofertas/app/modules/publicar_ofertas/components/concluir_publicacao/concluir_publicacao_controller.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
+import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
+import 'package:provider/provider.dart';
 
 class ConcluirPublicacaoPage extends StatefulWidget {
   final OfertaModel oferta;
-  final String title;
+  final String tipo;
+  final String empresaID;
   const ConcluirPublicacaoPage(
-      {Key key, this.title = "ConcluirPublicacao", this.oferta})
+      {Key key, this.empresaID, this.oferta, this.tipo})
       : super(key: key);
 
   @override
@@ -21,21 +26,21 @@ class ConcluirPublicacaoPage extends StatefulWidget {
 class _ConcluirPublicacaoPageState extends State<ConcluirPublicacaoPage> {
   OfertaModel oferta;
 
-  var controller = ConcluirPublicacaoController();
+  ConcluirPublicacaoController controller;
+
+  StorageUploadTask _task;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     oferta = widget.oferta;
+    controller = ConcluirPublicacaoController(empresaID: widget.empresaID);
   }
 
   @override
   Widget build(BuildContext context) {
-    // print(oferta.infos);
-    // print(oferta.mostrar);
-    // print(oferta.nomeProduto);
-    print(oferta.bs64ImgAux);
+    var global = Provider.of<GlobalService>(context);
     return Scaffold(
       appBar: GradientAppBar(
         gradient: LinearGradient(
@@ -148,7 +153,22 @@ class _ConcluirPublicacaoPageState extends State<ConcluirPublicacaoPage> {
                   height: 40,
                   margin: EdgeInsets.all(10),
                   width: MediaQuery.of(context).size.width - 60,
-                  onTap: () {
+                  onTap: () async {
+                    showLoadingDialog();
+
+                    if (widget.tipo == 'cartaz')
+                      controller.task = await controller.startUpload(
+                          base64: oferta.bs64ImgAux);
+                    else
+                      controller.task =
+                          await controller.startUpload(file: oferta.imgFileAux);
+                    await controller.task.onComplete;
+                    await controller.uploadOferta(oferta);
+                    hideLoadingDialog();
+                    Modular.navigatorKey.currentState.pushNamedAndRemoveUntil(
+                        '/', (Route<dynamic> route) => false);
+                    global.navigatorKeyFeed.currentState
+                        .pushNamedAndRemoveUntil('/', (_) => false);
                     // Modular.navigatorKey.currentState.pushNamed('');
                   },
                   text: "AVANÇAR",
