@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
+import 'package:provider/provider.dart';
 
 class OfertasViewWidget extends StatefulWidget {
   final OfertaModel oferta;
@@ -42,9 +44,11 @@ class _OfertasViewWidgetState extends State<OfertasViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var global = Provider.of<GlobalService>(context);
     return GestureDetector(
       onTap: () {
-        print("TESTE");
+        global.navigatorKeyFeed.currentState
+            .pushNamed('/oferta_details', arguments: oferta);
       },
       child: Card(
         elevation: 10,
@@ -65,7 +69,7 @@ class _OfertasViewWidgetState extends State<OfertasViewWidget> {
                       children: [
                         CachedNetworkImage(
                           imageUrl: oferta.imagem,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                           errorWidget: (context, string, obj) {
                             return Center(
                               child: Text("ERRO NO CARREGAMENTO"),
@@ -120,7 +124,7 @@ class _OfertasViewWidgetState extends State<OfertasViewWidget> {
                   children: [
                     CachedNetworkImage(
                       imageUrl: oferta.imagem,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                       errorWidget: (context, string, obj) {
                         return Center(
                           child: Text("ERRO NO CARREGAMENTO"),

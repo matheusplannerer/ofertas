@@ -16,11 +16,9 @@ class _NovaEmpresaPageState extends State<NovaEmpresaPage> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 2 - 25,
-        ),
         Center(
           child: ButtonWidget(
             height: 50,

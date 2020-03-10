@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/feed/feed_page.dart';
+import 'package:ofertas/app/modules/navigation_bar/components/oferta_details/oferta_details_page.dart';
 import 'package:ofertas/app/modules/navigation_bar/navigation_bar_controller.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/perfil_empresa_page.dart';
 import 'package:ofertas/app/shared/global_service.dart';
@@ -34,7 +35,6 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
         key: global.navigatorKeyFeed,
         initialRoute: '/',
         onGenerateRoute: (RouteSettings settings) {
-          print(settings.arguments);
           return MaterialPageRoute(
             settings: settings,
             builder: (BuildContext context) {
@@ -45,6 +45,10 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                   return PerfilEmpresaPage(
                     empresaID: settings.arguments,
                   );
+                case '/oferta_details':
+                  return OfertaDetailsPage(
+                    oferta: settings.arguments,
+                  );
               }
             },
           );
@@ -54,12 +58,19 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
         key: global.navigatorKeyPerfil,
         initialRoute: '/',
         onGenerateRoute: (RouteSettings settings) {
-          print(settings.arguments);
           return MaterialPageRoute(
             settings: settings,
             builder: (BuildContext context) {
               switch (settings.name) {
                 case '/':
+                  return PerfilEmpresaPage(
+                    empresaID: settings.arguments,
+                  );
+                case '/oferta_details':
+                  return OfertaDetailsPage(
+                    oferta: settings.arguments,
+                  );
+                case '/perfilEmpresa':
                   return PerfilEmpresaPage(
                     empresaID: settings.arguments,
                   );
@@ -84,7 +95,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                   currentIndex: _navController.navIndex,
                   selectedItemColor: Colors.orange,
                   onTap: (int index) {
-                    _navController.setNavIndex(index);
+                    _navController.setNavIndex(index, global);
                   },
                 )
               : null,

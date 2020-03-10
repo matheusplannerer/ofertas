@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
@@ -58,6 +59,8 @@ class CadastroEmpresaService extends Disposable {
 
       return true;
     } catch (e) {
+      PlatformException error = e;
+      print(error.message);
       return false;
     }
   }

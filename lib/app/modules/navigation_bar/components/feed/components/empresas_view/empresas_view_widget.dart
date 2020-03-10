@@ -82,8 +82,6 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
                     print(aux.nomeEmpresa);
                     global.navigatorKeyFeed.currentState
                         .pushNamed('/perfilEmpresa', arguments: aux.empresaID);
-                    // widget.navigatorKey.currentState.pushNamed('/login');
-                    // Modular.navigatorKey.currentState.pushNamed('/login');
                   }
                 },
                 leading: Container(

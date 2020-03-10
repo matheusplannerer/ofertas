@@ -24,10 +24,11 @@ abstract class _PublicarOfertasBase with Store {
 
   Future<File> _takeCameraImage(Size device) async {
     File selected = await ImagePicker.pickImage(
-        source: ImageSource.camera,
-        imageQuality: 60,
-        maxHeight: device.height - 100,
-        maxWidth: device.width);
+      source: ImageSource.camera,
+      imageQuality: 50,
+      // maxHeight: device.height - 100,
+      // maxWidth: device.width);
+    );
     return selected;
   }
 

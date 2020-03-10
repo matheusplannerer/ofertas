@@ -14,8 +14,11 @@ class PublicarCartazController = _PublicarCartazBase
     with _$PublicarCartazController;
 
 abstract class _PublicarCartazBase with Store {
+  String empresaID;
   GlobalKey globalKey = new GlobalKey();
   OfertaModel oferta = OfertaModel();
+
+  _PublicarCartazBase({this.empresaID});
 
   List<String> oldPrecoDesconto = ["0", "0", "0"];
 
@@ -264,7 +267,7 @@ abstract class _PublicarCartazBase with Store {
     }
 
     if (!_erroPrecoDesconto) {
-      oferta.preco = newText;
+      oferta.desconto = newText;
       setPrecoDesconto(newText);
     }
   }

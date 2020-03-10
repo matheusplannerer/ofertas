@@ -19,7 +19,8 @@ abstract class _NavigationBarBase with Store {
   int navIndex = 0;
 
   @action
-  void setNavIndex(int value) {
+  void setNavIndex(int value, GlobalService global) {
     navIndex = value;
+    global.setNavIndexAtual(value);
   }
 }

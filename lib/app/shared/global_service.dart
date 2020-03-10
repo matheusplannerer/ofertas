@@ -36,7 +36,11 @@ class GlobalService extends Disposable {
   UserModel get usuario => _usuario;
   PerfilEmpresaModel get empresaLogada => _empresaLogada;
 
+  int _navIndex = 0;
+
   bool isLogged = false;
+
+  int get navIndex => _navIndex;
 
   void signIn({FirebaseUser fire, UserModel user}) {
     _fbUser = fire;
@@ -52,6 +56,16 @@ class GlobalService extends Disposable {
 
   void setEmpresaLogada(PerfilEmpresaModel model) {
     _empresaLogada = model;
+    _usuario.empresaPerfil = model.empresaID;
+  }
+
+  void setNavIndexAtual(int index) {
+    _navIndex = index;
+  }
+
+  GlobalKey<NavigatorState> get actualNavigator {
+    if (_navIndex == 0) return navigatorKeyFeed;
+    if (_navIndex == 1) return navigatorKeyPerfil;
   }
 
   //dispose will be called automatically
