@@ -11,6 +11,7 @@ import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EmpresaPage extends StatefulWidget {
   final AsyncSnapshot<DocumentSnapshot> empresaSnap;
@@ -338,17 +339,17 @@ class _EmpresaPageState extends State<EmpresaPage> {
                           children: <Widget>[
                             IconButton(
                               onPressed: () async {
-                                // double lat = empresa.lat;
-                                // double lon = empresa.lon;
-                                // if (lat != 0 && lon != 0) {
-                                //   final url =
-                                //       'https://www.google.com/maps/search/?api=1&query=$lat,$lon';
-                                //   if (await canLaunch(url)) {
-                                //     await launch(url);
-                                //   } else {
-                                //     throw 'Could not launch $url';
-                                //   }
-                                // }
+                                double lat = empresa.lat;
+                                double lon = empresa.lon;
+                                if (lat != 0 && lon != 0) {
+                                  final url =
+                                      'https://www.google.com/maps/search/?api=1&query=$lat,$lon';
+                                  if (await canLaunch(url)) {
+                                    await launch(url);
+                                  } else {
+                                    throw 'Could not launch $url';
+                                  }
+                                }
                               },
                               icon: Icon(Icons.pin_drop, size: 30),
                             ),
