@@ -14,10 +14,9 @@ abstract class _PublicarOfertasBase with Store {
 
   Future<File> _selectGalleryImage(Size device) async {
     File selected = await ImagePicker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 60,
-        maxHeight: device.height - 100,
-        maxWidth: device.width);
+      source: ImageSource.gallery,
+      imageQuality: 60,
+    );
 
     return selected;
   }
