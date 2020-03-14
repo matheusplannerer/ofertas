@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/feed/feed_page.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/oferta_details/oferta_details_page.dart';
+import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/components/horarios/horarios_page.dart';
 import 'package:ofertas/app/modules/navigation_bar/navigation_bar_controller.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/perfil_empresa_page.dart';
 import 'package:ofertas/app/shared/global_service.dart';
@@ -72,6 +73,10 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                   );
                 case '/perfilEmpresa':
                   return PerfilEmpresaPage(
+                    empresaID: settings.arguments,
+                  );
+                case '/horarios':
+                  return HorariosPage(
                     empresaID: settings.arguments,
                   );
               }

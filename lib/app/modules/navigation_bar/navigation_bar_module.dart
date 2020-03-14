@@ -1,3 +1,4 @@
+import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/components/horarios/horarios_controller.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/zoom_image/zoom_image_controller.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/components/nova_empresa/nova_empresa_controller.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/components/empresa/empresa_controller.dart';
@@ -16,6 +17,7 @@ import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/per
 class NavigationBarModule extends ChildModule {
   @override
   List<Bind> get binds => [
+        Bind((i) => HorariosController()),
         Bind((i) => ZoomImageController()),
         Bind((i) => NovaEmpresaController()),
         Bind((i) => EmpresaController()),

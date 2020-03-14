@@ -16,13 +16,17 @@ class OfertasViewWidget extends StatefulWidget {
   }
 }
 
-class _OfertasViewWidgetState extends State<OfertasViewWidget> {
+class _OfertasViewWidgetState extends State<OfertasViewWidget>
+    with AutomaticKeepAliveClientMixin<OfertasViewWidget> {
   final OfertaModel oferta;
   _OfertasViewWidgetState(this.oferta);
 
   double desconto = 0.0;
 
   var fCurrency = NumberFormat.currency(locale: "pt", symbol: "R\$");
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

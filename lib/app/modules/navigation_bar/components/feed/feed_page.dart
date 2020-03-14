@@ -36,7 +36,7 @@ class _FeedPageState extends State<FeedPage> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        if (!_feedController.isLoading) {
+        if (!_feedController.isLoading && _feedController.hasMore) {
           _feedController.fetchEmpresas();
         }
       }
@@ -46,7 +46,6 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<GlobalService>(context);
-    print("BUILDOU");
     return Scaffold(
       drawer: Drawer(
         child: ListView(

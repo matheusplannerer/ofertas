@@ -356,70 +356,77 @@ class _EmpresaPageState extends State<EmpresaPage> {
                             IconButton(
                               onPressed: () async {
                                 await showDialog(
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                      title: Text(
+                                        "CONTATO:",
+                                        style: TextStyle(
+                                            fontSize: 22,
+                                            fontFamily: "Bitter-Bold",
+                                            color: Colors.black,
+                                            letterSpacing: .6),
+                                      ),
+                                      content: Text(
+                                        "${controller.empresaModel.telefone.toString()}",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: "Domine-Regular",
+                                            color: Colors.black,
+                                            letterSpacing: .6),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text("MENSAGEM"),
+                                          onPressed: () async {
+                                            // await ligarEmpresa(
+                                            //     empresaSnap.data
+                                            //         .data['telefone']
+                                            //         .toString());
+                                            // global.navigatorKeyPerfil
+                                            //     .currentState
+                                            //     .pop();
+                                          },
                                         ),
-                                        title: Text(
-                                          "CONTATO:",
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              fontFamily: "Bitter-Bold",
-                                              color: Colors.black,
-                                              letterSpacing: .6),
+                                        FlatButton(
+                                          child: Text("LIGAR"),
+                                          onPressed: () async {
+                                            // await ligarEmpresa(
+                                            //     empresaSnap.data
+                                            //         .data['telefone']
+                                            //         .toString());
+                                            // global.navigatorKeyPerfil
+                                            //     .currentState
+                                            //     .pop();
+                                          },
                                         ),
-                                        content: Text(
-                                          "${controller.empresaModel.telefone.toString()}",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontFamily: "Domine-Regular",
-                                              color: Colors.black,
-                                              letterSpacing: .6),
+                                        FlatButton(
+                                          child: Text("OK"),
+                                          onPressed: () {
+                                            // global.navigatorKeyPerfil
+                                            //     .currentState
+                                            //     .pop();
+                                          },
                                         ),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            child: Text("MENSAGEM"),
-                                            onPressed: () async {
-                                              // await ligarEmpresa(
-                                              //     empresaSnap.data
-                                              //         .data['telefone']
-                                              //         .toString());
-                                              global.navigatorKeyPerfil
-                                                  .currentState
-                                                  .pop();
-                                            },
-                                          ),
-                                          FlatButton(
-                                            child: Text("LIGAR"),
-                                            onPressed: () async {
-                                              // await ligarEmpresa(
-                                              //     empresaSnap.data
-                                              //         .data['telefone']
-                                              //         .toString());
-                                              global.navigatorKeyPerfil
-                                                  .currentState
-                                                  .pop();
-                                            },
-                                          ),
-                                          FlatButton(
-                                            child: Text("OK"),
-                                            onPressed: () {
-                                              global.navigatorKeyPerfil
-                                                  .currentState
-                                                  .pop();
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                    context: context);
+                                      ],
+                                    );
+                                  },
+                                  context: context,
+                                );
                               },
                               icon: Icon(Icons.phone, size: 30),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                global.navigatorKeyPerfil.currentState
+                                    .pushNamed(
+                                  '/horarios',
+                                  arguments: controller.empresaModel.empresaID,
+                                );
+                              },
                               icon: Icon(Icons.timer, size: 30),
                             ),
                           ],

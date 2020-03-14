@@ -17,6 +17,7 @@ abstract class _FeedBase with Store {
 
   bool get isLoading => _buscando;
   bool get carregou => _carregou;
+  bool get hasMore => _hasMore;
 
   @observable
   ObservableList<PerfilEmpresaModel> empresas =
@@ -27,7 +28,6 @@ abstract class _FeedBase with Store {
     if (!_buscando) {
       _buscando = true;
       if (_lastDocument == null) {
-        print("LAST DOC");
         var doc = await Firestore.instance
             .collection('empresas')
             .limit(_queryLimit)
