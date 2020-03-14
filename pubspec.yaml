@@ -49,6 +49,7 @@ dependencies:
   email_validator: '^1.0.0'
   photo_view: ^0.9.2
   solid_bottom_sheet: ^0.1.9
+  flutter_spinkit: "^4.1.2"
 
 
 

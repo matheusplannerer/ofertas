@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
@@ -25,6 +26,12 @@ class AppWidget extends StatelessWidget {
                   userSnap.hasData) {
                 UserModel user = UserModel.fromJson(userSnap.data.data);
                 return LoadingProvider(
+                  loadingWidgetBuilder: (context, themeData) {
+                    return SpinKitDualRing(
+                      color: Colors.orange,
+                      size: 35,
+                    );
+                  },
                   child: MultiProvider(
                     providers: [
                       Provider<GlobalService>(
@@ -44,6 +51,12 @@ class AppWidget extends StatelessWidget {
                 );
               } else {
                 return LoadingProvider(
+                  loadingWidgetBuilder: (context, themeData) {
+                    return SpinKitDualRing(
+                      color: Colors.orange,
+                      size: 35,
+                    );
+                  },
                   child: MultiProvider(
                     providers: [
                       Provider<GlobalService>(
@@ -66,6 +79,12 @@ class AppWidget extends StatelessWidget {
           );
         } else if (fbUser.data == null) {
           return LoadingProvider(
+            loadingWidgetBuilder: (context, themeData) {
+              return SpinKitDualRing(
+                color: Colors.orange,
+                size: 35,
+              );
+            },
             child: MultiProvider(
               providers: [
                 Provider<GlobalService>(
