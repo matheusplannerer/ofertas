@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:load/load.dart';
 import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/components/horarios/horarios_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
+import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:provider/provider.dart';
 
 class HorariosPage extends StatefulWidget {
-  final String empresaID;
+  final PerfilEmpresaModel empresa;
   final bool isDono;
 
-  const HorariosPage({Key key, this.empresaID, this.isDono}) : super(key: key);
+  const HorariosPage({Key key, this.empresa, this.isDono}) : super(key: key);
 
   @override
   _HorariosPageState createState() => _HorariosPageState();
@@ -19,18 +21,23 @@ class _HorariosPageState extends State<HorariosPage> {
   bool isDono;
   bool editable = false;
 
-  HorariosController _controller = HorariosController();
+  PerfilEmpresaModel empresa;
+
+  HorariosController _controller;
 
   @override
   void initState() {
     // TODO: implement initState
+    empresa = widget.empresa;
+    _controller = HorariosController();
+    _controller.updateFields(widget.empresa);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<GlobalService>(context);
-    if (global.usuario.empresaPerfil == widget.empresaID) {
+    if (global.usuario.empresaPerfil == widget.empresa.empresaID) {
       print("isDono");
       isDono = true;
     } else {
@@ -70,12 +77,6 @@ class _HorariosPageState extends State<HorariosPage> {
                   columns: [
                     DataColumn(
                       label: Text(
-                        "",
-                        style: TextStyle(color: Colors.orange),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
                         "Dia",
                         style: TextStyle(color: Colors.orange),
                       ),
@@ -95,17 +96,13 @@ class _HorariosPageState extends State<HorariosPage> {
                   ],
                   rows: [
                     DataRow(
+                      selected: _controller.domingo,
+                      onSelectChanged: (value) {
+                        if (editable) {
+                          _controller.setDomingo(value);
+                        }
+                      },
                       cells: [
-                        DataCell(
-                          Checkbox(
-                            value: _controller.domingo,
-                            onChanged: (bool value) {
-                              if (editable) {
-                                _controller.setDomingo(value);
-                              }
-                            },
-                          ),
-                        ),
                         DataCell(
                           Text("Domingo"),
                         ),
@@ -114,10 +111,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             width: 70,
                             height: 40,
                             child: TextField(
+                              controller: _controller.domingoTextFieldInicio,
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
+                              inputFormatters: [_controller.maskDomIni],
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -128,10 +128,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.domingoTextFieldFim,
+                              inputFormatters: [_controller.maskDomFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -140,17 +143,13 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
+                      selected: _controller.segunda,
+                      onSelectChanged: (value) {
+                        if (editable) {
+                          _controller.setSegunda(value);
+                        }
+                      },
                       cells: [
-                        DataCell(
-                          Checkbox(
-                            value: _controller.segunda,
-                            onChanged: (bool value) {
-                              if (editable) {
-                                _controller.setSegunda(value);
-                              }
-                            },
-                          ),
-                        ),
                         DataCell(
                           Text("Segunda"),
                         ),
@@ -159,10 +158,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.segundaTextFieldInicio,
+                              inputFormatters: [_controller.maskSegIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -173,10 +175,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.segundaTextFieldFim,
+                              inputFormatters: [_controller.maskSegFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -185,27 +190,26 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
+                      selected: _controller.terca,
+                      onSelectChanged: (value) {
+                        if (editable) {
+                          _controller.setTerca(value);
+                        }
+                      },
                       cells: [
-                        DataCell(
-                          Checkbox(
-                            value: _controller.terca,
-                            onChanged: (bool value) {
-                              if (editable) {
-                                _controller.setTerca(value);
-                              }
-                            },
-                          ),
-                        ),
                         DataCell(Text("Terça")),
                         DataCell(
                           Container(
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.tercaTextFieldInicio,
+                              inputFormatters: [_controller.maskTerIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -216,10 +220,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.tercaTextFieldFim,
+                              inputFormatters: [_controller.maskTerFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -228,17 +235,13 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
+                      selected: _controller.quarta,
+                      onSelectChanged: (value) {
+                        if (editable) {
+                          _controller.setQuarta(value);
+                        }
+                      },
                       cells: [
-                        DataCell(
-                          Checkbox(
-                            value: _controller.quarta,
-                            onChanged: (bool value) {
-                              if (editable) {
-                                _controller.setQuarta(value);
-                              }
-                            },
-                          ),
-                        ),
                         DataCell(
                           Text("Quarta"),
                         ),
@@ -247,10 +250,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.quartaTextFieldInicio,
+                              inputFormatters: [_controller.maskQuaIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -261,10 +267,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.quartaTextFieldFim,
+                              inputFormatters: [_controller.maskQuaFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -273,17 +282,13 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
+                      selected: _controller.quinta,
+                      onSelectChanged: (value) {
+                        if (editable) {
+                          _controller.setQuinta(value);
+                        }
+                      },
                       cells: [
-                        DataCell(
-                          Checkbox(
-                            value: _controller.quinta,
-                            onChanged: (bool value) {
-                              if (editable) {
-                                _controller.setQuinta(value);
-                              }
-                            },
-                          ),
-                        ),
                         DataCell(
                           Text("Quinta"),
                         ),
@@ -292,10 +297,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.quintaTextFieldInicio,
+                              inputFormatters: [_controller.maskQuiIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -306,10 +314,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.quintaTextFieldFim,
+                              inputFormatters: [_controller.maskQuiFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -318,17 +329,13 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
+                      selected: _controller.sexta,
+                      onSelectChanged: (value) {
+                        if (editable) {
+                          _controller.setSexta(value);
+                        }
+                      },
                       cells: [
-                        DataCell(
-                          Checkbox(
-                            value: _controller.sexta,
-                            onChanged: (bool value) {
-                              if (editable) {
-                                _controller.setSexta(value);
-                              }
-                            },
-                          ),
-                        ),
                         DataCell(
                           Text("Sexta"),
                         ),
@@ -337,10 +344,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.sextaTextFieldInicio,
+                              inputFormatters: [_controller.maskSexIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -351,10 +361,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.sextaTextFieldFim,
+                              inputFormatters: [_controller.maskSexFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -363,17 +376,13 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
+                      selected: _controller.sabado,
+                      onSelectChanged: (value) {
+                        if (editable) {
+                          _controller.setSabado(value);
+                        }
+                      },
                       cells: [
-                        DataCell(
-                          Checkbox(
-                            value: _controller.sabado,
-                            onChanged: (bool value) {
-                              if (editable) {
-                                _controller.setSabado(value);
-                              }
-                            },
-                          ),
-                        ),
                         DataCell(
                           Text("Sábado"),
                         ),
@@ -382,10 +391,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.sabadoTextFieldInicio,
+                              inputFormatters: [_controller.maskSabIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -396,10 +408,13 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
+                              controller: _controller.sabadoTextFieldFim,
+                              inputFormatters: [_controller.maskSabFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
                               decoration: InputDecoration(
+                                hintText: '-',
                                 border: OutlineInputBorder(),
                               ),
                             ),
@@ -422,7 +437,13 @@ class _HorariosPageState extends State<HorariosPage> {
                 color: Colors.orange,
                 textColor: Colors.white,
                 child: Text("SALVAR"),
-                onPressed: () {},
+                onPressed: () async {
+                  showLoadingDialog(tapDismiss: false);
+                  empresa = await _controller.updateHorarios(widget.empresa);
+                  _controller.updateFields(empresa);
+                  hideLoadingDialog();
+                  global.actualNavigator.currentState.pop();
+                },
               ),
             )
         ],

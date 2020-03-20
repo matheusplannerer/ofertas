@@ -421,8 +421,6 @@ abstract class _CadastroEmpresaBase with Store {
     cadastro.donoEmpresa = fbUid;
     cadastro.email = _email;
     cadastro.estado = _estado;
-    cadastro.funcionamento = {};
-    cadastro.horaInicio = '';
     cadastro.logradouro = _logradouro;
     cadastro.numero = _numero;
     cadastro.site = _site;

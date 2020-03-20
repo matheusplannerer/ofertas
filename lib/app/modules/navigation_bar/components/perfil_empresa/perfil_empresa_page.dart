@@ -47,8 +47,11 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
         return StreamBuilder<DocumentSnapshot>(
           builder: (context, empresaSnap) {
             if (_empresaController.fetched(empresaSnap)) {
+              // print(empresaSnap.data.data);
               PerfilEmpresaModel empresaModel = PerfilEmpresaModel.fromJson(
                   empresaSnap.data.data, empresaSnap.data.documentID);
+              print(empresaSnap.data.data['horarios']);
+              print(empresaModel.site);
               return EmpresaPage(
                 empresaSnap: empresaSnap,
                 empresa: empresaModel,

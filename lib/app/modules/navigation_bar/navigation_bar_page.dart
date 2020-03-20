@@ -50,6 +50,10 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                   return OfertaDetailsPage(
                     oferta: settings.arguments,
                   );
+                case '/horarios':
+                  return HorariosPage(
+                    empresa: settings.arguments,
+                  );
               }
             },
           );
@@ -77,7 +81,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                   );
                 case '/horarios':
                   return HorariosPage(
-                    empresaID: settings.arguments,
+                    empresa: settings.arguments,
                   );
               }
             },

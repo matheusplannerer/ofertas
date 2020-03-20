@@ -36,6 +36,7 @@ class _EmpresaPageState extends State<EmpresaPage> {
     super.initState();
     empresaSnap = widget.empresaSnap;
     empresa = widget.empresa;
+    // print(empresa.horarios);
     controller = EmpresaController(empresaModel: empresa);
   }
 
@@ -421,10 +422,9 @@ class _EmpresaPageState extends State<EmpresaPage> {
                             ),
                             IconButton(
                               onPressed: () {
-                                global.navigatorKeyPerfil.currentState
-                                    .pushNamed(
+                                global.actualNavigator.currentState.pushNamed(
                                   '/horarios',
-                                  arguments: controller.empresaModel.empresaID,
+                                  arguments: controller.empresaModel,
                                 );
                               },
                               icon: Icon(Icons.timer, size: 30),

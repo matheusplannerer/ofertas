@@ -24,11 +24,11 @@ class CadastroEmpresaService extends Disposable {
         "categoria": model.categoria.toUpperCase(), //
         "empresaID": model.empresaID, //
         "nomeEmpresa": model.nomeEmpresa, //
-        "horaInicio": model.horaInicio, //
-        "horaTermino": model.horaTermino, //
         "logradouro": model.logradouro, //
         "numero": model.numero, //
         "site": model.site, //
+        'dias': model.dias,
+        'horarios': model.horarios,
         "bairro": model.bairro, //
         "cep": model.cep, //
         "complemento": model.complemento, //
@@ -36,11 +36,6 @@ class CadastroEmpresaService extends Disposable {
         "estado": model.estado, //
         "telefone": model.telefone, //
       }).timeout(Duration(seconds: 15));
-      await Firestore.instance
-          .collection('empresas')
-          .document(model.empresaID)
-          .updateData(model.funcionamento)
-          .timeout(Duration(seconds: 15)); //
 
       await Firestore.instance
           .collection('usuarios')
