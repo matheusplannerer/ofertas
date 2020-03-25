@@ -46,7 +46,6 @@ class _CadastroUsuarioPageState extends State<CadastroUsuarioPage> {
                   children: [
                     SizedBox(height: 30),
                     TextField(
-                      // inputFormatters: [],
                       decoration: InputDecoration(
                         errorText: _cadastroController.erroNome
                             ? _cadastroController.textErroValidateNome

@@ -116,7 +116,12 @@ class _OfertasViewWidgetState extends State<OfertasViewWidget>
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  if (oferta.desconto != null) Text("R\$${oferta.desconto}")
+                  if (oferta.desconto != null)
+                    Text(
+                      "R\$${oferta.desconto}",
+                      style: TextStyle(
+                          color: Colors.green, fontWeight: FontWeight.w600),
+                    )
                 ],
               )
             : Container(

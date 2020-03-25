@@ -10,7 +10,7 @@ class CadastroUsuarioController = _CadastroUsuarioBase
 
 abstract class _CadastroUsuarioBase with Store {
   var maskFormatterCelular = MaskTextInputFormatter(
-      mask: '###########', filter: {"#": RegExp(r'[0-9]')});
+      mask: '(##)#####-####', filter: {"#": RegExp(r'[0-9]')});
 
   UserModel usuario = UserModel();
 

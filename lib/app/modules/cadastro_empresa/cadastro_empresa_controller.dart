@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -354,12 +355,12 @@ abstract class _CadastroEmpresaBase with Store {
 
   @action
   void validateEmail() {
-    if (_email.length < 3 || !_email.contains("@")) {
-      erroEmail = true;
+    bool isValid = EmailValidator.validate(_email);
+    if (!isValid) {
       textErroEmail = 'Insira um e-mail válido';
+      erroEmail = true;
     } else {
       erroEmail = false;
-      textErroEmail = '';
     }
   }
 
