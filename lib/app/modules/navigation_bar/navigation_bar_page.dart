@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:ofertas/app/modules/navigation_bar/components/feed/feed_page.dart';
-import 'package:ofertas/app/modules/navigation_bar/components/oferta_details/oferta_details_page.dart';
-import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/components/horarios/horarios_page.dart';
+import 'package:ofertas/app/modules/feed/feed_module.dart';
 import 'package:ofertas/app/modules/navigation_bar/navigation_bar_controller.dart';
-import 'package:ofertas/app/modules/navigation_bar/components/perfil_empresa/perfil_empresa_page.dart';
+import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_module.dart';
 import 'package:ofertas/app/shared/global_service.dart';
+import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:provider/provider.dart';
 
 class NavigationBarPage extends StatefulWidget {
   final String title;
-  const NavigationBarPage({Key key, this.title = "NavigationBar"})
+  final UserModel usuario;
+  const NavigationBarPage({Key key, this.title = "NavigationBar", this.usuario})
       : super(key: key);
 
   @override
@@ -19,78 +19,21 @@ class NavigationBarPage extends StatefulWidget {
 }
 
 class _NavigationBarPageState extends State<NavigationBarPage> {
-  var _navController = NavigationBarController();
+  var controller = NavigationBarController();
+  UserModel usuario;
   List<Widget> pages;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    usuario = widget.usuario;
+    controller.setEmpresaLogada(usuario.empresaPerfil);
   }
 
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<GlobalService>(context);
-    pages = [
-      Navigator(
-        key: global.navigatorKeyFeed,
-        initialRoute: '/',
-        onGenerateRoute: (RouteSettings settings) {
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (BuildContext context) {
-              switch (settings.name) {
-                case '/':
-                  return FeedPage();
-                case '/perfilEmpresa':
-                  return PerfilEmpresaPage(
-                    empresaID: settings.arguments,
-                    // global: global,
-                  );
-                case '/oferta_details':
-                  return OfertaDetailsPage(
-                    oferta: settings.arguments,
-                  );
-                case '/horarios':
-                  return HorariosPage(
-                    empresa: settings.arguments,
-                  );
-              }
-            },
-          );
-        },
-      ),
-      Navigator(
-        key: global.navigatorKeyPerfil,
-        initialRoute: '/',
-        onGenerateRoute: (RouteSettings settings) {
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (BuildContext context) {
-              switch (settings.name) {
-                case '/':
-                  return PerfilEmpresaPage(
-                    empresaID: settings.arguments,
-                  );
-                case '/oferta_details':
-                  return OfertaDetailsPage(
-                    oferta: settings.arguments,
-                  );
-                case '/perfilEmpresa':
-                  return PerfilEmpresaPage(
-                    empresaID: settings.arguments,
-                    // global: global,
-                  );
-                case '/horarios':
-                  return HorariosPage(
-                    empresa: settings.arguments,
-                  );
-              }
-            },
-          );
-        },
-      ),
-    ];
 
     return Observer(
       builder: (_) {
@@ -103,17 +46,35 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                     BottomNavigationBarItem(
                         icon: Icon(Icons.person), title: Text("")),
                   ],
-                  currentIndex: _navController.navIndex,
+                  currentIndex: controller.navIndex,
                   selectedItemColor: Colors.orange,
                   onTap: (int index) {
-                    _navController.setNavIndex(index, global);
+                    controller.setNavIndex(index, global);
                   },
                 )
               : null,
           body: IndexedStack(
-            index: _navController.navIndex,
+            index: controller.navIndex,
             children: <Widget>[
-              ...pages,
+              RouterOutlet(
+                module: FeedModule(),
+                keepAlive: true,
+                initialRoute: '/',
+                navigatorKey: global.navigatorKeyFeed,
+              ),
+              if (controller.idEmpresaLogada != null)
+                RouterOutlet(
+                  module: PerfilEmpresaModule(),
+                  keepAlive: true,
+                  initialRoute: '/${controller.idEmpresaLogada}',
+                ),
+              if (controller.idEmpresaLogada == null)
+                RouterOutlet(
+                  module: PerfilEmpresaModule(),
+                  keepAlive: true,
+                  initialRoute: '/nova_empresa',
+                ),
+              // ...pages,
             ],
           ),
         );

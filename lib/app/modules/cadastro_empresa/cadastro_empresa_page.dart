@@ -36,8 +36,9 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
               letterSpacing: .6),
         ),
         centerTitle: true,
-        gradient:
-            LinearGradient(colors: [Colors.orange[900], Colors.orange[300]]),
+        gradient: LinearGradient(
+          colors: [Colors.orange[900], Colors.orange[300]],
+        ),
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 15),

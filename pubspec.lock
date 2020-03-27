@@ -292,7 +292,7 @@ packages:
       name: flutter_modular
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.1"
+    version: "1.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

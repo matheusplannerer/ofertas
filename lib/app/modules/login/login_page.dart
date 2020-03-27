@@ -10,6 +10,7 @@ import 'package:load/load.dart';
 import 'package:ofertas/app/modules/login/login_controller.dart';
 import 'package:ofertas/app/modules/login/services/login_service.dart';
 import 'package:ofertas/app/shared/global_service.dart';
+import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:provider/provider.dart';
 
@@ -307,6 +308,9 @@ class _LoginPageState extends State<LoginPage> {
                                         //Logou com sucesso
                                         UserModel usuario =
                                             await _service.getUser(fbUser);
+                                        PerfilEmpresaModel empresa =
+                                            await _service
+                                                .getEmpresaLogada(usuario);
                                         hideLoadingDialog();
                                         global.signIn(
                                             fire: fbUser, user: usuario);
@@ -314,7 +318,8 @@ class _LoginPageState extends State<LoginPage> {
 
                                         print("LOGADO");
                                         Modular.navigatorKey.currentState
-                                            .pushReplacementNamed('/');
+                                            .pushReplacementNamed('/nav',
+                                                arguments: usuario);
                                       } else if (fbUser is String) {
                                         hideLoadingDialog();
 
