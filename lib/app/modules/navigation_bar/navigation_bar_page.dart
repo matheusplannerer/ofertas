@@ -45,6 +45,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                 case '/perfilEmpresa':
                   return PerfilEmpresaPage(
                     empresaID: settings.arguments,
+                    // global: global,
                   );
                 case '/oferta_details':
                   return OfertaDetailsPage(
@@ -78,6 +79,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                 case '/perfilEmpresa':
                   return PerfilEmpresaPage(
                     empresaID: settings.arguments,
+                    // global: global,
                   );
                 case '/horarios':
                   return HorariosPage(

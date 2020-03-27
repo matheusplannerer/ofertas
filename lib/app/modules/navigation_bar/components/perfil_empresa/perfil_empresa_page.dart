@@ -16,10 +16,15 @@ import 'package:provider/provider.dart';
 class PerfilEmpresaPage extends StatefulWidget {
   final PerfilEmpresaModel empresa;
   final String empresaID;
+  final GlobalService global;
 
   final String title;
   const PerfilEmpresaPage(
-      {Key key, this.title = "PerfilEmpresa", this.empresa, this.empresaID})
+      {Key key,
+      this.title = "PerfilEmpresa",
+      this.empresa,
+      this.empresaID,
+      this.global})
       : super(key: key);
 
   @override
@@ -29,6 +34,8 @@ class PerfilEmpresaPage extends StatefulWidget {
 class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
   PerfilEmpresaModel empresa;
   String empresaID;
+  GlobalService global;
+  Stream<DocumentSnapshot> stream;
   var _empresaController = PerfilEmpresaController();
 
   @override
@@ -36,6 +43,9 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
     super.initState();
     empresa = widget.empresa;
     empresaID = widget.empresaID;
+    global = widget.global;
+    // print(global);
+    // stream =
   }
 
   @override
