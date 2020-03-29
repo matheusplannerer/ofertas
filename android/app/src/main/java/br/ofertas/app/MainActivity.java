@@ -1,4 +1,4 @@
-package com.example.ofertas;
+package br.ofertas.app;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

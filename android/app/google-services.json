@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:86861932628:android:69f2feef19bf6d9c7fa5c1",
+        "mobilesdk_app_id": "1:86861932628:android:eba33ff599daede77fa5c1",
         "android_client_info": {
-          "package_name": "com.example.ofertas"
+          "package_name": "br.ofertas.app"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "86861932628-ok7va6sfsehlm4nqoq3o3ffgvfen76to.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.ofertas.app",
+            "certificate_hash": "9f4f19c32d6ff80213f0fbb1c616675ac86be617"
+          }
+        },
         {
           "client_id": "86861932628-3iuals09vs4e4ftgu8r4blpusnr1vc78.apps.googleusercontent.com",
           "client_type": 3

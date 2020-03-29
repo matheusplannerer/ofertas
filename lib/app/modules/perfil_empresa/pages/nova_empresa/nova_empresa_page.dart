@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
+import 'package:ofertas/app/modules/perfil_empresa/pages/nova_empresa/nova_empresa_controller.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,8 @@ class NovaEmpresaPage extends StatefulWidget {
   _NovaEmpresaPageState createState() => _NovaEmpresaPageState();
 }
 
-class _NovaEmpresaPageState extends State<NovaEmpresaPage> {
+class _NovaEmpresaPageState
+    extends ModularState<NovaEmpresaPage, NovaEmpresaController> {
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<GlobalService>(context);
@@ -39,7 +41,7 @@ class _NovaEmpresaPageState extends State<NovaEmpresaPage> {
               height: 50,
               width: MediaQuery.of(context).size.width - 60,
               onTap: () {
-                if (global.fbUser.isEmailVerified)
+                if (controller.authController.fbUser.isEmailVerified)
                   Modular.navigatorKey.currentState
                       .pushNamed('/cadastroEmpresa');
                 else {
@@ -49,7 +51,8 @@ class _NovaEmpresaPageState extends State<NovaEmpresaPage> {
                   );
                   Alert(
                     style: alertStyle,
-                    context: global.actualNavigator.currentState.context,
+                    context: controller
+                        .routeController.actualNavigator.currentState.context,
                     title: "Confirmação de dados",
                     closeFunction: () {},
                     content: Text(
@@ -68,7 +71,8 @@ class _NovaEmpresaPageState extends State<NovaEmpresaPage> {
                         height: 60,
                         onPressed: () async {
                           showLoadingDialog(tapDismiss: false);
-                          await global.fbUser.sendEmailVerification();
+                          await controller.authController.fbUser
+                              .sendEmailVerification();
                           hideLoadingDialog();
                         },
                       ),

@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
+import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 
 part 'concluir_publicacao_controller.g.dart';
 
@@ -14,6 +16,8 @@ class ConcluirPublicacaoController = _ConcluirPublicacaoBase
 abstract class _ConcluirPublicacaoBase with Store {
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: 'gs://ofertas-8428f.appspot.com');
+
+  RouteController routeController = Modular.get();
 
   final String empresaID;
   _ConcluirPublicacaoBase({this.empresaID});

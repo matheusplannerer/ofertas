@@ -6,6 +6,7 @@ import 'package:ofertas/app/modules/navigation_bar/navigation_bar_controller.dar
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_module.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
+import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:provider/provider.dart';
 
 class NavigationBarPage extends StatefulWidget {
@@ -18,8 +19,8 @@ class NavigationBarPage extends StatefulWidget {
   _NavigationBarPageState createState() => _NavigationBarPageState();
 }
 
-class _NavigationBarPageState extends State<NavigationBarPage> {
-  var controller = NavigationBarController();
+class _NavigationBarPageState
+    extends ModularState<NavigationBarPage, NavigationBarController> {
   UserModel usuario;
   List<Widget> pages;
 
@@ -28,7 +29,8 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
     // TODO: implement initState
     super.initState();
     usuario = widget.usuario;
-    controller.setEmpresaLogada(usuario.empresaPerfil);
+    if (controller.authController.signedIn)
+      controller.setEmpresaLogada(controller.userModel.empresaPerfil);
   }
 
   @override
@@ -38,7 +40,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
     return Observer(
       builder: (_) {
         return Scaffold(
-          bottomNavigationBar: global.isLogged
+          bottomNavigationBar: controller.signedIn
               ? BottomNavigationBar(
                   items: [
                     BottomNavigationBarItem(
@@ -60,21 +62,16 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                 module: FeedModule(),
                 keepAlive: true,
                 initialRoute: '/',
-                navigatorKey: global.navigatorKeyFeed,
+                navigatorKey: controller.routeController.keyTab1,
               ),
-              if (controller.idEmpresaLogada != null)
-                RouterOutlet(
-                  module: PerfilEmpresaModule(),
-                  keepAlive: true,
-                  initialRoute: '/${controller.idEmpresaLogada}',
-                ),
-              if (controller.idEmpresaLogada == null)
-                RouterOutlet(
-                  module: PerfilEmpresaModule(),
-                  keepAlive: true,
-                  initialRoute: '/nova_empresa',
-                ),
-              // ...pages,
+              RouterOutlet(
+                module: PerfilEmpresaModule(),
+                keepAlive: true,
+                navigatorKey: controller.routeController.keyTab2,
+                initialRoute: controller.hasCompany
+                    ? '/empresa/${controller.userModel.empresaPerfil}'
+                    : '/nova_empresa',
+              ),
             ],
           ),
         );

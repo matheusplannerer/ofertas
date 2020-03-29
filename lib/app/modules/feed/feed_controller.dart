@@ -1,12 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
+import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
+import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 
 part 'feed_controller.g.dart';
 
 class FeedController = _FeedBase with _$FeedController;
 
 abstract class _FeedBase with Store {
+  RouteController routeController = Modular.get();
+  AuthController authController = Modular.get();
+
   bool _noEmpresas = false;
   bool _incrementou = false;
   bool _hasMore = true;

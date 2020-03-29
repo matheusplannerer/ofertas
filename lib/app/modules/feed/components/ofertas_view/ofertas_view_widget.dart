@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
+import 'package:ofertas/app/modules/feed/components/ofertas_view/ofertas_view_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,8 @@ class OfertasViewWidget extends StatefulWidget {
   }
 }
 
-class _OfertasViewWidgetState extends State<OfertasViewWidget>
+class _OfertasViewWidgetState
+    extends ModularState<OfertasViewWidget, OfertasViewController>
     with AutomaticKeepAliveClientMixin<OfertasViewWidget> {
   final OfertaModel oferta;
   _OfertasViewWidgetState(this.oferta);
@@ -51,7 +54,7 @@ class _OfertasViewWidgetState extends State<OfertasViewWidget>
     var global = Provider.of<GlobalService>(context);
     return GestureDetector(
       onTap: () {
-        global.navigatorKeyFeed.currentState
+        controller.routeController.tab1Nav
             .pushNamed('/oferta_details', arguments: oferta);
       },
       child: Card(

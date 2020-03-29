@@ -14,7 +14,7 @@ class PerfilEmpresaModule extends ChildModule {
   @override
   List<Router> get routers => [
         Router(
-          '/:id',
+          '/empresa/:id',
           child: (_, args) {
             return PerfilEmpresaPage(
               empresaID: args.params['id'],

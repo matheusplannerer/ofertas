@@ -8,10 +8,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/modules/login/login_controller.dart';
-import 'package:ofertas/app/modules/login/services/login_service.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
+import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -24,7 +24,7 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ModularState<LoginPage, LoginController> {
   Widget radioButton(bool isSelected) => Container(
         width: 16.0,
         height: 16.0,
@@ -51,12 +51,8 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
 
-  var _loginController = LoginController();
-
   @override
   Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
-
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance =
         ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
@@ -68,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
         leading: IconButton(
           icon: Icon(Icons.account_circle),
           onPressed: () {
-            Modular.navigatorKey.currentState.pushReplacementNamed('/');
+            Modular.to.pushReplacementNamed('/');
           },
         ),
         title: Text(
@@ -148,11 +144,11 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               TextField(
-                                onChanged: _loginController.setEmail,
+                                onChanged: controller.setEmail,
                                 decoration: InputDecoration(
                                   hintText: "E-mail",
-                                  errorText: _loginController.erroEmail
-                                      ? _loginController.textErroEmail
+                                  errorText: controller.erroEmail
+                                      ? controller.textErroEmail
                                       : null,
                                   hintStyle: TextStyle(
                                       color: Colors.grey, fontSize: 12.0),
@@ -169,12 +165,12 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               TextFormField(
-                                onChanged: _loginController.setSenha,
+                                onChanged: controller.setSenha,
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   hintText: "Senha",
-                                  errorText: _loginController.erroSenha
-                                      ? _loginController.textErroSenha
+                                  errorText: controller.erroSenha
+                                      ? controller.textErroSenha
                                       : null,
                                   hintStyle: TextStyle(
                                       color: Colors.grey, fontSize: 12.0),
@@ -183,9 +179,9 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(
                                 height: ScreenUtil.getInstance().setHeight(35),
                               ),
-                              if (_loginController.erroLogin)
+                              if (controller.erroLogin)
                                 Text(
-                                  _loginController.textErroLogin,
+                                  controller.textErroLogin,
                                   style: TextStyle(color: Colors.red),
                                 ),
                               Row(
@@ -225,9 +221,8 @@ class _LoginPageState extends State<LoginPage> {
                                                       await FirebaseAuth
                                                           .instance
                                                           .sendPasswordResetEmail(
-                                                              email:
-                                                                  _loginController
-                                                                      .email);
+                                                              email: controller
+                                                                  .email);
                                                       hideLoadingDialog();
                                                       Modular.navigatorKey
                                                           .currentState
@@ -295,40 +290,21 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () async {
-                                    _loginController.validateFields();
-                                    if (!_loginController.hasError) {
+                                    controller.validateFields();
+                                    if (!controller.hasError) {
                                       showLoadingDialog();
-                                      var _service = LoginService();
-                                      var fbUser = await _service.signIn(
-                                        email: _loginController.email,
-                                        senha: _loginController.senha,
-                                      );
+                                      AuthController _auth = Modular.get();
+                                      await controller.signInWithEmailAndPass();
 
-                                      if (fbUser is FirebaseUser) {
-                                        //Logou com sucesso
-                                        UserModel usuario =
-                                            await _service.getUser(fbUser);
-                                        PerfilEmpresaModel empresa =
-                                            await _service
-                                                .getEmpresaLogada(usuario);
+                                      if (_auth.status == AuthStatus.loggedIn) {
                                         hideLoadingDialog();
-                                        global.signIn(
-                                            fire: fbUser, user: usuario);
-                                        // _service.getEmpresaLogada(usuario);
-
-                                        print("LOGADO");
                                         Modular.navigatorKey.currentState
-                                            .pushReplacementNamed('/nav',
-                                                arguments: usuario);
-                                      } else if (fbUser is String) {
+                                            .pushReplacementNamed('/home');
+                                      } else if (_auth.status ==
+                                          AuthStatus.error) {
                                         hideLoadingDialog();
-
-                                        _loginController.setErroLogin(fbUser);
                                       } else {
                                         hideLoadingDialog();
-
-                                        _loginController.setErroLogin(
-                                            "Erro inesperado. Tente mais tarde");
                                       }
                                     }
                                   },

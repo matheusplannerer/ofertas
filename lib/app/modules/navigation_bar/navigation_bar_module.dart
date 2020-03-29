@@ -25,8 +25,8 @@ class NavigationBarModule extends ChildModule {
   @override
   List<Router> get routers => [
         Router('/', child: (_, args) => NavigationBarPage(usuario: args.data)),
-        Router('/feed', child: (_, args) => FeedPage()),
-        Router('/zoom_image', child: (_, args) => ZoomImage(args.data)),
+        // Router('/feed', child: (_, args) => FeedPage()),
+        // Router('/zoom_image', child: (_, args) => ZoomImage(args.data)),
         // Router('/feed', child: (_, args) => FeedPage()),
         // Router(
         //   '/perfilEmpresa/:id',

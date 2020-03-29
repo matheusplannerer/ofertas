@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:ofertas/app/modules/perfil_empresa/pages/oferta_details/oferta_details_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,8 @@ class OfertaDetailsPage extends StatefulWidget {
   _OfertaDetailsPageState createState() => _OfertaDetailsPageState();
 }
 
-class _OfertaDetailsPageState extends State<OfertaDetailsPage> {
+class _OfertaDetailsPageState
+    extends ModularState<OfertaDetailsPage, OfertaDetailsController> {
   CachedNetworkImage image;
   bool isCartaz = false; //Cartaz digital
   bool isFolheto = false; //Folheto
@@ -93,13 +95,16 @@ class _OfertaDetailsPageState extends State<OfertaDetailsPage> {
                       iconSize: 40,
                       color: Colors.orange,
                       onPressed: () async {
-                        if (global.navIndex == 0) {
-                          global.actualNavigator.currentState
+                        if (controller.routeController.navIndex == 0) {
+                          controller
+                              .routeController.actualNavigator.currentState
                               .pushNamedAndRemoveUntil(
                                   '/perfilEmpresa', ModalRoute.withName('/'),
                                   arguments: oferta.empresaDona);
                         } else {
-                          global.actualNavigator.currentState.pop();
+                          controller
+                              .routeController.actualNavigator.currentState
+                              .pop();
                         }
                       },
                     ),

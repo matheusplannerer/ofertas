@@ -167,7 +167,7 @@ class _ConcluirPublicacaoPageState extends State<ConcluirPublicacaoPage> {
                     hideLoadingDialog();
                     Modular.navigatorKey.currentState.pushNamedAndRemoveUntil(
                         '/', (Route<dynamic> route) => false);
-                    global.navigatorKeyFeed.currentState
+                    controller.routeController.tab1Nav
                         .pushNamedAndRemoveUntil('/', (_) => false);
                     // Modular.navigatorKey.currentState.pushNamed('');
                   },

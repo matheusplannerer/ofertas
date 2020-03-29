@@ -7,9 +7,9 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:ofertas/app/modules/cadastro_usuario/cadastro_usuario_controller.dart';
-import 'package:ofertas/app/modules/cadastro_usuario/services/auth_service.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
+import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:provider/provider.dart';
 
 class CadastroUsuarioPage extends StatefulWidget {
@@ -21,9 +21,8 @@ class CadastroUsuarioPage extends StatefulWidget {
   _CadastroUsuarioPageState createState() => _CadastroUsuarioPageState();
 }
 
-class _CadastroUsuarioPageState extends State<CadastroUsuarioPage> {
-  var _cadastroController = CadastroUsuarioController();
-
+class _CadastroUsuarioPageState
+    extends ModularState<CadastroUsuarioPage, CadastroUsuarioController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +46,8 @@ class _CadastroUsuarioPageState extends State<CadastroUsuarioPage> {
                     SizedBox(height: 30),
                     TextField(
                       decoration: InputDecoration(
-                        errorText: _cadastroController.erroNome
-                            ? _cadastroController.textErroValidateNome
+                        errorText: controller.signUpController.erroNome
+                            ? controller.signUpController.textErroValidateNome
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
@@ -59,18 +58,17 @@ class _CadastroUsuarioPageState extends State<CadastroUsuarioPage> {
                           borderSide: BorderSide(),
                         ),
                       ),
-                      onChanged: _cadastroController.setNome,
+                      onChanged: controller.setNome,
                     ),
                     SizedBox(height: 15),
                     TextField(
-                      inputFormatters: [
-                        _cadastroController.maskFormatterCelular
-                      ],
-                      onChanged: _cadastroController.setContato,
+                      inputFormatters: [controller.maskFormatterCelular],
+                      onChanged: controller.setContato,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        errorText: _cadastroController.erroContato
-                            ? _cadastroController.textErroValidateContato
+                        errorText: controller.signUpController.erroContato
+                            ? controller
+                                .signUpController.textErroValidateContato
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
@@ -85,10 +83,10 @@ class _CadastroUsuarioPageState extends State<CadastroUsuarioPage> {
                     ),
                     SizedBox(height: 15),
                     TextField(
-                      onChanged: _cadastroController.setEmail,
+                      onChanged: controller.setEmail,
                       decoration: InputDecoration(
-                        errorText: _cadastroController.erroEmail
-                            ? _cadastroController.textErroValidateEmail
+                        errorText: controller.signUpController.erroEmail
+                            ? controller.signUpController.textErroValidateEmail
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
@@ -103,10 +101,10 @@ class _CadastroUsuarioPageState extends State<CadastroUsuarioPage> {
                     SizedBox(height: 15),
                     TextField(
                       obscureText: true,
-                      onChanged: _cadastroController.setSenha,
+                      onChanged: controller.setSenha,
                       decoration: InputDecoration(
-                        errorText: _cadastroController.erroSenha
-                            ? _cadastroController.textErroValidateSenha
+                        errorText: controller.signUpController.erroSenha
+                            ? controller.signUpController.textErroValidateSenha
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
@@ -121,13 +119,13 @@ class _CadastroUsuarioPageState extends State<CadastroUsuarioPage> {
                     ),
                     SizedBox(height: 15),
                     TextField(
-                      onChanged: _cadastroController.setConfirmaSenha,
+                      onChanged: controller.setConfirmaSenha,
                       decoration: InputDecoration(
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
                         labelText: 'Confirme sua senha',
-                        errorText: _cadastroController.erroSenha
-                            ? _cadastroController.textErroValidateSenha
+                        errorText: controller.signUpController.erroSenha
+                            ? controller.signUpController.textErroValidateSenha
                             : null,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -141,31 +139,18 @@ class _CadastroUsuarioPageState extends State<CadastroUsuarioPage> {
                       onTap: () async {
                         // antes era onPressed, não sei se muda algo
 
-                        _cadastroController.validateFields();
+                        controller.validateFields();
 
-                        if (_cadastroController.hasError) return;
-
-                        _cadastroController.atualizaContato();
+                        if (controller.hasError) return;
 
                         showLoadingDialog(tapDismiss: false);
-                        var _service = AuthService();
-                        var fbUser =
-                            await _service.signUp(_cadastroController.usuario);
+                        var fbUser = await controller.signUpController
+                            .createUserWithEmailAndPass();
+                        await controller.authController.setFbUser(fbUser);
                         hideLoadingDialog();
                         //Deu bom
-                        var global = Provider.of<GlobalService>(context);
                         if (fbUser is FirebaseUser) {
-                          global.signIn(
-                              fire: fbUser, user: _cadastroController.usuario);
-                          fbUser.sendEmailVerification();
-                          Modular.navigatorKey.currentState
-                              .pushReplacementNamed('/');
-                          return;
-                        }
-
-                        //Gera um erro
-                        if (fbUser is String) {
-                          _cadastroController.setErroCadastro(fbUser);
+                          Modular.to.pushReplacementNamed('/home');
                           return;
                         }
                       },
@@ -176,10 +161,11 @@ class _CadastroUsuarioPageState extends State<CadastroUsuarioPage> {
                     ),
                     Observer(
                       builder: (_) {
-                        if (_cadastroController.erroCadastro != null)
+                        if (controller.signUpController.erroCadastro != null)
                           return Container(
                             margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                            child: Text(_cadastroController.erroCadastro),
+                            child:
+                                Text(controller.signUpController.erroCadastro),
                           );
 
                         return Container();

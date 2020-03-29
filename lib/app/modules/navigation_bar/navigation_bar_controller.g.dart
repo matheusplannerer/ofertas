@@ -9,12 +9,27 @@ part of 'navigation_bar_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$NavigationBarController on _NavigationBarBase, Store {
-  Computed<String> _$idEmpresaLogadaComputed;
+  Computed<bool> _$signedInComputed;
 
   @override
-  String get idEmpresaLogada => (_$idEmpresaLogadaComputed ??=
-          Computed<String>(() => super.idEmpresaLogada))
-      .value;
+  bool get signedIn =>
+      (_$signedInComputed ??= Computed<bool>(() => super.signedIn)).value;
+  Computed<bool> _$hasCompanyComputed;
+
+  @override
+  bool get hasCompany =>
+      (_$hasCompanyComputed ??= Computed<bool>(() => super.hasCompany)).value;
+  Computed<UserModel> _$userModelComputed;
+
+  @override
+  UserModel get userModel =>
+      (_$userModelComputed ??= Computed<UserModel>(() => super.userModel))
+          .value;
+  Computed<FirebaseUser> _$fbUserComputed;
+
+  @override
+  FirebaseUser get fbUser =>
+      (_$fbUserComputed ??= Computed<FirebaseUser>(() => super.fbUser)).value;
 
   final _$_idEmpLogadaAtom = Atom(name: '_NavigationBarBase._idEmpLogada');
 
@@ -66,7 +81,7 @@ mixin _$NavigationBarController on _NavigationBarBase, Store {
   @override
   String toString() {
     final string =
-        'navIndex: ${navIndex.toString()},idEmpresaLogada: ${idEmpresaLogada.toString()}';
+        'navIndex: ${navIndex.toString()},signedIn: ${signedIn.toString()},hasCompany: ${hasCompany.toString()},userModel: ${userModel.toString()},fbUser: ${fbUser.toString()}';
     return '{$string}';
   }
 }

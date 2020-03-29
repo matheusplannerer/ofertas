@@ -11,6 +11,7 @@ import 'package:ofertas/app/shared/components/gradient_appbar/gradient_appbar_wi
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
+import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 import 'package:provider/provider.dart';
 
 class FeedPage extends StatefulWidget {
@@ -23,21 +24,19 @@ class FeedPage extends StatefulWidget {
   _FeedPageState createState() => _FeedPageState();
 }
 
-class _FeedPageState extends State<FeedPage> {
+class _FeedPageState extends ModularState<FeedPage, FeedController> {
   ScrollController _scrollController = ScrollController();
-
-  var _feedController = FeedController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _feedController.fetchEmpresas();
+    controller.fetchEmpresas();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        if (!_feedController.isLoading && _feedController.hasMore) {
-          _feedController.fetchEmpresas();
+        if (!controller.isLoading && controller.hasMore) {
+          controller.fetchEmpresas();
         }
       }
     });
@@ -50,7 +49,7 @@ class _FeedPageState extends State<FeedPage> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            if (!global.isLogged)
+            if (!controller.authController.signedIn)
               ListTile(
                 title: Row(
                   children: <Widget>[
@@ -69,9 +68,8 @@ class _FeedPageState extends State<FeedPage> {
                   ],
                 ),
                 onTap: () {
-                  global.navigatorKeyFeed.currentState.pop();
-                  Modular.navigatorKey.currentState
-                      .pushReplacementNamed('/login');
+                  controller.routeController.tab1Nav.pop();
+                  Modular.to.pushReplacementNamed('/login');
                 },
               ),
             Divider(),
@@ -94,7 +92,7 @@ class _FeedPageState extends State<FeedPage> {
                 ],
               ),
               onTap: () {
-                global.navigatorKeyFeed.currentState.pop();
+                controller.routeController.tab1Nav.pop();
 
                 // Navigator.push(context,
                 //     MaterialPageRoute(builder: (context) => EntreEmContato()));
@@ -173,7 +171,7 @@ class _FeedPageState extends State<FeedPage> {
             ),
             Divider(),
             // if (global.fbUser != null)
-            if (global.isLogged)
+            if (controller.authController.signedIn)
               ListTile(
                 trailing: Icon(Icons.arrow_back, color: Colors.orange.shade400),
                 title: Text(
@@ -185,13 +183,9 @@ class _FeedPageState extends State<FeedPage> {
                       letterSpacing: .3),
                 ),
                 onTap: () async {
-                  global.navigatorKeyFeed.currentState.pop();
-                  showLoadingDialog();
-                  await Future.delayed(Duration(milliseconds: 500));
-                  await FirebaseAuth.instance.signOut();
-                  global.signOut();
-                  hideLoadingDialog();
-                  Modular.to.pushReplacementNamed('/');
+                  controller.routeController.tab1Nav.pop();
+                  await controller.authController.signOut();
+                  Modular.to.pushReplacementNamed('/login');
                 },
               ),
           ],
@@ -209,11 +203,11 @@ class _FeedPageState extends State<FeedPage> {
       body: Observer(
         builder: (_) {
           return ListView.builder(
-            itemCount: _feedController.empresas.length,
+            itemCount: controller.empresas.length,
             controller: _scrollController,
             itemBuilder: (context, index) {
-              if (_feedController.empresas.length == 0) {
-                if (!_feedController.carregou) {
+              if (controller.empresas.length == 0) {
+                if (!controller.carregou) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
@@ -223,7 +217,7 @@ class _FeedPageState extends State<FeedPage> {
                   );
                 }
               } else {
-                return EmpresasViewWidget(_feedController.empresas[index]);
+                return EmpresasViewWidget(controller.empresas[index]);
               }
             },
           );

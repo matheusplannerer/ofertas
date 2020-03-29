@@ -5,11 +5,10 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/modules/cadastro_empresa/cadastro_empresa_controller.dart';
-import 'package:ofertas/app/modules/cadastro_empresa/services/cadastro_empresa_service.dart';
-import 'package:ofertas/app/modules/cadastro_empresa/services/via_cep_service.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class CadastroEmpresaPage extends StatefulWidget {
   final String title;
@@ -20,9 +19,8 @@ class CadastroEmpresaPage extends StatefulWidget {
   _CadastroEmpresaPageState createState() => _CadastroEmpresaPageState();
 }
 
-class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
-  var _cadastroController = CadastroEmpresaController();
-
+class _CadastroEmpresaPageState
+    extends ModularState<CadastroEmpresaPage, CadastroEmpresaController> {
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<GlobalService>(context);
@@ -52,10 +50,11 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
           Observer(
             builder: (_) {
               return TextField(
-                controller: _cadastroController.nomeUnidadeController,
+                controller:
+                    controller.signUpCompanyController.nomeUnidadeController,
                 decoration: InputDecoration(
-                  errorText: _cadastroController.erroNomeUnidade
-                      ? _cadastroController.textErroNomeUnidade
+                  errorText: controller.signUpCompanyController.erroNomeUnidade
+                      ? controller.signUpCompanyController.textErroNomeUnidade
                       : null,
                   labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
                   labelText: 'Nome da Unidade',
@@ -79,15 +78,15 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
             alignment: Alignment.center,
             child: DropdownButton<String>(
               hint: Text("CATEGORIA"),
-              onChanged: _cadastroController.setTipo,
-              value: _cadastroController.tipo,
+              onChanged: controller.setTipo,
+              value: controller.signUpCompanyController.tipo,
               icon: Icon(Icons.list),
               items: [
-                ..._cadastroController.categoriasAux,
+                ...controller.signUpCompanyController.categoriasAux,
               ],
             ),
           ),
-          if (_cadastroController.erroTipo)
+          if (controller.signUpCompanyController.erroTipo)
             Text(
               "Escolha uma categoria",
               style: TextStyle(color: Colors.red),
@@ -104,12 +103,13 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
                 child: Observer(
                   builder: (_) {
                     return TextField(
-                      controller: _cadastroController.cepController,
-                      onChanged: _cadastroController.setCep,
-                      inputFormatters: [_cadastroController.maskCep],
+                      controller:
+                          controller.signUpCompanyController.cepController,
+                      onChanged: controller.setCep,
+                      inputFormatters: [controller.maskCep],
                       decoration: InputDecoration(
-                        errorText: _cadastroController.erroCep
-                            ? _cadastroController.textErroCep
+                        errorText: controller.signUpCompanyController.erroCep
+                            ? controller.signUpCompanyController.textErroCep
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.grey[700], fontSize: 15),
@@ -129,22 +129,11 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
                 child: IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () async {
-                    _cadastroController.validateCep();
-                    if (_cadastroController.erroCep) return;
-                    final aux = _cadastroController.cep;
+                    controller.signUpCompanyController.validateCep();
+                    if (controller.signUpCompanyController.erroCep) return;
                     showLoadingDialog();
-                    var data = await ViaCepService().fetchCep(cep: aux);
+                    await controller.signUpCompanyController.fetchCep();
                     hideLoadingDialog();
-                    _cadastroController.setLogradouro(data.logradouro);
-                    _cadastroController.logradouroController =
-                        TextEditingController(
-                            text: data.logradouro.toUpperCase());
-                    _cadastroController.setBairro(data.bairro);
-                    _cadastroController.bairroController =
-                        TextEditingController(text: data.bairro.toUpperCase());
-                    _cadastroController.setEstado(data.uf);
-                    _cadastroController.estadoController =
-                        TextEditingController(text: data.uf.toUpperCase());
                   },
                 ),
               )
@@ -156,10 +145,11 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
           Observer(
             builder: (_) {
               return TextField(
-                controller: _cadastroController.logradouroController,
+                controller:
+                    controller.signUpCompanyController.logradouroController,
                 decoration: InputDecoration(
-                  errorText: _cadastroController.erroLogradouro
-                      ? _cadastroController.textErroLogradouro
+                  errorText: controller.signUpCompanyController.erroLogradouro
+                      ? controller.signUpCompanyController.textErroLogradouro
                       : null,
                   labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
                   fillColor: Colors.white,
@@ -183,10 +173,11 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
                 child: Observer(
                   builder: (_) {
                     return TextField(
-                      controller: _cadastroController.bairroController,
+                      controller:
+                          controller.signUpCompanyController.bairroController,
                       decoration: InputDecoration(
-                        errorText: _cadastroController.erroBairro
-                            ? _cadastroController.textErroBairro
+                        errorText: controller.signUpCompanyController.erroBairro
+                            ? controller.signUpCompanyController.textErroBairro
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.grey[700], fontSize: 15),
@@ -207,10 +198,12 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
                 child: Observer(
                   builder: (_) {
                     return TextField(
-                      controller: _cadastroController.estadoController,
+                      controller:
+                          controller.signUpCompanyController.estadoController,
                       decoration: InputDecoration(
-                        errorText:
-                            _cadastroController.erroEstado ? "Ex: 'SP'" : null,
+                        errorText: controller.signUpCompanyController.erroEstado
+                            ? "Ex: 'SP'"
+                            : null,
                         labelStyle:
                             TextStyle(color: Colors.grey[700], fontSize: 15),
                         fillColor: Colors.white,
@@ -236,11 +229,12 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
                 child: Observer(
                   builder: (_) {
                     return TextField(
-                      controller: _cadastroController.numeroController,
+                      controller:
+                          controller.signUpCompanyController.numeroController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        errorText: _cadastroController.erroNumero
-                            ? _cadastroController.textErroNumero
+                        errorText: controller.signUpCompanyController.erroNumero
+                            ? controller.signUpCompanyController.textErroNumero
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.grey[700], fontSize: 15),
@@ -260,12 +254,15 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
                 child: Observer(
                   builder: (_) {
                     return TextField(
-                      controller: _cadastroController.complementoController,
+                      controller: controller
+                          .signUpCompanyController.complementoController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        errorText: _cadastroController.erroComplemento
-                            ? _cadastroController.textErroComplemento
-                            : null,
+                        errorText:
+                            controller.signUpCompanyController.erroComplemento
+                                ? controller
+                                    .signUpCompanyController.textErroComplemento
+                                : null,
                         labelStyle:
                             TextStyle(color: Colors.grey[700], fontSize: 15),
                         fillColor: Colors.white,
@@ -288,10 +285,11 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
             builder: (_) {
               return TextField(
                 keyboardType: TextInputType.number,
-                controller: _cadastroController.telefoneController,
+                controller:
+                    controller.signUpCompanyController.telefoneController,
                 decoration: InputDecoration(
-                  errorText: _cadastroController.erroTelefone
-                      ? _cadastroController.textErroTelefone
+                  errorText: controller.signUpCompanyController.erroTelefone
+                      ? controller.signUpCompanyController.textErroTelefone
                       : null,
                   labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
                   fillColor: Colors.white,
@@ -309,11 +307,11 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
           Observer(
             builder: (_) {
               return TextField(
-                controller: _cadastroController.emailController,
+                controller: controller.signUpCompanyController.emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  errorText: _cadastroController.erroEmail
-                      ? _cadastroController.textErroEmail
+                  errorText: controller.signUpCompanyController.erroEmail
+                      ? controller.signUpCompanyController.textErroEmail
                       : null,
                   labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
                   fillColor: Colors.white,
@@ -331,11 +329,11 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
           Observer(
             builder: (_) {
               return TextField(
-                controller: _cadastroController.siteController,
+                controller: controller.signUpCompanyController.siteController,
                 keyboardType: TextInputType.url,
                 decoration: InputDecoration(
-                  errorText: _cadastroController.erroSite
-                      ? _cadastroController.textErroSite
+                  errorText: controller.signUpCompanyController.erroSite
+                      ? controller.signUpCompanyController.textErroSite
                       : null,
                   labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
                   fillColor: Colors.white,
@@ -360,22 +358,40 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
                   .collection('empresas')
                   .document()
                   .documentID;
-              _cadastroController.validateAll(global.fbUser.uid, empresaID);
-              if (_cadastroController.hasError) return;
+              controller.validateAll(
+                  controller.authController.fbUser.uid, empresaID);
+              if (controller.signUpCompanyController.hasError) return;
 
               showLoadingDialog(tapDismiss: false);
-              var _service = CadastroEmpresaService();
-              var cadastrou = await _service.cadastrarEmpresa(
-                  _cadastroController.cadastro, global.fbUser);
+              var cadastrou =
+                  await controller.signUpCompanyController.signUpCompany();
               if (!cadastrou) {
                 hideLoadingDialog();
-                await _cadastroController.errorDialog(context);
-                Modular.navigatorKey.currentState
-                    .popUntil((Route<dynamic> route) => route.isFirst);
+                Alert(
+                  context: context,
+                  title: "ERRO",
+                  buttons: [
+                    DialogButton(
+                      child: Text(
+                        "VOLTAR",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                      height: 60,
+                      color: Colors.orange,
+                    )
+                  ],
+                  type: AlertType.error,
+                ).show();
+                Modular.to.popUntil((Route<dynamic> route) => route.isFirst);
                 return;
               }
+
+              await controller.authController.getUserInfos();
               hideLoadingDialog();
-              global.setEmpresaLogada(_cadastroController.cadastro);
               Modular.navigatorKey.currentState
                   .popUntil((Route<dynamic> route) => route.isFirst);
             },

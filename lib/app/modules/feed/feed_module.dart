@@ -14,8 +14,8 @@ class FeedModule extends ChildModule {
   @override
   List<Router> get routers => [
         Router('/', child: (_, args) => FeedPage()),
-        Router('/empresa',
-            child: (_, args) => PerfilEmpresaPage(empresaID: args.data)),
+        // Router('/empresa',
+        //     child: (_, args) => PerfilEmpresaPage(empresaID: args.data)),
         Router('/cadastroUsuario', module: CadastroUsuarioModule()),
       ];
 

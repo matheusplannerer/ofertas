@@ -48,23 +48,23 @@ class PerfilEmpresaModel {
       };
   }
 
-  String foto;
+  String foto; //
   String telefone; //
   String nomeEmpresa; //
-  String cep;
-  String logradouro;
-  String numero;
-  String complemento;
-  String bairro;
-  String senha; //
+  String cep; //
+  String logradouro; //
+  String numero; //
+  String complemento; //
+  String bairro; //
+  String senha;
   String estado; //
   String categoria; //
   String site; //
-  double lat;
-  double lon;
+  double lat; //
+  double lon; //
   String email; //
-  Map<dynamic, dynamic> dias;
-  Map<dynamic, dynamic> horarios;
+  Map<dynamic, dynamic> dias; //
+  Map<dynamic, dynamic> horarios; //
   String empresaID; //
   String donoEmpresa;
 
@@ -101,9 +101,9 @@ class PerfilEmpresaModel {
         'cep': cep,
         'email': email,
         'donoEmpresa': donoEmpresa,
-        'funcionamento': dias,
-        'lat': lat,
-        'lon': lon,
+        'dias': dias,
+        'latitude': lat,
+        'longitude': lon,
         'nomeEmpresa': nomeEmpresa,
         'numero': numero,
         'site': site,

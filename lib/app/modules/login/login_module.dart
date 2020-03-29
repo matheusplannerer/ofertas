@@ -1,12 +1,12 @@
-import 'package:ofertas/app/modules/login/services/login_service.dart';
 import 'package:ofertas/app/modules/login/login_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ofertas/app/modules/login/login_page.dart';
+import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
+import 'package:ofertas/app/shared/repositories/auth/repositories/auth_repository_interface.dart';
 
 class LoginModule extends ChildModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => LoginService()),
         Bind((i) => LoginController()),
       ];
 

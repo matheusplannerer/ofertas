@@ -14,6 +14,39 @@ mixin _$LoginController on _LoginBase, Store {
   @override
   bool get hasError =>
       (_$hasErrorComputed ??= Computed<bool>(() => super.hasError)).value;
+  Computed<bool> _$erroSenhaComputed;
+
+  @override
+  bool get erroSenha =>
+      (_$erroSenhaComputed ??= Computed<bool>(() => super.erroSenha)).value;
+  Computed<bool> _$erroEmailComputed;
+
+  @override
+  bool get erroEmail =>
+      (_$erroEmailComputed ??= Computed<bool>(() => super.erroEmail)).value;
+  Computed<bool> _$erroLoginComputed;
+
+  @override
+  bool get erroLogin =>
+      (_$erroLoginComputed ??= Computed<bool>(() => super.erroLogin)).value;
+  Computed<String> _$textErroSenhaComputed;
+
+  @override
+  String get textErroSenha =>
+      (_$textErroSenhaComputed ??= Computed<String>(() => super.textErroSenha))
+          .value;
+  Computed<String> _$textErroEmailComputed;
+
+  @override
+  String get textErroEmail =>
+      (_$textErroEmailComputed ??= Computed<String>(() => super.textErroEmail))
+          .value;
+  Computed<String> _$textErroLoginComputed;
+
+  @override
+  String get textErroLogin =>
+      (_$textErroLoginComputed ??= Computed<String>(() => super.textErroLogin))
+          .value;
 
   final _$_emailAtom = Atom(name: '_LoginBase._email');
 
@@ -49,106 +82,13 @@ mixin _$LoginController on _LoginBase, Store {
     }, _$_senhaAtom, name: '${_$_senhaAtom.name}_set');
   }
 
-  final _$erroEmailAtom = Atom(name: '_LoginBase.erroEmail');
+  final _$signInWithEmailAndPassAsyncAction =
+      AsyncAction('signInWithEmailAndPass');
 
   @override
-  bool get erroEmail {
-    _$erroEmailAtom.context.enforceReadPolicy(_$erroEmailAtom);
-    _$erroEmailAtom.reportObserved();
-    return super.erroEmail;
-  }
-
-  @override
-  set erroEmail(bool value) {
-    _$erroEmailAtom.context.conditionallyRunInAction(() {
-      super.erroEmail = value;
-      _$erroEmailAtom.reportChanged();
-    }, _$erroEmailAtom, name: '${_$erroEmailAtom.name}_set');
-  }
-
-  final _$erroSenhaAtom = Atom(name: '_LoginBase.erroSenha');
-
-  @override
-  bool get erroSenha {
-    _$erroSenhaAtom.context.enforceReadPolicy(_$erroSenhaAtom);
-    _$erroSenhaAtom.reportObserved();
-    return super.erroSenha;
-  }
-
-  @override
-  set erroSenha(bool value) {
-    _$erroSenhaAtom.context.conditionallyRunInAction(() {
-      super.erroSenha = value;
-      _$erroSenhaAtom.reportChanged();
-    }, _$erroSenhaAtom, name: '${_$erroSenhaAtom.name}_set');
-  }
-
-  final _$erroLoginAtom = Atom(name: '_LoginBase.erroLogin');
-
-  @override
-  bool get erroLogin {
-    _$erroLoginAtom.context.enforceReadPolicy(_$erroLoginAtom);
-    _$erroLoginAtom.reportObserved();
-    return super.erroLogin;
-  }
-
-  @override
-  set erroLogin(bool value) {
-    _$erroLoginAtom.context.conditionallyRunInAction(() {
-      super.erroLogin = value;
-      _$erroLoginAtom.reportChanged();
-    }, _$erroLoginAtom, name: '${_$erroLoginAtom.name}_set');
-  }
-
-  final _$textErroEmailAtom = Atom(name: '_LoginBase.textErroEmail');
-
-  @override
-  String get textErroEmail {
-    _$textErroEmailAtom.context.enforceReadPolicy(_$textErroEmailAtom);
-    _$textErroEmailAtom.reportObserved();
-    return super.textErroEmail;
-  }
-
-  @override
-  set textErroEmail(String value) {
-    _$textErroEmailAtom.context.conditionallyRunInAction(() {
-      super.textErroEmail = value;
-      _$textErroEmailAtom.reportChanged();
-    }, _$textErroEmailAtom, name: '${_$textErroEmailAtom.name}_set');
-  }
-
-  final _$textErroSenhaAtom = Atom(name: '_LoginBase.textErroSenha');
-
-  @override
-  String get textErroSenha {
-    _$textErroSenhaAtom.context.enforceReadPolicy(_$textErroSenhaAtom);
-    _$textErroSenhaAtom.reportObserved();
-    return super.textErroSenha;
-  }
-
-  @override
-  set textErroSenha(String value) {
-    _$textErroSenhaAtom.context.conditionallyRunInAction(() {
-      super.textErroSenha = value;
-      _$textErroSenhaAtom.reportChanged();
-    }, _$textErroSenhaAtom, name: '${_$textErroSenhaAtom.name}_set');
-  }
-
-  final _$textErroLoginAtom = Atom(name: '_LoginBase.textErroLogin');
-
-  @override
-  String get textErroLogin {
-    _$textErroLoginAtom.context.enforceReadPolicy(_$textErroLoginAtom);
-    _$textErroLoginAtom.reportObserved();
-    return super.textErroLogin;
-  }
-
-  @override
-  set textErroLogin(String value) {
-    _$textErroLoginAtom.context.conditionallyRunInAction(() {
-      super.textErroLogin = value;
-      _$textErroLoginAtom.reportChanged();
-    }, _$textErroLoginAtom, name: '${_$textErroLoginAtom.name}_set');
+  Future<dynamic> signInWithEmailAndPass() {
+    return _$signInWithEmailAndPassAsyncAction
+        .run(() => super.signInWithEmailAndPass());
   }
 
   final _$_LoginBaseActionController = ActionController(name: '_LoginBase');
@@ -174,36 +114,6 @@ mixin _$LoginController on _LoginBase, Store {
   }
 
   @override
-  void setErroLogin(String value) {
-    final _$actionInfo = _$_LoginBaseActionController.startAction();
-    try {
-      return super.setErroLogin(value);
-    } finally {
-      _$_LoginBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void _validateEmail() {
-    final _$actionInfo = _$_LoginBaseActionController.startAction();
-    try {
-      return super._validateEmail();
-    } finally {
-      _$_LoginBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void _validateSenha() {
-    final _$actionInfo = _$_LoginBaseActionController.startAction();
-    try {
-      return super._validateSenha();
-    } finally {
-      _$_LoginBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void validateFields() {
     final _$actionInfo = _$_LoginBaseActionController.startAction();
     try {
@@ -216,7 +126,7 @@ mixin _$LoginController on _LoginBase, Store {
   @override
   String toString() {
     final string =
-        'erroEmail: ${erroEmail.toString()},erroSenha: ${erroSenha.toString()},erroLogin: ${erroLogin.toString()},textErroEmail: ${textErroEmail.toString()},textErroSenha: ${textErroSenha.toString()},textErroLogin: ${textErroLogin.toString()},hasError: ${hasError.toString()}';
+        'hasError: ${hasError.toString()},erroSenha: ${erroSenha.toString()},erroEmail: ${erroEmail.toString()},erroLogin: ${erroLogin.toString()},textErroSenha: ${textErroSenha.toString()},textErroEmail: ${textErroEmail.toString()},textErroLogin: ${textErroLogin.toString()}';
     return '{$string}';
   }
 }

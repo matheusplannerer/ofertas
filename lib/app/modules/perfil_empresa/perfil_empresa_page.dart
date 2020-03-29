@@ -29,9 +29,9 @@ class PerfilEmpresaPage extends StatefulWidget {
   }
 }
 
-class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
+class _PerfilEmpresaPageState
+    extends ModularState<PerfilEmpresaPage, PerfilEmpresaController> {
   PerfilEmpresaModel empresa;
-  PerfilEmpresaController controller;
   List<Widget> empresas = [];
   String empresaID;
 
@@ -42,7 +42,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
     // TODO: implement initState
     super.initState();
     empresaID = widget.empresaID;
-    controller = PerfilEmpresaController();
+    // controller.stream
     stream = Firestore.instance
         .collection('empresas')
         .document(empresaID)
@@ -52,7 +52,6 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
 
   @override
   Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
     mainBottomSheet(BuildContext context) {
       showModalBottomSheet(
         context: context,
@@ -64,7 +63,8 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                 FutureBuilder<QuerySnapshot>(
                   future: Firestore.instance
                       .collection("empresas")
-                      .where("donoEmpresa", isEqualTo: global.fbUser.uid)
+                      .where("donoEmpresa",
+                          isEqualTo: controller.authController.fbUser.uid)
                       .getDocuments(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -95,14 +95,16 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                                 showLoadingDialog(tapDismiss: false);
                                 await Firestore.instance
                                     .collection('usuarios')
-                                    .document(global.fbUser.uid)
+                                    .document(
+                                        controller.authController.fbUser.uid)
                                     .updateData(
                                         {'empresaPerfil': aux.empresaID});
                                 hideLoadingDialog();
-                                global.usuario.empresaPerfil = aux.empresaID;
+                                controller.authController.user.empresaPerfil =
+                                    aux.empresaID;
                                 empresa = aux;
-                                global.setEmpresaLogada(empresa);
-                                global.navigatorKeyPerfil.currentState.pop();
+                                // global.setEmpresa Logada(empresa);
+                                controller.routeController.tab1Nav.pop();
                                 controller.updateModel(empresa);
                               },
                               leading: CircleAvatar(
@@ -161,8 +163,7 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
       );
     }
 
-    bool isDono = (global.fbUser != null &&
-        controller.empresaModel?.donoEmpresa == global.fbUser.uid);
+    print(controller.routeController.keyTab2.currentState.widget.initialRoute);
 
     return Scaffold(
       appBar: GradientAppBar(
@@ -173,451 +174,442 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
           ],
         ),
       ),
-      body: Observer(
-        builder: (context) {
-          return SingleChildScrollView(
-            physics: ScrollPhysics(),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                StreamBuilder<DocumentSnapshot>(
-                  initialData: null,
-                  stream: stream,
-                  builder: (context, empresaSnap) {
-                    if (empresaSnap.connectionState != ConnectionState.done)
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    empresa = PerfilEmpresaModel.fromJson(
-                        empresaSnap.data.data, empresaSnap.data.documentID);
-                    controller.updateModel(empresa);
-                    return Flexible(
-                      fit: FlexFit.loose,
-                      // width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                10.0, 20.0, 20.0, 0.0),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  width: 125,
-                                  child: Column(
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: () async {
-                                          // if ((global.fbUser != null &&
-                                          //     empresa.donoEmpresa ==
-                                          //         global.fbUser.uid))
-                                          await showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                content: SingleChildScrollView(
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      ListTile(
-                                                        title: Text(
-                                                            "ESCOLHER FOTO"),
-                                                        onTap: () async {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          var img =
-                                                              await controller
-                                                                  .getImage(0);
-                                                          // await Future.delayed(
-                                                          //     Duration(seconds: 1));
-                                                          showLoadingDialog();
-                                                          await controller
-                                                              .uploadImage(
-                                                            controller
-                                                                .empresaModel
-                                                                .empresaID,
-                                                            controller
-                                                                .empresaModel
-                                                                .foto,
-                                                            img,
-                                                          );
-                                                          hideLoadingDialog();
-                                                          controller.updateModel(
-                                                              controller
-                                                                  .empresaModel);
-                                                        },
-                                                      ),
-                                                      ListTile(
-                                                        title:
-                                                            Text("TIRAR FOTO"),
-                                                        onTap: () async {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          var img =
-                                                              await controller
-                                                                  .getImage(1);
-                                                          // await Future.delayed(
-                                                          //     Duration(seconds: 1));
-                                                          showLoadingDialog();
-                                                          await controller
-                                                              .uploadImage(
-                                                            controller
-                                                                .empresaModel
-                                                                .empresaID,
-                                                            controller
-                                                                .empresaModel
-                                                                .foto,
-                                                            img,
-                                                          );
-                                                          hideLoadingDialog();
-                                                          controller.updateModel(
-                                                              controller
-                                                                  .empresaModel);
-                                                        },
-                                                      ),
-                                                    ],
+      body: SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            StreamBuilder<DocumentSnapshot>(
+              stream: stream,
+              builder: (context, empresaSnap) {
+                if (!empresaSnap.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                empresa = PerfilEmpresaModel.fromJson(
+                    empresaSnap.data.data, empresaSnap.data.documentID);
+                controller.updateModel(empresa);
+                return Flexible(
+                  fit: FlexFit.loose,
+                  // width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(10.0, 20.0, 20.0, 0.0),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              width: 125,
+                              child: Column(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () async {
+                                      // if ((global.fbUser != null &&
+                                      //     empresa.donoEmpresa ==
+                                      //         global.fbUser.uid))
+                                      await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            content: SingleChildScrollView(
+                                              child: Column(
+                                                children: <Widget>[
+                                                  ListTile(
+                                                    title:
+                                                        Text("ESCOLHER FOTO"),
+                                                    onTap: () async {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      var img = await controller
+                                                          .getImage(0);
+                                                      // await Future.delayed(
+                                                      //     Duration(seconds: 1));
+                                                      showLoadingDialog();
+                                                      await controller
+                                                          .uploadImage(
+                                                        controller.empresaModel
+                                                            .empresaID,
+                                                        controller
+                                                            .empresaModel.foto,
+                                                        img,
+                                                      );
+                                                      hideLoadingDialog();
+                                                      controller.updateModel(
+                                                          controller
+                                                              .empresaModel);
+                                                    },
                                                   ),
-                                                ),
-                                              );
-                                            },
+                                                  ListTile(
+                                                    title: Text("TIRAR FOTO"),
+                                                    onTap: () async {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      var img = await controller
+                                                          .getImage(1);
+                                                      // await Future.delayed(
+                                                      //     Duration(seconds: 1));
+                                                      showLoadingDialog();
+                                                      await controller
+                                                          .uploadImage(
+                                                        controller.empresaModel
+                                                            .empresaID,
+                                                        controller
+                                                            .empresaModel.foto,
+                                                        img,
+                                                      );
+                                                      hideLoadingDialog();
+                                                      controller.updateModel(
+                                                          controller
+                                                              .empresaModel);
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           );
                                         },
-                                        child: Container(
-                                          height: 90,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.orange,
-                                                width: 2.0),
-                                            borderRadius:
-                                                BorderRadius.circular(45),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: controller
-                                                          .empresaModel.foto !=
-                                                      null
-                                                  ? NetworkImage(
-                                                      controller
-                                                          .empresaModel.foto,
-                                                    )
-                                                  : AssetImage(
-                                                      'assets/logo2.jpg',
-                                                    ),
-                                            ),
-                                          ),
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 90,
+                                      width: 90,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.orange, width: 2.0),
+                                        borderRadius: BorderRadius.circular(45),
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: controller.empresaModel.foto !=
+                                                  null
+                                              ? NetworkImage(
+                                                  controller.empresaModel.foto,
+                                                )
+                                              : AssetImage(
+                                                  'assets/mogi.png',
+                                                ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    children: <Widget>[
-                                      AutoSizeText(
-                                        controller.empresaModel.nomeEmpresa ??=
-                                            '',
-                                        textAlign: TextAlign.center,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontFamily: "Bitter-Bold",
-                                          color: Colors.black,
-                                          letterSpacing: .6,
-                                          fontSize: 27,
-                                        ),
-                                      ),
-                                      AutoSizeText(
-                                        controller.empresaModel.categoria ?? "",
-                                        //add categoria para poder puxar do database
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: "Bitter-Bold",
-                                          letterSpacing: .6,
-                                          color: Colors.grey[700],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                    ],
+                                  SizedBox(
+                                    height: 5,
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(35, 0, 35, 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                IconButton(
-                                  onPressed: () async {
-                                    double lat = empresa.lat;
-                                    double lon = empresa.lon;
-                                    if (lat != 0 && lon != 0) {
-                                      final url =
-                                          'https://www.google.com/maps/search/?api=1&query=$lat,$lon';
-                                      if (await canLaunch(url)) {
-                                        await launch(url);
-                                      } else {
-                                        var alertStyle = AlertStyle(
-                                          isCloseButton: true,
-                                        );
-                                        Alert(
-                                          context: global.actualNavigator
-                                              .currentState.context,
-                                          style: alertStyle,
-                                          buttons: [
-                                            DialogButton(
-                                              child: Text(
-                                                "FECHAR",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20),
-                                              ),
-                                              color: Colors.orange,
-                                              onPressed: () => Navigator.of(
-                                                      global.actualNavigator
-                                                          .currentState.context)
-                                                  .pop(),
-                                            ),
-                                          ],
-                                          title: 'Maps indisponível',
-                                          desc:
-                                              '${empresa.logradouro}, ${empresa.numero} / ${empresa.estado}',
-                                          type: AlertType.info,
-                                        ).show();
-                                      }
-                                    }
-                                  },
-                                  icon: Icon(Icons.pin_drop, size: 30),
-                                ),
-                                IconButton(
-                                  onPressed: () async {
+                            Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  AutoSizeText(
+                                    controller.empresaModel.nomeEmpresa ??= '',
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: "Bitter-Bold",
+                                      color: Colors.black,
+                                      letterSpacing: .6,
+                                      fontSize: 27,
+                                    ),
+                                  ),
+                                  AutoSizeText(
+                                    controller.empresaModel.categoria ?? "",
+                                    //add categoria para poder puxar do database
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: "Bitter-Bold",
+                                      letterSpacing: .6,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(35, 0, 35, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            IconButton(
+                              onPressed: () async {
+                                double lat = empresa.lat;
+                                double lon = empresa.lon;
+                                if (lat != 0 && lon != 0) {
+                                  final url =
+                                      'https://www.google.com/maps/search/?api=1&query=$lat,$lon';
+                                  if (await canLaunch(url)) {
+                                    await launch(url);
+                                  } else {
                                     var alertStyle = AlertStyle(
-                                        titleStyle: TextStyle(fontSize: 15));
+                                      isCloseButton: true,
+                                    );
                                     Alert(
-                                      context: global
+                                      context: controller.routeController
                                           .actualNavigator.currentState.context,
-                                      content: SingleChildScrollView(
-                                        child: Column(
+                                      style: alertStyle,
+                                      buttons: [
+                                        DialogButton(
+                                          child: Text(
+                                            "FECHAR",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
+                                          color: Colors.orange,
+                                          onPressed: () => Navigator.of(
+                                                  controller
+                                                      .routeController
+                                                      .actualNavigator
+                                                      .currentState
+                                                      .context)
+                                              .pop(),
+                                        ),
+                                      ],
+                                      title: 'Maps indisponível',
+                                      desc:
+                                          '${empresa.logradouro}, ${empresa.numero} / ${empresa.estado}',
+                                      type: AlertType.info,
+                                    ).show();
+                                  }
+                                }
+                              },
+                              icon: Icon(Icons.pin_drop, size: 30),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                var alertStyle = AlertStyle(
+                                    titleStyle: TextStyle(fontSize: 15));
+                                Alert(
+                                  context: controller.routeController
+                                      .actualNavigator.currentState.context,
+                                  content: SingleChildScrollView(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
                                           children: <Widget>[
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                            Column(
                                               children: <Widget>[
-                                                Column(
-                                                  children: <Widget>[
-                                                    Container(
-                                                      child: IconButton(
-                                                        icon: Icon(Icons
-                                                            .phone_in_talk),
-                                                        onPressed: () async {
-                                                          var ligou = await controller
-                                                              .ligarEmpresa(
-                                                                  controller
-                                                                      .empresaModel
-                                                                      .telefone);
-                                                          if (ligou) return;
-                                                          Navigator.of(global
-                                                                  .actualNavigator
-                                                                  .currentState
-                                                                  .context)
-                                                              .pop();
-                                                          Alert(
-                                                            context: global
-                                                                .actualNavigator
-                                                                .currentState
-                                                                .context,
-                                                            title: "Contato: ",
-                                                            content: Text(
+                                                Container(
+                                                  child: IconButton(
+                                                    icon: Icon(
+                                                        Icons.phone_in_talk),
+                                                    onPressed: () async {
+                                                      var ligou = await controller
+                                                          .ligarEmpresa(
                                                               controller
                                                                   .empresaModel
-                                                                  .telefone,
+                                                                  .telefone);
+                                                      if (ligou) return;
+                                                      Navigator.of(controller
+                                                              .routeController
+                                                              .actualNavigator
+                                                              .currentState
+                                                              .context)
+                                                          .pop();
+                                                      Alert(
+                                                        context: controller
+                                                            .routeController
+                                                            .actualNavigator
+                                                            .currentState
+                                                            .context,
+                                                        title: "Contato: ",
+                                                        content: Text(
+                                                          controller
+                                                              .empresaModel
+                                                              .telefone,
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .grey[500],
+                                                              fontSize: 16),
+                                                        ),
+                                                        buttons: [
+                                                          DialogButton(
+                                                            child: Text(
+                                                              "VOLTAR",
                                                               style: TextStyle(
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      500],
-                                                                  fontSize: 16),
-                                                            ),
-                                                            buttons: [
-                                                              DialogButton(
-                                                                child: Text(
-                                                                  "VOLTAR",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        18,
-                                                                  ),
-                                                                ),
-                                                                onPressed: () {
-                                                                  Navigator.of(global
-                                                                          .actualNavigator
-                                                                          .currentState
-                                                                          .context)
-                                                                      .pop();
-                                                                },
                                                                 color: Colors
-                                                                    .orange,
-                                                                height: 40,
-                                                              )
-                                                            ],
-                                                          ).show();
-                                                        },
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "LIGAR",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey[400],
-                                                      ),
-                                                    ),
-                                                  ],
+                                                                    .white,
+                                                                fontSize: 18,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.of(controller
+                                                                      .routeController
+                                                                      .actualNavigator
+                                                                      .currentState
+                                                                      .context)
+                                                                  .pop();
+                                                            },
+                                                            color:
+                                                                Colors.orange,
+                                                            height: 40,
+                                                          )
+                                                        ],
+                                                      ).show();
+                                                    },
+                                                  ),
                                                 ),
-                                                Column(
-                                                  children: <Widget>[
-                                                    Container(
-                                                      child: IconButton(
-                                                        icon: Icon(Icons.email),
-                                                        onPressed: () async {
-                                                          await controller
-                                                              .enviaEmail();
-                                                        },
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "E-MAIL",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey[400],
-                                                      ),
-                                                    ),
-                                                  ],
+                                                Text(
+                                                  "LIGAR",
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey[400],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: <Widget>[
+                                                Container(
+                                                  child: IconButton(
+                                                    icon: Icon(Icons.email),
+                                                    onPressed: () async {
+                                                      await controller
+                                                          .enviaEmail();
+                                                    },
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "E-MAIL",
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey[400],
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      buttons: [
-                                        DialogButton(
-                                          child: Text(
-                                            "VOLTAR",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.of(global.actualNavigator
-                                                    .currentState.context)
-                                                .pop();
-                                          },
-                                          color: Colors.orange,
-                                          height: 40,
-                                        )
                                       ],
-                                      title: "Selecione o meio de contato",
-                                      style: alertStyle,
-                                    ).show();
-                                  },
-                                  icon: Icon(Icons.phone, size: 30),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    global.actualNavigator.currentState
-                                        .pushNamed(
-                                      '/horarios',
-                                      arguments: controller.empresaModel,
-                                    );
-                                  },
-                                  icon: Icon(Icons.timer, size: 30),
-                                ),
-                              ],
+                                    ),
+                                  ),
+                                  buttons: [
+                                    DialogButton(
+                                      child: Text(
+                                        "VOLTAR",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(controller
+                                                .routeController
+                                                .actualNavigator
+                                                .currentState
+                                                .context)
+                                            .pop();
+                                      },
+                                      color: Colors.orange,
+                                      height: 40,
+                                    )
+                                  ],
+                                  title: "Selecione o meio de contato",
+                                  style: alertStyle,
+                                ).show();
+                              },
+                              icon: Icon(Icons.phone, size: 30),
                             ),
-                          ),
-                          SizedBox(
-                            height: 0,
-                          ),
-                          Divider(),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                            IconButton(
+                              onPressed: () {
+                                controller.routeController.actualNavigator
+                                    .currentState
+                                    .pushNamed(
+                                  '/horarios',
+                                  arguments: controller.empresaModel,
+                                );
+                              },
+                              icon: Icon(Icons.timer, size: 30),
+                            ),
+                          ],
+                        ),
                       ),
-                    );
-                  },
-                ),
-                StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance
-                      .collection('ofertas')
-                      .where("empresaDona", isEqualTo: empresaID)
-                      .where("mostrar", isEqualTo: true)
-                      .getDocuments()
-                      .asStream(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        physics: ScrollPhysics(),
-                        itemCount: snapshot.data.documents.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 5),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              OfertaModel oferta = OfertaModel.fromJson(
-                                  snapshot.data.documents[index].data,
-                                  snapshot.data.documents[index].documentID);
-                              global.actualNavigator.currentState.pushNamed(
-                                  '/oferta_details',
-                                  arguments: oferta);
-                            },
-                            child: CachedNetworkImage(
-                              alignment: Alignment.center,
-                              imageUrl:
-                                  snapshot.data.documents[index].data['imagem'],
-                              fit: BoxFit.contain,
-                              errorWidget: (context, string, obj) {
-                                return Center(
-                                  child: Text("ERRO NO CARREGAMENTO"),
-                                );
-                              },
-                              placeholder: (context, url) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
-              ],
+                      SizedBox(
+                        height: 0,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
+            StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance
+                  .collection('ofertas')
+                  .where("empresaDona", isEqualTo: empresaID)
+                  .where("mostrar", isEqualTo: true)
+                  .getDocuments()
+                  .asStream(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemCount: snapshot.data.documents.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5),
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          OfertaModel oferta = OfertaModel.fromJson(
+                              snapshot.data.documents[index].data,
+                              snapshot.data.documents[index].documentID);
+                          controller
+                              .routeController.actualNavigator.currentState
+                              .pushNamed('/oferta_details', arguments: oferta);
+                        },
+                        child: CachedNetworkImage(
+                          alignment: Alignment.center,
+                          imageUrl:
+                              snapshot.data.documents[index].data['imagem'],
+                          fit: BoxFit.contain,
+                          errorWidget: (context, string, obj) {
+                            return Center(
+                              child: Text("ERRO NO CARREGAMENTO"),
+                            );
+                          },
+                          placeholder: (context, url) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
-      floatingActionButton: isDono
+      floatingActionButton: controller.isDono
           ? Wrap(
               direction: Axis.horizontal,
               children: <Widget>[

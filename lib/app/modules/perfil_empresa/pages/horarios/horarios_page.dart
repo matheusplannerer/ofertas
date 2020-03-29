@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/modules/perfil_empresa/pages/horarios/horarios_controller.dart';
@@ -17,27 +18,26 @@ class HorariosPage extends StatefulWidget {
   _HorariosPageState createState() => _HorariosPageState();
 }
 
-class _HorariosPageState extends State<HorariosPage> {
+class _HorariosPageState
+    extends ModularState<HorariosPage, HorariosController> {
   bool isDono;
   bool editable = false;
 
   PerfilEmpresaModel empresa;
 
-  HorariosController _controller;
-
   @override
   void initState() {
     // TODO: implement initState
     empresa = widget.empresa;
-    _controller = HorariosController();
-    _controller.updateFields(widget.empresa);
+    controller.updateFields(widget.empresa);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<GlobalService>(context);
-    if (global.usuario.empresaPerfil == widget.empresa.empresaID) {
+    if (controller.authController.user.empresaPerfil ==
+        widget.empresa.empresaID) {
       print("isDono");
       isDono = true;
     } else {
@@ -96,10 +96,10 @@ class _HorariosPageState extends State<HorariosPage> {
                   ],
                   rows: [
                     DataRow(
-                      selected: _controller.domingo,
+                      selected: controller.domingo,
                       onSelectChanged: (value) {
                         if (editable) {
-                          _controller.setDomingo(value);
+                          controller.setDomingo(value);
                         }
                       },
                       cells: [
@@ -111,11 +111,11 @@ class _HorariosPageState extends State<HorariosPage> {
                             width: 70,
                             height: 40,
                             child: TextField(
-                              controller: _controller.domingoTextFieldInicio,
+                              controller: controller.domingoTextFieldInicio,
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
-                              inputFormatters: [_controller.maskDomIni],
+                              inputFormatters: [controller.maskDomIni],
                               decoration: InputDecoration(
                                 hintText: '-',
                                 border: OutlineInputBorder(),
@@ -128,8 +128,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.domingoTextFieldFim,
-                              inputFormatters: [_controller.maskDomFim],
+                              controller: controller.domingoTextFieldFim,
+                              inputFormatters: [controller.maskDomFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -143,10 +143,10 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
-                      selected: _controller.segunda,
+                      selected: controller.segunda,
                       onSelectChanged: (value) {
                         if (editable) {
-                          _controller.setSegunda(value);
+                          controller.setSegunda(value);
                         }
                       },
                       cells: [
@@ -158,8 +158,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.segundaTextFieldInicio,
-                              inputFormatters: [_controller.maskSegIni],
+                              controller: controller.segundaTextFieldInicio,
+                              inputFormatters: [controller.maskSegIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -175,8 +175,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.segundaTextFieldFim,
-                              inputFormatters: [_controller.maskSegFim],
+                              controller: controller.segundaTextFieldFim,
+                              inputFormatters: [controller.maskSegFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -190,10 +190,10 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
-                      selected: _controller.terca,
+                      selected: controller.terca,
                       onSelectChanged: (value) {
                         if (editable) {
-                          _controller.setTerca(value);
+                          controller.setTerca(value);
                         }
                       },
                       cells: [
@@ -203,8 +203,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.tercaTextFieldInicio,
-                              inputFormatters: [_controller.maskTerIni],
+                              controller: controller.tercaTextFieldInicio,
+                              inputFormatters: [controller.maskTerIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -220,8 +220,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.tercaTextFieldFim,
-                              inputFormatters: [_controller.maskTerFim],
+                              controller: controller.tercaTextFieldFim,
+                              inputFormatters: [controller.maskTerFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -235,10 +235,10 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
-                      selected: _controller.quarta,
+                      selected: controller.quarta,
                       onSelectChanged: (value) {
                         if (editable) {
-                          _controller.setQuarta(value);
+                          controller.setQuarta(value);
                         }
                       },
                       cells: [
@@ -250,8 +250,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.quartaTextFieldInicio,
-                              inputFormatters: [_controller.maskQuaIni],
+                              controller: controller.quartaTextFieldInicio,
+                              inputFormatters: [controller.maskQuaIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -267,8 +267,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.quartaTextFieldFim,
-                              inputFormatters: [_controller.maskQuaFim],
+                              controller: controller.quartaTextFieldFim,
+                              inputFormatters: [controller.maskQuaFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -282,10 +282,10 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
-                      selected: _controller.quinta,
+                      selected: controller.quinta,
                       onSelectChanged: (value) {
                         if (editable) {
-                          _controller.setQuinta(value);
+                          controller.setQuinta(value);
                         }
                       },
                       cells: [
@@ -297,8 +297,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.quintaTextFieldInicio,
-                              inputFormatters: [_controller.maskQuiIni],
+                              controller: controller.quintaTextFieldInicio,
+                              inputFormatters: [controller.maskQuiIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -314,8 +314,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.quintaTextFieldFim,
-                              inputFormatters: [_controller.maskQuiFim],
+                              controller: controller.quintaTextFieldFim,
+                              inputFormatters: [controller.maskQuiFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -329,10 +329,10 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
-                      selected: _controller.sexta,
+                      selected: controller.sexta,
                       onSelectChanged: (value) {
                         if (editable) {
-                          _controller.setSexta(value);
+                          controller.setSexta(value);
                         }
                       },
                       cells: [
@@ -344,8 +344,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.sextaTextFieldInicio,
-                              inputFormatters: [_controller.maskSexIni],
+                              controller: controller.sextaTextFieldInicio,
+                              inputFormatters: [controller.maskSexIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -361,8 +361,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.sextaTextFieldFim,
-                              inputFormatters: [_controller.maskSexFim],
+                              controller: controller.sextaTextFieldFim,
+                              inputFormatters: [controller.maskSexFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -376,10 +376,10 @@ class _HorariosPageState extends State<HorariosPage> {
                       ],
                     ),
                     DataRow(
-                      selected: _controller.sabado,
+                      selected: controller.sabado,
                       onSelectChanged: (value) {
                         if (editable) {
-                          _controller.setSabado(value);
+                          controller.setSabado(value);
                         }
                       },
                       cells: [
@@ -391,8 +391,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.sabadoTextFieldInicio,
-                              inputFormatters: [_controller.maskSabIni],
+                              controller: controller.sabadoTextFieldInicio,
+                              inputFormatters: [controller.maskSabIni],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -408,8 +408,8 @@ class _HorariosPageState extends State<HorariosPage> {
                             height: 40,
                             width: 70,
                             child: TextField(
-                              controller: _controller.sabadoTextFieldFim,
-                              inputFormatters: [_controller.maskSabFim],
+                              controller: controller.sabadoTextFieldFim,
+                              inputFormatters: [controller.maskSabFim],
                               enabled: editable,
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.datetime,
@@ -439,10 +439,10 @@ class _HorariosPageState extends State<HorariosPage> {
                 child: Text("SALVAR"),
                 onPressed: () async {
                   showLoadingDialog(tapDismiss: false);
-                  empresa = await _controller.updateHorarios(widget.empresa);
-                  _controller.updateFields(empresa);
+                  empresa = await controller.updateHorarios(widget.empresa);
+                  controller.updateFields(empresa);
                   hideLoadingDialog();
-                  global.actualNavigator.currentState.pop();
+                  controller.routeController.actualNavigator.currentState.pop();
                 },
               ),
             )

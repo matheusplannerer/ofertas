@@ -24,24 +24,24 @@ class EmpresasViewWidget extends StatefulWidget {
 
 class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
   final int index;
-  _EmpresasViewWidgetState({this.empresa, this.index});
   PerfilEmpresaModel empresa;
+  _EmpresasViewWidgetState({this.index});
   final ScrollController _scrollController = ScrollController();
-  EmpresasViewController _empresaController;
+  final EmpresasViewController controller = EmpresasViewController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     empresa = widget.empresa;
-    _empresaController = EmpresasViewController(empresa: widget.empresa);
+    controller.setEmpresa(widget.empresa);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        _empresaController.fetchOfertas();
+        controller.fetchOfertas();
       }
     });
-    _empresaController.fetchOfertas();
+    controller.fetchOfertas();
   }
 
   @override
@@ -77,7 +77,7 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
                   if (doc != null) {
                     PerfilEmpresaModel aux =
                         PerfilEmpresaModel.fromJson(doc.data, doc.documentID);
-                    global.navigatorKeyFeed.currentState
+                    controller.routeController.tab1Nav
                         .pushNamed('/empresa', arguments: aux);
                   }
                 },
@@ -109,14 +109,13 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
               // color: Colors.red,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: (_empresaController.ofertas.length == null ||
-                        _empresaController.ofertas.length == 0)
+                itemCount: (controller.ofertas.length == null ||
+                        controller.ofertas.length == 0)
                     ? 1
-                    : _empresaController.ofertas.length,
+                    : controller.ofertas.length,
                 controller: _scrollController,
                 itemBuilder: (context, i) {
-                  if (_empresaController.ofertas.length == 0 &&
-                      _empresaController.hasMore) {
+                  if (controller.ofertas.length == 0 && controller.hasMore) {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       child: Center(
@@ -124,7 +123,7 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
                       ),
                     );
                   }
-                  if (_empresaController.ofertas.length == 0) {
+                  if (controller.ofertas.length == 0) {
                     return Container(
                       width: MediaQuery.of(context).size.width,
                       child: Center(
@@ -133,7 +132,7 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
                     );
                   }
 
-                  return OfertasViewWidget(_empresaController.ofertas[i]);
+                  return OfertasViewWidget(controller.ofertas[i]);
                 },
               ),
             ),

@@ -1,11 +1,15 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
+import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
+import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'perfil_empresa_controller.g.dart';
@@ -15,10 +19,23 @@ class PerfilEmpresaController = _PerfilEmpresaControllerBase
     with _$PerfilEmpresaController;
 
 abstract class _PerfilEmpresaControllerBase with Store {
+  RouteController routeController = Modular.get();
+  AuthController authController = Modular.get();
+
   _PerfilEmpresaControllerBase({this.empresaModel});
 
   @observable
   PerfilEmpresaModel empresaModel;
+
+  @observable
+  Stream<DocumentSnapshot> stream;
+
+  @action
+  void setStream(Stream<DocumentSnapshot> value) => stream = value;
+
+  @computed
+  bool get isDono => (authController.fbUser != null &&
+      empresaModel?.donoEmpresa == authController.fbUser.uid);
 
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: 'gs://ofertas-8428f.appspot.com');

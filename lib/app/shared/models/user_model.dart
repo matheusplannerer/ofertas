@@ -31,6 +31,6 @@ class UserModel {
         'email': email,
         'usuarioID': usuarioID,
         'nome': nome,
-        'empresaPerfil': null
+        'empresaPerfil': empresaPerfil
       };
 }

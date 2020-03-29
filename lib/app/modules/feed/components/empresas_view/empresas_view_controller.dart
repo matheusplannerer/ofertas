@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
+import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 
 part 'empresas_view_controller.g.dart';
 
 class EmpresasViewController = _EmpresasViewBase with _$EmpresasViewController;
 
 abstract class _EmpresasViewBase with Store {
+  RouteController routeController = Modular.get();
+
   _EmpresasViewBase({this.empresa});
 
   bool get hasMore => _hasMore;
@@ -16,6 +20,8 @@ abstract class _EmpresasViewBase with Store {
   DocumentSnapshot _lastDocument;
   bool _hasMore = true;
   PerfilEmpresaModel empresa;
+
+  void setEmpresa(PerfilEmpresaModel model) => empresa = model;
 
   @observable
   ObservableList<OfertaModel> ofertas = <OfertaModel>[].asObservable();
@@ -59,13 +65,5 @@ abstract class _EmpresasViewBase with Store {
         }
       }
     }
-  }
-
-  @observable
-  int value = 0;
-
-  @action
-  void increment() {
-    value++;
   }
 }
