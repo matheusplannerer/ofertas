@@ -3,10 +3,13 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
+import 'package:ofertas/app/app_controller.dart';
+import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
@@ -20,22 +23,167 @@ class PerfilEmpresaController = _PerfilEmpresaControllerBase
 
 abstract class _PerfilEmpresaControllerBase with Store {
   RouteController routeController = Modular.get();
-  AuthController authController = Modular.get();
+  AppController appController = Modular.get();
 
-  _PerfilEmpresaControllerBase({this.empresaModel});
+  _PerfilEmpresaControllerBase({String empID}) {
+    if (hasCompany) {
+      fetchEmpresa(empresaID: empID);
+      fetchOfertasEmpresa(empresaID: empID);
+    }
+  }
+
+  DocumentSnapshot _lastDocumentOferta;
+  int limit = 8;
 
   @observable
-  PerfilEmpresaModel empresaModel;
+  PerfilEmpresaModel _empresa;
 
   @observable
-  Stream<DocumentSnapshot> stream;
+  ObservableList<OfertaModel> ofertas = <OfertaModel>[].asObservable();
 
-  @action
-  void setStream(Stream<DocumentSnapshot> value) => stream = value;
+  @observable
+  RequestStatus statusHeader = RequestStatus.loading;
+
+  @observable
+  bool hasMoreOfertas = true;
+
+  @observable
+  RequestStatus statusFotos = RequestStatus.success;
 
   @computed
-  bool get isDono => (authController.fbUser != null &&
-      empresaModel?.donoEmpresa == authController.fbUser.uid);
+  bool get isDono => (appController.authInfos != null &&
+      empresa?.donoEmpresa == appController.authInfos.uid);
+  @computed
+  bool get hasCompany {
+    if (appController.userInfos.empresaPerfil != null) {
+      empresa ?? fetchEmpresa();
+      return true;
+    } else
+      return false;
+  }
+
+  @computed
+  PerfilEmpresaModel get empresa {
+    print("ATUALIZEI A EMPRESA");
+    if (_empresa == null) fetchEmpresa();
+    fetchOfertasEmpresa(empresaID: _empresa?.empresaID);
+    return _empresa;
+  }
+
+  @action
+  void setEmpresa(PerfilEmpresaModel model) {
+    // _resetOfertasFetching();
+    _empresa = model;
+  }
+
+  @action
+  void resetOfertasFetching() {
+    ofertas = <OfertaModel>[].asObservable();
+    statusFotos = RequestStatus.success;
+    hasMoreOfertas = true;
+    _lastDocumentOferta = null;
+  }
+
+  @action
+  void setStatusHeader(RequestStatus value) => statusHeader = value;
+
+  @action
+  void setStatusFotos(RequestStatus value) => statusFotos = value;
+
+  @action
+  void addOfertas(QuerySnapshot query) {
+    for (var i = 0; i < query.documents.length; i++) {
+      ofertas.add(OfertaModel.fromJson(query.documents[i].data, null));
+
+      if (i == query.documents.length - 1)
+        _lastDocumentOferta = query.documents[i];
+    }
+    if (query.documents.length == limit)
+      hasMoreOfertas = true;
+    else
+      hasMoreOfertas = false;
+    setStatusFotos(RequestStatus.success);
+  }
+
+  @action
+  Future fetchOfertasEmpresa({String empresaID}) async {
+    if (statusFotos == RequestStatus.loading || !hasMoreOfertas) return;
+    setStatusFotos(RequestStatus.loading);
+    if (_lastDocumentOferta == null) {
+      var query = await Firestore.instance
+          .collection('ofertas')
+          .where('empresaDona',
+              isEqualTo: empresaID ?? appController.userInfos.empresaPerfil)
+          .limit(limit)
+          .getDocuments();
+      addOfertas(query);
+    } else {
+      var query = await Firestore.instance
+          .collection('ofertas')
+          .where('empresaDona',
+              isEqualTo: empresaID ?? appController.userInfos.empresaPerfil)
+          .startAfterDocument(_lastDocumentOferta)
+          .limit(limit)
+          .getDocuments();
+      addOfertas(query);
+    }
+  }
+
+  @action
+  Future fetchEmpresa({String empresaID}) async {
+    try {
+      var empresaDoc = await Firestore.instance
+          .collection('empresas')
+          .document(empresaID ?? appController.userInfos.empresaPerfil)
+          .get()
+          .timeout(Duration(seconds: 8));
+      if (!empresaDoc.exists) throw PlatformException;
+      setEmpresa(
+          PerfilEmpresaModel.fromJson(empresaDoc.data, empresaDoc.documentID));
+      setStatusHeader(RequestStatus.success);
+      print(empresa.nomeEmpresa);
+      return;
+    } catch (e) {
+      fetchEmpresa();
+      setStatusHeader(RequestStatus.error);
+    }
+  }
+
+  Future<bool> ligarEmpresa(String numero) async {
+    if (await canLaunch('tel:+55$numero')) {
+      launch('tel:+55$numero');
+      return true;
+    } else
+      return false;
+  }
+
+  Future enviaEmail() async {
+    final Email email = Email(
+      recipients: [empresa.email],
+    );
+    await FlutterEmailSender.send(email);
+  }
+
+  ///////////////////////////
+
+  Future uploadImage(String empresaID, String foto, File img) async {
+    task = _storage.ref().child("$empresaID/perfil.jpg").putFile(img);
+    try {
+      // if (foto != null)
+      await task.onComplete;
+      // task = null;
+      // task = _storage.ref().child("$empresaID/perfil.jpg").putFile(imgFile);
+
+      var complete = await task.onComplete;
+      var url = await complete.ref.getDownloadURL();
+      empresa.foto = url;
+      await Firestore.instance
+          .collection('empresas')
+          .document(empresaID)
+          .updateData({'foto': url});
+      print("UPLOADOU");
+    } catch (e) {}
+  }
 
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: 'gs://ofertas-8428f.appspot.com');
@@ -77,43 +225,6 @@ abstract class _PerfilEmpresaControllerBase with Store {
       return imgFile;
     }
   }
-
-  @action
-  void updateModel(PerfilEmpresaModel model) {
-    empresaModel = PerfilEmpresaModel.fromObj(model);
-  }
-
-  Future<bool> ligarEmpresa(String numero) async {
-    if (await canLaunch('tel:+55$numero')) {
-      launch('tel:+55$numero');
-      return true;
-    } else
-      return false;
-  }
-
-  Future enviaEmail() async {
-    final Email email = Email(
-      recipients: [empresaModel.email],
-    );
-    await FlutterEmailSender.send(email);
-  }
-
-  Future uploadImage(String empresaID, String foto, File img) async {
-    task = _storage.ref().child("$empresaID/perfil.jpg").putFile(img);
-    try {
-      // if (foto != null)
-      await task.onComplete;
-      // task = null;
-      // task = _storage.ref().child("$empresaID/perfil.jpg").putFile(imgFile);
-
-      var complete = await task.onComplete;
-      var url = await complete.ref.getDownloadURL();
-      empresaModel.foto = url;
-      await Firestore.instance
-          .collection('empresas')
-          .document(empresaID)
-          .updateData({'foto': url});
-      print("UPLOADOU");
-    } catch (e) {}
-  }
 }
+
+enum RequestStatus { loading, success, error }

@@ -36,7 +36,7 @@ class OfertaModel {
       validade: json['validade'],
       mostrar: json['mostrar'],
       empresaDona: json['empresaDona'],
-      idOferta: idOferta,
+      idOferta: idOferta ?? json['idOferta'],
     );
   }
 

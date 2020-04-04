@@ -36,7 +36,7 @@ class _HorariosPageState
   @override
   Widget build(BuildContext context) {
     var global = Provider.of<GlobalService>(context);
-    if (controller.authController.user.empresaPerfil ==
+    if (controller.appController.userInfos.empresaPerfil ==
         widget.empresa.empresaID) {
       print("isDono");
       isDono = true;

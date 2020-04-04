@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
+import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/modules/feed/components/empresas_view/empresas_view_widget.dart';
 import 'package:ofertas/app/modules/feed/feed_controller.dart';
 import 'package:ofertas/app/shared/components/gradient_appbar/gradient_appbar_widget.dart';
@@ -44,12 +45,11 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
 
   @override
   Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
     return Scaffold(
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            if (!controller.authController.signedIn)
+            if (!controller.appController.signedIn)
               ListTile(
                 title: Row(
                   children: <Widget>[
@@ -171,7 +171,7 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
             ),
             Divider(),
             // if (global.fbUser != null)
-            if (controller.authController.signedIn)
+            if (controller.appController.signedIn)
               ListTile(
                 trailing: Icon(Icons.arrow_back, color: Colors.orange.shade400),
                 title: Text(
@@ -184,7 +184,8 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                 ),
                 onTap: () async {
                   controller.routeController.tab1Nav.pop();
-                  await controller.authController.signOut();
+                  AppController appController = Modular.get();
+                  appController.signOut();
                   Modular.to.pushReplacementNamed('/login');
                 },
               ),

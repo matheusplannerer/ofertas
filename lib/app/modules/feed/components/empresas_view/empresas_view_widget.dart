@@ -67,19 +67,8 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
                   color: Colors.orange,
                 ),
                 onTap: () async {
-                  showLoadingDialog(tapDismiss: false);
-                  var doc = await Firestore.instance
-                      .collection('empresas')
-                      .document(empresa.empresaID)
-                      .get()
-                      .timeout(Duration(seconds: 15));
-                  hideLoadingDialog();
-                  if (doc != null) {
-                    PerfilEmpresaModel aux =
-                        PerfilEmpresaModel.fromJson(doc.data, doc.documentID);
-                    controller.routeController.tab1Nav
-                        .pushNamed('/empresa', arguments: aux);
-                  }
+                  controller.routeController.tab1Nav
+                      .pushNamed('/empresa/${empresa.empresaID}');
                 },
                 leading: Container(
                   decoration: BoxDecoration(

@@ -165,7 +165,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                                 ),
                               ),
                               TextFormField(
-                                onChanged: controller.setSenha,
+                                onChanged: controller.setPass,
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   hintText: "Senha",
@@ -291,22 +291,13 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                                 child: InkWell(
                                   onTap: () async {
                                     controller.validateFields();
-                                    if (!controller.hasError) {
-                                      showLoadingDialog();
-                                      AuthController _auth = Modular.get();
-                                      await controller.signInWithEmailAndPass();
-
-                                      if (_auth.status == AuthStatus.loggedIn) {
-                                        hideLoadingDialog();
-                                        Modular.navigatorKey.currentState
-                                            .pushReplacementNamed('/home');
-                                      } else if (_auth.status ==
-                                          AuthStatus.error) {
-                                        hideLoadingDialog();
-                                      } else {
-                                        hideLoadingDialog();
-                                      }
-                                    }
+                                    if (controller.hasError) return;
+                                    showLoadingDialog(tapDismiss: false);
+                                    var logou = await controller
+                                        .loginWithEmailAndPassword();
+                                    hideLoadingDialog();
+                                    if (!controller.hasError)
+                                      Modular.to.pushReplacementNamed('/home');
                                   },
                                   child: Center(
                                     child: Text(
@@ -375,7 +366,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                           InkWell(
                             onTap: () {
                               Modular.navigatorKey.currentState
-                                  .pushNamed('/cadastroUsuario');
+                                  .pushNamed('/login/cadastrar_usuario');
                             },
                             child: Text(
                               "Cadastre-se",

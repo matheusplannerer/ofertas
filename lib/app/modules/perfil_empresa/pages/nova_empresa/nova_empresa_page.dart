@@ -21,7 +21,6 @@ class _NovaEmpresaPageState
     extends ModularState<NovaEmpresaPage, NovaEmpresaController> {
   @override
   Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
     return Scaffold(
       appBar: GradientAppBar(
         gradient: LinearGradient(
@@ -41,9 +40,10 @@ class _NovaEmpresaPageState
               height: 50,
               width: MediaQuery.of(context).size.width - 60,
               onTap: () {
-                if (controller.authController.fbUser.isEmailVerified)
+                print(controller.appController.authInfos.isEmailVerified);
+                if (controller.appController.authInfos.isEmailVerified)
                   Modular.navigatorKey.currentState
-                      .pushNamed('/cadastroEmpresa');
+                      .pushNamed('/cadastrar_empresa');
                 else {
                   var alertStyle = AlertStyle(
                     titleStyle:
@@ -71,7 +71,7 @@ class _NovaEmpresaPageState
                         height: 60,
                         onPressed: () async {
                           showLoadingDialog(tapDismiss: false);
-                          await controller.authController.fbUser
+                          await controller.appController.authInfos
                               .sendEmailVerification();
                           hideLoadingDialog();
                         },

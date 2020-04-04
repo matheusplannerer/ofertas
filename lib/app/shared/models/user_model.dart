@@ -1,6 +1,5 @@
 class UserModel {
   String nome;
-  String cpf;
   String email;
   String senha;
   String celular;
@@ -9,7 +8,6 @@ class UserModel {
 
   UserModel({
     this.email,
-    this.cpf,
     this.nome,
     this.celular,
     this.empresaPerfil,

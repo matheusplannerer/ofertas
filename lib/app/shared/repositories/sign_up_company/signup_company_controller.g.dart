@@ -890,7 +890,7 @@ mixin _$SignUpCompanyController on _SignUpCompanyControllerBase, Store {
   final _$signUpCompanyAsyncAction = AsyncAction('signUpCompany');
 
   @override
-  Future signUpCompany() {
+  Future<bool> signUpCompany() {
     return _$signUpCompanyAsyncAction.run(() => super.signUpCompany());
   }
 

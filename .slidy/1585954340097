@@ -1,0 +1,3 @@
+lib/app/modules/oferta_details/oferta_details/oferta_details_page.dart
+test/app/modules/oferta_details/oferta_details/oferta_details_page_test.dart
+lib/app/modules/oferta_details/oferta_details/oferta_details_controller.dart

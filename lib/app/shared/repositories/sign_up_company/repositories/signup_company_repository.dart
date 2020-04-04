@@ -22,7 +22,7 @@ class SignUpCompanyRepository implements ISignUpCompanyRepository {
   }
 
   @override
-  signUpCompany(PerfilEmpresaModel model) async {
+  Future<bool> signUpCompany(PerfilEmpresaModel model) async {
     try {
       var geo = await Geolocator().placemarkFromAddress(
           "${model.logradouro} ${model.numero}",

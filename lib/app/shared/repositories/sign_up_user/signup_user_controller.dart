@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
+import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:ofertas/app/shared/repositories/sign_up_user/repositories/signup_user_repository_interface.dart';
@@ -76,6 +77,8 @@ abstract class _SignUpControllerBase with Store {
       fbUser.sendEmailVerification();
       usuario.usuarioID = fbUser.uid;
       await _signUpRepository.createUserCollection(usuario);
+      AppController appController = Modular.get();
+      appController.signIn(fbUser, usuario);
       return fbUser;
     } catch (e) {
       PlatformException erro = (e as PlatformException);
@@ -96,8 +99,7 @@ abstract class _SignUpControllerBase with Store {
         textErroValidateEmail = "E-mail já está em uso";
         return null;
       }
-
-      _resetErrors();
+      return null;
     }
     // return;
   }
@@ -204,6 +206,7 @@ abstract class _SignUpControllerBase with Store {
 
   @action
   void validateFields() {
+    _resetErrors();
     _atualizaContato();
     _validateSenha();
     _validateContato();

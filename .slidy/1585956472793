@@ -1,0 +1,4 @@
+lib/app/modules/login/pages/cadastro_usuario/cadastro_usuario_page.dart
+test/app/modules/login/pages/cadastro_usuario/cadastro_usuario_page_test.dart
+lib/app/modules/login/pages/cadastro_usuario/cadastro_usuario_controller.dart
+test/app/modules/login/pages/cadastro_usuario/cadastro_usuario_controller_test.dart

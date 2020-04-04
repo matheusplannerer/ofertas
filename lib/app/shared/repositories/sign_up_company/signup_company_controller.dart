@@ -397,7 +397,8 @@ abstract class _SignUpCompanyControllerBase with Store {
   }
 
   @action
-  signUpCompany() async {
-    await _signUpCompanyRepository.signUpCompany(cadastro);
+  Future<bool> signUpCompany() async {
+    var aux = await _signUpCompanyRepository.signUpCompany(cadastro);
+    return aux;
   }
 }

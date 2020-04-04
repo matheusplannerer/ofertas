@@ -1,0 +1,4 @@
+lib/app/modules/perfil_empresa/components/fotos_empresa/fotos_empresa_widget.dart
+test/app/modules/perfil_empresa/components/fotos_empresa/fotos_empresa_widget_test.dart
+lib/app/modules/perfil_empresa/components/fotos_empresa/fotos_empresa_controller.dart
+test/app/modules/perfil_empresa/components/fotos_empresa/fotos_empresa_controller_test.dart

@@ -1,0 +1,2 @@
+lib/app/pages/splash/splash_controller.dart
+test/app/pages/splash/splash_controller_test.dart

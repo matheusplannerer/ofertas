@@ -51,7 +51,6 @@ class _OfertasViewWidgetState
 
   @override
   Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
     return GestureDetector(
       onTap: () {
         controller.routeController.tab1Nav

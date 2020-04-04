@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:mobx/mobx.dart';
+import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
@@ -14,6 +15,7 @@ class HorariosController = _HorariosBase with _$HorariosController;
 abstract class _HorariosBase with Store {
   AuthController authController = Modular.get();
   RouteController routeController = Modular.get();
+  AppController appController = Modular.get();
 
   TextEditingController segundaTextFieldInicio = TextEditingController();
   TextEditingController segundaTextFieldFim = TextEditingController();

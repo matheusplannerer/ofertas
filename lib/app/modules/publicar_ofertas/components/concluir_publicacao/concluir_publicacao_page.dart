@@ -168,7 +168,7 @@ class _ConcluirPublicacaoPageState extends State<ConcluirPublicacaoPage> {
                     Modular.navigatorKey.currentState.pushNamedAndRemoveUntil(
                         '/', (Route<dynamic> route) => false);
                     controller.routeController.tab1Nav
-                        .pushNamedAndRemoveUntil('/', (_) => false);
+                        .pushNamedAndRemoveUntil('/home', (_) => false);
                     // Modular.navigatorKey.currentState.pushNamed('');
                   },
                   text: "AVANÇAR",

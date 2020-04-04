@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
+import 'package:ofertas/app/pages/splash/splash_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:provider/provider.dart';
@@ -13,19 +14,21 @@ class SplashPage extends StatefulWidget {
   _SplashPageState createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends ModularState<SplashPage, SplashController> {
   ReactionDisposer disposer;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    disposer = autorun((_) {
-      AuthController _auth = Modular.get();
-      if (_auth.status == AuthStatus.loggedIn) {
-        Modular.to.pushReplacementNamed('/home');
-      } else if (_auth.status == AuthStatus.loggedOff) {
+    disposer = autorun((_) async {
+      if (controller.status == AuthStatus.signedOff) {
+        await Future.delayed(Duration(seconds: 1));
         Modular.to.pushReplacementNamed('/login');
+      }
+      if (controller.status == AuthStatus.signedIn) {
+        await Future.delayed(Duration(seconds: 1));
+        Modular.to.pushReplacementNamed('/home');
       }
     });
   }
