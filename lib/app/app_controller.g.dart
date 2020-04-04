@@ -31,6 +31,11 @@ mixin _$AppController on _AppBase, Store {
   @override
   bool get hasCompany =>
       (_$hasCompanyComputed ??= Computed<bool>(() => super.hasCompany)).value;
+  Computed<bool> _$newInfosComputed;
+
+  @override
+  bool get newInfos =>
+      (_$newInfosComputed ??= Computed<bool>(() => super.newInfos)).value;
 
   final _$_authInfosAtom = Atom(name: '_AppBase._authInfos');
 
@@ -66,7 +71,41 @@ mixin _$AppController on _AppBase, Store {
     }, _$_userInfosAtom, name: '${_$_userInfosAtom.name}_set');
   }
 
+  final _$_newInfosAtom = Atom(name: '_AppBase._newInfos');
+
+  @override
+  bool get _newInfos {
+    _$_newInfosAtom.context.enforceReadPolicy(_$_newInfosAtom);
+    _$_newInfosAtom.reportObserved();
+    return super._newInfos;
+  }
+
+  @override
+  set _newInfos(bool value) {
+    _$_newInfosAtom.context.conditionallyRunInAction(() {
+      super._newInfos = value;
+      _$_newInfosAtom.reportChanged();
+    }, _$_newInfosAtom, name: '${_$_newInfosAtom.name}_set');
+  }
+
+  final _$signOutAsyncAction = AsyncAction('signOut');
+
+  @override
+  Future<dynamic> signOut() {
+    return _$signOutAsyncAction.run(() => super.signOut());
+  }
+
   final _$_AppBaseActionController = ActionController(name: '_AppBase');
+
+  @override
+  void setNewInfos(bool value) {
+    final _$actionInfo = _$_AppBaseActionController.startAction();
+    try {
+      return super.setNewInfos(value);
+    } finally {
+      _$_AppBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void setAuth(FirebaseUser value) {
@@ -99,19 +138,9 @@ mixin _$AppController on _AppBase, Store {
   }
 
   @override
-  void signOut() {
-    final _$actionInfo = _$_AppBaseActionController.startAction();
-    try {
-      return super.signOut();
-    } finally {
-      _$_AppBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     final string =
-        'authInfos: ${authInfos.toString()},userInfos: ${userInfos.toString()},signedIn: ${signedIn.toString()},hasCompany: ${hasCompany.toString()}';
+        'authInfos: ${authInfos.toString()},userInfos: ${userInfos.toString()},signedIn: ${signedIn.toString()},hasCompany: ${hasCompany.toString()},newInfos: ${newInfos.toString()}';
     return '{$string}';
   }
 }

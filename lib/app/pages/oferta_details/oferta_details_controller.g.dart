@@ -26,6 +26,12 @@ mixin _$OfertaDetailsController on _OfertaDetailsControllerBase, Store {
     }, _$valueAtom, name: '${_$valueAtom.name}_set');
   }
 
+  @override
+  ObservableFuture<dynamic> deleteImage(OfertaModel oferta) {
+    final _$future = super.deleteImage(oferta);
+    return ObservableFuture<dynamic>(_$future);
+  }
+
   final _$_OfertaDetailsControllerBaseActionController =
       ActionController(name: '_OfertaDetailsControllerBase');
 

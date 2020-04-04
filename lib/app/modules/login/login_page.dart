@@ -7,6 +7,7 @@ import 'package:flutter_signin_button/button_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
+import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/modules/login/login_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
@@ -64,7 +65,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
         leading: IconButton(
           icon: Icon(Icons.account_circle),
           onPressed: () {
-            Modular.to.pushReplacementNamed('/');
+            Modular.to.pushReplacementNamed('/home');
           },
         ),
         title: Text(
@@ -338,18 +339,14 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                             text: 'Cadastre com Google',
                             icon: FontAwesomeIcons.google,
                             mini: true,
-                            onPressed: () {},
+                            onPressed: () async {
+                              AppController appController = Modular.get();
+                              await controller.signInGoogle();
+                              if (appController.signedIn) {
+                                Modular.to.pushReplacementNamed('/home');
+                              }
+                            },
                             backgroundColor: Colors.blueGrey[700],
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.getInstance().setHeight(15),
-                          ),
-                          SignInButtonBuilder(
-                            text: 'Cadastre com Facebook',
-                            icon: FontAwesomeIcons.facebookF,
-                            mini: true,
-                            onPressed: () {},
-                            backgroundColor: Colors.blue[800],
                           ),
                         ],
                       ),
@@ -366,10 +363,10 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                           InkWell(
                             onTap: () {
                               Modular.navigatorKey.currentState
-                                  .pushNamed('/login/cadastrar_usuario');
+                                  .pushNamed('/solicitar_acesso');
                             },
                             child: Text(
-                              "Cadastre-se",
+                              "Solicitar acesso!",
                               style: TextStyle(
                                   color: Colors.orangeAccent,
                                   fontFamily: "Poppins-Bold"),

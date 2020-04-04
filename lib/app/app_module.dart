@@ -1,7 +1,9 @@
+import 'package:ofertas/app/pages/solicitar_acesso/solicitar_acesso_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa/pages/cadastro_empresa/cadastro_empresa_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa/pages/cadastro_empresa/cadastro_empresa_page.dart';
 import 'package:ofertas/app/pages/navigation_bar/navigation_bar_controller.dart';
 import 'package:ofertas/app/pages/navigation_bar/navigation_bar_page.dart';
+import 'package:ofertas/app/pages/solicitar_acesso/solicitar_acesso_page.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
 import 'package:dio/dio.dart';
 import 'package:ofertas/app/pages/zoom_image/zoom_image_page.dart';
@@ -27,6 +29,7 @@ import 'package:ofertas/app/app_widget.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
+        Bind((i) => SolicitarAcessoController()),
         Bind((i) => SplashController()),
         Bind((i) => AuthController()),
         Bind((i) => ButtonController()),
@@ -51,6 +54,7 @@ class AppModule extends MainModule {
         Router('/home', child: (_, args) => NavigationBarPage()),
         Router('/login', module: LoginModule()),
         Router('/cadastrar_empresa', child: (_, args) => CadastroEmpresaPage()),
+        Router('/solicitar_acesso', child: (_, args) => SolicitarAcessoPage()),
         Router('/zoom_image', child: (_, args) => ZoomImage(args.data)),
         Router('/publicarOfertas', module: PublicarOfertasModule()),
       ];

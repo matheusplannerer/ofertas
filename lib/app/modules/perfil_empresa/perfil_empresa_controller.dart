@@ -114,6 +114,7 @@ abstract class _PerfilEmpresaControllerBase with Store {
           .collection('ofertas')
           .where('empresaDona',
               isEqualTo: empresaID ?? appController.userInfos.empresaPerfil)
+          .where("mostrar", isEqualTo: true)
           .limit(limit)
           .getDocuments();
       addOfertas(query);

@@ -29,13 +29,6 @@ class _HorariosPageState
   void initState() {
     // TODO: implement initState
     empresa = widget.empresa;
-    controller.updateFields(widget.empresa);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
     if (controller.appController.userInfos.empresaPerfil ==
         widget.empresa.empresaID) {
       print("isDono");
@@ -45,6 +38,12 @@ class _HorariosPageState
       isDono = false;
     }
 
+    controller.updateFields(widget.empresa);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     if (isDono) editable = true;
     // TODO: implement build
     return Scaffold(

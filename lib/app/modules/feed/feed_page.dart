@@ -72,6 +72,29 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                   Modular.to.pushReplacementNamed('/login');
                 },
               ),
+            if (!controller.appController.signedIn)
+              ListTile(
+                title: Row(
+                  children: <Widget>[
+                    Icon(Icons.store, color: Colors.orange.shade600, size: 30),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        'Solicitar acesso',
+                        style: TextStyle(
+                            fontFamily: "Domine-Bold",
+                            fontSize: 16,
+                            color: Colors.black87,
+                            letterSpacing: .3),
+                      ),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  controller.routeController.tab1Nav.pop();
+                  Modular.to.pushReplacementNamed('/login');
+                },
+              ),
             Divider(),
             ListTile(
               title: Row(
@@ -154,7 +177,7 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                   Padding(
                     padding: EdgeInsets.only(left: 20.0),
                     child: Text(
-                      'Assine já',
+                      'Divulgue suas ofertas',
                       style: TextStyle(
                           fontFamily: "Domine-Bold",
                           fontSize: 16,
@@ -185,7 +208,7 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                 onTap: () async {
                   controller.routeController.tab1Nav.pop();
                   AppController appController = Modular.get();
-                  appController.signOut();
+                  await appController.signOut();
                   Modular.to.pushReplacementNamed('/login');
                 },
               ),

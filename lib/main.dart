@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:ofertas/app/app_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
@@ -23,5 +24,5 @@ void main() async {
   // else
   //   user = null;
 
-  runApp(ModularApp(module: AppModule()));
+  runApp(Phoenix(child: ModularApp(module: AppModule())));
 }

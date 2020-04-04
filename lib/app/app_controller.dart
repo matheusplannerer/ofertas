@@ -13,6 +13,8 @@ abstract class _AppBase with Store {
   FirebaseUser _authInfos;
   @observable
   UserModel _userInfos;
+  @observable
+  bool _newInfos = false;
 
   @computed
   FirebaseUser get authInfos => _authInfos;
@@ -22,7 +24,11 @@ abstract class _AppBase with Store {
   bool get signedIn => userInfos != null && authInfos != null ? true : false;
   @computed
   bool get hasCompany => _userInfos?.empresaPerfil != null ? true : false;
+  @computed
+  bool get newInfos => _newInfos;
 
+  @action
+  void setNewInfos(bool value) => _newInfos = true;
   @action
   void setAuth(FirebaseUser value) => _authInfos = value;
   @action
@@ -35,9 +41,9 @@ abstract class _AppBase with Store {
   }
 
   @action
-  void signOut() {
+  Future signOut() async {
     AuthController controller = Modular.get();
-    controller.signOut();
+    await controller.signOut();
     setAuth(null);
     setUser(null);
   }

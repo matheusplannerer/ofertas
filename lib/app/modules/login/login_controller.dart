@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -139,14 +140,31 @@ abstract class _LoginBase with Store {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
-
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
 
-    final FirebaseUser user = (await auth.signInWithCredential(credential));
-    print("signed in " + user.displayName);
-    return user;
+    final FirebaseUser _authInfos =
+        (await auth.signInWithCredential(credential));
+    if (_authInfos is FirebaseUser) {
+      final UserModel _userInfos = await auth.getUserInfos(_authInfos);
+      if (_userInfos == null) {
+        UserModel aux = UserModel(
+            celular: _authInfos.phoneNumber,
+            email: _authInfos.email,
+            empresaPerfil: '',
+            nome: _authInfos.displayName,
+            usuarioID: _authInfos.uid);
+        await Firestore.instance
+            .collection('usuarios')
+            .document(_authInfos.uid)
+            .setData(aux.toJson());
+      }
+      appController.signIn(_authInfos, _userInfos);
+      print("signed in " + _authInfos.displayName);
+      return _authInfos;
+    }
+    return null;
   }
 }

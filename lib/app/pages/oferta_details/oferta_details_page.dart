@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:load/load.dart';
+import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/pages/oferta_details/oferta_details_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
@@ -10,8 +13,10 @@ import 'package:provider/provider.dart';
 
 class OfertaDetailsPage extends StatefulWidget {
   final OfertaModel oferta;
+  final Function onDelete;
   final String title;
-  const OfertaDetailsPage({Key key, this.title = "OfertaDetails", this.oferta})
+  const OfertaDetailsPage(
+      {Key key, this.title = "OfertaDetails", this.oferta, this.onDelete})
       : super(key: key);
 
   @override
@@ -21,10 +26,9 @@ class OfertaDetailsPage extends StatefulWidget {
 class _OfertaDetailsPageState
     extends ModularState<OfertaDetailsPage, OfertaDetailsController> {
   CachedNetworkImage image;
-  bool isCartaz = false; //Cartaz digital
-  bool isFolheto = false; //Folheto
 
   bool isOwner = false;
+  AppController appController = Modular.get();
 
   OfertaModel oferta;
 
@@ -32,6 +36,8 @@ class _OfertaDetailsPageState
   void initState() {
     super.initState();
     oferta = widget.oferta;
+    if (oferta.empresaDona == appController.userInfos?.empresaPerfil)
+      isOwner = true;
     image = CachedNetworkImage(
       imageUrl: oferta.imagem,
       fit: BoxFit.contain,
@@ -46,15 +52,6 @@ class _OfertaDetailsPageState
         );
       },
     );
-
-    if (oferta.preco == null) {
-      isCartaz = false;
-      isFolheto = true;
-    }
-    if (oferta.preco == null) {
-      isCartaz = true;
-      isFolheto = false;
-    }
   }
 
   @override
@@ -69,6 +66,33 @@ class _OfertaDetailsPageState
             Colors.orange[300],
           ],
         ),
+        actions: isOwner
+            ? <Widget>[
+                PopupMenuButton(
+                  onSelected: (value) async {
+                    if (value) {
+                      showLoadingDialog();
+                      await controller.deleteImage(oferta);
+                      widget.onDelete();
+                      hideLoadingDialog();
+                      controller.routeController.actualNavigator.currentState
+                          .pop();
+                    }
+                  },
+                  itemBuilder: (_) {
+                    return [
+                      PopupMenuItem(
+                        value: true,
+                        child: ListTile(
+                          title: Text("Excluir"),
+                        ),
+                      ),
+                    ];
+                  },
+                  icon: Icon(Icons.settings),
+                )
+              ]
+            : null,
       ),
       body: ListView(
         children: <Widget>[
