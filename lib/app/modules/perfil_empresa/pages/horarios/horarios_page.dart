@@ -12,17 +12,18 @@ class HorariosPage extends StatefulWidget {
   final PerfilEmpresaModel empresa;
   final bool isDono;
 
-  const HorariosPage({Key key, this.empresa, this.isDono}) : super(key: key);
+  HorariosPage({Key key, this.empresa, this.isDono}) {
+    print("NÃO ERA P ABRIR HORARIOSPAGE");
+  }
 
   @override
   _HorariosPageState createState() => _HorariosPageState();
 }
 
-class _HorariosPageState
-    extends ModularState<HorariosPage, HorariosController> {
+class _HorariosPageState extends State<HorariosPage> {
   bool isDono;
   bool editable = false;
-
+  HorariosController controller = HorariosController();
   PerfilEmpresaModel empresa;
 
   @override

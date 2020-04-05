@@ -11,56 +11,16 @@ part 'splash_controller.g.dart';
 class SplashController = _SplashControllerBase with _$SplashController;
 
 abstract class _SplashControllerBase with Store {
-  _SplashControllerBase() {
-    _getFbUser().then(setFbUser).then((_) {
-      if (status == AuthStatus.loading) _getUser().then(setUser).then((_) {});
-    });
-  }
+  _SplashControllerBase();
 
-  @observable
-  FirebaseUser _fbUser;
-  @observable
-  UserModel _userModel;
-  @observable
-  AuthStatus status = AuthStatus.loading;
+  AuthController _auth = Modular.get();
 
   @computed
-  FirebaseUser get fbUser => _fbUser;
+  AuthStatus get status => _auth.status;
   @computed
-  UserModel get userModel => _userModel;
-
-  @action
-  Future<FirebaseUser> _getFbUser() async {
-    return FirebaseAuth.instance
-        .currentUser()
-        .timeout(Duration(seconds: 8), onTimeout: () => null);
-  }
-
-  @action
-  Future<DocumentSnapshot> _getUser() async {
-    return Firestore.instance.collection('usuarios').document(fbUser.uid).get();
-  }
-
-  @action
-  Future<void> setUser(DocumentSnapshot userDoc) async {
-    if (userDoc == null) {
-      setStatus(AuthStatus.signedOff);
-      return;
-    }
-    _userModel = UserModel.fromJson(userDoc.data);
-    AppController appController = Modular.get();
-    appController.signIn(_fbUser, _userModel);
-    setStatus(AuthStatus.signedIn);
-  }
-
-  @action
-  Future<void> setFbUser(FirebaseUser value) async {
-    _fbUser = value;
-    if (value == null) setStatus(AuthStatus.signedOff);
-  }
-
-  @action
-  void setStatus(AuthStatus auth) => status = auth;
+  FirebaseUser get authInfos => _auth.authInfos;
+  @computed
+  UserModel get userInfos => _auth.userInfos;
 }
 
 enum AuthStatus { signedOff, signedIn, loading, error }

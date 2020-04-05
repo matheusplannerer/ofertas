@@ -60,18 +60,7 @@ class _NavigationBarPageState
           return IndexedStack(
             index: controller.navIndex,
             children: <Widget>[
-              RouterOutlet(
-                module: FeedModule(),
-                keepAlive: true,
-                initialRoute: '/',
-                navigatorKey: controller.routeController.keyTab1,
-              ),
-              RouterOutlet(
-                module: PerfilEmpresaModule(),
-                keepAlive: true,
-                navigatorKey: controller.routeController.keyTab2,
-                initialRoute: '/',
-              ),
+              ...controller.appController.pages,
             ],
           );
         },

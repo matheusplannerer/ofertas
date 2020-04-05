@@ -148,8 +148,8 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                                 onChanged: controller.setEmail,
                                 decoration: InputDecoration(
                                   hintText: "E-mail",
-                                  errorText: controller.erroEmail
-                                      ? controller.textErroEmail
+                                  errorText: controller.erro.erroEmail
+                                      ? controller.erro.textErroEmail
                                       : null,
                                   hintStyle: TextStyle(
                                       color: Colors.grey, fontSize: 12.0),
@@ -170,8 +170,8 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   hintText: "Senha",
-                                  errorText: controller.erroSenha
-                                      ? controller.textErroSenha
+                                  errorText: controller.erro.erroSenha
+                                      ? controller.erro.textErroSenha
                                       : null,
                                   hintStyle: TextStyle(
                                       color: Colors.grey, fontSize: 12.0),
@@ -180,9 +180,9 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                               SizedBox(
                                 height: ScreenUtil.getInstance().setHeight(35),
                               ),
-                              if (controller.erroLogin)
+                              if (controller.erro.erroLogin)
                                 Text(
-                                  controller.textErroLogin,
+                                  controller.erro.textErroLogin,
                                   style: TextStyle(color: Colors.red),
                                 ),
                               Row(
@@ -294,11 +294,8 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                                     controller.validateFields();
                                     if (controller.hasError) return;
                                     showLoadingDialog(tapDismiss: false);
-                                    var logou = await controller
-                                        .loginWithEmailAndPassword();
+                                    await controller.signInWithEmailAndPass();
                                     hideLoadingDialog();
-                                    if (!controller.hasError)
-                                      Modular.to.pushReplacementNamed('/home');
                                   },
                                   child: Center(
                                     child: Text(
@@ -340,11 +337,9 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                             icon: FontAwesomeIcons.google,
                             mini: true,
                             onPressed: () async {
-                              AppController appController = Modular.get();
+                              showLoadingDialog();
                               await controller.signInGoogle();
-                              if (appController.signedIn) {
-                                Modular.to.pushReplacementNamed('/home');
-                              }
+                              hideLoadingDialog();
                             },
                             backgroundColor: Colors.blueGrey[700],
                           ),

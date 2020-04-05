@@ -117,17 +117,16 @@ mixin _$PerfilEmpresaController on _PerfilEmpresaControllerBase, Store {
   final _$fetchOfertasEmpresaAsyncAction = AsyncAction('fetchOfertasEmpresa');
 
   @override
-  Future<dynamic> fetchOfertasEmpresa({String empresaID}) {
+  Future<dynamic> fetchOfertasEmpresa() {
     return _$fetchOfertasEmpresaAsyncAction
-        .run(() => super.fetchOfertasEmpresa(empresaID: empresaID));
+        .run(() => super.fetchOfertasEmpresa());
   }
 
   final _$fetchEmpresaAsyncAction = AsyncAction('fetchEmpresa');
 
   @override
-  Future<dynamic> fetchEmpresa({String empresaID}) {
-    return _$fetchEmpresaAsyncAction
-        .run(() => super.fetchEmpresa(empresaID: empresaID));
+  Future<dynamic> fetchEmpresa() {
+    return _$fetchEmpresaAsyncAction.run(() => super.fetchEmpresa());
   }
 
   final _$getImageAsyncAction = AsyncAction('getImage');

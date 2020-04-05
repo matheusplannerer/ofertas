@@ -46,8 +46,6 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
-
     return Observer(
       builder: (_) {
         return Column(
@@ -67,6 +65,7 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
                   color: Colors.orange,
                 ),
                 onTap: () async {
+                  // print(empresa.empresaID);
                   controller.routeController.tab1Nav
                       .pushNamed('/empresa/${empresa.empresaID}');
                 },

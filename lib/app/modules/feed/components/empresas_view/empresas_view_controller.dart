@@ -38,8 +38,7 @@ abstract class _EmpresasViewBase with Store {
             .getDocuments();
         if (doc.documents.length > 0) {
           for (var i = 0; i < doc.documents.length; i++) {
-            OfertaModel aux = OfertaModel.fromJson(
-                doc.documents[i].data, doc.documents[i].documentID);
+            OfertaModel aux = OfertaModel.fromJson(doc.documents[i].data);
 
             ofertas.add(aux);
           }
@@ -57,8 +56,7 @@ abstract class _EmpresasViewBase with Store {
             .getDocuments();
         if (doc.documents.length > 0) {
           for (var i = 0; i < doc.documents.length; i++) {
-            OfertaModel aux = OfertaModel.fromJson(
-                doc.documents[i].data, doc.documents[i].documentID);
+            OfertaModel aux = OfertaModel.fromJson(doc.documents[i].data);
             ofertas.add(aux);
           }
           _lastDocument = doc.documents[doc.documents.length - 1];

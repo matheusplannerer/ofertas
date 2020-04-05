@@ -68,8 +68,7 @@ class PerfilEmpresaModel {
   String empresaID; //
   String donoEmpresa;
 
-  factory PerfilEmpresaModel.fromJson(
-      Map<String, dynamic> json, String idEmpresa) {
+  factory PerfilEmpresaModel.fromJson(Map<String, dynamic> json) {
     var aux = PerfilEmpresaModel();
     // print(json['horarios']);
     PerfilEmpresaModel model = PerfilEmpresaModel(
@@ -87,7 +86,7 @@ class PerfilEmpresaModel {
       categoria: json['categoria'] ??= '',
       bairro: json['bairro'] ??= '',
       complemento: json['complemento'] ??= '',
-      empresaID: idEmpresa,
+      empresaID: json['empresaID'],
       estado: json['estado'] ??= '',
       logradouro: json['logradouro'] ??= '',
       telefone: json['telefone'] ??= '',
@@ -118,7 +117,7 @@ class PerfilEmpresaModel {
         'telefone': telefone
       };
 
-  factory PerfilEmpresaModel.fromObj(PerfilEmpresaModel model) {
+  PerfilEmpresaModel fromObj(PerfilEmpresaModel model) {
     return new PerfilEmpresaModel(
         bairro: model.bairro,
         categoria: model.categoria,

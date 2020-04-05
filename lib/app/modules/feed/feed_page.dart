@@ -72,29 +72,6 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                   Modular.to.pushReplacementNamed('/login');
                 },
               ),
-            if (!controller.appController.signedIn)
-              ListTile(
-                title: Row(
-                  children: <Widget>[
-                    Icon(Icons.store, color: Colors.orange.shade600, size: 30),
-                    Padding(
-                      padding: EdgeInsets.only(left: 20.0),
-                      child: Text(
-                        'Solicitar acesso',
-                        style: TextStyle(
-                            fontFamily: "Domine-Bold",
-                            fontSize: 16,
-                            color: Colors.black87,
-                            letterSpacing: .3),
-                      ),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  controller.routeController.tab1Nav.pop();
-                  Modular.to.pushReplacementNamed('/login');
-                },
-              ),
             Divider(),
             ListTile(
               title: Row(
@@ -169,29 +146,30 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
               ),
             ),
             Divider(),
-            ListTile(
-              title: Row(
-                children: <Widget>[
-                  Icon(Icons.sentiment_very_satisfied,
-                      color: Colors.orange.shade600, size: 30),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      'Divulgue suas ofertas',
-                      style: TextStyle(
-                          fontFamily: "Domine-Bold",
-                          fontSize: 16,
-                          color: Colors.black87,
-                          letterSpacing: .3),
+            if (!controller.appController.signedIn)
+              ListTile(
+                title: Row(
+                  children: <Widget>[
+                    Icon(Icons.sentiment_very_satisfied,
+                        color: Colors.orange.shade600, size: 30),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        'Divulgue suas ofertas',
+                        style: TextStyle(
+                            fontFamily: "Domine-Bold",
+                            fontSize: 16,
+                            color: Colors.black87,
+                            letterSpacing: .3),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                onTap: () {
+                  Modular.navigatorKey.currentState
+                      .pushNamed('/solicitar_acesso');
+                },
               ),
-              onTap: () {
-                // Navigator.push(
-                //     context, MaterialPageRoute(builder: (context) => Planos()));
-              },
-            ),
             Divider(),
             // if (global.fbUser != null)
             if (controller.appController.signedIn)
@@ -207,6 +185,7 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                 ),
                 onTap: () async {
                   controller.routeController.tab1Nav.pop();
+                  await Future.delayed(Duration(milliseconds: 250));
                   AppController appController = Modular.get();
                   await appController.signOut();
                   Modular.to.pushReplacementNamed('/login');

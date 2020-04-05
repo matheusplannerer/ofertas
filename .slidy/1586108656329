@@ -1,0 +1,5 @@
+lib/app/modules/perfil_empresa_feed/perfil_empresa_feed_module.dart
+lib/app/modules/perfil_empresa_feed/perfil_empresa_feed_page.dart
+test/app/modules/perfil_empresa_feed/perfil_empresa_feed_page_test.dart
+lib/app/modules/perfil_empresa_feed/perfil_empresa_feed_controller.dart
+test/app/modules/perfil_empresa_feed/perfil_empresa_feed_controller_test.dart

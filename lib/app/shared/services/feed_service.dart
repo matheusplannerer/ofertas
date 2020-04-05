@@ -19,8 +19,8 @@ class FeedService extends Disposable {
             .limit(queryLimit)
             .getDocuments();
         for (var i = 0; i < doc.documents.length; i++) {
-          PerfilEmpresaModel aux = PerfilEmpresaModel.fromJson(
-              doc.documents[i].data, doc.documents[i].documentID);
+          PerfilEmpresaModel aux =
+              PerfilEmpresaModel.fromJson(doc.documents[i].data);
 
           var docAux = await Firestore.instance
               .collection('ofertas')

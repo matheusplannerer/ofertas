@@ -26,7 +26,7 @@ class OfertaModel {
     this.idOferta,
   });
 
-  factory OfertaModel.fromJson(Map<String, dynamic> json, String idOferta) {
+  factory OfertaModel.fromJson(Map<String, dynamic> json) {
     return OfertaModel(
       desconto: json['desconto'],
       infos: json['infos'],
@@ -36,7 +36,7 @@ class OfertaModel {
       validade: json['validade'],
       mostrar: json['mostrar'],
       empresaDona: json['empresaDona'],
-      idOferta: idOferta ?? json['idOferta'],
+      idOferta: json['idOferta'],
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
+import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
@@ -16,6 +17,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends ModularState<SplashPage, SplashController> {
   ReactionDisposer disposer;
+  AppController appController = Modular.get();
 
   @override
   void initState() {

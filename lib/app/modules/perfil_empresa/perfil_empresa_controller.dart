@@ -25,10 +25,10 @@ abstract class _PerfilEmpresaControllerBase with Store {
   RouteController routeController = Modular.get();
   AppController appController = Modular.get();
 
-  _PerfilEmpresaControllerBase({String empID}) {
+  _PerfilEmpresaControllerBase() {
     if (hasCompany) {
-      fetchEmpresa(empresaID: empID);
-      fetchOfertasEmpresa(empresaID: empID);
+      fetchEmpresa();
+      fetchOfertasEmpresa();
     }
   }
 
@@ -64,9 +64,8 @@ abstract class _PerfilEmpresaControllerBase with Store {
 
   @computed
   PerfilEmpresaModel get empresa {
-    print("ATUALIZEI A EMPRESA");
     if (_empresa == null) fetchEmpresa();
-    fetchOfertasEmpresa(empresaID: _empresa?.empresaID);
+    fetchOfertasEmpresa();
     return _empresa;
   }
 
@@ -93,7 +92,7 @@ abstract class _PerfilEmpresaControllerBase with Store {
   @action
   void addOfertas(QuerySnapshot query) {
     for (var i = 0; i < query.documents.length; i++) {
-      ofertas.add(OfertaModel.fromJson(query.documents[i].data, null));
+      ofertas.add(OfertaModel.fromJson(query.documents[i].data));
 
       if (i == query.documents.length - 1)
         _lastDocumentOferta = query.documents[i];
@@ -106,14 +105,14 @@ abstract class _PerfilEmpresaControllerBase with Store {
   }
 
   @action
-  Future fetchOfertasEmpresa({String empresaID}) async {
+  Future fetchOfertasEmpresa() async {
     if (statusFotos == RequestStatus.loading || !hasMoreOfertas) return;
     setStatusFotos(RequestStatus.loading);
     if (_lastDocumentOferta == null) {
       var query = await Firestore.instance
           .collection('ofertas')
           .where('empresaDona',
-              isEqualTo: empresaID ?? appController.userInfos.empresaPerfil)
+              isEqualTo: appController.userInfos.empresaPerfil)
           .where("mostrar", isEqualTo: true)
           .limit(limit)
           .getDocuments();
@@ -122,7 +121,7 @@ abstract class _PerfilEmpresaControllerBase with Store {
       var query = await Firestore.instance
           .collection('ofertas')
           .where('empresaDona',
-              isEqualTo: empresaID ?? appController.userInfos.empresaPerfil)
+              isEqualTo: appController.userInfos.empresaPerfil)
           .startAfterDocument(_lastDocumentOferta)
           .limit(limit)
           .getDocuments();
@@ -131,16 +130,15 @@ abstract class _PerfilEmpresaControllerBase with Store {
   }
 
   @action
-  Future fetchEmpresa({String empresaID}) async {
+  Future fetchEmpresa() async {
     try {
       var empresaDoc = await Firestore.instance
           .collection('empresas')
-          .document(empresaID ?? appController.userInfos.empresaPerfil)
+          .document(appController.userInfos.empresaPerfil)
           .get()
           .timeout(Duration(seconds: 8));
       if (!empresaDoc.exists) throw PlatformException;
-      setEmpresa(
-          PerfilEmpresaModel.fromJson(empresaDoc.data, empresaDoc.documentID));
+      setEmpresa(PerfilEmpresaModel.fromJson(empresaDoc.data));
       setStatusHeader(RequestStatus.success);
       print(empresa.nomeEmpresa);
       return;
@@ -217,11 +215,9 @@ abstract class _PerfilEmpresaControllerBase with Store {
     // imgFile = null;
     if (value == 0) {
       File imgFile = await _selectGalleryImage();
-      print("TESTE");
       return imgFile;
     } else {
       File imgFile = await _takeCameraImage();
-      print("TESTE");
 
       return imgFile;
     }

@@ -33,10 +33,9 @@ class PerfilEmpresaPage extends StatefulWidget {
   }
 }
 
-class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
+class _PerfilEmpresaPageState
+    extends ModularState<PerfilEmpresaPage, PerfilEmpresaController> {
   List<Widget> empresas = [];
-  String empresaID;
-  PerfilEmpresaController controller;
   ScrollController _scrollController = ScrollController();
   AppController appController = Modular.get();
   RouteController routeController = Modular.get();
@@ -45,11 +44,10 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller = PerfilEmpresaController(empID: widget.empresaID);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        controller.fetchOfertasEmpresa(empresaID: widget.empresaID ?? null);
+        controller.fetchOfertasEmpresa();
       }
     });
     // controller.stream
@@ -90,12 +88,8 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                               ),
                               onTap: () async {
                                 PerfilEmpresaModel aux =
-                                    PerfilEmpresaModel.fromJson(
-                                  snapshot
-                                      .data.documentChanges[i].document.data,
-                                  snapshot.data.documentChanges[i].document
-                                      .documentID,
-                                );
+                                    PerfilEmpresaModel.fromJson(snapshot
+                                        .data.documentChanges[i].document.data);
 
                                 showLoadingDialog(tapDismiss: false);
                                 await Firestore.instance
@@ -196,7 +190,6 @@ class _PerfilEmpresaPageState extends State<PerfilEmpresaPage> {
                 ),
                 Observer(
                   builder: (_) {
-                    print("BUILDOU DE NOVO O WIDGET");
                     return GridView.builder(
                       shrinkWrap: true,
                       physics: ScrollPhysics(),

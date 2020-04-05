@@ -51,6 +51,7 @@ class _OfertasViewWidgetState
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return GestureDetector(
       onTap: () {
         controller.routeController.tab1Nav

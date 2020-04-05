@@ -78,7 +78,6 @@ abstract class _SignUpControllerBase with Store {
       usuario.usuarioID = fbUser.uid;
       await _signUpRepository.createUserCollection(usuario);
       AppController appController = Modular.get();
-      appController.signIn(fbUser, usuario);
       return fbUser;
     } catch (e) {
       PlatformException erro = (e as PlatformException);

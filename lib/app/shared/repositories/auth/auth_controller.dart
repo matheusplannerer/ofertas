@@ -5,55 +5,103 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ofertas/app/app_controller.dart';
+import 'package:ofertas/app/pages/splash/splash_controller.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
+import 'package:ofertas/app/shared/repositories/auth/repositories/auth_repository_interface.dart';
 part 'auth_controller.g.dart';
 
 class AuthController = _AuthControllerBase with _$AuthController;
 
 abstract class _AuthControllerBase with Store {
+  IAuthRepository _auth = Modular.get();
+
   _AuthControllerBase() {
-    // _authRepository
-    //     .getUser()
-    //     .then(setFbUser)
-    //     .then(_authRepository.getUserInfos)
-    //     .then((data) {
-    //   UserModel aux = UserModel.fromJson(data.data);
-    //   setUser(aux);
-    // }).then((data) {
-    //   if (fbUser != null && user != null)
-    //     _updateStatus(AuthStatus.loggedIn);
-    //   else
-    //     _updateStatus(AuthStatus.loggedOff);
-    // }).catchError((e) {
-    //   _updateStatus(AuthStatus.error);
-    //   print("ERRO");
-    // });
+    currentUser()
+        .then(setAuthInfos)
+        .then((_) => getUserInfos(authInfos.uid)
+            .then(setUserInfos)
+            .then((_) => setStatus(AuthStatus.signedIn)))
+        .catchError((_) {});
+  }
+
+  @observable
+  FirebaseUser _authInfos;
+  @observable
+  UserModel _userInfos;
+  @observable
+  AuthStatus _status = AuthStatus.loading;
+
+  @computed
+  FirebaseUser get authInfos => _authInfos;
+  @computed
+  UserModel get userInfos => _userInfos;
+  @computed
+  AuthStatus get status {
+    if (_status != AuthStatus.signedIn) {
+      _authInfos = null;
+      _userInfos = null;
+    }
+    return _status;
   }
 
   @action
-  Future<FirebaseUser> currentUser() => FirebaseAuth.instance.currentUser();
+  void setStatus(AuthStatus value) => _status = value;
+  @action
+  void setAuthInfos(FirebaseUser value) => _authInfos = value;
+  @action
+  void setUserInfos(UserModel value) => _userInfos = value;
 
   @action
-  Future<FirebaseUser> signInWithEmailAndPass(String email, String pass) =>
-      FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: pass);
-
-  @action
-  Future signOut() => FirebaseAuth.instance.signOut();
-
-  @action
-  Future<UserModel> getUserInfos(FirebaseUser fbUser) async {
-    var userDoc = await Firestore.instance
-        .collection('usuarios')
-        .document(fbUser.uid)
-        .get();
-    if (!userDoc.exists) return null;
-    UserModel user = UserModel.fromJson(userDoc.data);
-    return user;
-    // return
+  Future<FirebaseUser> currentUser() async {
+    try {
+      var _authInfos = await _auth.currentUser();
+      return _authInfos;
+    } catch (e) {
+      print("ENTROU AQUI");
+      setStatus(AuthStatus.signedOff);
+      return throw null;
+    }
   }
 
   @action
-  Future<FirebaseUser> signInWithCredential(AuthCredential credential) =>
-      FirebaseAuth.instance.signInWithCredential(credential);
+  Future<FirebaseUser> signInWithEmailAndPass(String email, String pass) async {
+    try {
+      _authInfos = await _auth.signInWithEmailAndPass(email, pass);
+      setStatus(AuthStatus.signedIn);
+      return _authInfos;
+    } catch (e) {
+      return throw e;
+    }
+  }
+
+  @action
+  Future signOut() async {
+    setStatus(AuthStatus.signedOff);
+    setAuthInfos(null);
+    setUserInfos(null);
+    await _auth.signOut();
+  }
+
+  @action
+  Future<FirebaseUser> signInGoogle() async {
+    try {
+      _authInfos = await _auth.signInGoogle();
+      setStatus(AuthStatus.signedIn);
+      return _authInfos;
+    } catch (e) {
+      return throw null;
+    }
+  }
+
+  @action
+  Future<UserModel> getUserInfos(String uid) async {
+    try {
+      print("E CONTINUOU AQUI");
+      _userInfos = await _auth.getUserInfos(uid);
+      return _userInfos;
+    } catch (e) {
+      setStatus(AuthStatus.signedOff);
+      return throw e;
+    }
+  }
 }

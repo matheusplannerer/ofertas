@@ -40,8 +40,8 @@ abstract class _FeedBase with Store {
             .limit(_queryLimit)
             .getDocuments();
         for (var i = 0; i < doc.documents.length; i++) {
-          PerfilEmpresaModel aux = PerfilEmpresaModel.fromJson(
-              doc.documents[i].data, doc.documents[i].documentID);
+          PerfilEmpresaModel aux =
+              PerfilEmpresaModel.fromJson(doc.documents[i].data);
 
           var docAux = await Firestore.instance
               .collection('ofertas')
@@ -69,8 +69,8 @@ abstract class _FeedBase with Store {
             _hasMore = true;
 
             for (var i = 0; i < doc.documents.length; i++) {
-              PerfilEmpresaModel aux = PerfilEmpresaModel.fromJson(
-                  doc.documents[i].data, doc.documents[i].documentID);
+              PerfilEmpresaModel aux =
+                  PerfilEmpresaModel.fromJson(doc.documents[i].data);
 
               var docAux = await Firestore.instance
                   .collection('ofertas')

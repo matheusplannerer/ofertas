@@ -391,7 +391,7 @@ class _CadastroEmpresaPageState
               }
 
               var aux = await controller.authController
-                  .getUserInfos(controller.appController.authInfos);
+                  .getUserInfos(controller.appController.authInfos.uid);
               controller.appController.setUser(aux);
               hideLoadingDialog();
               Modular.navigatorKey.currentState

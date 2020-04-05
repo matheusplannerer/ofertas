@@ -88,7 +88,14 @@ abstract class _SolicitarAcessoControllerBase with Store {
   }
 
   @action
-  void _validateEmpresa() {}
+  void _validateEmpresa() {
+    if (empresa.length < 4) {
+      erroEmpresa = true;
+      textErroEmpresa = "Insira uma empresa válida";
+      return;
+    }
+    return;
+  }
 
   @action
   void setNome(String value) => nome = value;
