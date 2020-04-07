@@ -12,12 +12,16 @@ class SignUpCompanyRepository implements ISignUpCompanyRepository {
 
   @override
   Future<EnderecoModel> fetchCep(String cep) async {
-    final response = await http.get('https://viacep.com.br/ws/$cep/json/');
-    if (response.statusCode == 200) {
-      print(response.data);
-      return EnderecoModel.fromMap(response.data);
-    } else {
-      throw Exception('Requisição inválida!');
+    try {
+      final response = await http.get('https://viacep.com.br/ws/$cep/json/');
+      if (response.statusCode == 200) {
+        print(response.data);
+        return EnderecoModel.fromMap(response.data);
+      } else {
+        throw Exception('Requisição inválida!');
+      }
+    } catch (e) {
+      return throw e;
     }
   }
 
@@ -56,7 +60,7 @@ class SignUpCompanyRepository implements ISignUpCompanyRepository {
     } catch (e) {
       PlatformException error = e;
       print(error.message);
-      return false;
+      return throw e;
     }
   }
 }

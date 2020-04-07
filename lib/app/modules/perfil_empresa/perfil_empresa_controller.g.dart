@@ -9,6 +9,23 @@ part of 'perfil_empresa_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PerfilEmpresaController on _PerfilEmpresaControllerBase, Store {
+  Computed<RequestStatus> _$statusComputed;
+
+  @override
+  RequestStatus get status =>
+      (_$statusComputed ??= Computed<RequestStatus>(() => super.status)).value;
+  Computed<PerfilEmpresaModel> _$empresaComputed;
+
+  @override
+  PerfilEmpresaModel get empresa =>
+      (_$empresaComputed ??= Computed<PerfilEmpresaModel>(() => super.empresa))
+          .value;
+  Computed<ObservableList<OfertaModel>> _$ofertasComputed;
+
+  @override
+  ObservableList<OfertaModel> get ofertas => (_$ofertasComputed ??=
+          Computed<ObservableList<OfertaModel>>(() => super.ofertas))
+      .value;
   Computed<bool> _$isDonoComputed;
 
   @override
@@ -19,12 +36,24 @@ mixin _$PerfilEmpresaController on _PerfilEmpresaControllerBase, Store {
   @override
   bool get hasCompany =>
       (_$hasCompanyComputed ??= Computed<bool>(() => super.hasCompany)).value;
-  Computed<PerfilEmpresaModel> _$empresaComputed;
+
+  final _$_empresaIDAtom =
+      Atom(name: '_PerfilEmpresaControllerBase._empresaID');
 
   @override
-  PerfilEmpresaModel get empresa =>
-      (_$empresaComputed ??= Computed<PerfilEmpresaModel>(() => super.empresa))
-          .value;
+  String get _empresaID {
+    _$_empresaIDAtom.context.enforceReadPolicy(_$_empresaIDAtom);
+    _$_empresaIDAtom.reportObserved();
+    return super._empresaID;
+  }
+
+  @override
+  set _empresaID(String value) {
+    _$_empresaIDAtom.context.conditionallyRunInAction(() {
+      super._empresaID = value;
+      _$_empresaIDAtom.reportChanged();
+    }, _$_empresaIDAtom, name: '${_$_empresaIDAtom.name}_set');
+  }
 
   final _$_empresaAtom = Atom(name: '_PerfilEmpresaControllerBase._empresa');
 
@@ -43,90 +72,66 @@ mixin _$PerfilEmpresaController on _PerfilEmpresaControllerBase, Store {
     }, _$_empresaAtom, name: '${_$_empresaAtom.name}_set');
   }
 
-  final _$ofertasAtom = Atom(name: '_PerfilEmpresaControllerBase.ofertas');
+  final _$_ofertasAtom = Atom(name: '_PerfilEmpresaControllerBase._ofertas');
 
   @override
-  ObservableList<OfertaModel> get ofertas {
-    _$ofertasAtom.context.enforceReadPolicy(_$ofertasAtom);
-    _$ofertasAtom.reportObserved();
-    return super.ofertas;
+  ObservableList<OfertaModel> get _ofertas {
+    _$_ofertasAtom.context.enforceReadPolicy(_$_ofertasAtom);
+    _$_ofertasAtom.reportObserved();
+    return super._ofertas;
   }
 
   @override
-  set ofertas(ObservableList<OfertaModel> value) {
-    _$ofertasAtom.context.conditionallyRunInAction(() {
-      super.ofertas = value;
-      _$ofertasAtom.reportChanged();
-    }, _$ofertasAtom, name: '${_$ofertasAtom.name}_set');
+  set _ofertas(ObservableList<OfertaModel> value) {
+    _$_ofertasAtom.context.conditionallyRunInAction(() {
+      super._ofertas = value;
+      _$_ofertasAtom.reportChanged();
+    }, _$_ofertasAtom, name: '${_$_ofertasAtom.name}_set');
   }
 
-  final _$statusHeaderAtom =
-      Atom(name: '_PerfilEmpresaControllerBase.statusHeader');
+  final _$_statusAtom = Atom(name: '_PerfilEmpresaControllerBase._status');
 
   @override
-  RequestStatus get statusHeader {
-    _$statusHeaderAtom.context.enforceReadPolicy(_$statusHeaderAtom);
-    _$statusHeaderAtom.reportObserved();
-    return super.statusHeader;
-  }
-
-  @override
-  set statusHeader(RequestStatus value) {
-    _$statusHeaderAtom.context.conditionallyRunInAction(() {
-      super.statusHeader = value;
-      _$statusHeaderAtom.reportChanged();
-    }, _$statusHeaderAtom, name: '${_$statusHeaderAtom.name}_set');
-  }
-
-  final _$hasMoreOfertasAtom =
-      Atom(name: '_PerfilEmpresaControllerBase.hasMoreOfertas');
-
-  @override
-  bool get hasMoreOfertas {
-    _$hasMoreOfertasAtom.context.enforceReadPolicy(_$hasMoreOfertasAtom);
-    _$hasMoreOfertasAtom.reportObserved();
-    return super.hasMoreOfertas;
+  RequestStatus get _status {
+    _$_statusAtom.context.enforceReadPolicy(_$_statusAtom);
+    _$_statusAtom.reportObserved();
+    return super._status;
   }
 
   @override
-  set hasMoreOfertas(bool value) {
-    _$hasMoreOfertasAtom.context.conditionallyRunInAction(() {
-      super.hasMoreOfertas = value;
-      _$hasMoreOfertasAtom.reportChanged();
-    }, _$hasMoreOfertasAtom, name: '${_$hasMoreOfertasAtom.name}_set');
+  set _status(RequestStatus value) {
+    _$_statusAtom.context.conditionallyRunInAction(() {
+      super._status = value;
+      _$_statusAtom.reportChanged();
+    }, _$_statusAtom, name: '${_$_statusAtom.name}_set');
   }
 
-  final _$statusFotosAtom =
-      Atom(name: '_PerfilEmpresaControllerBase.statusFotos');
+  final _$fetchPageAsyncAction = AsyncAction('fetchPage');
 
   @override
-  RequestStatus get statusFotos {
-    _$statusFotosAtom.context.enforceReadPolicy(_$statusFotosAtom);
-    _$statusFotosAtom.reportObserved();
-    return super.statusFotos;
+  Future<dynamic> fetchPage() {
+    return _$fetchPageAsyncAction.run(() => super.fetchPage());
   }
 
+  final _$_fetchOfertasAsyncAction = AsyncAction('_fetchOfertas');
+
   @override
-  set statusFotos(RequestStatus value) {
-    _$statusFotosAtom.context.conditionallyRunInAction(() {
-      super.statusFotos = value;
-      _$statusFotosAtom.reportChanged();
-    }, _$statusFotosAtom, name: '${_$statusFotosAtom.name}_set');
+  Future<dynamic> _fetchOfertas() {
+    return _$_fetchOfertasAsyncAction.run(() => super._fetchOfertas());
   }
 
-  final _$fetchOfertasEmpresaAsyncAction = AsyncAction('fetchOfertasEmpresa');
+  final _$_fetchEmpresaAsyncAction = AsyncAction('_fetchEmpresa');
 
   @override
-  Future<dynamic> fetchOfertasEmpresa() {
-    return _$fetchOfertasEmpresaAsyncAction
-        .run(() => super.fetchOfertasEmpresa());
+  Future<dynamic> _fetchEmpresa() {
+    return _$_fetchEmpresaAsyncAction.run(() => super._fetchEmpresa());
   }
 
-  final _$fetchEmpresaAsyncAction = AsyncAction('fetchEmpresa');
+  final _$changeEmpresaAsyncAction = AsyncAction('changeEmpresa');
 
   @override
-  Future<dynamic> fetchEmpresa() {
-    return _$fetchEmpresaAsyncAction.run(() => super.fetchEmpresa());
+  Future<dynamic> changeEmpresa(PerfilEmpresaModel aux) {
+    return _$changeEmpresaAsyncAction.run(() => super.changeEmpresa(aux));
   }
 
   final _$getImageAsyncAction = AsyncAction('getImage');
@@ -140,55 +145,22 @@ mixin _$PerfilEmpresaController on _PerfilEmpresaControllerBase, Store {
       ActionController(name: '_PerfilEmpresaControllerBase');
 
   @override
-  void setEmpresa(PerfilEmpresaModel model) {
+  void setStatus(RequestStatus value) {
     final _$actionInfo =
         _$_PerfilEmpresaControllerBaseActionController.startAction();
     try {
-      return super.setEmpresa(model);
+      return super.setStatus(value);
     } finally {
       _$_PerfilEmpresaControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void resetOfertasFetching() {
+  void setEmpId(String empID) {
     final _$actionInfo =
         _$_PerfilEmpresaControllerBaseActionController.startAction();
     try {
-      return super.resetOfertasFetching();
-    } finally {
-      _$_PerfilEmpresaControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setStatusHeader(RequestStatus value) {
-    final _$actionInfo =
-        _$_PerfilEmpresaControllerBaseActionController.startAction();
-    try {
-      return super.setStatusHeader(value);
-    } finally {
-      _$_PerfilEmpresaControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setStatusFotos(RequestStatus value) {
-    final _$actionInfo =
-        _$_PerfilEmpresaControllerBaseActionController.startAction();
-    try {
-      return super.setStatusFotos(value);
-    } finally {
-      _$_PerfilEmpresaControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addOfertas(QuerySnapshot query) {
-    final _$actionInfo =
-        _$_PerfilEmpresaControllerBaseActionController.startAction();
-    try {
-      return super.addOfertas(query);
+      return super.setEmpId(empID);
     } finally {
       _$_PerfilEmpresaControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -197,7 +169,7 @@ mixin _$PerfilEmpresaController on _PerfilEmpresaControllerBase, Store {
   @override
   String toString() {
     final string =
-        'ofertas: ${ofertas.toString()},statusHeader: ${statusHeader.toString()},hasMoreOfertas: ${hasMoreOfertas.toString()},statusFotos: ${statusFotos.toString()},isDono: ${isDono.toString()},hasCompany: ${hasCompany.toString()},empresa: ${empresa.toString()}';
+        'status: ${status.toString()},empresa: ${empresa.toString()},ofertas: ${ofertas.toString()},isDono: ${isDono.toString()},hasCompany: ${hasCompany.toString()}';
     return '{$string}';
   }
 }

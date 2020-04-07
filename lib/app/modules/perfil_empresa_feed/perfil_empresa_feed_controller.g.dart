@@ -27,41 +27,6 @@ mixin _$PerfilEmpresaFeedController on _PerfilEmpresaFeedControllerBase, Store {
           Computed<ObservableList<OfertaModel>>(() => super.ofertas))
       .value;
 
-  final _$pagesAtom = Atom(name: '_PerfilEmpresaFeedControllerBase.pages');
-
-  @override
-  ObservableList<Widget> get pages {
-    _$pagesAtom.context.enforceReadPolicy(_$pagesAtom);
-    _$pagesAtom.reportObserved();
-    return super.pages;
-  }
-
-  @override
-  set pages(ObservableList<Widget> value) {
-    _$pagesAtom.context.conditionallyRunInAction(() {
-      super.pages = value;
-      _$pagesAtom.reportChanged();
-    }, _$pagesAtom, name: '${_$pagesAtom.name}_set');
-  }
-
-  final _$generatedOnceAtom =
-      Atom(name: '_PerfilEmpresaFeedControllerBase.generatedOnce');
-
-  @override
-  bool get generatedOnce {
-    _$generatedOnceAtom.context.enforceReadPolicy(_$generatedOnceAtom);
-    _$generatedOnceAtom.reportObserved();
-    return super.generatedOnce;
-  }
-
-  @override
-  set generatedOnce(bool value) {
-    _$generatedOnceAtom.context.conditionallyRunInAction(() {
-      super.generatedOnce = value;
-      _$generatedOnceAtom.reportChanged();
-    }, _$generatedOnceAtom, name: '${_$generatedOnceAtom.name}_set');
-  }
-
   final _$_empresaIDAtom =
       Atom(name: '_PerfilEmpresaFeedControllerBase._empresaID');
 
@@ -184,7 +149,7 @@ mixin _$PerfilEmpresaFeedController on _PerfilEmpresaFeedControllerBase, Store {
   @override
   String toString() {
     final string =
-        'pages: ${pages.toString()},generatedOnce: ${generatedOnce.toString()},status: ${status.toString()},empresa: ${empresa.toString()},ofertas: ${ofertas.toString()}';
+        'status: ${status.toString()},empresa: ${empresa.toString()},ofertas: ${ofertas.toString()}';
     return '{$string}';
   }
 }

@@ -17,6 +17,7 @@ import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
+import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -39,18 +40,16 @@ class _PerfilEmpresaPageState
   ScrollController _scrollController = ScrollController();
   AppController appController = Modular.get();
   RouteController routeController = Modular.get();
-
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    controller.fetchPage();
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        controller.fetchOfertasEmpresa();
-      }
+      // if(_scrollController.position.)
     });
-    // controller.stream
   }
 
   @override
@@ -92,19 +91,8 @@ class _PerfilEmpresaPageState
                                         .data.documentChanges[i].document.data);
 
                                 showLoadingDialog(tapDismiss: false);
-                                await Firestore.instance
-                                    .collection('usuarios')
-                                    .document(
-                                        controller.appController.authInfos.uid)
-                                    .updateData(
-                                        {'empresaPerfil': aux.empresaID});
+                                await controller.changeEmpresa(aux);
                                 hideLoadingDialog();
-                                controller.appController.userInfos
-                                    .empresaPerfil = aux.empresaID;
-                                controller.appController.setUser(
-                                    controller.appController.userInfos);
-                                controller.resetOfertasFetching();
-                                controller.setEmpresa(aux);
                                 Navigator.of(context).pop();
                               },
                               leading: CircleAvatar(
@@ -127,9 +115,10 @@ class _PerfilEmpresaPageState
                         }
                         empresas.add(
                           FlatButton(
-                            onPressed: () {
-                              Modular.navigatorKey.currentState
-                                  .pushNamed('/cadastroEmpresa');
+                            onPressed: () async {
+                              await routeController.tab2Nav
+                                  .pushNamed('/cadastrar_empresa');
+                              controller.fetchPage();
                             },
                             child: Text("ADICIONAR EMPRESA"),
                           ),
@@ -143,9 +132,10 @@ class _PerfilEmpresaPageState
                             children: [
                               Text("NENHUMA EMPRESA CADASTRADA"),
                               RaisedButton(
-                                onPressed: () {
-                                  Modular.navigatorKey.currentState
-                                      .pushNamed('/cadastroEmpresa');
+                                onPressed: () async {
+                                  await routeController.tab2Nav
+                                      .pushNamed('/cadastrar_empresa');
+                                  controller.fetchPage();
                                 },
                                 child: Text("ADICIONAR EMPRESA"),
                               )
@@ -175,36 +165,54 @@ class _PerfilEmpresaPageState
               ],
             ),
           ),
-          body: SingleChildScrollView(
-            physics: ScrollPhysics(),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+          body: RefreshIndicator(
+            key: _refreshIndicatorKey,
+            backgroundColor: Colors.orange,
+            color: Colors.white,
+            onRefresh: () {
+              print("TESTANDO");
+              return controller.fetchPage();
+            },
+            child: ListView(
+              controller: _scrollController,
+              physics: AlwaysScrollableScrollPhysics(),
               children: <Widget>[
-                Observer(
-                  builder: (_) {
-                    return HeaderEmpresaWidget(
-                      controller.empresa,
-                      controller: controller,
-                    );
-                  },
-                ),
-                Observer(
-                  builder: (_) {
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: ScrollPhysics(),
-                      itemCount: controller.ofertas.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 5),
-                      controller: _scrollController,
-                      itemBuilder: (_, index) {
-                        return FotosEmpresaWidget(controller.ofertas[index]);
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Observer(
+                      builder: (_) {
+                        return HeaderEmpresaWidget(
+                          controller.empresa,
+                          controller: controller,
+                        );
                       },
-                    );
-                  },
-                ),
+                    ),
+                    Observer(
+                      builder: (_) {
+                        if (controller.ofertas == null) return Container();
+                        if (controller.ofertas.length >= 0)
+                          return GridView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: controller.ofertas.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 5,
+                                    mainAxisSpacing: 5),
+                            controller: _scrollController,
+                            itemBuilder: (_, index) {
+                              return FotosEmpresaWidget(
+                                controller.ofertas[index],
+                                controller: controller,
+                              );
+                            },
+                          );
+                      },
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -223,9 +231,10 @@ class _PerfilEmpresaPageState
                       backgroundColor: Colors.orange,
                       heroTag: null,
                       child: Icon(Icons.add_a_photo),
-                      onPressed: () {
-                        Modular.navigatorKey.currentState.pushNamed(
+                      onPressed: () async {
+                        await Modular.navigatorKey.currentState.pushNamed(
                             '/publicarOfertas/${controller.empresa.empresaID}');
+                        controller.fetchPage();
                       },
                     ),
                   ],

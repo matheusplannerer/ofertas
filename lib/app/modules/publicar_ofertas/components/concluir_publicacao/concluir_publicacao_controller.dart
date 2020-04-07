@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
+import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
+import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 
 part 'concluir_publicacao_controller.g.dart';
@@ -50,45 +52,24 @@ abstract class _ConcluirPublicacaoBase with Store {
 
   @action
   Future uploadOferta(OfertaModel oferta) async {
-    int ofertas = 0;
-    ofertas = await _getQtdOfertas(empresaID);
+    PerfilEmpresaModel empresa = Modular.get<PerfilEmpresaController>().empresa;
 
     var url = await _storage
         .ref()
-        .child("$empresaID/oferta_${ofertas + 1}.jpg")
+        .child("$empresaID/oferta_${empresa.ofertas + 1}.jpg")
         .getDownloadURL();
     var id = Firestore.instance.collection('ofertas').document().documentID;
     await Firestore.instance
         .collection('empresas')
         .document(empresaID)
-        .updateData({'ofertas': ofertas + 1});
-    await Firestore.instance.collection('ofertas').document(id).setData({
-      "data": Timestamp.now(),
-      "imagem": url,
-      "nomeProduto": oferta.nomeProduto,
-      "preco": oferta.preco,
-      "empresaDona": empresaID,
-      "idOferta": id,
-      "desconto": oferta.desconto,
-      "validade": oferta.validade,
-      "mostrar": true,
-      "infos": oferta.infos
-    });
-  }
+        .updateData({'ofertas': empresa.ofertas + 1});
 
-  @action
-  Future<int> _getQtdOfertas(String empresaID) async {
-    try {
-      var data = await Firestore.instance
-          .collection('empresas')
-          .document(empresaID)
-          .get();
-      if (data?.data['ofertas'] == null) return 0;
+    oferta.data = Timestamp.now();
 
-      return data.data['ofertas'];
-    } catch (e) {
-      return null;
-    }
+    await Firestore.instance
+        .collection('ofertas')
+        .document(id)
+        .setData(oferta.toJson());
   }
 
   @observable

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
@@ -20,10 +21,23 @@ abstract class _FetchServicesControllerBase with Store {
     }
   }
 
-  Future<ObservableList<OfertaModel>> fetchOfertas(String uid) async {
+  Future<Map<int, dynamic>> fetchOfertas(String uid,
+      {int queryLimit, DocumentSnapshot lastFetched}) async {
     try {
-      var _ofertasModel = await _fetch.fetchOfertas(uid);
-      return _ofertasModel;
+      var _ofertasModelLastDoc =
+          await _fetch.fetchOfertas(uid, limitQuery: queryLimit);
+      return _ofertasModelLastDoc;
+    } catch (e) {
+      return throw e;
+    }
+  }
+
+  Future<Map<int, dynamic>> fetchFeedEmpresas(
+      {int limitQuery, DocumentSnapshot lastFetched}) async {
+    try {
+      var _empresasModelLastDoc = await _fetch.fetchFeedEmpresas(
+          limitQuery: limitQuery, lastFetched: lastFetched);
+      return _empresasModelLastDoc;
     } catch (e) {
       return throw e;
     }

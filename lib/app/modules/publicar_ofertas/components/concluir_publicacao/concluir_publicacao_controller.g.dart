@@ -58,14 +58,6 @@ mixin _$ConcluirPublicacaoController on _ConcluirPublicacaoBase, Store {
     return _$uploadOfertaAsyncAction.run(() => super.uploadOferta(oferta));
   }
 
-  final _$_getQtdOfertasAsyncAction = AsyncAction('_getQtdOfertas');
-
-  @override
-  Future<int> _getQtdOfertas(String empresaID) {
-    return _$_getQtdOfertasAsyncAction
-        .run(() => super._getQtdOfertas(empresaID));
-  }
-
   final _$_ConcluirPublicacaoBaseActionController =
       ActionController(name: '_ConcluirPublicacaoBase');
 

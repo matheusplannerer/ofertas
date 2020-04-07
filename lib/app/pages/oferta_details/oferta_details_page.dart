@@ -13,10 +13,9 @@ import 'package:provider/provider.dart';
 
 class OfertaDetailsPage extends StatefulWidget {
   final OfertaModel oferta;
-  final Function onDelete;
-  final String title;
+  final Function fetchPage;
   const OfertaDetailsPage(
-      {Key key, this.title = "OfertaDetails", this.oferta, this.onDelete})
+      {Key key, @required this.oferta, @required this.fetchPage})
       : super(key: key);
 
   @override
@@ -73,10 +72,10 @@ class _OfertaDetailsPageState
                     if (value) {
                       showLoadingDialog();
                       await controller.deleteImage(oferta);
-                      widget.onDelete();
                       hideLoadingDialog();
                       controller.routeController.actualNavigator.currentState
                           .pop();
+                      widget.fetchPage();
                     }
                   },
                   itemBuilder: (_) {

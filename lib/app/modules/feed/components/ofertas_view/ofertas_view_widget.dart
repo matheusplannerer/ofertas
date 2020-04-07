@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
 import 'package:ofertas/app/modules/feed/components/ofertas_view/ofertas_view_controller.dart';
+import 'package:ofertas/app/modules/feed/feed_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ class _OfertasViewWidgetState
     extends ModularState<OfertasViewWidget, OfertasViewController>
     with AutomaticKeepAliveClientMixin<OfertasViewWidget> {
   final OfertaModel oferta;
+  final FeedController feedController = Modular.get();
   _OfertasViewWidgetState(this.oferta);
 
   double desconto = 0.0;
@@ -54,8 +56,11 @@ class _OfertasViewWidgetState
     super.build(context);
     return GestureDetector(
       onTap: () {
-        controller.routeController.tab1Nav
-            .pushNamed('/oferta_details', arguments: oferta);
+        controller.routeController.tab1Nav.pushNamed('/oferta_details',
+            arguments: {
+              'oferta': oferta,
+              'fetchPage': feedController.fetchPage
+            });
       },
       child: Card(
         elevation: 10,

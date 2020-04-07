@@ -36,7 +36,12 @@ abstract class _NavigationBarBase with Store {
 
   @action
   void setNavIndex(int value, GlobalService global) {
+    if (navIndex == value) {
+      routeController.actualNavigator.currentState
+          .popUntil((Route<dynamic> route) => route.isFirst);
+    }
     navIndex = value;
+
     routeController.setNavIndexAtual(value);
   }
 }

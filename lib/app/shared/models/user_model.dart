@@ -14,6 +14,14 @@ class UserModel {
     this.usuarioID,
   });
 
+  UserModel copyWith({String nome, String celular, String empresaPerfil}) {
+    return UserModel(
+      celular: celular ?? this.celular,
+      nome: nome ?? this.nome,
+      empresaPerfil: empresaPerfil ?? this.empresaPerfil,
+    );
+  }
+
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       celular: json['celular'],

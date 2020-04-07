@@ -74,11 +74,11 @@ abstract class _SignUpControllerBase with Store {
     try {
       var fbUser =
           await _signUpRepository.createUserWithEmailAndPassword(email, senha);
-      fbUser.sendEmailVerification();
-      usuario.usuarioID = fbUser.uid;
+      fbUser.user.sendEmailVerification();
+      usuario.usuarioID = fbUser.user.uid;
       await _signUpRepository.createUserCollection(usuario);
       AppController appController = Modular.get();
-      return fbUser;
+      return fbUser.user;
     } catch (e) {
       PlatformException erro = (e as PlatformException);
       if (erro.code == "ERROR_WEAK_PASSWORD") {

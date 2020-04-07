@@ -16,16 +16,19 @@ class PerfilEmpresaModule extends ChildModule {
         Bind((i) => HeaderEmpresaController()),
         Bind((i) => NovaEmpresaController()),
         Bind((i) => HorariosController()),
-        Bind((i) => PerfilEmpresaController()),
       ];
 
   @override
   List<Router> get routers => [
         Router('/', child: (_, args) => PerfilEmpresaPage()),
         Router('/oferta_details',
-            child: (_, args) => OfertaDetailsPage(oferta: args.data)),
+            child: (_, args) => OfertaDetailsPage(
+                  oferta: args.data['oferta'],
+                  fetchPage: args.data['fetchPage'],
+                )),
         Router('/horarios',
             child: (_, args) => HorariosPage(empresa: args.data)),
+        Router('/cadastrar_empresa', child: (_, args) => CadastroEmpresaPage()),
         Router('/nova_empresa', child: (_, args) => NovaEmpresaPage()),
       ];
 

@@ -40,7 +40,7 @@ class FirebaseAuthRepo implements IAuthRepository {
     try {
       var fbUser = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: pass);
-      return fbUser;
+      return fbUser.user;
     } catch (e) {
       return throw e;
     }
@@ -109,7 +109,7 @@ class FirebaseAuthRepo implements IAuthRepository {
     try {
       var _authInfos =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      return _authInfos;
+      return _authInfos.user;
     } catch (e) {
       return throw null;
     }

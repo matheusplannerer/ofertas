@@ -47,43 +47,52 @@ class _PerfilEmpresaFeedPageState
           print("TESTANDO");
           return controller.fetchPage();
         },
-        child: SingleChildScrollView(
+        child: ListView(
           physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Observer(
-                builder: (_) {
-                  print("TESTE");
-                  return HeaderEmpresaFeedWidget(
-                    controller.empresa,
-                    controller: controller,
-                  );
-                },
-              ),
-              Observer(
-                builder: (_) {
-                  print("TESTE2");
-                  if (controller.ofertas == null) return Container();
-                  if (controller.ofertas != null)
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      // itemCount: 5,
-                      itemCount: controller.ofertas.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 5),
-                      itemBuilder: (_, index) {
-                        // return Text("$index");
-                        return FotosEmpresaFeedWiget(controller.ofertas[index]);
-                      },
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Observer(
+                  builder: (_) {
+                    return HeaderEmpresaFeedWidget(
+                      controller.empresa,
+                      controller: controller,
                     );
-                },
-              ),
-            ],
-          ),
+                  },
+                ),
+                Container(
+                  child: Observer(
+                    builder: (_) {
+                      if (controller.ofertas == null) return Container();
+                      if (controller.ofertas != null)
+                        return Flexible(
+                          fit: FlexFit.loose,
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: controller.ofertas.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 5,
+                              mainAxisSpacing: 5,
+                            ),
+                            itemBuilder: (_, index) {
+                              // return Text("$index");
+                              print("BUILDOU AQUI DE NOVO $index");
+                              return FotosEmpresaFeedWiget(
+                                  controller.ofertas[index]);
+                            },
+                          ),
+                        );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

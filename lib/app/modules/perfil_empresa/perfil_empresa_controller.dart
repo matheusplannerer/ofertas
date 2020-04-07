@@ -12,6 +12,7 @@ import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
+import 'package:ofertas/app/shared/repositories/fetch_services/fetch_services_controller.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,31 +25,109 @@ class PerfilEmpresaController = _PerfilEmpresaControllerBase
 abstract class _PerfilEmpresaControllerBase with Store {
   RouteController routeController = Modular.get();
   AppController appController = Modular.get();
+  FetchServicesController _fetch = Modular.get();
+
+  DocumentSnapshot _lastOfertaFetched;
 
   _PerfilEmpresaControllerBase() {
     if (hasCompany) {
-      fetchEmpresa();
-      fetchOfertasEmpresa();
+      _fetchEmpresa();
+      _fetchOfertas();
     }
   }
 
-  DocumentSnapshot _lastDocumentOferta;
-  int limit = 8;
+  @observable
+  String _empresaID = '';
 
   @observable
   PerfilEmpresaModel _empresa;
 
   @observable
-  ObservableList<OfertaModel> ofertas = <OfertaModel>[].asObservable();
+  ObservableList<OfertaModel> _ofertas;
 
   @observable
-  RequestStatus statusHeader = RequestStatus.loading;
+  RequestStatus _status = RequestStatus.success;
 
-  @observable
-  bool hasMoreOfertas = true;
+  @computed
+  RequestStatus get status => _status;
 
-  @observable
-  RequestStatus statusFotos = RequestStatus.success;
+  @computed
+  PerfilEmpresaModel get empresa => _empresa;
+  @computed
+  ObservableList<OfertaModel> get ofertas => _ofertas;
+
+  @action
+  void setStatus(RequestStatus value) => _status = value;
+
+  @action
+  void setEmpId(String empID) => _empresaID = empID;
+
+  //Pega os dados da empresa e começa a puxar de novo as ofertas
+  @action
+  Future fetchPage() async {
+    print("AQUI OK");
+    if (status == RequestStatus.loading) return;
+    try {
+      await _fetchEmpresa();
+      await _fetchOfertas();
+      print("CHEGOU AQUI");
+      setStatus(RequestStatus.success);
+      // return Future.wait([_fetchEmpresa(), _fetchOfertas(),]);
+    } catch (e) {
+      setStatus(RequestStatus.error);
+      print("ERRO FETCHING PAGE");
+      return;
+    }
+  }
+
+  @action
+  Future _fetchOfertas() async {
+    setStatus(RequestStatus.loading);
+
+    try {
+      var data = await _fetch.fetchOfertas(
+          appController.userInfos.empresaPerfil,
+          lastFetched: _lastOfertaFetched);
+      _ofertas = data[0];
+      _lastOfertaFetched = data[1];
+      setStatus(RequestStatus.success);
+      return;
+    } catch (e) {
+      setStatus(RequestStatus.error);
+      print("ERRO FETCHING OFERTAS");
+      return throw e;
+    }
+  }
+
+  @action
+  Future _fetchEmpresa() async {
+    setStatus(RequestStatus.loading);
+    try {
+      print(appController.userInfos.empresaPerfil);
+      _empresa =
+          await _fetch.fetchEmpresa(appController.userInfos.empresaPerfil);
+      setStatus(RequestStatus.success);
+
+      return;
+    } catch (e) {
+      print("ERRO FETCHING EMPRESA");
+      return throw e;
+    }
+  }
+
+  @action
+  Future changeEmpresa(PerfilEmpresaModel aux) async {
+    try {
+      await Firestore.instance
+          .collection('usuarios')
+          .document(appController.authInfos.uid)
+          .updateData({'empresaPerfil': aux.empresaID});
+      _empresa = aux;
+      AuthController _auth = Modular.get();
+      await _auth.getUserInfos(appController.authInfos.uid);
+      _fetchOfertas();
+    } catch (e) {}
+  }
 
   @computed
   bool get isDono => (appController.authInfos != null &&
@@ -56,96 +135,9 @@ abstract class _PerfilEmpresaControllerBase with Store {
   @computed
   bool get hasCompany {
     if (appController.userInfos.empresaPerfil != null) {
-      empresa ?? fetchEmpresa();
       return true;
     } else
       return false;
-  }
-
-  @computed
-  PerfilEmpresaModel get empresa {
-    if (_empresa == null) fetchEmpresa();
-    fetchOfertasEmpresa();
-    return _empresa;
-  }
-
-  @action
-  void setEmpresa(PerfilEmpresaModel model) {
-    // _resetOfertasFetching();
-    _empresa = model;
-  }
-
-  @action
-  void resetOfertasFetching() {
-    ofertas = <OfertaModel>[].asObservable();
-    statusFotos = RequestStatus.success;
-    hasMoreOfertas = true;
-    _lastDocumentOferta = null;
-  }
-
-  @action
-  void setStatusHeader(RequestStatus value) => statusHeader = value;
-
-  @action
-  void setStatusFotos(RequestStatus value) => statusFotos = value;
-
-  @action
-  void addOfertas(QuerySnapshot query) {
-    for (var i = 0; i < query.documents.length; i++) {
-      ofertas.add(OfertaModel.fromJson(query.documents[i].data));
-
-      if (i == query.documents.length - 1)
-        _lastDocumentOferta = query.documents[i];
-    }
-    if (query.documents.length == limit)
-      hasMoreOfertas = true;
-    else
-      hasMoreOfertas = false;
-    setStatusFotos(RequestStatus.success);
-  }
-
-  @action
-  Future fetchOfertasEmpresa() async {
-    if (statusFotos == RequestStatus.loading || !hasMoreOfertas) return;
-    setStatusFotos(RequestStatus.loading);
-    if (_lastDocumentOferta == null) {
-      var query = await Firestore.instance
-          .collection('ofertas')
-          .where('empresaDona',
-              isEqualTo: appController.userInfos.empresaPerfil)
-          .where("mostrar", isEqualTo: true)
-          .limit(limit)
-          .getDocuments();
-      addOfertas(query);
-    } else {
-      var query = await Firestore.instance
-          .collection('ofertas')
-          .where('empresaDona',
-              isEqualTo: appController.userInfos.empresaPerfil)
-          .startAfterDocument(_lastDocumentOferta)
-          .limit(limit)
-          .getDocuments();
-      addOfertas(query);
-    }
-  }
-
-  @action
-  Future fetchEmpresa() async {
-    try {
-      var empresaDoc = await Firestore.instance
-          .collection('empresas')
-          .document(appController.userInfos.empresaPerfil)
-          .get()
-          .timeout(Duration(seconds: 8));
-      if (!empresaDoc.exists) throw PlatformException;
-      setEmpresa(PerfilEmpresaModel.fromJson(empresaDoc.data));
-      setStatusHeader(RequestStatus.success);
-      print(empresa.nomeEmpresa);
-      return;
-    } catch (e) {
-      fetchEmpresa();
-      setStatusHeader(RequestStatus.error);
-    }
   }
 
   Future<bool> ligarEmpresa(String numero) async {

@@ -9,7 +9,6 @@ class PerfilEmpresaFeedModule extends ChildModule {
   @override
   List<Bind> get binds => [
         Bind((i) => HeaderEmpresaFeedController()),
-        Bind((i) => FotosEmpresaFeedController()),
       ];
 
   @override

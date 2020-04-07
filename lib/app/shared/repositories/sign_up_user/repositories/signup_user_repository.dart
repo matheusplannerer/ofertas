@@ -5,7 +5,7 @@ import 'package:ofertas/app/shared/repositories/sign_up_user/repositories/signup
 
 class SignUpRepository implements ISignUpRepository {
   @override
-  Future<FirebaseUser> createUserWithEmailAndPassword(
+  Future<AuthResult> createUserWithEmailAndPassword(
       String email, String password) {
     // TODO: implement createUserWithEmailAndLink
     return FirebaseAuth.instance

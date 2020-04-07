@@ -1,3 +1,4 @@
+import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa_feed/perfil_empresa_feed_module.dart';
 import 'package:ofertas/app/pages/solicitar_acesso/solicitar_acesso_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa/pages/cadastro_empresa/cadastro_empresa_controller.dart';
@@ -41,6 +42,7 @@ class AppModule extends MainModule {
         Bind<IFetchRepository>((i) => FirebaseFetchRepository()),
         Bind((i) => AppController()),
         Bind((i) => FetchServicesController()),
+        Bind((i) => PerfilEmpresaController()),
 
         Bind((i) => SolicitarAcessoController()),
         Bind((i) => SplashController()),

@@ -6,6 +6,7 @@ import 'package:ofertas/app/modules/perfil_empresa/pages/horarios/horarios_page.
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_module.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_page.dart';
+import 'package:ofertas/app/modules/perfil_empresa_feed/components/fotos_empresa_feed/fotos_empresa_feed_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa_feed/pages/horarios_feed/horarios_feed_page.dart';
 import 'package:ofertas/app/modules/perfil_empresa_feed/perfil_empresa_feed_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa_feed/perfil_empresa_feed_module.dart';
@@ -20,13 +21,17 @@ class FeedModule extends ChildModule {
         Bind((i) => OfertasViewController()),
         Bind((i) => OfertaDetailsController()),
         Bind((i) => PerfilEmpresaFeedController()),
+        Bind((i) => FotosEmpresaFeedController(null)),
       ];
 
   @override
   List<Router> get routers => [
         Router('/', child: (_, args) => FeedPage()),
         Router('/oferta_details',
-            child: (_, args) => OfertaDetailsPage(oferta: args.data)),
+            child: (_, args) => OfertaDetailsPage(
+                  oferta: args.data['oferta'],
+                  fetchPage: args.data['fetchPage'],
+                )),
         Router('/empresa/:id',
             child: (_, args) =>
                 PerfilEmpresaFeedPage(empresaID: args.params['id'])),

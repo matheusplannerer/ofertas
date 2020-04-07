@@ -45,7 +45,7 @@ class _PublicarCartazPageState extends State<PublicarCartazPage> {
                   alignment: Alignment.center,
                   children: <Widget>[
                     Container(
-                      height: 400,
+                      // height: 400,
                       width: 350,
                       child: Image.asset(
                         "assets/cartaz2.jpg",
@@ -74,12 +74,12 @@ class _PublicarCartazPageState extends State<PublicarCartazPage> {
                           ),
                           AutoSizeText(
                             controller.infosAdicionais,
-                            maxLines: 1,
+                            maxLines: 3,
                             style: TextStyle(
                               fontFamily: 'Xampolo',
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
-                              fontSize: 40,
+                              fontSize: 30,
                             ),
                           ),
                           Padding(
@@ -230,7 +230,7 @@ class _PublicarCartazPageState extends State<PublicarCartazPage> {
                       maxLines: 3,
                       onChanged: controller.setInfosAdicionais,
                       // controller: _infosAdicionais,
-                      maxLength: 20,
+                      maxLength: 35,
                       decoration: InputDecoration(
                         // errorText: _erroInfosAdicionais
                         //     ? _textErroInfosAdicionais

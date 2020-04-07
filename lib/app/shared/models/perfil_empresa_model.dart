@@ -18,6 +18,7 @@ class PerfilEmpresaModel {
       this.donoEmpresa, //
       this.categoria, //
       this.lat,
+      this.ofertas,
       this.lon}) {
     if (dias == null)
       dias = {
@@ -67,31 +68,31 @@ class PerfilEmpresaModel {
   Map<dynamic, dynamic> horarios; //
   String empresaID; //
   String donoEmpresa;
+  int ofertas;
 
   factory PerfilEmpresaModel.fromJson(Map<String, dynamic> json) {
-    var aux = PerfilEmpresaModel();
-    // print(json['horarios']);
     PerfilEmpresaModel model = PerfilEmpresaModel(
-      cep: json['cep'] ??= '',
-      email: json['email'] ??= '',
-      donoEmpresa: json['donoEmpresa'] ??= '',
-      dias: json['dias'] ??= aux.dias,
-      horarios: json['horarios'] ??= aux.horarios,
+      cep: json['cep'],
+      email: json['email'],
+      donoEmpresa: json['donoEmpresa'],
+      dias: json['dias'],
+      horarios: json['horarios'],
       foto: json['foto'],
-      lat: json['latitude'] ??= 0.0,
-      lon: json['longitude'] ??= 0.0,
-      nomeEmpresa: json['nomeEmpresa'] ??= '',
-      numero: json['numero'] ??= '',
-      site: json['site'] ??= null,
-      categoria: json['categoria'] ??= '',
-      bairro: json['bairro'] ??= '',
-      complemento: json['complemento'] ??= '',
+      lat: json['latitude'],
+      lon: json['longitude'],
+      nomeEmpresa: json['nomeEmpresa'],
+      numero: json['numero'],
+      site: json['site'],
+      categoria: json['categoria'],
+      bairro: json['bairro'],
+      complemento: json['complemento'],
       empresaID: json['empresaID'],
-      estado: json['estado'] ??= '',
-      logradouro: json['logradouro'] ??= '',
-      telefone: json['telefone'] ??= '',
+      estado: json['estado'],
+      logradouro: json['logradouro'],
+      telefone: json['telefone'],
+      ofertas: json['ofertas'],
     );
-    // print(model.horarios);
+    // print(horarios);
     return model;
     // return
   }
@@ -114,29 +115,51 @@ class PerfilEmpresaModel {
         'empresaID': empresaID,
         'estado': estado,
         'logradouro': logradouro,
-        'telefone': telefone
+        'telefone': telefone,
+        'ofertas': ofertas,
       };
 
-  PerfilEmpresaModel fromObj(PerfilEmpresaModel model) {
+  PerfilEmpresaModel fromObj({
+    String bairro,
+    String categoria,
+    String cep,
+    String complemento,
+    String donoEmpresa,
+    String email,
+    String estado,
+    String foto,
+    Map<dynamic, dynamic> horarios,
+    Map<dynamic, dynamic> dias,
+    double lat,
+    double lon,
+    String logradouro,
+    String nomeEmpresa,
+    String numero,
+    String site,
+    String telefone,
+    int ofertas,
+  }) {
     return new PerfilEmpresaModel(
-        bairro: model.bairro,
-        categoria: model.categoria,
-        cep: model.cep,
-        complemento: model.complemento,
-        donoEmpresa: model.donoEmpresa,
-        email: model.email,
-        empresaID: model.empresaID,
-        estado: model.estado,
-        foto: model.foto,
-        horarios: model.horarios,
-        dias: model.dias,
-        lat: model.lat,
-        logradouro: model.logradouro,
-        lon: model.lon,
-        nomeEmpresa: model.nomeEmpresa,
-        numero: model.numero,
-        senha: model.senha,
-        site: model.site,
-        telefone: model.telefone);
+      bairro: bairro ?? this.bairro,
+      categoria: categoria ?? this.categoria,
+      cep: cep ?? this.cep,
+      complemento: complemento ?? this.complemento,
+      donoEmpresa: donoEmpresa ?? this.donoEmpresa,
+      email: email ?? this.email,
+      empresaID: this.empresaID,
+      estado: estado ?? this.estado,
+      foto: foto ?? this.foto,
+      horarios: horarios ?? this.horarios,
+      dias: dias ?? this.dias,
+      lat: lat ?? this.lat,
+      logradouro: logradouro ?? this.logradouro,
+      lon: lon ?? this.lon,
+      nomeEmpresa: nomeEmpresa ?? this.nomeEmpresa,
+      numero: numero ?? this.numero,
+      senha: senha,
+      site: site ?? this.site,
+      telefone: telefone ?? this.telefone,
+      ofertas: ofertas ?? this.ofertas,
+    );
   }
 }

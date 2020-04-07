@@ -43,8 +43,8 @@ class HeaderEmpresaFeedWidget extends StatelessWidget {
                               ? DecorationImage(
                                   fit: BoxFit.cover,
                                   image: empresa.foto != null
-                                      ? CachedNetworkImage(
-                                          imageUrl: empresa.foto,
+                                      ? NetworkImage(
+                                          empresa.foto,
                                         )
                                       : AssetImage(
                                           'assets/mogi.png',

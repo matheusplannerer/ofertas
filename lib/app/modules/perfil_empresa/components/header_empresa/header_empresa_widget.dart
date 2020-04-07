@@ -51,7 +51,7 @@ class HeaderEmpresaWidget extends StatelessWidget {
                                             img,
                                           );
                                           hideLoadingDialog();
-                                          controller.setEmpresa(empresa);
+                                          controller.fetchPage();
                                         },
                                       ),
                                       ListTile(
@@ -69,7 +69,7 @@ class HeaderEmpresaWidget extends StatelessWidget {
                                             img,
                                           );
                                           hideLoadingDialog();
-                                          controller.setEmpresa(empresa);
+                                          controller.fetchPage();
                                         },
                                       ),
                                     ],

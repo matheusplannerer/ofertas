@@ -23,7 +23,7 @@ abstract class _CadastroEmpresaBase with Store {
   var maskTelefone = MaskTextInputFormatter(
       filter: {"#": RegExp(r'[0-9]')}, mask: "###########");
 
-  SignUpCompanyController signUpCompanyController = Modular.get();
+  SignUpCompanyController signUpCompanyController = SignUpCompanyController();
   AuthController authController = Modular.get();
   AppController appController = Modular.get();
 

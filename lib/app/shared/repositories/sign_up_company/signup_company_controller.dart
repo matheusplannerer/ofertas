@@ -398,7 +398,11 @@ abstract class _SignUpCompanyControllerBase with Store {
 
   @action
   Future<bool> signUpCompany() async {
-    var aux = await _signUpCompanyRepository.signUpCompany(cadastro);
-    return aux;
+    try {
+      var aux = await _signUpCompanyRepository.signUpCompany(cadastro);
+      return aux;
+    } catch (e) {
+      return throw e;
+    }
   }
 }

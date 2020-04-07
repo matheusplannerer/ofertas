@@ -7,6 +7,7 @@ import 'package:load/load.dart';
 import 'package:ofertas/app/modules/perfil_empresa/pages/cadastro_empresa/cadastro_empresa_controller.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
+import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -19,11 +20,11 @@ class CadastroEmpresaPage extends StatefulWidget {
   _CadastroEmpresaPageState createState() => _CadastroEmpresaPageState();
 }
 
-class _CadastroEmpresaPageState
-    extends ModularState<CadastroEmpresaPage, CadastroEmpresaController> {
+class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
+  CadastroEmpresaController controller = CadastroEmpresaController();
+
   @override
   Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
     return Scaffold(
       appBar: GradientAppBar(
         title: Text(
@@ -71,20 +72,24 @@ class _CadastroEmpresaPageState
           Padding(
             padding: EdgeInsets.only(top: 25.0),
           ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            alignment: Alignment.center,
-            child: DropdownButton<String>(
-              hint: Text("CATEGORIA"),
-              onChanged: controller.setTipo,
-              value: controller.signUpCompanyController.tipo,
-              icon: Icon(Icons.list),
-              items: [
-                ...controller.signUpCompanyController.categoriasAux,
-              ],
-            ),
+          Observer(
+            builder: (_) {
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                alignment: Alignment.center,
+                child: DropdownButton<String>(
+                  hint: Text("CATEGORIA"),
+                  onChanged: controller.setTipo,
+                  value: controller.signUpCompanyController.tipo,
+                  icon: Icon(Icons.list),
+                  items: [
+                    ...controller.signUpCompanyController.categoriasAux,
+                  ],
+                ),
+              );
+            },
           ),
           if (controller.signUpCompanyController.erroTipo)
             Text(
@@ -386,15 +391,17 @@ class _CadastroEmpresaPageState
                   ],
                   type: AlertType.error,
                 ).show();
-                Modular.to.popUntil((Route<dynamic> route) => route.isFirst);
+                RouteController routeController = Modular.get();
+                routeController.tab2Nav
+                    .popUntil((Route<dynamic> route) => route.isFirst);
                 return;
               }
 
-              var aux = await controller.authController
+              await controller.authController
                   .getUserInfos(controller.appController.authInfos.uid);
-              controller.appController.setUser(aux);
+              RouteController routeController = Modular.get();
               hideLoadingDialog();
-              Modular.navigatorKey.currentState
+              routeController.tab2Nav
                   .popUntil((Route<dynamic> route) => route.isFirst);
             },
             text: "CADASTRAR",

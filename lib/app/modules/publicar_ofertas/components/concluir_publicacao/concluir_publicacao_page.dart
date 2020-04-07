@@ -165,10 +165,8 @@ class _ConcluirPublicacaoPageState extends State<ConcluirPublicacaoPage> {
                     await controller.task.onComplete;
                     await controller.uploadOferta(oferta);
                     hideLoadingDialog();
-                    Modular.navigatorKey.currentState.pushNamedAndRemoveUntil(
-                        '/', (Route<dynamic> route) => false);
-                    controller.routeController.tab1Nav
-                        .pushNamedAndRemoveUntil('/home', (_) => false);
+                    Modular.navigatorKey.currentState
+                        .popUntil((Route<dynamic> route) => route.isFirst);
                     // Modular.navigatorKey.currentState.pushNamed('');
                   },
                   text: "AVANÇAR",

@@ -9,6 +9,23 @@ part of 'fotos_empresa_feed_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$FotosEmpresaFeedController on _FotosEmpresaFeedControllerBase, Store {
+  final _$imageAtom = Atom(name: '_FotosEmpresaFeedControllerBase.image');
+
+  @override
+  CachedNetworkImage get image {
+    _$imageAtom.context.enforceReadPolicy(_$imageAtom);
+    _$imageAtom.reportObserved();
+    return super.image;
+  }
+
+  @override
+  set image(CachedNetworkImage value) {
+    _$imageAtom.context.conditionallyRunInAction(() {
+      super.image = value;
+      _$imageAtom.reportChanged();
+    }, _$imageAtom, name: '${_$imageAtom.name}_set');
+  }
+
   final _$valueAtom = Atom(name: '_FotosEmpresaFeedControllerBase.value');
 
   @override
@@ -41,8 +58,19 @@ mixin _$FotosEmpresaFeedController on _FotosEmpresaFeedControllerBase, Store {
   }
 
   @override
+  void setImage(OfertaModel oferta) {
+    final _$actionInfo =
+        _$_FotosEmpresaFeedControllerBaseActionController.startAction();
+    try {
+      return super.setImage(oferta);
+    } finally {
+      _$_FotosEmpresaFeedControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
-    final string = 'value: ${value.toString()}';
+    final string = 'image: ${image.toString()},value: ${value.toString()}';
     return '{$string}';
   }
 }

@@ -9,7 +9,9 @@ class OfertaModel {
   File imgFileAux;
   String bs64ImgAux;
   String idOferta;
-  String desconto, preco;
+  String desconto;
+  String preco;
+  Timestamp data;
   String imagem;
   Timestamp validade;
   bool mostrar;
@@ -24,6 +26,7 @@ class OfertaModel {
     this.validade,
     this.mostrar = true,
     this.idOferta,
+    this.data,
   });
 
   factory OfertaModel.fromJson(Map<String, dynamic> json) {
@@ -37,8 +40,20 @@ class OfertaModel {
       mostrar: json['mostrar'],
       empresaDona: json['empresaDona'],
       idOferta: json['idOferta'],
+      data: json['data'],
     );
   }
 
-  Map<String, dynamic> toJson() => {};
+  Map<String, dynamic> toJson() => {
+        'desconto': desconto,
+        'infos': infos,
+        'preco': preco,
+        'nomeProduto': nomeProduto,
+        'imagem': imagem,
+        'validade': validade,
+        'mostrar': mostrar,
+        'empresaDona': empresaDona,
+        'idOferta': idOferta,
+        'data': data,
+      };
 }

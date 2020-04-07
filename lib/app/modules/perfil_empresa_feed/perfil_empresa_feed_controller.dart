@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -21,11 +22,7 @@ abstract class _PerfilEmpresaFeedControllerBase with Store {
     print("RODOU CONTROLLER");
   }
 
-  @observable
-  ObservableList<Widget> pages = <Widget>[].asObservable();
-
-  @observable
-  bool generatedOnce = false;
+  DocumentSnapshot _lastOfertaFetched;
 
   @observable
   String _empresaID = '';
@@ -74,7 +71,10 @@ abstract class _PerfilEmpresaFeedControllerBase with Store {
   Future _fetchOfertas() async {
     setStatus(RequestStatus.loading);
     try {
-      _ofertas = await _fetch.fetchOfertas(_empresaID);
+      var data = await _fetch.fetchOfertas(_empresaID,
+          lastFetched: _lastOfertaFetched);
+      _ofertas = data[0];
+      _lastOfertaFetched = data[1];
       return;
     } catch (e) {
       setStatus(RequestStatus.error);

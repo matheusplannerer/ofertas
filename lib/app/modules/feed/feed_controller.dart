@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/app_controller.dart';
+import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
+import 'package:ofertas/app/shared/repositories/fetch_services/fetch_services_controller.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 
 part 'feed_controller.g.dart';
@@ -13,89 +15,59 @@ class FeedController = _FeedBase with _$FeedController;
 abstract class _FeedBase with Store {
   RouteController routeController = Modular.get();
   AppController appController = Modular.get();
+  FetchServicesController _fetch = Modular.get();
 
-  bool _noEmpresas = false;
-  bool _incrementou = false;
-  bool _hasMore = true;
-  int _queryLimit = 8;
-  bool _carregou;
-  bool _buscando = false;
-  DocumentSnapshot _lastDocument;
-
-  bool get isLoading => _buscando;
-  bool get carregou => _carregou;
-  bool get hasMore => _hasMore;
+  DocumentSnapshot _lastDocFetched;
 
   @observable
-  ObservableList<PerfilEmpresaModel> empresas =
-      <PerfilEmpresaModel>[].asObservable();
+  ObservableList<PerfilEmpresaModel> _empresas;
+  @observable
+  RequestStatus _status = RequestStatus.success;
+  @observable
+  bool _hasMore = true;
+
+  @computed
+  ObservableList<PerfilEmpresaModel> get empresas => _empresas;
+  @computed
+  RequestStatus get status => _status;
+  @computed
+  bool get hasMore => _hasMore;
 
   @action
-  Future fetchEmpresas() async {
-    if (!_buscando) {
-      _buscando = true;
-      if (_lastDocument == null) {
-        var doc = await Firestore.instance
-            .collection('empresas')
-            .limit(_queryLimit)
-            .getDocuments();
-        for (var i = 0; i < doc.documents.length; i++) {
-          PerfilEmpresaModel aux =
-              PerfilEmpresaModel.fromJson(doc.documents[i].data);
+  void setHasMore(bool value) => _hasMore = value;
+  @action
+  void setStatus(RequestStatus value) => _status = value;
 
-          var docAux = await Firestore.instance
-              .collection('ofertas')
-              .where("mostrar", isEqualTo: true)
-              .where('empresaDona', isEqualTo: aux.empresaID)
-              .limit(1)
-              .getDocuments();
+  @action
+  void resetPageToFetch() {
+    _empresas = null;
+    _status = RequestStatus.success;
+    _hasMore = true;
+    _lastDocFetched = null;
+  }
 
-          if (docAux.documents.length > 0) {
-            if (!empresas.contains(aux)) empresas.add(aux);
-          }
-        }
-
-        if (doc.documents.length > 0)
-          _lastDocument = doc.documents[doc.documents.length - 1];
-      } else {
-        if (_hasMore) {
-          var doc = await Firestore.instance
-              .collection('empresas')
-              .limit(_queryLimit)
-              .startAfterDocument(_lastDocument)
-              .getDocuments();
-
-          if (doc.documents.length > 0) {
-            _hasMore = true;
-
-            for (var i = 0; i < doc.documents.length; i++) {
-              PerfilEmpresaModel aux =
-                  PerfilEmpresaModel.fromJson(doc.documents[i].data);
-
-              var docAux = await Firestore.instance
-                  .collection('ofertas')
-                  .where("mostrar", isEqualTo: true)
-                  .where('empresaDona', isEqualTo: aux.empresaID)
-                  .limit(1)
-                  .getDocuments();
-
-              if (docAux.documents.length > 0) {
-                if (!empresas.contains(aux)) {
-                  print("DUPLICOU");
-                  empresas.add(aux);
-                }
-              }
-            }
-            if (doc.documents.length > 0)
-              _lastDocument = doc.documents[doc.documents.length - 1];
-          } else {
-            _hasMore = false;
-          }
-        }
-      }
-      _carregou = true;
-      print(empresas);
-      _buscando = false;
+  @action
+  Future fetchPage({int limitQuery}) async {
+    if (status == RequestStatus.loading) return;
+    if (!hasMore) return;
+    limitQuery ??= 6;
+    try {
+      _status = RequestStatus.loading;
+      var aux = await _fetch.fetchFeedEmpresas(
+        limitQuery: limitQuery,
+        lastFetched: _lastDocFetched,
+      );
+      _empresas ??= <PerfilEmpresaModel>[].asObservable();
+      _empresas.addAll(aux[0]);
+      if (aux.length == limitQuery)
+        _hasMore = true;
+      else
+        _hasMore = false;
+      _status = RequestStatus.success;
+      _lastDocFetched = aux[1];
+    } catch (e) {
+      _status = RequestStatus.error;
+      print(e.toString());
     }
   }
 }

@@ -35,99 +35,79 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
     super.initState();
     empresa = widget.empresa;
     controller.setEmpresa(widget.empresa);
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        controller.fetchOfertas();
-      }
-    });
-    controller.fetchOfertas();
+    controller.fetchOfertasEmpresa();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
-      builder: (_) {
-        return Column(
-          children: <Widget>[
-            SizedBox(height: 5),
-            Container(
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 5),
+        Container(
+          decoration: BoxDecoration(
+            // color: Colors.orange[200],
+            border: Border(
+              top: BorderSide(color: Colors.grey[200], width: 5),
+            ),
+          ),
+          child: ListTile(
+            title: Text(empresa.nomeEmpresa ??= ''),
+            trailing: Icon(
+              Icons.arrow_forward,
+              color: Colors.orange,
+            ),
+            onTap: () async {
+              // print(empresa.empresaID);
+              controller.routeController.tab1Nav
+                  .pushNamed('/empresa/${empresa.empresaID}');
+            },
+            leading: Container(
               decoration: BoxDecoration(
-                // color: Colors.orange[200],
-                border: Border(
-                  top: BorderSide(color: Colors.grey[200], width: 5),
-                ),
+                color: Colors.grey[400],
+                shape: BoxShape.circle,
               ),
-              child: ListTile(
-                title: Text(empresa.nomeEmpresa ??= ''),
-                trailing: Icon(
-                  Icons.arrow_forward,
-                  color: Colors.orange,
-                ),
-                onTap: () async {
-                  // print(empresa.empresaID);
-                  controller.routeController.tab1Nav
-                      .pushNamed('/empresa/${empresa.empresaID}');
-                },
-                leading: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: empresa.foto != null
-                      ? CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            empresa.foto,
-                          ),
-                        )
-                      : CircleAvatar(
-                          backgroundImage: AssetImage('assets/mogi.jpg'),
-                        ),
-                ),
-              ),
+              child: empresa.foto != null
+                  ? CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        empresa.foto,
+                      ),
+                    )
+                  : CircleAvatar(
+                      backgroundImage: AssetImage('assets/mogi.jpg'),
+                    ),
             ),
-            Container(
-              height: 10,
-              color: Colors.white,
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              height: 140,
-              // color: Colors.green,
-              width: MediaQuery.of(context).size.width,
-              // color: Colors.red,
-              child: ListView.builder(
+          ),
+        ),
+        Container(
+          height: 10,
+          color: Colors.white,
+        ),
+        Container(
+          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          height: 140,
+          // color: Colors.green,
+          width: MediaQuery.of(context).size.width,
+          // color: Colors.red,
+          child: Observer(
+            builder: (_) {
+              if (controller.ofertas == null)
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+
+              return ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: (controller.ofertas.length == null ||
-                        controller.ofertas.length == 0)
-                    ? 1
-                    : controller.ofertas.length,
+                itemCount: controller.ofertas.length,
                 controller: _scrollController,
                 itemBuilder: (context, i) {
-                  if (controller.ofertas.length == 0 && controller.hasMore) {
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                  if (controller.ofertas.length == 0) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-
                   return OfertasViewWidget(controller.ofertas[i]);
                 },
-              ),
-            ),
-            SizedBox(height: 25),
-          ],
-        );
-      },
+              );
+            },
+          ),
+        ),
+        SizedBox(height: 25),
+      ],
     );
   }
 }
