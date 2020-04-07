@@ -26,59 +26,7 @@ class HeaderEmpresaWidget extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       GestureDetector(
-                        onTap: () async {
-                          if (empresa == null) return;
-
-                          await showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    children: <Widget>[
-                                      ListTile(
-                                        title: Text("ESCOLHER FOTO"),
-                                        onTap: () async {
-                                          Navigator.of(context).pop();
-                                          var img =
-                                              await controller.getImage(0);
-                                          // await Future.delayed(
-                                          //     Duration(seconds: 1));
-                                          showLoadingDialog();
-                                          await controller.uploadImage(
-                                            empresa.empresaID,
-                                            empresa.foto,
-                                            img,
-                                          );
-                                          hideLoadingDialog();
-                                          controller.fetchPage();
-                                        },
-                                      ),
-                                      ListTile(
-                                        title: Text("TIRAR FOTO"),
-                                        onTap: () async {
-                                          Navigator.of(context).pop();
-                                          var img =
-                                              await controller.getImage(1);
-                                          // await Future.delayed(
-                                          //     Duration(seconds: 1));
-                                          showLoadingDialog();
-                                          await controller.uploadImage(
-                                            empresa.empresaID,
-                                            empresa.foto,
-                                            img,
-                                          );
-                                          hideLoadingDialog();
-                                          controller.fetchPage();
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
+                        onTap: () async {},
                         child: Container(
                           height: 90,
                           width: 90,
@@ -126,7 +74,7 @@ class HeaderEmpresaWidget extends StatelessWidget {
                         ),
                       ),
                       AutoSizeText(
-                        empresa?.categoria ?? "",
+                        empresa?.subcategoria ?? empresa?.categoria ?? "",
                         //add categoria para poder puxar do database
                         textAlign: TextAlign.center,
                         maxLines: 1,
@@ -140,6 +88,25 @@ class HeaderEmpresaWidget extends StatelessWidget {
                       ),
                       SizedBox(
                         height: 5,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          controller.routeController.tab2Nav
+                              .pushNamed('/edit_infos');
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey[400],
+                            ),
+                          ),
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "EDITAR",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
                       ),
                     ],
                   ),

@@ -18,6 +18,7 @@ class PerfilEmpresaModel {
       this.donoEmpresa, //
       this.categoria, //
       this.lat,
+      this.subcategoria,
       this.ofertas,
       this.lon}) {
     if (dias == null)
@@ -60,6 +61,7 @@ class PerfilEmpresaModel {
   String senha;
   String estado; //
   String categoria; //
+  String subcategoria;
   String site; //
   double lat; //
   double lon; //
@@ -82,6 +84,7 @@ class PerfilEmpresaModel {
       lon: json['longitude'],
       nomeEmpresa: json['nomeEmpresa'],
       numero: json['numero'],
+      subcategoria: json['subcategoria'],
       site: json['site'],
       categoria: json['categoria'],
       bairro: json['bairro'],
@@ -107,6 +110,7 @@ class PerfilEmpresaModel {
         'nomeEmpresa': nomeEmpresa,
         'numero': numero,
         'site': site,
+        'subcategoria': subcategoria,
         'categoria': categoria,
         'dias': dias,
         'horarios': horarios,
@@ -119,7 +123,7 @@ class PerfilEmpresaModel {
         'ofertas': ofertas,
       };
 
-  PerfilEmpresaModel fromObj({
+  PerfilEmpresaModel copyWith({
     String bairro,
     String categoria,
     String cep,
@@ -136,6 +140,7 @@ class PerfilEmpresaModel {
     String nomeEmpresa,
     String numero,
     String site,
+    String subcategoria,
     String telefone,
     int ofertas,
   }) {
@@ -147,6 +152,7 @@ class PerfilEmpresaModel {
       donoEmpresa: donoEmpresa ?? this.donoEmpresa,
       email: email ?? this.email,
       empresaID: this.empresaID,
+      subcategoria: subcategoria ?? this.subcategoria,
       estado: estado ?? this.estado,
       foto: foto ?? this.foto,
       horarios: horarios ?? this.horarios,

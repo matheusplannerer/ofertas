@@ -134,7 +134,7 @@ abstract class _PerfilEmpresaControllerBase with Store {
       empresa?.donoEmpresa == appController.authInfos.uid);
   @computed
   bool get hasCompany {
-    if (appController.userInfos.empresaPerfil != null) {
+    if (appController.userInfos?.empresaPerfil != null) {
       return true;
     } else
       return false;

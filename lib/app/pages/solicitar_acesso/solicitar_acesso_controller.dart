@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 
 part 'solicitar_acesso_controller.g.dart';
@@ -8,6 +9,13 @@ class SolicitarAcessoController = _SolicitarAcessoControllerBase
     with _$SolicitarAcessoController;
 
 abstract class _SolicitarAcessoControllerBase with Store {
+  PageController pageController = PageController();
+
+  void nextPage() {
+    pageController.animateToPage(1,
+        duration: Duration(milliseconds: 250), curve: Curves.linear);
+  }
+
   @observable
   String nome = '';
   @observable
@@ -114,7 +122,7 @@ abstract class _SolicitarAcessoControllerBase with Store {
       await _registerRequest();
       return true;
     } catch (e) {
-      return false;
+      return throw e;
     }
   }
 
@@ -122,12 +130,19 @@ abstract class _SolicitarAcessoControllerBase with Store {
   Future _registerRequest() async {
     var id =
         Firestore.instance.collection('solicitacoes').document().documentID;
-    return Firestore.instance.collection('solicitacoes').document(id).setData({
-      'nome': nome,
-      'contato': contato,
-      'email': email,
-      'empresa': empresa,
-      'id': id
-    });
+    try {
+      return Firestore.instance
+          .collection('solicitacoes')
+          .document(id)
+          .setData({
+        'nome': nome,
+        'contato': contato,
+        'email': email,
+        'empresa': empresa,
+        'id': id
+      });
+    } catch (e) {
+      return throw e;
+    }
   }
 }

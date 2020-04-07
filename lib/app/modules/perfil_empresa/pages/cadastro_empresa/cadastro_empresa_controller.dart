@@ -37,6 +37,7 @@ abstract class _CadastroEmpresaBase with Store {
   @action
   void setTipo(String value) {
     signUpCompanyController.setTipo(value);
+    signUpCompanyController.generateSubcategoria(value);
   }
 
   @action
@@ -83,6 +84,10 @@ abstract class _CadastroEmpresaBase with Store {
   void setSite(String value) {
     signUpCompanyController.setSite(value);
   }
+
+  @action
+  void setSubcategoria(String value) =>
+      signUpCompanyController.setSubcategoria(value);
 
   @action
   void validateAll(String fbUid, String empID) {

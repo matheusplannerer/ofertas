@@ -157,6 +157,34 @@ class _PerfilEmpresaPageState
       builder: (_) {
         if (!appController.hasCompany) return NovaEmpresaPage();
         return Scaffold(
+          // endDrawer: Drawer(
+          //   child: ListView(
+          //     children: <Widget>[
+          //       if (!controller.appController.signedIn)
+          //         ListTile(
+          //           title: Row(
+          //             children: <Widget>[
+          //               Icon(Icons.store,
+          //                   color: Colors.orange.shade600, size: 30),
+          //               Padding(
+          //                 padding: EdgeInsets.only(left: 20.0),
+          //                 child: Text(
+          //                   '',
+          //                   style: TextStyle(
+          //                       fontFamily: "Domine-Bold",
+          //                       fontSize: 16,
+          //                       color: Colors.black87,
+          //                       letterSpacing: .3),
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          //           onTap: () {},
+          //         ),
+          //       Divider(),
+          //     ],
+          //   ),
+          // ),
           appBar: GradientAppBar(
             gradient: LinearGradient(
               colors: [

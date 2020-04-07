@@ -28,45 +28,21 @@ abstract class _SignUpCompanyControllerBase with Store {
   List<String> categorias = [
     "Agro, Comércio e Indústria",
     "Alimentos e Bebidas",
-    "Animais",
-    "Antiguidades",
-    "Arte e Artesanato",
-    "Artigos Religiosos",
-    "Bebes",
-    "Brinquedos",
-    "Calçados, Roupas e Bolsas",
-    "Câmeras e Acessorios",
     "Casa, Móveis e Decoração",
-    "Celular e Telefone",
-    "Coleções e Comics",
-    "Construção",
-    "Diversos e Outros",
-    "Educação",
-    "Eletrônicos",
-    "Eletrodomésticos",
-    "Esportes",
-    "Festas e Eventos",
-    "Filme e seriados",
-    "Gráficas e Impressão",
-    "Games e Jogos",
-    "Informática",
-    "Imóveis",
-    "Jóias e Relógios",
-    "Limpeza",
-    "Livros",
-    "Marketing e Internet",
-    "Motoristas Particulares",
-    "Música",
-    "Saúde e Beleza",
-    "Uso Pessoal",
-    "Utensílios Domésticos",
-    "Veículos",
-    "Viagens e Turismo"
   ];
 
-  List<DropdownMenuItem> categoriasAux = [];
+  List<List<String>> subcategorias = [
+    ['Sub agro/comércio/indústria'],
+    ['Japonesa', 'Árabe', 'Saladas'],
+    ['Tapetes', 'Móveis planejados', 'Imobiliaria'],
+  ];
+
+  List<DropdownMenuItem<String>> categoriasAux = [];
 
   //Observables
+  @observable
+  ObservableList<DropdownMenuItem<String>> subcategoriasAux =
+      <DropdownMenuItem<String>>[].asObservable();
   @observable
   TextEditingController nomeUnidadeController = TextEditingController();
   @observable
@@ -114,6 +90,8 @@ abstract class _SignUpCompanyControllerBase with Store {
   String _email = '';
   @observable
   String _site = '';
+  @observable
+  String _subcategoria;
 
   @observable
   String textErroNomeUnidade = '';
@@ -137,6 +115,8 @@ abstract class _SignUpCompanyControllerBase with Store {
   String textErroEmail = '';
   @observable
   String textErroSite = '';
+  @observable
+  String textErroSubcategoria = '';
 
   @observable
   bool erroNomeUnidade = false;
@@ -160,6 +140,8 @@ abstract class _SignUpCompanyControllerBase with Store {
   bool erroEmail = false;
   @observable
   bool erroSite = false;
+  @observable
+  bool erroSubcategoria = false;
 
   @computed
   String get nomeUnidade => _nomeUnidade;
@@ -183,6 +165,15 @@ abstract class _SignUpCompanyControllerBase with Store {
   String get email => _email;
   @computed
   String get site => _site;
+  @computed
+  ObservableList<DropdownMenuItem<String>> get subcategoria {
+    var aux = generateSubcategoria(tipo);
+    return aux;
+  }
+
+  @computed
+  String get subCategoriaString => _subcategoria;
+  // _subcategoria;
 
   @computed
   bool get hasError {
@@ -196,6 +187,7 @@ abstract class _SignUpCompanyControllerBase with Store {
         erroNumero ||
         erroSite ||
         erroTelefone ||
+        erroSubcategoria ||
         erroTipo) {
       return true;
     }
@@ -256,6 +248,52 @@ abstract class _SignUpCompanyControllerBase with Store {
   void setSite(String value) {
     _site = value;
   }
+
+  @action
+  ObservableList<DropdownMenuItem<String>> generateSubcategoria(String value) {
+    _subcategoria = null;
+    subcategoriasAux = <DropdownMenuItem<String>>[].asObservable();
+    if (_tipo == "Agro, Comércio e Indústria") {
+      ObservableList<DropdownMenuItem<String>> aux =
+          <DropdownMenuItem<String>>[].asObservable();
+      for (var i = 0; i < subcategorias[0].length; i++) {
+        DropdownMenuItem<String> auxItem = DropdownMenuItem<String>(
+          child: Text(subcategorias[0][i]),
+          value: subcategorias[0][i],
+        );
+
+        subcategoriasAux.add(auxItem);
+      }
+      return subcategoriasAux;
+    } else if (_tipo == "Alimentos e Bebidas") {
+      ObservableList<DropdownMenuItem<String>> aux =
+          <DropdownMenuItem<String>>[].asObservable();
+      for (var i = 0; i < subcategorias[1].length; i++) {
+        DropdownMenuItem<String> auxItem = DropdownMenuItem<String>(
+          child: Text(subcategorias[1][i]),
+          value: subcategorias[1][i],
+        );
+
+        subcategoriasAux.add(auxItem);
+      }
+      return subcategoriasAux;
+    } else {
+      ObservableList<DropdownMenuItem<String>> aux =
+          <DropdownMenuItem<String>>[].asObservable();
+      for (var i = 0; i < subcategorias[2].length; i++) {
+        DropdownMenuItem<String> auxItem = DropdownMenuItem<String>(
+          child: Text(subcategorias[2][i]),
+          value: subcategorias[2][i],
+        );
+
+        subcategoriasAux.add(auxItem);
+      }
+      return subcategoriasAux;
+    }
+  }
+
+  @action
+  void setSubcategoria(String value) => _subcategoria = value;
 
   @action
   void _validateNomeUnidade() {
@@ -382,6 +420,7 @@ abstract class _SignUpCompanyControllerBase with Store {
     cadastro.numero = _numero;
     cadastro.site = _site;
     cadastro.telefone = _telefone;
+    cadastro.subcategoria = _subcategoria;
   }
 
   @action

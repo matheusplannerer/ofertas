@@ -1,0 +1,4 @@
+lib/app/modules/perfil_empresa/pages/edit_infos/edit_infos_page.dart
+test/app/modules/perfil_empresa/pages/edit_infos/edit_infos_page_test.dart
+lib/app/modules/perfil_empresa/pages/edit_infos/edit_infos_controller.dart
+test/app/modules/perfil_empresa/pages/edit_infos/edit_infos_controller_test.dart

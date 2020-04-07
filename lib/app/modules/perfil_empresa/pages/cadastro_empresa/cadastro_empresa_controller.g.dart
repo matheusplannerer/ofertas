@@ -123,6 +123,16 @@ mixin _$CadastroEmpresaController on _CadastroEmpresaBase, Store {
   }
 
   @override
+  void setSubcategoria(String value) {
+    final _$actionInfo = _$_CadastroEmpresaBaseActionController.startAction();
+    try {
+      return super.setSubcategoria(value);
+    } finally {
+      _$_CadastroEmpresaBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void validateAll(String fbUid, String empID) {
     final _$actionInfo = _$_CadastroEmpresaBaseActionController.startAction();
     try {

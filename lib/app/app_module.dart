@@ -1,3 +1,5 @@
+import 'package:ofertas/app/pages/solicitar_acesso/components/page_two/page_two_controller.dart';
+import 'package:ofertas/app/pages/solicitar_acesso/components/page_one/page_one_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa_feed/perfil_empresa_feed_module.dart';
 import 'package:ofertas/app/pages/solicitar_acesso/solicitar_acesso_controller.dart';
@@ -37,6 +39,8 @@ import 'package:ofertas/app/app_widget.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
+        Bind((i) => PageTwoController()),
+        Bind((i) => PageOneController()),
         Bind((i) => AuthController()),
         Bind<IAuthRepository>((i) => FirebaseAuthRepo()),
         Bind<IFetchRepository>((i) => FirebaseFetchRepository()),

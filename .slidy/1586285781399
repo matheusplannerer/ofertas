@@ -1,0 +1,4 @@
+lib/app/pages/solicitar_acesso/components/page_one/page_one_widget.dart
+test/app/pages/solicitar_acesso/components/page_one/page_one_widget_test.dart
+lib/app/pages/solicitar_acesso/components/page_one/page_one_controller.dart
+test/app/pages/solicitar_acesso/components/page_one/page_one_controller_test.dart

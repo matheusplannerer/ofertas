@@ -76,10 +76,12 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
             builder: (_) {
               return Container(
                 decoration: BoxDecoration(
+                  border: Border.all(),
                   borderRadius: BorderRadius.circular(25),
                 ),
-                alignment: Alignment.center,
+                alignment: Alignment.centerLeft,
                 child: DropdownButton<String>(
+                  isExpanded: true,
                   hint: Text("CATEGORIA"),
                   onChanged: controller.setTipo,
                   value: controller.signUpCompanyController.tipo,
@@ -94,6 +96,36 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
           if (controller.signUpCompanyController.erroTipo)
             Text(
               "Escolha uma categoria",
+              style: TextStyle(color: Colors.red),
+              textAlign: TextAlign.left,
+            ),
+          Padding(
+            padding: EdgeInsets.only(top: 25.0),
+          ),
+          Observer(
+            builder: (_) {
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                alignment: Alignment.centerLeft,
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  hint: Text("SUBCATEGORIA"),
+                  onChanged: controller.setSubcategoria,
+                  value: controller.signUpCompanyController.subCategoriaString,
+                  icon: Icon(Icons.list),
+                  items: [
+                    ...controller.signUpCompanyController.subcategoriasAux,
+                  ],
+                ),
+              );
+            },
+          ),
+          if (controller.signUpCompanyController.erroTipo)
+            Text(
+              "Escolha uma subcategoria",
               style: TextStyle(color: Colors.red),
               textAlign: TextAlign.left,
             ),
