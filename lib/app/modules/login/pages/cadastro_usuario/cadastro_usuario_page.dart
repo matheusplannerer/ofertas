@@ -46,8 +46,8 @@ class _CadastroUsuarioPageState
                     SizedBox(height: 30),
                     TextField(
                       decoration: InputDecoration(
-                        errorText: controller.signUpController.erroNome
-                            ? controller.signUpController.textErroValidateNome
+                        errorText: controller.erro.erroNome
+                            ? controller.erro.textErroNome
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
@@ -66,9 +66,8 @@ class _CadastroUsuarioPageState
                       onChanged: controller.setContato,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        errorText: controller.signUpController.erroContato
-                            ? controller
-                                .signUpController.textErroValidateContato
+                        errorText: controller.erro.erroContato
+                            ? controller.erro.textErroContato
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
@@ -85,8 +84,8 @@ class _CadastroUsuarioPageState
                     TextField(
                       onChanged: controller.setEmail,
                       decoration: InputDecoration(
-                        errorText: controller.signUpController.erroEmail
-                            ? controller.signUpController.textErroValidateEmail
+                        errorText: controller.erro.erroEmail
+                            ? controller.erro.textErroEmail
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
@@ -103,8 +102,8 @@ class _CadastroUsuarioPageState
                       obscureText: true,
                       onChanged: controller.setSenha,
                       decoration: InputDecoration(
-                        errorText: controller.signUpController.erroSenha
-                            ? controller.signUpController.textErroValidateSenha
+                        errorText: controller.erro.erroSenha
+                            ? controller.erro.textErroSenha
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
@@ -124,8 +123,8 @@ class _CadastroUsuarioPageState
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
                         labelText: 'Confirme sua senha',
-                        errorText: controller.signUpController.erroSenha
-                            ? controller.signUpController.textErroValidateSenha
+                        errorText: controller.erro.erroSenha
+                            ? controller.erro.textErroSenha
                             : null,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -137,38 +136,16 @@ class _CadastroUsuarioPageState
                     ),
                     ButtonWidget(
                       onTap: () async {
-                        // antes era onPressed, não sei se muda algo
-
                         controller.validateFields();
-
                         if (controller.hasError) return;
-
                         showLoadingDialog(tapDismiss: false);
-                        var fbUser = await controller.signUpController
-                            .createUserWithEmailAndPass();
+                        await controller.signUp();
                         hideLoadingDialog();
-                        //Deu bom
-                        if (fbUser is FirebaseUser) {
-                          Modular.to.pushReplacementNamed('/home');
-                          return;
-                        }
                       },
                       height: 60,
                       width: MediaQuery.of(context).size.width - 60,
                       text: "AVANÇAR",
                       margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
-                    ),
-                    Observer(
-                      builder: (_) {
-                        if (controller.signUpController.erroCadastro != null)
-                          return Container(
-                            margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                            child:
-                                Text(controller.signUpController.erroCadastro),
-                          );
-
-                        return Container();
-                      },
                     ),
                   ],
                 );

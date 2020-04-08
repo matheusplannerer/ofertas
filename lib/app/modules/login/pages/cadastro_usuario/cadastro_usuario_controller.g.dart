@@ -15,6 +15,64 @@ mixin _$CadastroUsuarioController on _CadastroUsuarioBase, Store {
   bool get hasError =>
       (_$hasErrorComputed ??= Computed<bool>(() => super.hasError)).value;
 
+  final _$erroAtom = Atom(name: '_CadastroUsuarioBase.erro');
+
+  @override
+  ErroCadastroModel get erro {
+    _$erroAtom.context.enforceReadPolicy(_$erroAtom);
+    _$erroAtom.reportObserved();
+    return super.erro;
+  }
+
+  @override
+  set erro(ErroCadastroModel value) {
+    _$erroAtom.context.conditionallyRunInAction(() {
+      super.erro = value;
+      _$erroAtom.reportChanged();
+    }, _$erroAtom, name: '${_$erroAtom.name}_set');
+  }
+
+  final _$_userInfosAtom = Atom(name: '_CadastroUsuarioBase._userInfos');
+
+  @override
+  UserModel get _userInfos {
+    _$_userInfosAtom.context.enforceReadPolicy(_$_userInfosAtom);
+    _$_userInfosAtom.reportObserved();
+    return super._userInfos;
+  }
+
+  @override
+  set _userInfos(UserModel value) {
+    _$_userInfosAtom.context.conditionallyRunInAction(() {
+      super._userInfos = value;
+      _$_userInfosAtom.reportChanged();
+    }, _$_userInfosAtom, name: '${_$_userInfosAtom.name}_set');
+  }
+
+  final _$confirmaSenhaAtom = Atom(name: '_CadastroUsuarioBase.confirmaSenha');
+
+  @override
+  String get confirmaSenha {
+    _$confirmaSenhaAtom.context.enforceReadPolicy(_$confirmaSenhaAtom);
+    _$confirmaSenhaAtom.reportObserved();
+    return super.confirmaSenha;
+  }
+
+  @override
+  set confirmaSenha(String value) {
+    _$confirmaSenhaAtom.context.conditionallyRunInAction(() {
+      super.confirmaSenha = value;
+      _$confirmaSenhaAtom.reportChanged();
+    }, _$confirmaSenhaAtom, name: '${_$confirmaSenhaAtom.name}_set');
+  }
+
+  final _$signUpAsyncAction = AsyncAction('signUp');
+
+  @override
+  Future<FirebaseUser> signUp() {
+    return _$signUpAsyncAction.run(() => super.signUp());
+  }
+
   final _$_CadastroUsuarioBaseActionController =
       ActionController(name: '_CadastroUsuarioBase');
 
@@ -69,10 +127,50 @@ mixin _$CadastroUsuarioController on _CadastroUsuarioBase, Store {
   }
 
   @override
-  void setErroCadastro(String value) {
+  void _resetErrors() {
     final _$actionInfo = _$_CadastroUsuarioBaseActionController.startAction();
     try {
-      return super.setErroCadastro(value);
+      return super._resetErrors();
+    } finally {
+      _$_CadastroUsuarioBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _validateNomeCompleto() {
+    final _$actionInfo = _$_CadastroUsuarioBaseActionController.startAction();
+    try {
+      return super._validateNomeCompleto();
+    } finally {
+      _$_CadastroUsuarioBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _validateEmail() {
+    final _$actionInfo = _$_CadastroUsuarioBaseActionController.startAction();
+    try {
+      return super._validateEmail();
+    } finally {
+      _$_CadastroUsuarioBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _validateContato() {
+    final _$actionInfo = _$_CadastroUsuarioBaseActionController.startAction();
+    try {
+      return super._validateContato();
+    } finally {
+      _$_CadastroUsuarioBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _validateSenha() {
+    final _$actionInfo = _$_CadastroUsuarioBaseActionController.startAction();
+    try {
+      return super._validateSenha();
     } finally {
       _$_CadastroUsuarioBaseActionController.endAction(_$actionInfo);
     }
@@ -90,7 +188,8 @@ mixin _$CadastroUsuarioController on _CadastroUsuarioBase, Store {
 
   @override
   String toString() {
-    final string = 'hasError: ${hasError.toString()}';
+    final string =
+        'erro: ${erro.toString()},confirmaSenha: ${confirmaSenha.toString()},hasError: ${hasError.toString()}';
     return '{$string}';
   }
 }

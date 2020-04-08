@@ -6,10 +6,15 @@ import 'package:ofertas/app/shared/repositories/sign_up_user/repositories/signup
 class SignUpRepository implements ISignUpRepository {
   @override
   Future<AuthResult> createUserWithEmailAndPassword(
-      String email, String password) {
+      String email, String password) async {
+    try {
+      var auth = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      return auth;
+    } catch (e) {
+      return throw e;
+    }
     // TODO: implement createUserWithEmailAndLink
-    return FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
   }
 
   @override
@@ -32,6 +37,8 @@ class SignUpRepository implements ISignUpRepository {
           .collection('usuarios')
           .document(userModel.usuarioID)
           .setData(userModel.toJson());
-    } catch (e) {}
+    } catch (e) {
+      return throw e;
+    }
   }
 }
