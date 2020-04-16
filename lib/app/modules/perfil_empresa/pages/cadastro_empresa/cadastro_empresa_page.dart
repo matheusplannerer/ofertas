@@ -8,7 +8,6 @@ import 'package:ofertas/app/modules/perfil_empresa/pages/cadastro_empresa/cadast
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
-import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class CadastroEmpresaPage extends StatefulWidget {
@@ -104,22 +103,22 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
           ),
           Observer(
             builder: (_) {
-              return Container(
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(25),
+              return TextField(
+                controller:
+                    controller.signUpCompanyController.subCategoriaController,
+                decoration: InputDecoration(
+                  errorText: controller.signUpCompanyController.erroSubcategoria
+                      ? controller.signUpCompanyController.textErroSubcategoria
+                      : null,
+                  labelStyle: TextStyle(color: Colors.grey[700], fontSize: 15),
+                  labelText: 'SUBCATEGORIA',
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(),
+                  ),
                 ),
-                alignment: Alignment.centerLeft,
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  hint: Text("SUBCATEGORIA"),
-                  onChanged: controller.setSubcategoria,
-                  value: controller.signUpCompanyController.subCategoriaString,
-                  icon: Icon(Icons.list),
-                  items: [
-                    ...controller.signUpCompanyController.subcategoriasAux,
-                  ],
-                ),
+                keyboardType: TextInputType.text,
               );
             },
           ),

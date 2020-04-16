@@ -110,6 +110,13 @@ class PageTwoWidget extends StatelessWidget {
                     } catch (e) {
                       hideLoadingDialog();
                       print("ERRO!");
+                      if (e.code == "EMAIL_ALREADY_REGISTERED") {
+                        await Alert(
+                          type: AlertType.info,
+                          title: "EMAIL JÁ CADASTRADO",
+                          context: context,
+                        ).show();
+                      }
                       await Alert(
                         type: AlertType.error,
                         title: "Verifique sua conexão e tente novamente",

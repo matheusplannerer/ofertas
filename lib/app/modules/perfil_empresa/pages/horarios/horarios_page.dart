@@ -6,7 +6,6 @@ import 'package:load/load.dart';
 import 'package:ofertas/app/modules/perfil_empresa/pages/horarios/horarios_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
-import 'package:provider/provider.dart';
 
 class HorariosPage extends StatefulWidget {
   final PerfilEmpresaModel empresa;

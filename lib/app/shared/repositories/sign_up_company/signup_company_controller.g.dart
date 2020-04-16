@@ -65,43 +65,17 @@ mixin _$SignUpCompanyController on _SignUpCompanyControllerBase, Store {
   @override
   String get site =>
       (_$siteComputed ??= Computed<String>(() => super.site)).value;
-  Computed<ObservableList<DropdownMenuItem<String>>> _$subcategoriaComputed;
+  Computed<String> _$subcategoriaComputed;
 
   @override
-  ObservableList<DropdownMenuItem<String>> get subcategoria =>
-      (_$subcategoriaComputed ??=
-              Computed<ObservableList<DropdownMenuItem<String>>>(
-                  () => super.subcategoria))
+  String get subcategoria =>
+      (_$subcategoriaComputed ??= Computed<String>(() => super.subcategoria))
           .value;
-  Computed<String> _$subCategoriaStringComputed;
-
-  @override
-  String get subCategoriaString => (_$subCategoriaStringComputed ??=
-          Computed<String>(() => super.subCategoriaString))
-      .value;
   Computed<bool> _$hasErrorComputed;
 
   @override
   bool get hasError =>
       (_$hasErrorComputed ??= Computed<bool>(() => super.hasError)).value;
-
-  final _$subcategoriasAuxAtom =
-      Atom(name: '_SignUpCompanyControllerBase.subcategoriasAux');
-
-  @override
-  ObservableList<DropdownMenuItem<String>> get subcategoriasAux {
-    _$subcategoriasAuxAtom.context.enforceReadPolicy(_$subcategoriasAuxAtom);
-    _$subcategoriasAuxAtom.reportObserved();
-    return super.subcategoriasAux;
-  }
-
-  @override
-  set subcategoriasAux(ObservableList<DropdownMenuItem<String>> value) {
-    _$subcategoriasAuxAtom.context.conditionallyRunInAction(() {
-      super.subcategoriasAux = value;
-      _$subcategoriasAuxAtom.reportChanged();
-    }, _$subcategoriasAuxAtom, name: '${_$subcategoriasAuxAtom.name}_set');
-  }
 
   final _$nomeUnidadeControllerAtom =
       Atom(name: '_SignUpCompanyControllerBase.nomeUnidadeController');
@@ -121,6 +95,26 @@ mixin _$SignUpCompanyController on _SignUpCompanyControllerBase, Store {
       _$nomeUnidadeControllerAtom.reportChanged();
     }, _$nomeUnidadeControllerAtom,
         name: '${_$nomeUnidadeControllerAtom.name}_set');
+  }
+
+  final _$subCategoriaControllerAtom =
+      Atom(name: '_SignUpCompanyControllerBase.subCategoriaController');
+
+  @override
+  TextEditingController get subCategoriaController {
+    _$subCategoriaControllerAtom.context
+        .enforceReadPolicy(_$subCategoriaControllerAtom);
+    _$subCategoriaControllerAtom.reportObserved();
+    return super.subCategoriaController;
+  }
+
+  @override
+  set subCategoriaController(TextEditingController value) {
+    _$subCategoriaControllerAtom.context.conditionallyRunInAction(() {
+      super.subCategoriaController = value;
+      _$subCategoriaControllerAtom.reportChanged();
+    }, _$subCategoriaControllerAtom,
+        name: '${_$subCategoriaControllerAtom.name}_set');
   }
 
   final _$tipoControllerAtom =
@@ -1107,17 +1101,6 @@ mixin _$SignUpCompanyController on _SignUpCompanyControllerBase, Store {
   }
 
   @override
-  ObservableList<DropdownMenuItem<String>> generateSubcategoria(String value) {
-    final _$actionInfo =
-        _$_SignUpCompanyControllerBaseActionController.startAction();
-    try {
-      return super.generateSubcategoria(value);
-    } finally {
-      _$_SignUpCompanyControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void setSubcategoria(String value) {
     final _$actionInfo =
         _$_SignUpCompanyControllerBaseActionController.startAction();
@@ -1263,7 +1246,7 @@ mixin _$SignUpCompanyController on _SignUpCompanyControllerBase, Store {
   @override
   String toString() {
     final string =
-        'subcategoriasAux: ${subcategoriasAux.toString()},nomeUnidadeController: ${nomeUnidadeController.toString()},tipoController: ${tipoController.toString()},cepController: ${cepController.toString()},logradouroController: ${logradouroController.toString()},bairroController: ${bairroController.toString()},estadoController: ${estadoController.toString()},numeroController: ${numeroController.toString()},complementoController: ${complementoController.toString()},telefoneController: ${telefoneController.toString()},emailController: ${emailController.toString()},siteController: ${siteController.toString()},cadastro: ${cadastro.toString()},textErroNomeUnidade: ${textErroNomeUnidade.toString()},textErroTipo: ${textErroTipo.toString()},textErroCep: ${textErroCep.toString()},textErroLogradouro: ${textErroLogradouro.toString()},textErroBairro: ${textErroBairro.toString()},textErroEstado: ${textErroEstado.toString()},textErroNumero: ${textErroNumero.toString()},textErroComplemento: ${textErroComplemento.toString()},textErroTelefone: ${textErroTelefone.toString()},textErroEmail: ${textErroEmail.toString()},textErroSite: ${textErroSite.toString()},textErroSubcategoria: ${textErroSubcategoria.toString()},erroNomeUnidade: ${erroNomeUnidade.toString()},erroTipo: ${erroTipo.toString()},erroCep: ${erroCep.toString()},erroLogradouro: ${erroLogradouro.toString()},erroBairro: ${erroBairro.toString()},erroEstado: ${erroEstado.toString()},erroNumero: ${erroNumero.toString()},erroComplemento: ${erroComplemento.toString()},erroTelefone: ${erroTelefone.toString()},erroEmail: ${erroEmail.toString()},erroSite: ${erroSite.toString()},erroSubcategoria: ${erroSubcategoria.toString()},nomeUnidade: ${nomeUnidade.toString()},tipo: ${tipo.toString()},cep: ${cep.toString()},logradouro: ${logradouro.toString()},bairro: ${bairro.toString()},estado: ${estado.toString()},numero: ${numero.toString()},complemento: ${complemento.toString()},telefone: ${telefone.toString()},email: ${email.toString()},site: ${site.toString()},subcategoria: ${subcategoria.toString()},subCategoriaString: ${subCategoriaString.toString()},hasError: ${hasError.toString()}';
+        'nomeUnidadeController: ${nomeUnidadeController.toString()},subCategoriaController: ${subCategoriaController.toString()},tipoController: ${tipoController.toString()},cepController: ${cepController.toString()},logradouroController: ${logradouroController.toString()},bairroController: ${bairroController.toString()},estadoController: ${estadoController.toString()},numeroController: ${numeroController.toString()},complementoController: ${complementoController.toString()},telefoneController: ${telefoneController.toString()},emailController: ${emailController.toString()},siteController: ${siteController.toString()},cadastro: ${cadastro.toString()},textErroNomeUnidade: ${textErroNomeUnidade.toString()},textErroTipo: ${textErroTipo.toString()},textErroCep: ${textErroCep.toString()},textErroLogradouro: ${textErroLogradouro.toString()},textErroBairro: ${textErroBairro.toString()},textErroEstado: ${textErroEstado.toString()},textErroNumero: ${textErroNumero.toString()},textErroComplemento: ${textErroComplemento.toString()},textErroTelefone: ${textErroTelefone.toString()},textErroEmail: ${textErroEmail.toString()},textErroSite: ${textErroSite.toString()},textErroSubcategoria: ${textErroSubcategoria.toString()},erroNomeUnidade: ${erroNomeUnidade.toString()},erroTipo: ${erroTipo.toString()},erroCep: ${erroCep.toString()},erroLogradouro: ${erroLogradouro.toString()},erroBairro: ${erroBairro.toString()},erroEstado: ${erroEstado.toString()},erroNumero: ${erroNumero.toString()},erroComplemento: ${erroComplemento.toString()},erroTelefone: ${erroTelefone.toString()},erroEmail: ${erroEmail.toString()},erroSite: ${erroSite.toString()},erroSubcategoria: ${erroSubcategoria.toString()},nomeUnidade: ${nomeUnidade.toString()},tipo: ${tipo.toString()},cep: ${cep.toString()},logradouro: ${logradouro.toString()},bairro: ${bairro.toString()},estado: ${estado.toString()},numero: ${numero.toString()},complemento: ${complemento.toString()},telefone: ${telefone.toString()},email: ${email.toString()},site: ${site.toString()},subcategoria: ${subcategoria.toString()},hasError: ${hasError.toString()}';
     return '{$string}';
   }
 }

@@ -10,7 +10,6 @@ import 'package:ofertas/app/modules/login/pages/cadastro_usuario/cadastro_usuari
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
-import 'package:provider/provider.dart';
 
 class CadastroUsuarioPage extends StatefulWidget {
   final String title;
@@ -23,6 +22,13 @@ class CadastroUsuarioPage extends StatefulWidget {
 
 class _CadastroUsuarioPageState
     extends ModularState<CadastroUsuarioPage, CadastroUsuarioController> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.setEmail(controller.inserirCodigoController.email);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +95,12 @@ class _CadastroUsuarioPageState
                             : null,
                         labelStyle:
                             TextStyle(color: Colors.black38, fontSize: 15),
-                        labelText: 'E-mail',
+                        hintText: controller.inserirCodigoController.email,
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),

@@ -6,7 +6,6 @@ import 'package:ofertas/app/modules/feed/components/ofertas_view/ofertas_view_co
 import 'package:ofertas/app/modules/feed/feed_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
-import 'package:provider/provider.dart';
 
 class OfertasViewWidget extends StatefulWidget {
   final OfertaModel oferta;

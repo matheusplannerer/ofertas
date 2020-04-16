@@ -36,10 +36,10 @@ mixin _$NavigationBarController on _NavigationBarBase, Store {
       ActionController(name: '_NavigationBarBase');
 
   @override
-  void setNavIndex(int value, GlobalService global) {
+  void setNavIndex(int value, bool signedIn) {
     final _$actionInfo = _$_NavigationBarBaseActionController.startAction();
     try {
-      return super.setNavIndex(value, global);
+      return super.setNavIndex(value, signedIn);
     } finally {
       _$_NavigationBarBaseActionController.endAction(_$actionInfo);
     }

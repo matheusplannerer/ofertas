@@ -9,7 +9,6 @@ import 'package:ofertas/app/modules/publicar_ofertas/components/concluir_publica
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
-import 'package:provider/provider.dart';
 
 class ConcluirPublicacaoPage extends StatefulWidget {
   final OfertaModel oferta;
@@ -40,7 +39,6 @@ class _ConcluirPublicacaoPageState extends State<ConcluirPublicacaoPage> {
 
   @override
   Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
     return Scaffold(
       appBar: GradientAppBar(
         gradient: LinearGradient(

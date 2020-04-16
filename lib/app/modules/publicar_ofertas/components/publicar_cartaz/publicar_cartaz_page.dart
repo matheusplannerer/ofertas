@@ -9,7 +9,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ofertas/app/modules/publicar_ofertas/components/publicar_cartaz/publicar_cartaz_controller.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
-import 'package:provider/provider.dart';
 
 class PublicarCartazPage extends StatefulWidget {
   final String empresaID;
@@ -33,7 +32,6 @@ class _PublicarCartazPageState extends State<PublicarCartazPage> {
 
   @override
   Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
     return Scaffold(
       body: Observer(
         builder: (_) {

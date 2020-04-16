@@ -6,6 +6,8 @@ abstract class ISignUpRepository {
   Future<AuthResult> createUserWithEmailAndPassword(
       String email, String password);
   Future createUserCollection(UserModel userModel);
+  Future<bool> validateVerificationID(String email, String id);
+  Future<void> updateSolicitacoesAceitas(UserModel user, String verificationID);
   createUserWithSMS();
   createUserWithEmailAndLink();
 }

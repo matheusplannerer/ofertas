@@ -4,8 +4,12 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:ofertas/app/modules/perfil_empresa/pages/edit_infos/edit_infos_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
+import 'package:ofertas/app/shared/models/endereco_model.dart';
+import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
+import 'package:ofertas/app/shared/repositories/sign_up_company/repositories/signup_company_repository.dart';
 import 'package:ofertas/app/shared/repositories/sign_up_company/signup_company_controller.dart';
 
 class EditInfosPage extends StatefulWidget {
@@ -19,10 +23,20 @@ class EditInfosPage extends StatefulWidget {
 class _EditInfosPageState extends State<EditInfosPage> {
   PerfilEmpresaController controller = Modular.get();
   SignUpCompanyController signUpCompanyController = Modular.get();
+  EditInfosController _editController = EditInfosController();
+
+  bool editable = true;
 
   //Mascaras
   var maskCep = MaskTextInputFormatter(
       filter: {"#": RegExp(r'[0-9]')}, mask: "#####-###");
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _editController.initEmpresa(controller.empresa);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +80,8 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                     //     Duration(seconds: 1));
                                     showLoadingDialog();
                                     await controller.uploadImage(
-                                      controller.empresa.empresaID,
-                                      controller.empresa.foto,
+                                      _editController.empresa.empresaID,
+                                      _editController.empresa.foto,
                                       img,
                                     );
                                     hideLoadingDialog();
@@ -83,8 +97,8 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                     //     Duration(seconds: 1));
                                     showLoadingDialog();
                                     await controller.uploadImage(
-                                      controller.empresa.empresaID,
-                                      controller.empresa.foto,
+                                      _editController.empresa.empresaID,
+                                      _editController.empresa.foto,
                                       img,
                                     );
                                     hideLoadingDialog();
@@ -104,15 +118,15 @@ class _EditInfosPageState extends State<EditInfosPage> {
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.orange, width: 2.0),
                       borderRadius: BorderRadius.circular(90),
-                      color: controller.empresa == null
+                      color: _editController.empresa == null
                           ? Colors.grey[300]
                           : Colors.transparent,
-                      image: controller.empresa != null
+                      image: _editController.empresa != null
                           ? DecorationImage(
                               fit: BoxFit.cover,
-                              image: controller.empresa.foto != null
+                              image: _editController.empresa.foto != null
                                   ? NetworkImage(
-                                      controller.empresa.foto,
+                                      _editController.empresa.foto,
                                     )
                                   : AssetImage(
                                       'assets/mogi.png',
@@ -141,11 +155,13 @@ class _EditInfosPageState extends State<EditInfosPage> {
                   textAlign: TextAlign.left,
                 ),
                 TextField(
+                  onChanged: (nome) =>
+                      _editController.empresa.nomeEmpresa = nome.toUpperCase(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    hintText: controller.empresa.nomeEmpresa,
+                    hintText: _editController.empresa.nomeEmpresa,
                     hintStyle: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w800),
                   ),
@@ -156,11 +172,13 @@ class _EditInfosPageState extends State<EditInfosPage> {
                   textAlign: TextAlign.left,
                 ),
                 TextField(
+                  onChanged: (email) => _editController.empresa.email =
+                      email.toLowerCase().trim(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    hintText: controller.empresa.email,
+                    hintText: _editController.empresa.email,
                     hintStyle: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w800),
                   ),
@@ -171,11 +189,13 @@ class _EditInfosPageState extends State<EditInfosPage> {
                   textAlign: TextAlign.left,
                 ),
                 TextField(
+                  onChanged: (contato) =>
+                      _editController.empresa.telefone = contato,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    hintText: controller.empresa.telefone,
+                    hintText: _editController.empresa.telefone,
                     hintStyle: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w800),
                   ),
@@ -194,6 +214,8 @@ class _EditInfosPageState extends State<EditInfosPage> {
                         builder: (_) {
                           return TextField(
                             inputFormatters: [maskCep],
+                            onChanged: (cep) =>
+                                _editController.empresa.cep = cep,
                             decoration: InputDecoration(
                               hintStyle: TextStyle(
                                   color: Colors.black,
@@ -203,7 +225,7 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                 borderRadius: BorderRadius.circular(25.0),
                                 borderSide: BorderSide(),
                               ),
-                              hintText: controller.empresa.cep,
+                              hintText: _editController.empresa.cep,
                             ),
                             keyboardType: TextInputType.number,
                           );
@@ -215,12 +237,18 @@ class _EditInfosPageState extends State<EditInfosPage> {
                         icon: Icon(Icons.search),
                         onPressed: () async {
                           //Validate cep
-                          // controller.signUpCompanyController.validateCep();
-                          // if (controller.signUpCompanyController.erroCep)
-                          //   return;
-                          // showLoadingDialog();
-                          // await controller.signUpCompanyController.fetchCep();
-                          // hideLoadingDialog();
+                          SignUpCompanyRepository _repo = Modular.get();
+                          showLoadingDialog();
+                          EnderecoModel data;
+                          try {
+                            data = await _repo.fetchCep(controller.empresa.cep);
+                            hideLoadingDialog();
+                            controller.empresa.bairro = data.bairro;
+                            controller.empresa.estado = data.uf;
+                            controller.empresa.logradouro = data.logradouro;
+                          } catch (e) {
+                            hideLoadingDialog();
+                          }
                         },
                       ),
                     )
@@ -232,18 +260,20 @@ class _EditInfosPageState extends State<EditInfosPage> {
                   textAlign: TextAlign.left,
                 ),
                 TextField(
+                  onChanged: (rua) =>
+                      _editController.empresa.logradouro = rua.toUpperCase(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    hintText: controller.empresa.logradouro,
+                    hintText: _editController.empresa.logradouro,
                     hintStyle: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w800),
                   ),
                 ),
                 SizedBox(height: 8),
                 Text(
-                  "  Endereço",
+                  "  Bairro",
                   textAlign: TextAlign.left,
                 ),
                 Row(
@@ -253,6 +283,8 @@ class _EditInfosPageState extends State<EditInfosPage> {
                       child: Observer(
                         builder: (_) {
                           return TextField(
+                            onChanged: (bairro) => _editController
+                                .empresa.bairro = bairro.toUpperCase(),
                             decoration: InputDecoration(
                               hintStyle: TextStyle(
                                   color: Colors.black,
@@ -262,7 +294,7 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                 borderRadius: BorderRadius.circular(25.0),
                                 borderSide: BorderSide(),
                               ),
-                              hintText: controller.empresa.bairro,
+                              hintText: _editController.empresa.bairro,
                             ),
                             keyboardType: TextInputType.text,
                           );
@@ -274,6 +306,8 @@ class _EditInfosPageState extends State<EditInfosPage> {
                       child: Observer(
                         builder: (_) {
                           return TextField(
+                            onChanged: (estado) => _editController
+                                .empresa.estado = estado.toUpperCase(),
                             decoration: InputDecoration(
                               hintStyle: TextStyle(
                                   color: Colors.black,
@@ -283,7 +317,7 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                 borderRadius: BorderRadius.circular(25.0),
                                 borderSide: BorderSide(),
                               ),
-                              hintText: controller.empresa.estado,
+                              hintText: _editController.empresa.estado,
                             ),
                             keyboardType: TextInputType.text,
                           );
@@ -300,6 +334,8 @@ class _EditInfosPageState extends State<EditInfosPage> {
                       child: Observer(
                         builder: (_) {
                           return TextField(
+                            onChanged: (complemento) => _editController.empresa
+                                .complemento = complemento.toUpperCase(),
                             decoration: InputDecoration(
                               hintStyle: TextStyle(
                                   color: Colors.black,
@@ -309,9 +345,10 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                 borderRadius: BorderRadius.circular(25.0),
                                 borderSide: BorderSide(),
                               ),
-                              hintText: controller.empresa.complemento != ""
-                                  ? controller.empresa.complemento
-                                  : "Complemento",
+                              hintText:
+                                  _editController.empresa.complemento != ""
+                                      ? _editController.empresa.complemento
+                                      : "Complemento",
                             ),
                             keyboardType: TextInputType.text,
                           );
@@ -323,6 +360,8 @@ class _EditInfosPageState extends State<EditInfosPage> {
                       child: Observer(
                         builder: (_) {
                           return TextField(
+                            onChanged: (numero) =>
+                                _editController.empresa.numero = numero,
                             decoration: InputDecoration(
                               hintStyle: TextStyle(
                                   color: Colors.black,
@@ -332,7 +371,7 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                 borderRadius: BorderRadius.circular(25.0),
                                 borderSide: BorderSide(),
                               ),
-                              hintText: controller.empresa.numero,
+                              hintText: _editController.empresa.numero,
                             ),
                             keyboardType: TextInputType.text,
                           );
@@ -347,23 +386,436 @@ class _EditInfosPageState extends State<EditInfosPage> {
                   textAlign: TextAlign.left,
                 ),
                 TextField(
+                  onChanged: (site) =>
+                      _editController.empresa.site = site.toLowerCase().trim(),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    hintText: controller.empresa.site != ""
-                        ? controller.empresa.site
+                    hintText: _editController.empresa.site != ""
+                        ? _editController.empresa.site
                         : "Site",
                     hintStyle: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w800),
                   ),
                 ),
                 SizedBox(height: 8),
+                Observer(
+                  builder: (_) {
+                    return SingleChildScrollView(
+                      child: DataTable(
+                        columnSpacing: 25,
+                        columns: [
+                          DataColumn(
+                            label: Text(
+                              "Dia",
+                              style: TextStyle(color: Colors.orange),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Abre às:",
+                              style: TextStyle(color: Colors.orange),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Fecha às:",
+                              style: TextStyle(color: Colors.orange),
+                            ),
+                          ),
+                        ],
+                        rows: [
+                          DataRow(
+                            selected: controller.horariosController.domingo,
+                            onSelectChanged: (value) {
+                              if (editable) {
+                                controller.horariosController.setDomingo(value);
+                              }
+                            },
+                            cells: [
+                              DataCell(
+                                Text("Domingo"),
+                              ),
+                              DataCell(
+                                Container(
+                                  width: 70,
+                                  height: 40,
+                                  child: TextField(
+                                    controller: controller.horariosController
+                                        .domingoTextFieldInicio,
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    inputFormatters: [
+                                      controller.horariosController.maskDomIni
+                                    ],
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller
+                                        .horariosController.domingoTextFieldFim,
+                                    inputFormatters: [
+                                      controller.horariosController.maskDomFim
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            selected: controller.horariosController.segunda,
+                            onSelectChanged: (value) {
+                              if (editable) {
+                                controller.horariosController.setSegunda(value);
+                              }
+                            },
+                            cells: [
+                              DataCell(
+                                Text("Segunda"),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller.horariosController
+                                        .segundaTextFieldInicio,
+                                    inputFormatters: [
+                                      controller.horariosController.maskSegIni
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller
+                                        .horariosController.segundaTextFieldFim,
+                                    inputFormatters: [
+                                      controller.horariosController.maskSegFim
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            selected: controller.horariosController.terca,
+                            onSelectChanged: (value) {
+                              if (editable) {
+                                controller.horariosController.setTerca(value);
+                              }
+                            },
+                            cells: [
+                              DataCell(Text("Terça")),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller.horariosController
+                                        .tercaTextFieldInicio,
+                                    inputFormatters: [
+                                      controller.horariosController.maskTerIni
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller
+                                        .horariosController.tercaTextFieldFim,
+                                    inputFormatters: [
+                                      controller.horariosController.maskTerFim
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            selected: controller.horariosController.quarta,
+                            onSelectChanged: (value) {
+                              if (editable) {
+                                controller.horariosController.setQuarta(value);
+                              }
+                            },
+                            cells: [
+                              DataCell(
+                                Text("Quarta"),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller.horariosController
+                                        .quartaTextFieldInicio,
+                                    inputFormatters: [
+                                      controller.horariosController.maskQuaIni
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller
+                                        .horariosController.quartaTextFieldFim,
+                                    inputFormatters: [
+                                      controller.horariosController.maskQuaFim
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            selected: controller.horariosController.quinta,
+                            onSelectChanged: (value) {
+                              if (editable) {
+                                controller.horariosController.setQuinta(value);
+                              }
+                            },
+                            cells: [
+                              DataCell(
+                                Text("Quinta"),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller.horariosController
+                                        .quintaTextFieldInicio,
+                                    inputFormatters: [
+                                      controller.horariosController.maskQuiIni
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller
+                                        .horariosController.quintaTextFieldFim,
+                                    inputFormatters: [
+                                      controller.horariosController.maskQuiFim
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            selected: controller.horariosController.sexta,
+                            onSelectChanged: (value) {
+                              if (editable) {
+                                controller.horariosController.setSexta(value);
+                              }
+                            },
+                            cells: [
+                              DataCell(
+                                Text("Sexta"),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller.horariosController
+                                        .sextaTextFieldInicio,
+                                    inputFormatters: [
+                                      controller.horariosController.maskSexIni
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller
+                                        .horariosController.sextaTextFieldFim,
+                                    inputFormatters: [
+                                      controller.horariosController.maskSexFim
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            selected: controller.horariosController.sabado,
+                            onSelectChanged: (value) {
+                              if (editable) {
+                                controller.horariosController.setSabado(value);
+                              }
+                            },
+                            cells: [
+                              DataCell(
+                                Text("Sábado"),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller.horariosController
+                                        .sabadoTextFieldInicio,
+                                    inputFormatters: [
+                                      controller.horariosController.maskSabIni
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  height: 40,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: controller
+                                        .horariosController.sabadoTextFieldFim,
+                                    inputFormatters: [
+                                      controller.horariosController.maskSabFim
+                                    ],
+                                    enabled: editable,
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.datetime,
+                                    decoration: InputDecoration(
+                                      hintText: '-',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
                 ButtonWidget(
                   height: 50,
                   margin: EdgeInsets.all(15),
                   width: MediaQuery.of(context).size.width - 80,
-                  onTap: () {},
+                  onTap: () async {
+                    showLoadingDialog(tapDismiss: false);
+                    try {
+                      await _editController.updateEmpresa();
+                      await controller.fetchPage();
+                      hideLoadingDialog();
+                      RouteController route = Modular.get();
+                      route.tab2Nav.pop();
+                    } catch (e) {
+                      hideLoadingDialog();
+                    }
+                  },
                   text: "SALVAR",
                 )
               ],

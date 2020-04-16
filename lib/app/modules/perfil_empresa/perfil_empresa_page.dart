@@ -19,7 +19,6 @@ import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
-import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 

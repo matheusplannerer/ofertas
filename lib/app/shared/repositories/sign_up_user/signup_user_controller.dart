@@ -33,4 +33,24 @@ abstract class _SignUpControllerBase with Store {
       return throw e;
     }
   }
+
+  @action
+  Future<bool> validateVerificationId(String email, String id) async {
+    try {
+      var isValid = await _signUpRepository.validateVerificationID(email, id);
+      return isValid;
+    } catch (e) {
+      return throw e;
+    }
+  }
+
+  @action
+  Future<void> updateSolicitacoesAceitas(
+      UserModel user, String verificationId) async {
+    try {
+      await _signUpRepository.updateSolicitacoesAceitas(user, verificationId);
+    } catch (e) {
+      return throw e;
+    }
+  }
 }

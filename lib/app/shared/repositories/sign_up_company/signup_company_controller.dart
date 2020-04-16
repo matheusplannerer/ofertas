@@ -26,25 +26,38 @@ abstract class _SignUpCompanyControllerBase with Store {
   }
 
   List<String> categorias = [
-    "Agro, Comércio e Indústria",
-    "Alimentos e Bebidas",
-    "Casa, Móveis e Decoração",
-  ];
-
-  List<List<String>> subcategorias = [
-    ['Sub agro/comércio/indústria'],
-    ['Japonesa', 'Árabe', 'Saladas'],
-    ['Tapetes', 'Móveis planejados', 'Imobiliaria'],
+    "Supermercados",
+    "Alimentação fora do lar e com delivery",
+    "Alimentação e Bebidas",
+    "Entretenimento e Lazer",
+    "Vestuário, Calçado e Acessórios",
+    "Serviços Residencias e Empresariais",
+    "Veículos e transporte",
+    "Beleza, Estética e Bem-estar",
+    "Mãe, Bebê e Criança",
+    "Animais",
+    "Varejo",
+    "Educação",
+    "Imóveis",
+    "Saúde",
+    "Financeiras",
+    "Construção, Reformas e Casa",
+    "Agronegócio",
+    "Indústria e Fábricas",
+    "Comunicação",
+    "Outros - Serviços",
+    "Outros - Produtos",
+    "Outros - Geral",
   ];
 
   List<DropdownMenuItem<String>> categoriasAux = [];
 
   //Observables
-  @observable
-  ObservableList<DropdownMenuItem<String>> subcategoriasAux =
-      <DropdownMenuItem<String>>[].asObservable();
+
   @observable
   TextEditingController nomeUnidadeController = TextEditingController();
+  @observable
+  TextEditingController subCategoriaController = TextEditingController();
   @observable
   TextEditingController tipoController = TextEditingController();
   @observable
@@ -91,7 +104,7 @@ abstract class _SignUpCompanyControllerBase with Store {
   @observable
   String _site = '';
   @observable
-  String _subcategoria;
+  String _subcategoria = '';
 
   @observable
   String textErroNomeUnidade = '';
@@ -166,14 +179,7 @@ abstract class _SignUpCompanyControllerBase with Store {
   @computed
   String get site => _site;
   @computed
-  ObservableList<DropdownMenuItem<String>> get subcategoria {
-    var aux = generateSubcategoria(tipo);
-    return aux;
-  }
-
-  @computed
-  String get subCategoriaString => _subcategoria;
-  // _subcategoria;
+  String get subcategoria => _subcategoria;
 
   @computed
   bool get hasError {
@@ -196,7 +202,7 @@ abstract class _SignUpCompanyControllerBase with Store {
 
   @action
   void setNomeUnidade(String value) {
-    _nomeUnidade = value;
+    _nomeUnidade = value.toUpperCase();
   }
 
   @action
@@ -211,17 +217,17 @@ abstract class _SignUpCompanyControllerBase with Store {
 
   @action
   void setLogradouro(String value) {
-    _logradouro = value;
+    _logradouro = value.toUpperCase();
   }
 
   @action
   void setBairro(String value) {
-    _bairro = value;
+    _bairro = value.toUpperCase();
   }
 
   @action
   void setEstado(String value) {
-    _estado = value;
+    _estado = value.toUpperCase();
   }
 
   @action
@@ -231,7 +237,7 @@ abstract class _SignUpCompanyControllerBase with Store {
 
   @action
   void setComplemento(String value) {
-    _complemento = value;
+    _complemento = value.toUpperCase();
   }
 
   @action
@@ -241,59 +247,16 @@ abstract class _SignUpCompanyControllerBase with Store {
 
   @action
   void setEmail(String value) {
-    _email = value;
+    _email = value.toLowerCase().trim();
   }
 
   @action
   void setSite(String value) {
-    _site = value;
+    _site = value.toLowerCase().trim();
   }
 
   @action
-  ObservableList<DropdownMenuItem<String>> generateSubcategoria(String value) {
-    _subcategoria = null;
-    subcategoriasAux = <DropdownMenuItem<String>>[].asObservable();
-    if (_tipo == "Agro, Comércio e Indústria") {
-      ObservableList<DropdownMenuItem<String>> aux =
-          <DropdownMenuItem<String>>[].asObservable();
-      for (var i = 0; i < subcategorias[0].length; i++) {
-        DropdownMenuItem<String> auxItem = DropdownMenuItem<String>(
-          child: Text(subcategorias[0][i]),
-          value: subcategorias[0][i],
-        );
-
-        subcategoriasAux.add(auxItem);
-      }
-      return subcategoriasAux;
-    } else if (_tipo == "Alimentos e Bebidas") {
-      ObservableList<DropdownMenuItem<String>> aux =
-          <DropdownMenuItem<String>>[].asObservable();
-      for (var i = 0; i < subcategorias[1].length; i++) {
-        DropdownMenuItem<String> auxItem = DropdownMenuItem<String>(
-          child: Text(subcategorias[1][i]),
-          value: subcategorias[1][i],
-        );
-
-        subcategoriasAux.add(auxItem);
-      }
-      return subcategoriasAux;
-    } else {
-      ObservableList<DropdownMenuItem<String>> aux =
-          <DropdownMenuItem<String>>[].asObservable();
-      for (var i = 0; i < subcategorias[2].length; i++) {
-        DropdownMenuItem<String> auxItem = DropdownMenuItem<String>(
-          child: Text(subcategorias[2][i]),
-          value: subcategorias[2][i],
-        );
-
-        subcategoriasAux.add(auxItem);
-      }
-      return subcategoriasAux;
-    }
-  }
-
-  @action
-  void setSubcategoria(String value) => _subcategoria = value;
+  void setSubcategoria(String value) => _subcategoria = value.toUpperCase();
 
   @action
   void _validateNomeUnidade() {

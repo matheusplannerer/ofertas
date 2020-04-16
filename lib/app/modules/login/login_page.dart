@@ -13,7 +13,6 @@ import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -65,6 +64,10 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
         leading: IconButton(
           icon: Icon(Icons.account_circle),
           onPressed: () {
+            controller.appController.setPages([
+              controller.appController.feed,
+              controller.appController.feedFiltro
+            ]);
             Modular.to.pushReplacementNamed('/home');
           },
         ),
@@ -314,34 +317,55 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                         ],
                       ),
                       SizedBox(height: ScreenUtil.getInstance().setHeight(25)),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: <Widget>[
+                      //     horizontalLine(),
+                      //     Text(
+                      //       "Ou",
+                      //       style: TextStyle(
+                      //           fontSize: 16.0, fontFamily: "Poppins-Medium"),
+                      //     ),
+                      //     horizontalLine()
+                      //   ],
+                      // ),
+                      // SizedBox(
+                      //   height: ScreenUtil.getInstance().setHeight(15),
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: <Widget>[
+                      //     SignInButtonBuilder(
+                      //       text: 'Cadastre com Google',
+                      //       icon: FontAwesomeIcons.google,
+                      //       mini: true,
+                      //       onPressed: () async {
+                      //         showLoadingDialog();
+                      //         await controller.signInGoogle();
+                      //         hideLoadingDialog();
+                      //       },
+                      //       backgroundColor: Colors.blueGrey[700],
+                      //     ),
+                      //   ],
+                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          horizontalLine(),
                           Text(
-                            "Ou",
-                            style: TextStyle(
-                                fontSize: 16.0, fontFamily: "Poppins-Medium"),
+                            "Possui um código de acesso? ",
+                            style: TextStyle(fontFamily: "Poppins-Medium"),
                           ),
-                          horizontalLine()
-                        ],
-                      ),
-                      SizedBox(
-                        height: ScreenUtil.getInstance().setHeight(15),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          SignInButtonBuilder(
-                            text: 'Cadastre com Google',
-                            icon: FontAwesomeIcons.google,
-                            mini: true,
-                            onPressed: () async {
-                              showLoadingDialog();
-                              await controller.signInGoogle();
-                              hideLoadingDialog();
+                          InkWell(
+                            onTap: () {
+                              Modular.navigatorKey.currentState
+                                  .pushNamed('/login/verificar_id');
                             },
-                            backgroundColor: Colors.blueGrey[700],
+                            child: Text(
+                              "Finalize seu cadastro!",
+                              style: TextStyle(
+                                  color: Colors.orangeAccent,
+                                  fontFamily: "Poppins-Bold"),
+                            ),
                           ),
                         ],
                       ),

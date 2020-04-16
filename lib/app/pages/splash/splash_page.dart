@@ -5,7 +5,6 @@ import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
-import 'package:provider/provider.dart';
 
 class SplashPage extends StatefulWidget {
   final String title;
@@ -29,6 +28,11 @@ class _SplashPageState extends ModularState<SplashPage, SplashController> {
         Modular.to.pushReplacementNamed('/login');
       }
       if (controller.status == AuthStatus.signedIn) {
+        appController.setPages([
+          appController.feed,
+          appController.feedFiltro,
+          appController.perfilEmpresa
+        ]);
         await Future.delayed(Duration(seconds: 1));
         Modular.to.pushReplacementNamed('/home');
       }

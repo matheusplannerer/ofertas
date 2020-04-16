@@ -74,7 +74,7 @@ class HeaderEmpresaWidget extends StatelessWidget {
                         ),
                       ),
                       AutoSizeText(
-                        empresa?.subcategoria ?? empresa?.categoria ?? "",
+                        (empresa?.subcategoria ?? empresa?.categoria) ?? "",
                         //add categoria para poder puxar do database
                         textAlign: TextAlign.center,
                         maxLines: 1,

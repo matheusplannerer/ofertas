@@ -5,7 +5,6 @@ import 'package:load/load.dart';
 import 'package:ofertas/app/modules/perfil_empresa/pages/nova_empresa/nova_empresa_controller.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
-import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class NovaEmpresaPage extends StatefulWidget {

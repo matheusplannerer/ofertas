@@ -4,7 +4,6 @@ import 'package:mobx/mobx.dart';
 import 'package:flutter/material.dart';
 import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_module.dart';
-import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
@@ -35,7 +34,7 @@ abstract class _NavigationBarBase with Store {
   }
 
   @action
-  void setNavIndex(int value, GlobalService global) {
+  void setNavIndex(int value, bool signedIn) {
     if (navIndex == value) {
       routeController.actualNavigator.currentState
           .popUntil((Route<dynamic> route) => route.isFirst);

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/modules/feed/feed_module.dart';
+import 'package:ofertas/app/modules/feed_filtro/feed_filtro_module.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_module.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
@@ -19,21 +20,29 @@ abstract class _AppBase with Store {
   List<RouterOutlet> pages = [];
 
   _AppBase() {
-    pages = [
-      RouterOutlet(
-        module: FeedModule(),
-        keepAlive: true,
-        initialRoute: '/',
-        navigatorKey: _route.keyTab1,
-      ),
-      RouterOutlet(
-        module: PerfilEmpresaModule(),
-        keepAlive: true,
-        navigatorKey: _route.keyTab2,
-        initialRoute: '/',
-      ),
-    ];
+    feed = RouterOutlet(
+      module: FeedModule(),
+      keepAlive: true,
+      initialRoute: '/',
+      navigatorKey: _route.keyTab1,
+    );
+    perfilEmpresa = RouterOutlet(
+      module: PerfilEmpresaModule(),
+      keepAlive: true,
+      navigatorKey: _route.keyTab2,
+      initialRoute: '/',
+    );
+    feedFiltro = RouterOutlet(
+      module: FeedFiltroModule(),
+      keepAlive: true,
+      navigatorKey: _route.keyTab3,
+      initialRoute: '/',
+    );
   }
+
+  RouterOutlet feed;
+  RouterOutlet perfilEmpresa;
+  RouterOutlet feedFiltro;
 
   @observable
   FirebaseUser _authInfos;
@@ -55,6 +64,9 @@ abstract class _AppBase with Store {
   void setAuth(FirebaseUser value) => _authInfos = value;
   @action
   void setUser(UserModel model) => _userInfos = model;
+
+  @action
+  void setPages(List<RouterOutlet> list) => pages = list;
 
   @action
   Future signOut() async {

@@ -88,6 +88,11 @@ abstract class _LoginBase with Store {
       FirebaseUser _authInfos =
           await _auth.signInWithEmailAndPass(email, senha);
       UserModel _userInfos = await _auth.getUserInfos(_authInfos.uid);
+      appController.setPages([
+        appController.feed,
+        appController.feedFiltro,
+        appController.perfilEmpresa
+      ]);
       Modular.to.pushReplacementNamed('/home');
     } catch (e) {
       setErro(erro.setErro(e));

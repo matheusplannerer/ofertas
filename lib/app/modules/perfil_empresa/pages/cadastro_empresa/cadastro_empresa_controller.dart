@@ -37,7 +37,6 @@ abstract class _CadastroEmpresaBase with Store {
   @action
   void setTipo(String value) {
     signUpCompanyController.setTipo(value);
-    signUpCompanyController.generateSubcategoria(value);
   }
 
   @action

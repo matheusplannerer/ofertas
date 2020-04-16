@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 
 part 'solicitar_acesso_controller.g.dart';
@@ -119,6 +120,7 @@ abstract class _SolicitarAcessoControllerBase with Store {
     validateFields();
     if (hasError) return false;
     try {
+      await _checkRequest();
       await _registerRequest();
       return true;
     } catch (e) {
@@ -139,8 +141,23 @@ abstract class _SolicitarAcessoControllerBase with Store {
         'contato': contato,
         'email': email,
         'empresa': empresa,
-        'id': id
+        'id': id,
+        'accepted': false,
       });
+    } catch (e) {
+      return throw e;
+    }
+  }
+
+  @action
+  Future _checkRequest() async {
+    try {
+      var doc = await Firestore.instance
+          .collection('solicitacoes')
+          .where('email', isEqualTo: email)
+          .getDocuments();
+      if (doc.documents.isNotEmpty)
+        throw PlatformException(code: "EMAIL_ALREADY_REGISTERED");
     } catch (e) {
       return throw e;
     }

@@ -9,7 +9,6 @@ import 'package:ofertas/app/modules/feed/components/ofertas_view/ofertas_view_wi
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
-import 'package:provider/provider.dart';
 
 class EmpresasViewWidget extends StatefulWidget {
   final PerfilEmpresaModel empresa;

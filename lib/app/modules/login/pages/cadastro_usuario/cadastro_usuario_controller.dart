@@ -5,6 +5,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/modules/login/models/erro_cadastro_model.dart';
+import 'package:ofertas/app/modules/login/pages/inserir_codigo/inserir_codigo_controller.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
@@ -19,6 +20,7 @@ abstract class _CadastroUsuarioBase with Store {
   var maskFormatterCelular = MaskTextInputFormatter(
       mask: '(##)#####-####', filter: {"#": RegExp(r'[0-9]')});
 
+  InserirCodigoController inserirCodigoController = Modular.get();
   SignUpController signUpController = Modular.get();
   AuthController authController = Modular.get();
   AppController appController = Modular.get();
@@ -147,6 +149,8 @@ abstract class _CadastroUsuarioBase with Store {
       var _authInfos =
           await signUpController.createUserWithEmailAndPassword(_userInfos);
       await signUpController.createUserCollection(_userInfos);
+      await signUpController.updateSolicitacoesAceitas(
+          _userInfos, inserirCodigoController.verificationId);
       authController.setAuthInfos(_authInfos);
       authController.setUserInfos(_userInfos);
       authController.setStatus(AuthStatus.signedIn);

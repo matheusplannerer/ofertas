@@ -69,8 +69,8 @@ class PerfilEmpresaModel {
   Map<dynamic, dynamic> dias; //
   Map<dynamic, dynamic> horarios; //
   String empresaID; //
-  String donoEmpresa;
-  int ofertas;
+  String donoEmpresa; //
+  int ofertas; //
 
   factory PerfilEmpresaModel.fromJson(Map<String, dynamic> json) {
     PerfilEmpresaModel model = PerfilEmpresaModel(
@@ -112,7 +112,6 @@ class PerfilEmpresaModel {
         'site': site,
         'subcategoria': subcategoria,
         'categoria': categoria,
-        'dias': dias,
         'horarios': horarios,
         'bairro': bairro,
         'complemento': complemento,

@@ -26,6 +26,25 @@ mixin _$SignUpController on _SignUpControllerBase, Store {
         .run(() => super.createUserCollection(model));
   }
 
+  final _$validateVerificationIdAsyncAction =
+      AsyncAction('validateVerificationId');
+
+  @override
+  Future<bool> validateVerificationId(String email, String id) {
+    return _$validateVerificationIdAsyncAction
+        .run(() => super.validateVerificationId(email, id));
+  }
+
+  final _$updateSolicitacoesAceitasAsyncAction =
+      AsyncAction('updateSolicitacoesAceitas');
+
+  @override
+  Future<void> updateSolicitacoesAceitas(
+      UserModel user, String verificationId) {
+    return _$updateSolicitacoesAceitasAsyncAction
+        .run(() => super.updateSolicitacoesAceitas(user, verificationId));
+  }
+
   @override
   String toString() {
     final string = '';

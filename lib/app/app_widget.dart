@@ -6,7 +6,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
-import 'package:provider/provider.dart';
 
 class AppWidget extends StatelessWidget {
   @override
@@ -19,21 +18,14 @@ class AppWidget extends StatelessWidget {
           size: 35,
         );
       },
-      child: MultiProvider(
-        providers: [
-          Provider<GlobalService>(
-            create: (_) => GlobalService(),
-          )
-        ],
-        child: MaterialApp(
-          navigatorKey: Modular.navigatorKey,
-          title: 'Flutter Slidy',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          initialRoute: '/',
-          onGenerateRoute: Modular.generateRoute,
+      child: MaterialApp(
+        navigatorKey: Modular.navigatorKey,
+        title: 'Flutter Slidy',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
+        initialRoute: '/',
+        onGenerateRoute: Modular.generateRoute,
       ),
     );
   }

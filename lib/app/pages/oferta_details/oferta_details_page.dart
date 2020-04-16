@@ -9,7 +9,6 @@ import 'package:ofertas/app/pages/oferta_details/oferta_details_controller.dart'
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
-import 'package:provider/provider.dart';
 
 class OfertaDetailsPage extends StatefulWidget {
   final OfertaModel oferta;
@@ -55,7 +54,6 @@ class _OfertaDetailsPageState
 
   @override
   Widget build(BuildContext context) {
-    var global = Provider.of<GlobalService>(context);
     return Scaffold(
       appBar: GradientAppBar(
         // title: Text(titulo),

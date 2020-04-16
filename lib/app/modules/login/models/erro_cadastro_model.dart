@@ -3,10 +3,10 @@ import 'package:ofertas/app/modules/login/models/erro_login_model.dart';
 
 class ErroCadastroModel {
   ErroCadastroModel(
-      {this.erroContato,
-      this.erroEmail,
-      this.erroNome,
-      this.erroSenha,
+      {this.erroContato = false,
+      this.erroEmail = false,
+      this.erroNome = false,
+      this.erroSenha = false,
       this.textErroContato,
       this.textErroEmail,
       this.textErroNome,

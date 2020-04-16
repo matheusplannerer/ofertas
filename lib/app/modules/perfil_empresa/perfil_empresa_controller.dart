@@ -9,6 +9,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/app_controller.dart';
+import 'package:ofertas/app/modules/perfil_empresa/pages/horarios/horarios_controller.dart';
 import 'package:ofertas/app/shared/models/oferta_model.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
@@ -26,6 +27,7 @@ abstract class _PerfilEmpresaControllerBase with Store {
   RouteController routeController = Modular.get();
   AppController appController = Modular.get();
   FetchServicesController _fetch = Modular.get();
+  HorariosController horariosController = Modular.get();
 
   DocumentSnapshot _lastOfertaFetched;
 

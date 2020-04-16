@@ -240,6 +240,13 @@ mixin _$SolicitarAcessoController on _SolicitarAcessoControllerBase, Store {
     return _$_registerRequestAsyncAction.run(() => super._registerRequest());
   }
 
+  final _$_checkRequestAsyncAction = AsyncAction('_checkRequest');
+
+  @override
+  Future<dynamic> _checkRequest() {
+    return _$_checkRequestAsyncAction.run(() => super._checkRequest());
+  }
+
   final _$_SolicitarAcessoControllerBaseActionController =
       ActionController(name: '_SolicitarAcessoControllerBase');
 
