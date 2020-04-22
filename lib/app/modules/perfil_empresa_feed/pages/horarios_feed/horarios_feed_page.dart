@@ -56,6 +56,7 @@ class _HorariosFeedPageState extends State<HorariosFeedPage> {
               return SingleChildScrollView(
                 child: DataTable(
                   columnSpacing: 25,
+                  onSelectAll: null,
                   columns: [
                     DataColumn(
                       label: Text(

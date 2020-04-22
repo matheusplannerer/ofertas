@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
+import 'package:ofertas/app/modules/perfil_empresa/pages/horarios/horarios_controller.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 
 part 'edit_infos_controller.g.dart';
@@ -37,6 +39,8 @@ abstract class _EditInfosControllerBase with Store {
   @action
   Future updateEmpresa() async {
     try {
+      HorariosController horariosController = Modular.get();
+      await horariosController.updateHorarios(empresa);
       await Firestore.instance
           .collection('empresas')
           .document(empresa.empresaID)

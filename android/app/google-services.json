@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "86861932628-ok7va6sfsehlm4nqoq3o3ffgvfen76to.apps.googleusercontent.com",
+          "client_id": "86861932628-lnfugibt3cntv0484r2e4ehtgpr8gp1m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "br.ofertas.app",
-            "certificate_hash": "9f4f19c32d6ff80213f0fbb1c616675ac86be617"
+            "certificate_hash": "eacf1030a60c272a6e9162ab06a59ac8f7c34497"
           }
         },
         {

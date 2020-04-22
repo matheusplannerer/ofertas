@@ -317,37 +317,37 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                         ],
                       ),
                       SizedBox(height: ScreenUtil.getInstance().setHeight(25)),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: <Widget>[
-                      //     horizontalLine(),
-                      //     Text(
-                      //       "Ou",
-                      //       style: TextStyle(
-                      //           fontSize: 16.0, fontFamily: "Poppins-Medium"),
-                      //     ),
-                      //     horizontalLine()
-                      //   ],
-                      // ),
-                      // SizedBox(
-                      //   height: ScreenUtil.getInstance().setHeight(15),
-                      // ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: <Widget>[
-                      //     SignInButtonBuilder(
-                      //       text: 'Cadastre com Google',
-                      //       icon: FontAwesomeIcons.google,
-                      //       mini: true,
-                      //       onPressed: () async {
-                      //         showLoadingDialog();
-                      //         await controller.signInGoogle();
-                      //         hideLoadingDialog();
-                      //       },
-                      //       backgroundColor: Colors.blueGrey[700],
-                      //     ),
-                      //   ],
-                      // ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          horizontalLine(),
+                          Text(
+                            "Ou",
+                            style: TextStyle(
+                                fontSize: 16.0, fontFamily: "Poppins-Medium"),
+                          ),
+                          horizontalLine()
+                        ],
+                      ),
+                      SizedBox(
+                        height: ScreenUtil.getInstance().setHeight(15),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SignInButtonBuilder(
+                            text: 'Cadastre com Google',
+                            icon: FontAwesomeIcons.google,
+                            mini: true,
+                            onPressed: () async {
+                              showLoadingDialog();
+                              await controller.signInGoogle();
+                              hideLoadingDialog();
+                            },
+                            backgroundColor: Colors.blueGrey[700],
+                          ),
+                        ],
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[

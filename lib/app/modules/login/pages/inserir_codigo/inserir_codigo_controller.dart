@@ -71,6 +71,7 @@ abstract class _InserirCodigoControllerBase with Store {
 
   @action
   Future validateId() async {
+    print(_email);
     try {
       var isValid =
           await _signUp.validateVerificationID(_email, _verificationId);

@@ -37,6 +37,6 @@ class UserModel {
         'email': email,
         'usuarioID': usuarioID,
         'nome': nome,
-        'empresaPerfil': empresaPerfil
+        'empresaPerfil': empresaPerfil,
       };
 }

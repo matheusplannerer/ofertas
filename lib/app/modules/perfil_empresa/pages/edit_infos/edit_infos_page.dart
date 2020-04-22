@@ -36,6 +36,7 @@ class _EditInfosPageState extends State<EditInfosPage> {
     // TODO: implement initState
     super.initState();
     _editController.initEmpresa(controller.empresa);
+    controller.horariosController.updateFields(_editController.empresa);
   }
 
   @override

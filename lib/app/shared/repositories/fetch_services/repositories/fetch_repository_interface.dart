@@ -8,6 +8,8 @@ abstract class IFetchRepository {
       {int limitQuery, DocumentSnapshot lastFetched});
   Future<Map<int, dynamic>> fetchOfertas(String uid,
       {int limitQuery, DocumentSnapshot lastFetched});
+  Future<Map<int, dynamic>> fetchFeedFiltro(
+      {int limitQuery, DocumentSnapshot lastFetched, String categoria});
 
   // Future<ObservableList
 }

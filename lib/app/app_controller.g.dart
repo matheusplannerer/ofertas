@@ -101,6 +101,16 @@ mixin _$AppController on _AppBase, Store {
   }
 
   @override
+  void setPages(List<RouterOutlet> list) {
+    final _$actionInfo = _$_AppBaseActionController.startAction();
+    try {
+      return super.setPages(list);
+    } finally {
+      _$_AppBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
         'authInfos: ${authInfos.toString()},userInfos: ${userInfos.toString()},signedIn: ${signedIn.toString()},hasCompany: ${hasCompany.toString()},status: ${status.toString()}';

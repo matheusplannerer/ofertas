@@ -42,6 +42,7 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
       backgroundColor: Colors.orange,
       color: Colors.white,
       onRefresh: () {
+        print("RESET");
         controller.resetPageToFetch();
         return controller.fetchPage();
       },

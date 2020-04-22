@@ -102,4 +102,47 @@ class FirebaseFetchRepository implements IFetchRepository {
       return throw e;
     }
   }
+
+  @override
+  Future<Map<int, dynamic>> fetchFeedFiltro(
+      {int limitQuery, DocumentSnapshot lastFetched, String categoria}) async {
+    //PRIMEIRO FETCH
+    QuerySnapshot _empresasDoc;
+    try {
+      if (lastFeedFetched == null) {
+        _empresasDoc = await Firestore.instance
+            .collection('empresas')
+            .limit(limitQuery)
+            .where("ofertas", isGreaterThan: 0)
+            .orderBy("ofertas", descending: true)
+            .where("categoria", isEqualTo: categoria.toUpperCase())
+            .getDocuments();
+      } else {
+        _empresasDoc = await Firestore.instance
+            .collection('empresas')
+            .limit(limitQuery)
+            .where("ofertas", isGreaterThan: 0)
+            .orderBy("ofertas", descending: true)
+            .where("categoria", isEqualTo: categoria.toUpperCase())
+            .startAfterDocument(lastFetched)
+            .getDocuments();
+      }
+      ObservableList<PerfilEmpresaModel> empresas =
+          <PerfilEmpresaModel>[].asObservable();
+
+      for (var i = 0; i < _empresasDoc.documentChanges.length; i++) {
+        var model = PerfilEmpresaModel.fromJson(
+            _empresasDoc.documentChanges[i].document.data);
+        empresas.add(model);
+      }
+
+      return {
+        0: empresas,
+        1: _empresasDoc
+            .documentChanges[_empresasDoc.documentChanges.length - 1].document
+      };
+    } catch (e) {
+      return throw e;
+    }
+  }
 }

@@ -14,10 +14,10 @@ class PerfilEmpresaFeedPage extends StatefulWidget {
   _PerfilEmpresaFeedPageState createState() => _PerfilEmpresaFeedPageState();
 }
 
-class _PerfilEmpresaFeedPageState
-    extends ModularState<PerfilEmpresaFeedPage, PerfilEmpresaFeedController> {
+class _PerfilEmpresaFeedPageState extends State<PerfilEmpresaFeedPage> {
   //use 'controller' variable to access controller
   _PerfilEmpresaFeedPageState();
+  PerfilEmpresaFeedController controller = PerfilEmpresaFeedController();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
@@ -81,7 +81,6 @@ class _PerfilEmpresaFeedPageState
                             ),
                             itemBuilder: (_, index) {
                               // return Text("$index");
-                              print("BUILDOU AQUI DE NOVO $index");
                               return FotosEmpresaFeedWiget(
                                   controller.ofertas[index]);
                             },

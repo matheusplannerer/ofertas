@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 import 'package:ofertas/app/shared/repositories/sign_up_company/signup_company_controller.dart';
 
 class FeedFiltroPage extends StatefulWidget {
@@ -35,29 +36,36 @@ class _FeedFiltroPageState extends State<FeedFiltroPage> {
         ),
         itemCount: controller.categorias.length,
         itemBuilder: (context, index) {
-          return Stack(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/cartaz2.jpg'),
+          return GestureDetector(
+            onTap: () {
+              RouteController route = Modular.get();
+              route.tab3Nav.pushNamed('/filtro/$index');
+            },
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                          'assets/categorias_images/categorias_$index.jpg'),
+                    ),
                   ),
                 ),
-              ),
-              Center(
-                child: Text(
-                  "${controller.categorias[index]}",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 17,
+                Center(
+                  child: Text(
+                    "${controller.categorias[index]}",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 17,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           );
         },
       ),

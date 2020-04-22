@@ -13,8 +13,7 @@ import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 class OfertaDetailsPage extends StatefulWidget {
   final OfertaModel oferta;
   final Function fetchPage;
-  const OfertaDetailsPage(
-      {Key key, @required this.oferta, @required this.fetchPage})
+  const OfertaDetailsPage({Key key, @required this.oferta, this.fetchPage})
       : super(key: key);
 
   @override
@@ -33,6 +32,7 @@ class _OfertaDetailsPageState
   @override
   void initState() {
     super.initState();
+    print(widget.oferta.idOferta);
     oferta = widget.oferta;
     if (oferta.empresaDona == appController.userInfos?.empresaPerfil)
       isOwner = true;

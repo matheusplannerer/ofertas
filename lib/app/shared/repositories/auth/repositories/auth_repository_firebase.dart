@@ -62,7 +62,20 @@ class FirebaseAuthRepo implements IAuthRepository {
     try {
       googleUser = await _googleSignIn.signIn();
     } catch (e) {
-      return throw null;
+      print("FAILED AQUI");
+      print(e);
+      return throw e;
+    }
+
+    try {
+      var userDoc = await Firestore.instance
+          .collection('usuarios')
+          .where('email', isEqualTo: googleUser.email)
+          .getDocuments();
+      if (userDoc.documents.isEmpty)
+        return throw PlatformException(code: "ERROR_USER_NOT_FOUND");
+    } catch (e) {
+      return throw e;
     }
 
     AuthCredential credential;
@@ -74,20 +87,20 @@ class FirebaseAuthRepo implements IAuthRepository {
         idToken: googleAuth.idToken,
       );
     } catch (e) {
-      return throw null;
+      return throw e;
     }
     FirebaseUser _authInfos;
     try {
       _authInfos = await signInWithCredential(credential);
     } catch (e) {
-      return throw null;
+      return throw e;
     }
 
     try {
       await getUserInfos(_authInfos.uid);
       return _authInfos;
     } catch (e) {
-      if (e.code != "ERROR_USER_NOT_FOUND") return throw null;
+      if (e.code != "ERROR_USER_NOT_FOUND") return throw e;
       var id = Firestore.instance.collection('usuarios').document().documentID;
       UserModel _userModel = UserModel(
         celular: _authInfos.phoneNumber,

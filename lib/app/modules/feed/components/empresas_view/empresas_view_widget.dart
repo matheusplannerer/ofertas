@@ -57,7 +57,7 @@ class _EmpresasViewWidgetState extends State<EmpresasViewWidget> {
             ),
             onTap: () async {
               // print(empresa.empresaID);
-              controller.routeController.tab1Nav
+              controller.routeController.actualNavigator.currentState
                   .pushNamed('/empresa/${empresa.empresaID}');
             },
             leading: Container(

@@ -148,6 +148,7 @@ abstract class _CadastroUsuarioBase with Store {
     try {
       var _authInfos =
           await signUpController.createUserWithEmailAndPassword(_userInfos);
+      _userInfos.usuarioID = _authInfos.uid;
       await signUpController.createUserCollection(_userInfos);
       await signUpController.updateSolicitacoesAceitas(
           _userInfos, inserirCodigoController.verificationId);

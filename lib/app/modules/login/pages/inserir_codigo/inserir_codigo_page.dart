@@ -63,7 +63,7 @@ class _InserirCodigoPageState extends State<InserirCodigoPage> {
                 SizedBox(height: 15),
                 TextField(
                   onChanged: controller.setVerificationId,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     errorText: controller.erroId ? controller.textErroId : null,
                     labelStyle: TextStyle(color: Colors.black38, fontSize: 15),

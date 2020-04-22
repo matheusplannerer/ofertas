@@ -28,8 +28,14 @@ abstract class _RouteControllerBase with Store {
   }
 
   GlobalKey<NavigatorState> get actualNavigator {
-    if (_navIndex == 0) return _navigatorKeyTab1;
-    if (_navIndex == 1) return _navigatorKeyTab2;
-    if (_navIndex == 2) return _navigatorKeyTab3;
+    AppController appController = Modular.get();
+    if (appController.pages.length == 2) {
+      if (_navIndex == 0) return _navigatorKeyTab1;
+      if (_navIndex == 1) return _navigatorKeyTab3;
+    } else if (appController.pages.length == 3) {
+      if (_navIndex == 0) return _navigatorKeyTab1;
+      if (_navIndex == 1) return _navigatorKeyTab3;
+      if (_navIndex == 2) return _navigatorKeyTab2;
+    }
   }
 }

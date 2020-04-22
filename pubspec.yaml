@@ -96,6 +96,27 @@ flutter:
     - assets/cartaz.jpg
     - assets/cartaz2.jpg
     - assets/walmart.jpg
+    - assets/categorias_images/categorias_0.jpg
+    - assets/categorias_images/categorias_1.jpg
+    - assets/categorias_images/categorias_2.jpg
+    - assets/categorias_images/categorias_3.jpg
+    - assets/categorias_images/categorias_4.jpg
+    - assets/categorias_images/categorias_5.jpg
+    - assets/categorias_images/categorias_6.jpg
+    - assets/categorias_images/categorias_7.jpg
+    - assets/categorias_images/categorias_8.jpg
+    - assets/categorias_images/categorias_9.jpg
+    - assets/categorias_images/categorias_10.jpg
+    - assets/categorias_images/categorias_11.jpg
+    - assets/categorias_images/categorias_12.jpg
+    - assets/categorias_images/categorias_13.jpg
+    - assets/categorias_images/categorias_14.jpg
+    - assets/categorias_images/categorias_15.jpg
+    - assets/categorias_images/categorias_16.jpg
+    - assets/categorias_images/categorias_17.jpg
+    - assets/categorias_images/categorias_18.jpg
+    - assets/categorias_images/categorias_19.jpg
+    - assets/categorias_images/categorias_20.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

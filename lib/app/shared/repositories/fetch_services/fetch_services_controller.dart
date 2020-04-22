@@ -36,7 +36,23 @@ abstract class _FetchServicesControllerBase with Store {
       {int limitQuery, DocumentSnapshot lastFetched}) async {
     try {
       var _empresasModelLastDoc = await _fetch.fetchFeedEmpresas(
-          limitQuery: limitQuery, lastFetched: lastFetched);
+        limitQuery: limitQuery,
+        lastFetched: lastFetched,
+      );
+      return _empresasModelLastDoc;
+    } catch (e) {
+      return throw e;
+    }
+  }
+
+  Future<Map<int, dynamic>> fetchFeedFiltro(
+      {int limitQuery, DocumentSnapshot lastFetched, String categoria}) async {
+    try {
+      var _empresasModelLastDoc = await _fetch.fetchFeedFiltro(
+        limitQuery: limitQuery,
+        lastFetched: lastFetched,
+        categoria: categoria,
+      );
       return _empresasModelLastDoc;
     } catch (e) {
       return throw e;

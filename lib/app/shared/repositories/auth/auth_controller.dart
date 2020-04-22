@@ -89,7 +89,7 @@ abstract class _AuthControllerBase with Store {
       setStatus(AuthStatus.signedIn);
       return _authInfos;
     } catch (e) {
-      return throw null;
+      return throw e;
     }
   }
 

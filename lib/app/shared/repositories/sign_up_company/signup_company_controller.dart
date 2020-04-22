@@ -26,28 +26,28 @@ abstract class _SignUpCompanyControllerBase with Store {
   }
 
   List<String> categorias = [
-    "Supermercados",
-    "Alimentação fora do lar e com delivery",
-    "Alimentação e Bebidas",
-    "Entretenimento e Lazer",
-    "Vestuário, Calçado e Acessórios",
-    "Serviços Residencias e Empresariais",
-    "Veículos e transporte",
-    "Beleza, Estética e Bem-estar",
-    "Mãe, Bebê e Criança",
-    "Animais",
-    "Varejo",
-    "Educação",
-    "Imóveis",
-    "Saúde",
-    "Financeiras",
-    "Construção, Reformas e Casa",
-    "Agronegócio",
-    "Indústria e Fábricas",
-    "Comunicação",
-    "Outros - Serviços",
-    "Outros - Produtos",
-    "Outros - Geral",
+    "Supermercados", //0
+    "Alimentação fora do lar e com delivery", //1
+    "Alimentação e Bebidas", //2
+    "Entretenimento e Lazer", //3
+    "Vestuário, Calçado e Acessórios", //4
+    "Serviços Residenciais e Empresariais", //5
+    "Veículos e transporte", //6
+    "Beleza, Estética e Bem-estar", //7
+    "Mãe, Bebê e Criança", //8
+    "Animais", //9
+    "Varejo", //10
+    "Educação", //11
+    "Imóveis", //12
+    "Saúde", //13
+    "Financeiras", //14
+    "Construção, Reformas e Casa", //15
+    "Agronegócio", //16
+    "Indústria e Fábricas", //17
+    "Comunicação", //18
+    "Outros - Serviços", //19
+    "Outros - Produtos", //20
+    // "Outros - Geral", //21
   ];
 
   List<DropdownMenuItem<String>> categoriasAux = [];
@@ -207,7 +207,7 @@ abstract class _SignUpCompanyControllerBase with Store {
 
   @action
   void setTipo(String value) {
-    _tipo = value;
+    _tipo = value.toUpperCase();
   }
 
   @action

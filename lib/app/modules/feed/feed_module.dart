@@ -26,7 +26,7 @@ class FeedModule extends ChildModule {
 
   @override
   List<Router> get routers => [
-        Router('/', child: (_, args) => FeedPage()),
+        Router(Modular.initialRoute, child: (_, args) => FeedPage()),
         Router('/oferta_details',
             child: (_, args) => OfertaDetailsPage(
                   oferta: args.data['oferta'],

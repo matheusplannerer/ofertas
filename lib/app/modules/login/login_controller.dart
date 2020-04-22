@@ -106,8 +106,11 @@ abstract class _LoginBase with Store {
       UserModel _userInfos = await _auth.getUserInfos(_authInfos.uid);
       Modular.to.pushReplacementNamed('/home');
     } catch (e) {
-      print("ALGUM ERRO NO SIGNIN GOOGLE");
-      print(e.toString());
+      print("DEU ERRO ENTROU AQUI");
+      print(e);
+      if (e.code == "ERROR_USER_NOT_FOUND") {
+        Modular.to.pushNamed('/solicitar_acesso');
+      }
     }
   }
 }
