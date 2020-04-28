@@ -1,0 +1,4 @@
+lib/app/modules/perfil/components/free_plan/free_plan_widget.dart
+test/app/modules/perfil/components/free_plan/free_plan_widget_test.dart
+lib/app/modules/perfil/components/free_plan/free_plan_controller.dart
+test/app/modules/perfil/components/free_plan/free_plan_controller_test.dart

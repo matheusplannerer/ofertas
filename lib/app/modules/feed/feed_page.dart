@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -6,6 +7,8 @@ import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/modules/feed/components/empresas_view/empresas_view_widget.dart';
 import 'package:ofertas/app/modules/feed/feed_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
+import 'package:ofertas/app/shared/models/planos_admin_model.dart';
+import 'package:ofertas/app/shared/models/planos_model.dart';
 
 class FeedPage extends StatefulWidget {
   final String title;
@@ -61,10 +64,11 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                         child: Text(
                           'Entrar como empresa',
                           style: TextStyle(
-                              fontFamily: "Domine-Bold",
-                              fontSize: 16,
-                              color: Colors.black87,
-                              letterSpacing: .3),
+                            fontFamily: "Domine-Bold",
+                            fontSize: 16,
+                            color: Colors.black87,
+                            letterSpacing: .3,
+                          ),
                         ),
                       ),
                     ],
@@ -73,6 +77,36 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                     controller.routeController.tab1Nav.pop();
                     Modular.to.pushReplacementNamed('/login');
                   },
+                ),
+              if (controller.appController.signedIn)
+                Divider(),
+              if (controller.appController.signedIn)
+                ListTile(
+                  onTap: () {
+                    controller.routeController.tab1Nav.pop();
+                    Modular.to.pushNamed('/perfil');
+                  },
+                  title: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.star_border,
+                        color: Colors.orange.shade400,
+                        size: 30,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          'Perfil',
+                          style: TextStyle(
+                            fontFamily: "Domine-Bold",
+                            fontSize: 16,
+                            color: Colors.black87,
+                            letterSpacing: .3,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               Divider(),
               ListTile(
@@ -85,10 +119,11 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                       child: Text(
                         'Entre em contato',
                         style: TextStyle(
-                            fontFamily: "Domine-Bold",
-                            fontSize: 16,
-                            color: Colors.black87,
-                            letterSpacing: .3),
+                          fontFamily: "Domine-Bold",
+                          fontSize: 16,
+                          color: Colors.black87,
+                          letterSpacing: .3,
+                        ),
                       ),
                     ),
                   ],
@@ -114,21 +149,27 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                       child: Text(
                         'Indique o App',
                         style: TextStyle(
-                            fontFamily: "Domine-Bold",
-                            fontSize: 16,
-                            color: Colors.black87,
-                            letterSpacing: .3),
+                          fontFamily: "Domine-Bold",
+                          fontSize: 16,
+                          color: Colors.black87,
+                          letterSpacing: .3,
+                        ),
                       ),
                     ),
                   ],
                 ),
-                // onTap: () {
-                //   Navigator.push(context,
-                //       MaterialPageRoute(builder: (context) => Carteira()));
-                // },
+                onTap: () {
+                  controller.routeController.tab1Nav.pop();
+
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => Carteira()));
+                },
               ),
               Divider(),
               ListTile(
+                onTap: () {
+                  controller.routeController.tab1Nav.pop();
+                },
                 title: Row(
                   children: <Widget>[
                     Icon(Icons.star_border,
@@ -138,16 +179,19 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                       child: Text(
                         'Avalie o app',
                         style: TextStyle(
-                            fontFamily: "Domine-Bold",
-                            fontSize: 16,
-                            color: Colors.black87,
-                            letterSpacing: .3),
+                          fontFamily: "Domine-Bold",
+                          fontSize: 16,
+                          color: Colors.black87,
+                          letterSpacing: .3,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Divider(),
+
+              if (!controller.appController.signedIn)
+                Divider(),
               if (!controller.appController.signedIn)
                 ListTile(
                   title: Row(
@@ -159,15 +203,17 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
                         child: Text(
                           'Divulgue suas ofertas',
                           style: TextStyle(
-                              fontFamily: "Domine-Bold",
-                              fontSize: 16,
-                              color: Colors.black87,
-                              letterSpacing: .3),
+                            fontFamily: "Domine-Bold",
+                            fontSize: 16,
+                            color: Colors.black87,
+                            letterSpacing: .3,
+                          ),
                         ),
                       ),
                     ],
                   ),
                   onTap: () {
+                    controller.routeController.tab1Nav.pop();
                     Modular.navigatorKey.currentState
                         .pushNamed('/solicitar_acesso');
                   },

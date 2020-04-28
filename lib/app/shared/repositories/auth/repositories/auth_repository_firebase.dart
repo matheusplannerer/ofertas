@@ -107,7 +107,7 @@ class FirebaseAuthRepo implements IAuthRepository {
         email: _authInfos.email,
         empresaPerfil: null,
         nome: _authInfos.displayName,
-        usuarioID: id,
+        id: id,
       );
       await Firestore.instance
           .collection('usuarios')

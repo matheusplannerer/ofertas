@@ -36,6 +36,12 @@ mixin _$AppController on _AppBase, Store {
   @override
   AuthStatus get status =>
       (_$statusComputed ??= Computed<AuthStatus>(() => super.status)).value;
+  Computed<Map<String, PlanosAdminModel>> _$planosComputed;
+
+  @override
+  Map<String, PlanosAdminModel> get planos => (_$planosComputed ??=
+          Computed<Map<String, PlanosAdminModel>>(() => super.planos))
+      .value;
 
   final _$_authInfosAtom = Atom(name: '_AppBase._authInfos');
 
@@ -71,6 +77,23 @@ mixin _$AppController on _AppBase, Store {
     }, _$_userInfosAtom, name: '${_$_userInfosAtom.name}_set');
   }
 
+  final _$_planosAtom = Atom(name: '_AppBase._planos');
+
+  @override
+  Map<String, PlanosAdminModel> get _planos {
+    _$_planosAtom.context.enforceReadPolicy(_$_planosAtom);
+    _$_planosAtom.reportObserved();
+    return super._planos;
+  }
+
+  @override
+  set _planos(Map<String, PlanosAdminModel> value) {
+    _$_planosAtom.context.conditionallyRunInAction(() {
+      super._planos = value;
+      _$_planosAtom.reportChanged();
+    }, _$_planosAtom, name: '${_$_planosAtom.name}_set');
+  }
+
   final _$signOutAsyncAction = AsyncAction('signOut');
 
   @override
@@ -101,6 +124,16 @@ mixin _$AppController on _AppBase, Store {
   }
 
   @override
+  void setPlanos(Map<String, PlanosAdminModel> value) {
+    final _$actionInfo = _$_AppBaseActionController.startAction();
+    try {
+      return super.setPlanos(value);
+    } finally {
+      _$_AppBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setPages(List<RouterOutlet> list) {
     final _$actionInfo = _$_AppBaseActionController.startAction();
     try {
@@ -113,7 +146,7 @@ mixin _$AppController on _AppBase, Store {
   @override
   String toString() {
     final string =
-        'authInfos: ${authInfos.toString()},userInfos: ${userInfos.toString()},signedIn: ${signedIn.toString()},hasCompany: ${hasCompany.toString()},status: ${status.toString()}';
+        'authInfos: ${authInfos.toString()},userInfos: ${userInfos.toString()},signedIn: ${signedIn.toString()},hasCompany: ${hasCompany.toString()},status: ${status.toString()},planos: ${planos.toString()}';
     return '{$string}';
   }
 }

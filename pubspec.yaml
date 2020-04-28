@@ -96,6 +96,8 @@ flutter:
     - assets/cartaz.jpg
     - assets/cartaz2.jpg
     - assets/walmart.jpg
+    - assets/boleto_icon.png
+    - assets/card_icon.png
     - assets/categorias_images/categorias_0.jpg
     - assets/categorias_images/categorias_1.jpg
     - assets/categorias_images/categorias_2.jpg

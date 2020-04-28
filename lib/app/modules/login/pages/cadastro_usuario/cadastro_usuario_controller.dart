@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -148,10 +149,15 @@ abstract class _CadastroUsuarioBase with Store {
     try {
       var _authInfos =
           await signUpController.createUserWithEmailAndPassword(_userInfos);
-      _userInfos.usuarioID = _authInfos.uid;
+      _userInfos.id = _authInfos.uid;
       await signUpController.createUserCollection(_userInfos);
       await signUpController.updateSolicitacoesAceitas(
           _userInfos, inserirCodigoController.verificationId);
+      appController.setPages([
+        appController.feed,
+        appController.feedFiltro,
+        appController.perfilEmpresa,
+      ]);
       authController.setAuthInfos(_authInfos);
       authController.setUserInfos(_userInfos);
       authController.setStatus(AuthStatus.signedIn);

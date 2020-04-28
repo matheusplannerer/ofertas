@@ -1,3 +1,4 @@
+import 'package:ofertas/app/modules/perfil/perfil_module.dart';
 import 'package:ofertas/app/pages/solicitar_acesso/components/page_two/page_two_controller.dart';
 import 'package:ofertas/app/pages/solicitar_acesso/components/page_one/page_one_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
@@ -9,8 +10,6 @@ import 'package:ofertas/app/pages/navigation_bar/navigation_bar_controller.dart'
 import 'package:ofertas/app/pages/navigation_bar/navigation_bar_page.dart';
 import 'package:ofertas/app/pages/solicitar_acesso/solicitar_acesso_page.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
-import 'package:dio/dio.dart';
-import 'package:ofertas/app/pages/teste/teste_page.dart';
 import 'package:ofertas/app/pages/zoom_image/zoom_image_page.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:ofertas/app/pages/splash/splash_page.dart';
@@ -21,6 +20,9 @@ import 'package:ofertas/app/shared/repositories/auth/repositories/auth_repositor
 import 'package:ofertas/app/shared/repositories/fetch_services/fetch_services_controller.dart';
 import 'package:ofertas/app/shared/repositories/fetch_services/repositories/fetch_repository_firebase.dart';
 import 'package:ofertas/app/shared/repositories/fetch_services/repositories/fetch_repository_interface.dart';
+import 'package:ofertas/app/shared/repositories/planos_services/planos_services_controller.dart';
+import 'package:ofertas/app/shared/repositories/planos_services/repositories/planos_services_repository.dart';
+import 'package:ofertas/app/shared/repositories/planos_services/repositories/planos_services_repository_interface.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 import 'package:ofertas/app/shared/repositories/sign_up_company/repositories/signup_company_repository.dart';
 import 'package:ofertas/app/shared/repositories/sign_up_company/repositories/signup_company_repository_interface.dart';
@@ -60,6 +62,8 @@ class AppModule extends MainModule {
         Bind((i) => RouteController()),
         Bind((i) => NavigationBarController()),
         Bind((i) => SignUpCompanyController()),
+        Bind((i) => PlanosRepositoryController()),
+        Bind<IPlanosRepository>((i) => PlanosRepository()),
         Bind<ISignUpCompanyRepository>((i) => SignUpCompanyRepository()),
         Bind<ISignUpRepository>((i) => SignUpRepository()),
       ];
@@ -70,6 +74,7 @@ class AppModule extends MainModule {
         Router('/', child: (_, args) => SplashPage()),
         Router('/home', child: (_, args) => NavigationBarPage()),
         Router('/login', module: LoginModule()),
+        Router('/perfil', module: PerfilModule()),
         Router('/empresa', module: PerfilEmpresaFeedModule()),
         Router('/cadastrar_empresa', child: (_, args) => CadastroEmpresaPage()),
         Router('/solicitar_acesso', child: (_, args) => SolicitarAcessoPage()),

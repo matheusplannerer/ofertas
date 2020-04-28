@@ -4,21 +4,33 @@ class UserModel {
   String senha;
   String celular;
   String empresaPerfil;
-  String usuarioID;
+  String id;
+  String planoId;
 
   UserModel({
     this.email,
     this.nome,
     this.celular,
     this.empresaPerfil,
-    this.usuarioID,
+    this.id,
+    this.planoId,
   });
 
-  UserModel copyWith({String nome, String celular, String empresaPerfil}) {
+  UserModel copyWith({
+    String nome,
+    String celular,
+    String empresaPerfil,
+    String id,
+    String email,
+    String planoId,
+  }) {
     return UserModel(
       celular: celular ?? this.celular,
       nome: nome ?? this.nome,
       empresaPerfil: empresaPerfil ?? this.empresaPerfil,
+      email: email ?? this.email,
+      id: id ?? this.id,
+      planoId: planoId ?? this.planoId,
     );
   }
 
@@ -26,17 +38,19 @@ class UserModel {
     return UserModel(
       celular: json['celular'],
       email: json['email'],
-      usuarioID: json['id'],
+      id: json['id'],
       nome: json['nome'],
       empresaPerfil: json['empresaPerfil'],
+      planoId: json['planoId'],
     );
   }
 
   Map<String, dynamic> toJson() => {
         'celular': celular,
         'email': email,
-        'usuarioID': usuarioID,
+        'id': id,
         'nome': nome,
         'empresaPerfil': empresaPerfil,
+        'planoId': planoId,
       };
 }

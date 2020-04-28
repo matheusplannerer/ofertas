@@ -34,9 +34,15 @@ class SignUpRepository implements ISignUpRepository {
   Future createUserCollection(UserModel userModel) async {
     // TODO: implement createUserCollection
     try {
+      userModel.planoId = Firestore.instance
+          .collection('usuarios')
+          .document(userModel.id)
+          .collection('plano')
+          .document()
+          .documentID;
       await Firestore.instance
           .collection('usuarios')
-          .document(userModel.usuarioID)
+          .document(userModel.id)
           .setData(userModel.toJson());
     } catch (e) {
       return throw e;

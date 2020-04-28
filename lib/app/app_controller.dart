@@ -5,6 +5,7 @@ import 'package:ofertas/app/modules/feed/feed_module.dart';
 import 'package:ofertas/app/modules/feed_filtro/feed_filtro_module.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_module.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
+import 'package:ofertas/app/shared/models/planos_admin_model.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
@@ -48,6 +49,8 @@ abstract class _AppBase with Store {
   FirebaseUser _authInfos;
   @observable
   UserModel _userInfos;
+  @observable
+  Map<String, PlanosAdminModel> _planos;
 
   @computed
   FirebaseUser get authInfos => _auth.authInfos;
@@ -59,12 +62,15 @@ abstract class _AppBase with Store {
   bool get hasCompany => userInfos?.empresaPerfil != null ? true : false;
   @computed
   AuthStatus get status => _auth.status;
+  @computed
+  Map<String, PlanosAdminModel> get planos => _planos;
 
   @action
   void setAuth(FirebaseUser value) => _authInfos = value;
   @action
   void setUser(UserModel model) => _userInfos = model;
-
+  @action
+  void setPlanos(Map<String, PlanosAdminModel> value) => _planos = value;
   @action
   void setPages(List<RouterOutlet> list) => pages = list;
 

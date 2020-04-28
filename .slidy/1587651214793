@@ -1,0 +1,4 @@
+lib/app/modules/perfil/pages/planos/planos_page.dart
+test/app/modules/perfil/pages/planos/planos_page_test.dart
+lib/app/modules/perfil/pages/planos/planos_controller.dart
+test/app/modules/perfil/pages/planos/planos_controller_test.dart
