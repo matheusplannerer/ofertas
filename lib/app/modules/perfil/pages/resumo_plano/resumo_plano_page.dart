@@ -273,7 +273,8 @@ class _ResumoPlanoPageState extends State<ResumoPlanoPage> {
               onTap: () async {
                 showLoadingDialog();
                 await Future.delayed(
-                    Duration(seconds: 3)); //finge que concluiu a compra
+                    Duration(seconds: 1)); //finge que concluiu a compra
+                await controller.setPlano();
                 hideLoadingDialog();
                 Modular.to.pop();
               },

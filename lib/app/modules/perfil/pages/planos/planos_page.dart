@@ -5,6 +5,7 @@ import 'package:ofertas/app/modules/perfil/components/free_plan/free_plan_widget
 import 'package:ofertas/app/modules/perfil/components/master_plan/master_plan_widget.dart';
 import 'package:ofertas/app/modules/perfil/components/pro_plan/pro_plan_widget.dart';
 import 'package:ofertas/app/modules/perfil/perfil_controller.dart';
+import 'package:ofertas/app/shared/models/planos_model.dart';
 
 class PlanosPage extends StatefulWidget {
   final String title;
@@ -48,7 +49,7 @@ class _PlanosPageState extends State<PlanosPage> {
           Container(
             decoration: BoxDecoration(border: Border.all()),
             child: FreePlanWidget(
-              checked: check,
+              canChoose: false,
               plano: perfilController.planos['basico'],
             ),
             margin: EdgeInsets.all(15),
@@ -57,7 +58,10 @@ class _PlanosPageState extends State<PlanosPage> {
           Container(
             decoration: BoxDecoration(border: Border.all()),
             child: ProPlanWidget(
-              checked: check,
+              canChoose: perfilController.appController.userPlano.plano ==
+                      AccountPlanos.basico
+                  ? true
+                  : false,
               plano: perfilController.planos['pro'],
             ),
             margin: EdgeInsets.all(15),
@@ -66,7 +70,10 @@ class _PlanosPageState extends State<PlanosPage> {
           Container(
             decoration: BoxDecoration(border: Border.all()),
             child: MasterPlanWidget(
-              checked: check,
+              canChoose: perfilController.appController.userPlano.plano ==
+                      AccountPlanos.master
+                  ? false
+                  : true,
               plano: perfilController.planos['master'],
             ),
             margin: EdgeInsets.all(15),

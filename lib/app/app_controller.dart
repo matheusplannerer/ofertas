@@ -6,8 +6,10 @@ import 'package:ofertas/app/modules/feed_filtro/feed_filtro_module.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_module.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
 import 'package:ofertas/app/shared/models/planos_admin_model.dart';
+import 'package:ofertas/app/shared/models/planos_model.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
+import 'package:ofertas/app/shared/repositories/planos_services/planos_services_controller.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 
 part 'app_controller.g.dart';
@@ -17,6 +19,7 @@ class AppController = _AppBase with _$AppController;
 abstract class _AppBase with Store {
   AuthController _auth = Modular.get();
   RouteController _route = Modular.get();
+  PlanosRepositoryController _planosController = Modular.get();
 
   List<RouterOutlet> pages = [];
 
@@ -51,11 +54,12 @@ abstract class _AppBase with Store {
   UserModel _userInfos;
   @observable
   Map<String, PlanosAdminModel> _planos;
-
   @computed
   FirebaseUser get authInfos => _auth.authInfos;
   @computed
   UserModel get userInfos => _auth.userInfos;
+  @computed
+  PlanosModel get userPlano => _planosController.plano;
   @computed
   bool get signedIn => userInfos != null && authInfos != null ? true : false;
   @computed
@@ -73,6 +77,16 @@ abstract class _AppBase with Store {
   void setPlanos(Map<String, PlanosAdminModel> value) => _planos = value;
   @action
   void setPages(List<RouterOutlet> list) => pages = list;
+
+  @action
+  Future fetchUser() async {
+    var authInfos = await _auth.currentUser();
+    var userInfosAux = await _auth.getUserInfos(authInfos.uid);
+    _auth.setAuthInfos(authInfos);
+    _auth.setUserInfos(userInfosAux);
+    var plano = await _auth.getUserPlano(userInfos);
+    _planosController.updateLocalPlano(plano);
+  }
 
   @action
   Future signOut() async {

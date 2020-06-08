@@ -4,11 +4,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:ofertas/app/app_controller.dart';
+import 'package:ofertas/app/handler/firebase_notification_handler.dart';
 import 'package:ofertas/app/modules/feed/components/empresas_view/empresas_view_widget.dart';
 import 'package:ofertas/app/modules/feed/feed_controller.dart';
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
 import 'package:ofertas/app/shared/models/planos_admin_model.dart';
 import 'package:ofertas/app/shared/models/planos_model.dart';
+import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
 
 class FeedPage extends StatefulWidget {
   final String title;
@@ -29,6 +31,15 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    if (controller.appController.signedIn) {
+      //Atualiza o token FCM sempre
+      FirebaseNotificationHandler fbNotificationHandler = Modular.get();
+      AuthController authController = Modular.get();
+      authController.updateFCMToken(
+          controller.appController.userInfos, fbNotificationHandler.token);
+    }
+
     controller.fetchPage();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -47,11 +58,14 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
       onRefresh: () {
         print("RESET");
         controller.resetPageToFetch();
+        controller.appController.fetchUser();
         return controller.fetchPage();
       },
       child: Scaffold(
         drawer: Drawer(
           child: ListView(
+            shrinkWrap: true,
+            physics: ScrollPhysics(),
             children: <Widget>[
               if (!controller.appController.signedIn)
                 ListTile(
@@ -275,6 +289,8 @@ class _FeedPageState extends ModularState<FeedPage, FeedController> {
               );
 
             return ListView.builder(
+              shrinkWrap: true,
+              physics: AlwaysScrollableScrollPhysics(),
               itemCount: controller.empresas.length,
               controller: _scrollController,
               itemBuilder: (context, index) {

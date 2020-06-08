@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/app_controller.dart';
+import 'package:ofertas/app/handler/firebase_notification_handler.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
 import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
+import 'package:ofertas/app/shared/repositories/planos_services/planos_services_controller.dart';
 
 class SplashPage extends StatefulWidget {
   final String title;
@@ -17,7 +19,8 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends ModularState<SplashPage, SplashController> {
   ReactionDisposer disposer;
   AppController appController = Modular.get();
-
+  AuthController authController = Modular.get();
+  PlanosRepositoryController planosRepositoryController = Modular.get();
   @override
   void initState() {
     // TODO: implement initState
@@ -33,6 +36,8 @@ class _SplashPageState extends ModularState<SplashPage, SplashController> {
           appController.feedFiltro,
           appController.perfilEmpresa
         ]);
+        //Apenas organiza o que é plano no repositório do plano
+        planosRepositoryController.updateLocalPlano(authController.plano);
         await Future.delayed(Duration(seconds: 1));
         Modular.to.pushReplacementNamed('/home');
       }

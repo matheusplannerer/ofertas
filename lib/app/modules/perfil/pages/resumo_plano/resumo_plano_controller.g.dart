@@ -109,6 +109,13 @@ mixin _$ResumoPlanoController on _ResumoPlanoControllerBase, Store {
     return _$applyCupomAsyncAction.run(() => super.applyCupom());
   }
 
+  final _$setPlanoAsyncAction = AsyncAction('setPlano');
+
+  @override
+  Future<dynamic> setPlano() {
+    return _$setPlanoAsyncAction.run(() => super.setPlano());
+  }
+
   final _$_ResumoPlanoControllerBaseActionController =
       ActionController(name: '_ResumoPlanoControllerBase');
 

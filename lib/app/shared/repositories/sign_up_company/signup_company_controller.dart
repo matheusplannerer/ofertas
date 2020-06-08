@@ -207,7 +207,7 @@ abstract class _SignUpCompanyControllerBase with Store {
 
   @action
   void setTipo(String value) {
-    _tipo = value.toUpperCase();
+    _tipo = value;
   }
 
   @action

@@ -8,8 +8,8 @@ import 'package:ofertas/app/shared/models/planos_admin_model.dart';
 class ProPlanWidget extends StatelessWidget {
   final ProPlanController controller = ProPlanController();
   final PlanosAdminModel plano;
-  final bool checked;
-  ProPlanWidget({this.checked, this.plano});
+  final bool canChoose;
+  ProPlanWidget({this.canChoose, this.plano});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +24,7 @@ class ProPlanWidget extends StatelessWidget {
               IconButton(
                 icon: Icon(
                   Icons.check_circle_outline,
-                  color: checked ? null : Colors.white,
+                  color: Colors.white,
                 ),
                 onPressed: null,
               ),
@@ -256,15 +256,16 @@ class ProPlanWidget extends StatelessWidget {
             thickness: 1.5,
             height: 0.5,
           ),
-          ButtonWidget(
-            height: 40,
-            onTap: () {
-              controller.setPlan(plano);
-              Modular.to.pushNamed('/perfil/resumo');
-            },
-            text: "SELECIONAR",
-            margin: EdgeInsets.fromLTRB(30, 10, 30, 10),
-          ),
+          if (canChoose)
+            ButtonWidget(
+              height: 40,
+              onTap: () {
+                controller.setPlan(plano);
+                Modular.to.pushNamed('/perfil/resumo');
+              },
+              text: "SELECIONAR",
+              margin: EdgeInsets.fromLTRB(30, 10, 30, 10),
+            ),
         ],
       ),
     );

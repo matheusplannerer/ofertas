@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ofertas/app/shared/models/cupom_model.dart';
 import 'package:ofertas/app/shared/models/planos_admin_model.dart';
 import 'package:ofertas/app/shared/models/planos_model.dart';
+import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/planos_services/repositories/planos_services_repository_interface.dart';
 
 class PlanosRepository implements IPlanosRepository {
@@ -61,13 +62,6 @@ class PlanosRepository implements IPlanosRepository {
   @override
   Future setPlano(PlanosModel plano, FirebaseUser user) async {
     try {
-      plano.id = Firestore.instance
-          .collection('usuarios')
-          .document(user.uid)
-          .collection('planos')
-          .document()
-          .documentID;
-
       await Firestore.instance
           .collection('usuarios')
           .document(user.uid)
@@ -78,6 +72,20 @@ class PlanosRepository implements IPlanosRepository {
           .collection('usuarios')
           .document(user.uid)
           .updateData({"planoId": plano.id});
+    } catch (e) {
+      return throw e;
+    }
+  }
+
+  @override
+  Future updatePlano(PlanosModel plano, FirebaseUser user) async {
+    try {
+      await Firestore.instance
+          .collection('usuarios')
+          .document(user.uid)
+          .collection('planos')
+          .document(plano.id)
+          .updateData(plano.toJson());
     } catch (e) {
       return throw e;
     }

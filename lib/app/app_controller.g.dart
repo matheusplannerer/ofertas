@@ -21,6 +21,12 @@ mixin _$AppController on _AppBase, Store {
   UserModel get userInfos =>
       (_$userInfosComputed ??= Computed<UserModel>(() => super.userInfos))
           .value;
+  Computed<PlanosModel> _$userPlanoComputed;
+
+  @override
+  PlanosModel get userPlano =>
+      (_$userPlanoComputed ??= Computed<PlanosModel>(() => super.userPlano))
+          .value;
   Computed<bool> _$signedInComputed;
 
   @override
@@ -94,6 +100,13 @@ mixin _$AppController on _AppBase, Store {
     }, _$_planosAtom, name: '${_$_planosAtom.name}_set');
   }
 
+  final _$fetchUserAsyncAction = AsyncAction('fetchUser');
+
+  @override
+  Future<dynamic> fetchUser() {
+    return _$fetchUserAsyncAction.run(() => super.fetchUser());
+  }
+
   final _$signOutAsyncAction = AsyncAction('signOut');
 
   @override
@@ -146,7 +159,7 @@ mixin _$AppController on _AppBase, Store {
   @override
   String toString() {
     final string =
-        'authInfos: ${authInfos.toString()},userInfos: ${userInfos.toString()},signedIn: ${signedIn.toString()},hasCompany: ${hasCompany.toString()},status: ${status.toString()},planos: ${planos.toString()}';
+        'authInfos: ${authInfos.toString()},userInfos: ${userInfos.toString()},userPlano: ${userPlano.toString()},signedIn: ${signedIn.toString()},hasCompany: ${hasCompany.toString()},status: ${status.toString()},planos: ${planos.toString()}';
     return '{$string}';
   }
 }

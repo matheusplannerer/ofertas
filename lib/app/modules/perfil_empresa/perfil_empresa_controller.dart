@@ -67,7 +67,7 @@ abstract class _PerfilEmpresaControllerBase with Store {
   //Pega os dados da empresa e começa a puxar de novo as ofertas
   @action
   Future fetchPage() async {
-    print("AQUI OK");
+    // print("AQUI OK");
     if (status == RequestStatus.loading) return;
     try {
       await _fetchEmpresa();

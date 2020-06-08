@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
+import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
 import 'package:ofertas/app/modules/publicar_ofertas/components/concluir_publicacao/concluir_publicacao_controller.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
@@ -163,6 +164,8 @@ class _ConcluirPublicacaoPageState extends State<ConcluirPublicacaoPage> {
                     await controller.task.onComplete;
                     await controller.uploadOferta(oferta);
                     hideLoadingDialog();
+                    PerfilEmpresaController aux = Modular.get();
+                    aux.fetchPage();
                     Modular.navigatorKey.currentState
                         .popUntil((Route<dynamic> route) => route.isFirst);
                     // Modular.navigatorKey.currentState.pushNamed('');

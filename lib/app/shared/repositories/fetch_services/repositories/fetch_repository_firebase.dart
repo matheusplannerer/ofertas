@@ -115,7 +115,7 @@ class FirebaseFetchRepository implements IFetchRepository {
             .limit(limitQuery)
             .where("ofertas", isGreaterThan: 0)
             .orderBy("ofertas", descending: true)
-            .where("categoria", isEqualTo: categoria.toUpperCase())
+            .where("categoria", isEqualTo: categoria)
             .getDocuments();
       } else {
         _empresasDoc = await Firestore.instance
@@ -123,7 +123,7 @@ class FirebaseFetchRepository implements IFetchRepository {
             .limit(limitQuery)
             .where("ofertas", isGreaterThan: 0)
             .orderBy("ofertas", descending: true)
-            .where("categoria", isEqualTo: categoria.toUpperCase())
+            .where("categoria", isEqualTo: categoria)
             .startAfterDocument(lastFetched)
             .getDocuments();
       }

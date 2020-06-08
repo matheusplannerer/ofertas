@@ -55,11 +55,11 @@ class _OfertasViewWidgetState
     super.build(context);
     return GestureDetector(
       onTap: () {
-        controller.routeController.tab1Nav.pushNamed('/oferta_details',
-            arguments: {
-              'oferta': oferta,
-              'fetchPage': feedController.fetchPage
-            });
+        controller.routeController.actualNavigator.currentState
+            .pushNamed('/oferta_details', arguments: {
+          'oferta': oferta,
+          'fetchPage': feedController.fetchPage
+        });
       },
       child: Card(
         elevation: 10,

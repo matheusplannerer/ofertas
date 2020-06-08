@@ -44,6 +44,8 @@ class PlanosModel {
     }
     if (document.data['plano'] == "master") {
       planoAux = AccountPlanos.master;
+      profileNumberLeftAux = document.data['profileNumberLeft'];
+      postsLeftAux = document.data['postsLeft'];
       valuePerMonthAux = document.data['valuePerMonth'];
     }
     return PlanosModel(

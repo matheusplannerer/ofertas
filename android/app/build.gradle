@@ -34,7 +34,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "br.ofertas.app"
-        minSdkVersion 16
+        minSdkVersion 17
         multiDexEnabled true
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
@@ -59,13 +59,15 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:18.0.0'
     implementation 'com.google.firebase:firebase-firestore:20.0.0'
     implementation 'com.google.firebase:firebase-storage:18.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.7'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    implementation 'com.madgag.spongycastle:pkix:1.51.0.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
-  // add the Firebase SDK for Google Analytics
-  // add SDKs for any other desired Firebase products
-  // https://firebase.google.com/docs/android/setup#available-libraries
+    // add the Firebase SDK for Google Analytics
+    // add SDKs for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
+    implementation files('libs/moip-encryption.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'

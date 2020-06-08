@@ -12,6 +12,14 @@ class PlanosRepositoryController = _PlanosRepositoryControllerBase
 abstract class _PlanosRepositoryControllerBase with Store {
   IPlanosRepository _planosRepo = Modular.get();
 
+  @observable
+  PlanosModel _plano;
+  @computed
+  PlanosModel get plano => _plano;
+
+  @action
+  void updateLocalPlano(PlanosModel value) => _plano = value;
+
   @action
   Future<Map<String, PlanosAdminModel>> getPlanos() async {
     try {
@@ -38,6 +46,15 @@ abstract class _PlanosRepositoryControllerBase with Store {
   Future setPlano(PlanosModel plano, FirebaseUser user) async {
     try {
       await _planosRepo.setPlano(plano, user);
+    } catch (e) {
+      return throw e;
+    }
+  }
+
+  @action
+  Future updatePlano(PlanosModel plano, FirebaseUser user) async {
+    try {
+      await _planosRepo.updatePlano(plano, user);
     } catch (e) {
       return throw e;
     }

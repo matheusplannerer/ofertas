@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -13,6 +14,7 @@ import 'package:ofertas/app/shared/global_service.dart';
 import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/auth_controller.dart';
+import 'package:ofertas/app/shared/repositories/planos_services/planos_services_controller.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -25,6 +27,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends ModularState<LoginPage, LoginController> {
+  PlanosRepositoryController planosRepositoryController = Modular.get();
+  AuthController authController = Modular.get();
   Widget radioButton(bool isSelected) => Container(
         width: 16.0,
         height: 16.0,
@@ -68,6 +72,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
               controller.appController.feed,
               controller.appController.feedFiltro
             ]);
+            planosRepositoryController.updateLocalPlano(authController.plano);
             Modular.to.pushReplacementNamed('/home');
           },
         ),
@@ -270,6 +275,15 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                           Row(
                             children: <Widget>[],
                           ),
+                          // RaisedButton(
+                          //   onPressed: () async {
+                          //     var data = await Dio().post(
+                          //         'https://us-central1-ofertas-8428f.cloudfunctions.net/httpTeste',
+                          //         data: {'cep': '13145740'});
+                          //     print(data.data);
+                          //   },
+                          //   child: Text("TESTE"),
+                          // ),
                           InkWell(
                             child: Container(
                               width: ScreenUtil.getInstance().setWidth(600),

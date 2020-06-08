@@ -19,6 +19,7 @@ class PerfilEmpresaModel {
       this.categoria, //
       this.lat,
       this.subcategoria,
+      this.isAtivo,
       this.ofertas,
       this.lon}) {
     if (dias == null)
@@ -71,6 +72,7 @@ class PerfilEmpresaModel {
   String empresaID; //
   String donoEmpresa; //
   int ofertas; //
+  bool isAtivo; //
 
   factory PerfilEmpresaModel.fromJson(Map<String, dynamic> json) {
     PerfilEmpresaModel model = PerfilEmpresaModel(
@@ -94,6 +96,7 @@ class PerfilEmpresaModel {
       logradouro: json['logradouro'],
       telefone: json['telefone'],
       ofertas: json['ofertas'],
+      isAtivo: json['isAtivo'],
     );
     // print(horarios);
     return model;
@@ -120,6 +123,7 @@ class PerfilEmpresaModel {
         'logradouro': logradouro,
         'telefone': telefone,
         'ofertas': ofertas,
+        'isAtivo': isAtivo,
       };
 
   PerfilEmpresaModel copyWith({
@@ -142,8 +146,10 @@ class PerfilEmpresaModel {
     String subcategoria,
     String telefone,
     int ofertas,
+    bool isAtivo,
   }) {
     return new PerfilEmpresaModel(
+      isAtivo: isAtivo ?? this.isAtivo,
       bairro: bairro ?? this.bairro,
       categoria: categoria ?? this.categoria,
       cep: cep ?? this.cep,

@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ofertas/app/app_controller.dart';
+import 'package:ofertas/app/handler/firebase_notification_handler.dart';
 import 'package:ofertas/app/modules/login/models/erro_login_model.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
@@ -93,6 +94,8 @@ abstract class _LoginBase with Store {
         appController.feedFiltro,
         appController.perfilEmpresa
       ]);
+      FirebaseNotificationHandler handler = Modular.get();
+      handler.updateFCMToken(_userInfos);
       Modular.to.pushReplacementNamed('/home');
     } catch (e) {
       setErro(erro.setErro(e));

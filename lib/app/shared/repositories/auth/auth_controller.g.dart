@@ -21,6 +21,11 @@ mixin _$AuthController on _AuthControllerBase, Store {
   UserModel get userInfos =>
       (_$userInfosComputed ??= Computed<UserModel>(() => super.userInfos))
           .value;
+  Computed<PlanosModel> _$planoComputed;
+
+  @override
+  PlanosModel get plano =>
+      (_$planoComputed ??= Computed<PlanosModel>(() => super.plano)).value;
   Computed<AuthStatus> _$statusComputed;
 
   @override
@@ -78,6 +83,23 @@ mixin _$AuthController on _AuthControllerBase, Store {
     }, _$_statusAtom, name: '${_$_statusAtom.name}_set');
   }
 
+  final _$_planoAtom = Atom(name: '_AuthControllerBase._plano');
+
+  @override
+  PlanosModel get _plano {
+    _$_planoAtom.context.enforceReadPolicy(_$_planoAtom);
+    _$_planoAtom.reportObserved();
+    return super._plano;
+  }
+
+  @override
+  set _plano(PlanosModel value) {
+    _$_planoAtom.context.conditionallyRunInAction(() {
+      super._plano = value;
+      _$_planoAtom.reportChanged();
+    }, _$_planoAtom, name: '${_$_planoAtom.name}_set');
+  }
+
   final _$currentUserAsyncAction = AsyncAction('currentUser');
 
   @override
@@ -106,6 +128,13 @@ mixin _$AuthController on _AuthControllerBase, Store {
   @override
   Future<FirebaseUser> signInGoogle() {
     return _$signInGoogleAsyncAction.run(() => super.signInGoogle());
+  }
+
+  final _$getUserPlanoAsyncAction = AsyncAction('getUserPlano');
+
+  @override
+  Future<PlanosModel> getUserPlano(UserModel user) {
+    return _$getUserPlanoAsyncAction.run(() => super.getUserPlano(user));
   }
 
   final _$getUserInfosAsyncAction = AsyncAction('getUserInfos');
@@ -151,7 +180,7 @@ mixin _$AuthController on _AuthControllerBase, Store {
   @override
   String toString() {
     final string =
-        'authInfos: ${authInfos.toString()},userInfos: ${userInfos.toString()},status: ${status.toString()}';
+        'authInfos: ${authInfos.toString()},userInfos: ${userInfos.toString()},plano: ${plano.toString()},status: ${status.toString()}';
     return '{$string}';
   }
 }

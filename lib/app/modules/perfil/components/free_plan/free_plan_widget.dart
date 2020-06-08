@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ofertas/app/shared/models/planos_admin_model.dart';
 
 class FreePlanWidget extends StatelessWidget {
-  final bool checked;
+  final bool canChoose;
   final PlanosAdminModel plano;
-  FreePlanWidget({this.plano, this.checked});
+  FreePlanWidget({this.plano, this.canChoose});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +19,7 @@ class FreePlanWidget extends StatelessWidget {
               IconButton(
                 icon: Icon(
                   Icons.check_circle_outline,
-                  color: checked ? null : Colors.white,
+                  color: Colors.white,
                 ),
                 onPressed: null,
               ),

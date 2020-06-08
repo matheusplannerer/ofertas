@@ -8,6 +8,7 @@ import 'package:ofertas/app/modules/perfil_empresa/pages/edit_infos/edit_infos_c
 import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/models/endereco_model.dart';
+import 'package:ofertas/app/shared/models/perfil_empresa_model.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 import 'package:ofertas/app/shared/repositories/sign_up_company/repositories/signup_company_repository.dart';
 import 'package:ofertas/app/shared/repositories/sign_up_company/signup_company_controller.dart';
@@ -77,9 +78,10 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                   onTap: () async {
                                     Navigator.of(context).pop();
                                     var img = await controller.getImage(0);
+                                    if (img == null) return;
                                     // await Future.delayed(
                                     //     Duration(seconds: 1));
-                                    showLoadingDialog();
+                                    showLoadingDialog(tapDismiss: false);
                                     await controller.uploadImage(
                                       _editController.empresa.empresaID,
                                       _editController.empresa.foto,
@@ -87,6 +89,7 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                     );
                                     hideLoadingDialog();
                                     controller.fetchPage();
+                                    controller.routeController.tab2Nav.pop();
                                   },
                                 ),
                                 ListTile(
@@ -94,9 +97,10 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                   onTap: () async {
                                     Navigator.of(context).pop();
                                     var img = await controller.getImage(1);
+                                    if (img == null) return;
                                     // await Future.delayed(
                                     //     Duration(seconds: 1));
-                                    showLoadingDialog();
+                                    showLoadingDialog(tapDismiss: false);
                                     await controller.uploadImage(
                                       _editController.empresa.empresaID,
                                       _editController.empresa.foto,
@@ -104,6 +108,7 @@ class _EditInfosPageState extends State<EditInfosPage> {
                                     );
                                     hideLoadingDialog();
                                     controller.fetchPage();
+                                    controller.routeController.tab2Nav.pop();
                                   },
                                 ),
                               ],

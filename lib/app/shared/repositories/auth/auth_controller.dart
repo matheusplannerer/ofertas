@@ -6,6 +6,7 @@ import 'package:mobx/mobx.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/pages/splash/splash_controller.dart';
+import 'package:ofertas/app/shared/models/planos_model.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/repositories/auth_repository_interface.dart';
 part 'auth_controller.g.dart';
@@ -30,11 +31,15 @@ abstract class _AuthControllerBase with Store {
   UserModel _userInfos;
   @observable
   AuthStatus _status = AuthStatus.loading;
+  @observable
+  PlanosModel _plano;
 
   @computed
   FirebaseUser get authInfos => _authInfos;
   @computed
   UserModel get userInfos => _userInfos;
+  @computed
+  PlanosModel get plano => _plano;
   @computed
   AuthStatus get status {
     if (_status != AuthStatus.signedIn) {
@@ -94,13 +99,33 @@ abstract class _AuthControllerBase with Store {
   }
 
   @action
+  Future<PlanosModel> getUserPlano(UserModel user) async {
+    try {
+      _plano = await _auth.getUserPlano(user);
+      return _plano;
+    } catch (e) {
+      return throw e;
+    }
+  }
+
+  @action
   Future<UserModel> getUserInfos(String uid) async {
     try {
-      print("E CONTINUOU AQUI");
       _userInfos = await _auth.getUserInfos(uid);
+      await getUserPlano(_userInfos);
       return _userInfos;
     } catch (e) {
       setStatus(AuthStatus.signedOff);
+      return throw e;
+    }
+  }
+
+  @action
+  Future<void> updateFCMToken(UserModel user, String token) async {
+    try {
+      await _auth.updateFCMToken(user, token);
+      return;
+    } catch (e) {
       return throw e;
     }
   }

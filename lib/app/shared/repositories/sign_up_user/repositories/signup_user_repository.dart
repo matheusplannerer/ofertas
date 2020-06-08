@@ -11,6 +11,7 @@ class SignUpRepository implements ISignUpRepository {
     try {
       var auth = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+
       return auth;
     } catch (e) {
       return throw e;
@@ -66,7 +67,8 @@ class SignUpRepository implements ISignUpRepository {
 
       if (userDoc.documents.length >= 1)
         throw PlatformException(code: "EMAIL_ALREADY_REGISTERED");
-
+      print("Verif id: ${doc.documents[0].data['verificationId']}");
+      print("id inserido: $id");
       if (doc.documents[0].data['verificationId'] == id) {
         return true;
       }

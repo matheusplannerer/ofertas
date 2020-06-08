@@ -30,6 +30,7 @@ class PageTwoWidget extends StatelessWidget {
                 Observer(
                   builder: (_) {
                     return TextField(
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -46,6 +47,7 @@ class PageTwoWidget extends StatelessWidget {
                 Observer(
                   builder: (_) {
                     return TextField(
+                      keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -62,14 +64,16 @@ class PageTwoWidget extends StatelessWidget {
                 Observer(
                   builder: (_) {
                     return TextField(
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          labelText: "E-mail",
-                          errorText: controller.erroEmail
-                              ? controller.textErroEmail
-                              : null),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        labelText: "E-mail",
+                        errorText: controller.erroEmail
+                            ? controller.textErroEmail
+                            : null,
+                      ),
                       onChanged: controller.setEmail,
                     );
                   },
@@ -78,14 +82,16 @@ class PageTwoWidget extends StatelessWidget {
                 Observer(
                   builder: (_) {
                     return TextField(
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          labelText: "Nome da empresa",
-                          errorText: controller.erroEmpresa
-                              ? controller.textErroEmpresa
-                              : null),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        labelText: "Nome da empresa",
+                        errorText: controller.erroEmpresa
+                            ? controller.textErroEmpresa
+                            : null,
+                      ),
                       onChanged: controller.setEmpresa,
                     );
                   },
@@ -104,6 +110,14 @@ class PageTwoWidget extends StatelessWidget {
                       await Alert(
                         type: AlertType.success,
                         title: "Solicitação enviada com sucesso",
+                        buttons: [
+                          DialogButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("VOLTAR"),
+                          ),
+                        ],
                         context: context,
                       ).show();
                       Modular.to.pop();

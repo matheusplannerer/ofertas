@@ -6,10 +6,10 @@ import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/models/planos_admin_model.dart';
 
 class MasterPlanWidget extends StatelessWidget {
-  final bool checked;
+  final bool canChoose;
   final PlanosAdminModel plano;
   MasterPlanWidget({
-    this.checked,
+    this.canChoose,
     this.plano,
   });
   final MasterPlanController controller = MasterPlanController();
@@ -27,7 +27,7 @@ class MasterPlanWidget extends StatelessWidget {
               IconButton(
                 icon: Icon(
                   Icons.check_circle_outline,
-                  color: checked ? null : Colors.white,
+                  color: Colors.white,
                 ),
                 onPressed: null,
               ),
@@ -259,15 +259,16 @@ class MasterPlanWidget extends StatelessWidget {
             thickness: 1.5,
             height: 0.5,
           ),
-          ButtonWidget(
-            onTap: () {
-              controller.setPlan(plano);
-              Modular.to.pushNamed('/perfil/resumo');
-            },
-            height: 40,
-            text: "SELECIONAR",
-            margin: EdgeInsets.fromLTRB(30, 10, 30, 10),
-          ),
+          if (canChoose)
+            ButtonWidget(
+              onTap: () {
+                controller.setPlan(plano);
+                Modular.to.pushNamed('/perfil/resumo');
+              },
+              height: 40,
+              text: "SELECIONAR",
+              margin: EdgeInsets.fromLTRB(30, 10, 30, 10),
+            ),
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:ofertas/app/shared/models/planos_model.dart';
 import 'package:ofertas/app/shared/models/user_model.dart';
 import 'package:ofertas/app/shared/repositories/auth/repositories/auth_repository_interface.dart';
 
@@ -126,5 +127,35 @@ class FirebaseAuthRepo implements IAuthRepository {
     } catch (e) {
       return throw null;
     }
+  }
+
+  @override
+  Future<PlanosModel> getUserPlano(UserModel user) async {
+    try {
+      var planoDoc = await Firestore.instance
+          .collection('usuarios')
+          .document(user.id)
+          .collection('planos')
+          .document(user.planoId)
+          .get();
+      PlanosModel aux = PlanosModel.fromJson(planoDoc);
+      return aux;
+    } catch (e) {
+      return throw e;
+    }
+  }
+
+  @override
+  Future<void> updateFCMToken(UserModel user, String token) async {
+    try {
+      await Firestore.instance
+          .collection('fcm_token')
+          .document(user.id)
+          .setData({'email': user.email, 'fcmToken': token});
+      return;
+    } catch (e) {
+      return throw e;
+    }
+    // TODO: implement updateFCMToken
   }
 }

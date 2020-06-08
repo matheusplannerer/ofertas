@@ -53,12 +53,15 @@ abstract class _ConcluirPublicacaoBase with Store {
   @action
   Future uploadOferta(OfertaModel oferta) async {
     PerfilEmpresaModel empresa = Modular.get<PerfilEmpresaController>().empresa;
-
+    empresa.ofertas ??= 0;
+    oferta.empresaDona = empresa.empresaID;
     var url = await _storage
         .ref()
-        .child("$empresaID/oferta_${empresa.ofertas + 1}.jpg")
+        .child("$empresaID/oferta_${(empresa.ofertas ??= 0) + 1}.jpg")
         .getDownloadURL();
+    oferta.imagem = url;
     var id = Firestore.instance.collection('ofertas').document().documentID;
+    oferta.idOferta = id;
     await Firestore.instance
         .collection('empresas')
         .document(empresaID)
@@ -68,7 +71,7 @@ abstract class _ConcluirPublicacaoBase with Store {
 
     await Firestore.instance
         .collection('ofertas')
-        .document(id)
+        .document(oferta.idOferta)
         .setData(oferta.toJson());
   }
 

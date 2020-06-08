@@ -5,6 +5,7 @@ import 'package:load/load.dart';
 import 'package:ofertas/app/app_controller.dart';
 import 'package:ofertas/app/modules/perfil/perfil_controller.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
+import 'package:ofertas/app/shared/models/planos_model.dart';
 
 class PerfilPage extends StatefulWidget {
   final String title;
@@ -16,6 +17,18 @@ class PerfilPage extends StatefulWidget {
 
 class _PerfilPageState extends State<PerfilPage> {
   PerfilController controller = Modular.get();
+  String plano = " - ";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (controller.appController.userPlano?.plano == AccountPlanos.basico)
+      plano = "Básico";
+    if (controller.appController.userPlano?.plano == AccountPlanos.pro)
+      plano = "Pro";
+    if (controller.appController.userPlano?.plano == AccountPlanos.master)
+      plano = "Master";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +70,18 @@ class _PerfilPageState extends State<PerfilPage> {
             height: 0.5,
           ),
           ListTile(
-            title: Text("Plano: Básico"),
+            title: Text("Plano: $plano"),
+          ),
+          Divider(
+            thickness: 1.5,
+            height: 0.5,
+          ),
+          ListTile(
+            title: Text("Pagamento"),
+            subtitle: Text("Minhas formas de pagamento"),
+            onTap: () {
+              Modular.to.pushNamed('/pagamento');
+            },
           ),
           Divider(
             thickness: 1.5,

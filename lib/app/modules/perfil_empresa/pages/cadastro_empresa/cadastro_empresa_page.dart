@@ -5,8 +5,11 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:load/load.dart';
 import 'package:ofertas/app/modules/perfil_empresa/pages/cadastro_empresa/cadastro_empresa_controller.dart';
+import 'package:ofertas/app/modules/perfil_empresa/perfil_empresa_controller.dart';
 import 'package:ofertas/app/shared/components/button/button_widget.dart';
 import 'package:ofertas/app/shared/global_service.dart';
+import 'package:ofertas/app/shared/models/planos_model.dart';
+import 'package:ofertas/app/shared/repositories/planos_services/planos_services_controller.dart';
 import 'package:ofertas/app/shared/repositories/routes/route_controller.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -430,10 +433,17 @@ class _CadastroEmpresaPageState extends State<CadastroEmpresaPage> {
 
               await controller.authController
                   .getUserInfos(controller.appController.authInfos.uid);
-              RouteController routeController = Modular.get();
+              PlanosRepositoryController planosController = Modular.get();
+              PlanosModel actualPlan = controller.appController.userPlano;
+              actualPlan.profileNumberLeft--;
+              planosController.updateLocalPlano(actualPlan);
+              await planosController.updatePlano(
+                  actualPlan, controller.appController.authInfos);
               hideLoadingDialog();
-              routeController.tab2Nav
-                  .popUntil((Route<dynamic> route) => route.isFirst);
+              PerfilEmpresaController perfilEmpresaController = Modular.get();
+              perfilEmpresaController.fetchPage();
+              RouteController route = Modular.get();
+              route.tab2Nav.pop();
             },
             text: "CADASTRAR",
             width: MediaQuery.of(context).size.width - 60,

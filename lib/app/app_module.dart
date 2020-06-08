@@ -1,3 +1,6 @@
+import 'package:ofertas/app/handler/firebase_notification_handler.dart';
+import 'package:ofertas/app/modules/pagamento/pagamento_module.dart';
+import 'package:ofertas/app/modules/pagamento/pagamento_page.dart';
 import 'package:ofertas/app/modules/perfil/perfil_module.dart';
 import 'package:ofertas/app/pages/solicitar_acesso/components/page_two/page_two_controller.dart';
 import 'package:ofertas/app/pages/solicitar_acesso/components/page_one/page_one_controller.dart';
@@ -56,6 +59,7 @@ class AppModule extends MainModule {
         Bind((i) => FeedService()),
         Bind((i) => GlobalService()),
         //
+        Bind((i) => FirebaseNotificationHandler()),
 
         Bind((i) => CadastroEmpresaController()),
         Bind((i) => SignUpController()),
@@ -70,8 +74,8 @@ class AppModule extends MainModule {
 
   @override
   List<Router> get routers => [
-        // Router('/', child: (_, args) => TestePage()),
-        Router('/', child: (_, args) => SplashPage()),
+        Router('/pagamento', module: PagamentoModule()),
+        Router(Modular.initialRoute, child: (_, args) => SplashPage()),
         Router('/home', child: (_, args) => NavigationBarPage()),
         Router('/login', module: LoginModule()),
         Router('/perfil', module: PerfilModule()),

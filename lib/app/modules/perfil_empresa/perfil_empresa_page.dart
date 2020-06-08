@@ -112,16 +112,17 @@ class _PerfilEmpresaPageState
                             ),
                           );
                         }
-                        empresas.add(
-                          FlatButton(
-                            onPressed: () async {
-                              await routeController.tab2Nav
-                                  .pushNamed('/cadastrar_empresa');
-                              controller.fetchPage();
-                            },
-                            child: Text("ADICIONAR EMPRESA"),
-                          ),
-                        );
+                        if (appController.userPlano.profileNumberLeft > 1)
+                          empresas.add(
+                            FlatButton(
+                              onPressed: () async {
+                                await routeController.tab2Nav
+                                    .pushNamed('/cadastrar_empresa');
+                                controller.fetchPage();
+                              },
+                              child: Text("ADICIONAR EMPRESA"),
+                            ),
+                          );
                         return Column(
                           children: <Widget>[...empresas],
                         );
@@ -254,16 +255,17 @@ class _PerfilEmpresaPageState
                       child: new Icon(Icons.keyboard_arrow_up),
                     ),
                     SizedBox(width: 10),
-                    FloatingActionButton(
-                      backgroundColor: Colors.orange,
-                      heroTag: null,
-                      child: Icon(Icons.add_a_photo),
-                      onPressed: () async {
-                        await Modular.navigatorKey.currentState.pushNamed(
-                            '/publicarOfertas/${controller.empresa.empresaID}');
-                        controller.fetchPage();
-                      },
-                    ),
+                    if (appController.userPlano.postsLeft != 0)
+                      FloatingActionButton(
+                        backgroundColor: Colors.orange,
+                        heroTag: null,
+                        child: Icon(Icons.add_a_photo),
+                        onPressed: () async {
+                          await Modular.navigatorKey.currentState.pushNamed(
+                              '/publicarOfertas/${controller.empresa.empresaID}');
+                          controller.fetchPage();
+                        },
+                      ),
                   ],
                 )
               : null,

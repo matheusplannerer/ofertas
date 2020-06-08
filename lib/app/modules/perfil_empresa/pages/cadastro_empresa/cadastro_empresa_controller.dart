@@ -36,7 +36,7 @@ abstract class _CadastroEmpresaBase with Store {
 
   @action
   void setTipo(String value) {
-    signUpCompanyController.setTipo(value.toUpperCase());
+    signUpCompanyController.setTipo(value);
   }
 
   @action
@@ -120,6 +120,8 @@ abstract class _CadastroEmpresaBase with Store {
         .trimRight()
         .trimLeft());
     setTelefone(signUpCompanyController.telefoneController.text);
+    setSubcategoria(
+        signUpCompanyController.subCategoriaController.text.toUpperCase());
     //Validators
     signUpCompanyController.validateFields(fbUid, empID);
   }
